@@ -5,14 +5,17 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class Main {
-
+    static String[][] reservasPorFranja;
+    static int aforo;
     public static void main(String[] args) throws Exception {
         //ejercicio101();
         //ejercicio102();
         // ejercicio103();
         //ejercicio104();
+        ejercicio105();
 
     }
 
@@ -139,35 +142,95 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         boolean continuar = true;
 
-        int longitudPiscina = 0, anchuraPiscina=0, longitudParcela=0, anchuraParcela=0, aforo=0;
+        definirPiscina();
+        do {
+            //La primera de las dimensiones son las franjas horarias la segunda son los DNI
+            reservasPorFranja=new String [6][aforo];
+            reservar();
+        }while(continuar);
+    }
+
+    public static void definirPiscina() throws Exception {
+        int longitudPiscina = 0, anchuraPiscina=0, longitudParcela=0, anchuraParcela=0;
         double superficiePiscina = 1;
         double superficieParcela = 1;
-        do {
-            System.out.println("Introduzca la longitud de la piscina:");
-            longitudPiscina= pedirIntPorTeclado("Has introducido mal la longitud piscina");
+        System.out.println("Introduzca la longitud de la piscina:");
+        longitudPiscina= pedirIntPorTeclado("Has introducido mal la longitud piscina");
 
-            System.out.println("Introduzca la anchura de la piscina:");
-            anchuraPiscina=pedirIntPorTeclado("Has introducido mal la anchura de la piscina");
+        System.out.println("Introduzca la anchura de la piscina:");
+        anchuraPiscina=pedirIntPorTeclado("Has introducido mal la anchura de la piscina");
 
-            System.out.println("Introduzca la longitud de la parcela:");
-            longitudParcela=pedirIntPorTeclado("Has introducido mal la longitud de la parcela");
+        System.out.println("Introduzca la longitud de la parcela:");
+        longitudParcela=pedirIntPorTeclado("Has introducido mal la longitud de la parcela");
 
-            System.out.println("Introduzca la anchura de la parcela:");
-            anchuraParcela=pedirIntPorTeclado("Has introducido mal la anchura de la parcela");
+        System.out.println("Introduzca la anchura de la parcela:");
+        anchuraParcela=pedirIntPorTeclado("Has introducido mal la anchura de la parcela");
 
-            superficiePiscina = anchuraPiscina * longitudPiscina;
-            superficieParcela = anchuraParcela * longitudParcela;
+        superficiePiscina = anchuraPiscina * longitudPiscina;
+        superficieParcela = anchuraParcela * longitudParcela;
 
-            if (superficieParcela >= superficiePiscina) {
-                aforo = (int) superficiePiscina/2;
-                System.out.println("El aforo de la piscina es de " + aforo + " personas");
-            } else{
-                aforo = (int) superficieParcela/2;
-                System.out.println("El aforo de la piscina es de " + aforo + " personas");
+        if (superficieParcela >= superficiePiscina) {
+            aforo = (int) superficiePiscina/2;
+            System.out.println("El aforo de la piscina es de " + aforo + " personas");
+        } else{
+            aforo = (int) superficieParcela/2;
+            System.out.println("El aforo de la piscina es de " + aforo + " personas");
+        }
+    }
 
+    public static void reservar() throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int posicionLibre=0;
+        int franjaParaComprobar=0;
+        String dni="";
+        try{
+
+            do {
+                System.out.println("Que numero de franja deseas reservar? (1-6)");
+                franjaParaComprobar = Integer.parseInt(br.readLine());
+                if(franjaParaComprobar <0 || franjaParaComprobar >6){
+                    System.out.println("El numero está fuera de rango");
+                }
+            }while(franjaParaComprobar <0 || franjaParaComprobar >6);
+            posicionLibre=comprobarDisponibilidad(franjaParaComprobar);
+
+            if (posicionLibre!=0){
+                do{
+                    System.out.println("Introduce un DNI para reservar en la franja horaria "+franjaParaComprobar);
+                    dni=br.readLine();
+                }while(comprobarDNI(dni));
+                reservasPorFranja[franjaParaComprobar][posicionLibre]=dni;
+                System.out.println("Su reserva se ha completado");
+            }else{
+                System.out.println("No hay plazas libres para esa franja horaria "+franjaParaComprobar);
             }
-        }while(continuar);
+        } catch (NumberFormatException e) {
+            System.out.println("Has introducido algun dato mal");
+        }
+    }
 
+
+    public static int comprobarDisponibilidad(int franjaParaComprobar)throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       while(true){
+           try{
+               int posicionLibre=0;
+               for (int i = 0; i < reservasPorFranja.length-1; i++) {
+                    if (reservasPorFranja[franjaParaComprobar][i]==null){
+                       posicionLibre=i;
+                   }
+               }
+               return posicionLibre;
+           } catch (Exception e) {
+               System.out.println("Has introducido una franja fuera de rango o un dato del tipo incorrecto");
+           }
+       }
+    }
+
+    public static boolean comprobarDNI(String dni){
+        //Devuelve falso para salir del bucle cuando el dni sea correcto
+        String patronRegex = "^\\d{8}[A-HJ-NP-TV-Z]$";
+        return !Pattern.matches(patronRegex, dni);
     }
 
 
