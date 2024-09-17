@@ -3,10 +3,8 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 public class Main {
 
@@ -14,7 +12,7 @@ public class Main {
         //ejercicio101();
         //ejercicio102();
         // ejercicio103();
-        ejercicio104();
+        //ejercicio104();
 
     }
 
@@ -92,34 +90,26 @@ public class Main {
 
     public static void ejercicio104() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        boolean continuar = true,datosOK=false;
+        boolean continuar = true;
 
         int longitudPiscina = 0, anchuraPiscina=0, longitudParcela=0, anchuraParcela=0, aforo=0;
         double superficiePiscina = 1;
         double superficieParcela = 1;
         do {
-            do{
-                System.out.println("Introduzca la longitud de la piscina:");
-                longitudPiscina=pedirLongitudPiscina();
-            }while(longitudPiscina == 0);
+            System.out.println("Introduzca la longitud de la piscina:");
+            longitudPiscina= pedirIntPorTeclado("Has introducido mal la longitud piscina");
 
-            do{
-                System.out.println("Introduzca la anchura de la piscina:");
-                anchuraPiscina=pedirAnchuraPiscina();
-            }while(anchuraPiscina == 0);
+            System.out.println("Introduzca la anchura de la piscina:");
+            anchuraPiscina=pedirIntPorTeclado("Has introducido mal la anchura de la piscina");
 
-            do{
-                System.out.println("Introduzca la longitud de la parcela:");
-                anchuraPiscina=pedirLongitudParcela();
-            }while(anchuraPiscina == 0);
+            System.out.println("Introduzca la longitud de la parcela:");
+            longitudParcela=pedirIntPorTeclado("Has introducido mal la longitud de la parcela");
 
-            do{
-                System.out.println("Introduzca la anchura de la parcela:");
-                anchuraPiscina=pedirAnchuraParcela();
-            }while(anchuraPiscina == 0);
+            System.out.println("Introduzca la anchura de la parcela:");
+            anchuraParcela=pedirIntPorTeclado("Has introducido mal la anchura de la parcela");
 
-                superficiePiscina = anchuraPiscina * longitudPiscina;
-                superficieParcela = anchuraParcela * longitudParcela;
+            superficiePiscina = anchuraPiscina * longitudPiscina;
+            superficieParcela = anchuraParcela * longitudParcela;
 
                 if (superficieParcela >= superficiePiscina) {
                     aforo = (int) superficiePiscina/2;
@@ -129,50 +119,56 @@ public class Main {
                     System.out.println("El aforo de la piscina es de " + aforo + " personas");
 
                 }
-        }while((superficiePiscina==1) || (superficieParcela==1));
+        }while(continuar);
 
     }
 
-    public static int pedirLongitudPiscina() throws Exception {
+    public static int pedirIntPorTeclado(String mensaje) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        try{
-        return Integer.parseInt(br.readLine());
-        } catch (NumberFormatException e) {
-        System.out.println("Has introducido mal la longitud");
+        while (true){
+            try{
+                return Integer.parseInt(br.readLine());
+            } catch (NumberFormatException e) {
+                System.out.println(mensaje);
+            }
         }
-        return 0;
     }
 
-    private static int pedirAnchuraPiscina() throws Exception {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    try{
-        return Integer.parseInt(br.readLine());
-    } catch (NumberFormatException e) {
-        System.out.println("Has introducido mal la anchura");
-    }
-    return 0;
 
-}
-
-
-    private static int pedirAnchuraParcela() throws Exception {
+    public static void ejercicio105() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        try{
-            return Integer.parseInt(br.readLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Has introducido mal la anchura");
-        }
-        return 0;
+        boolean continuar = true;
+
+        int longitudPiscina = 0, anchuraPiscina=0, longitudParcela=0, anchuraParcela=0, aforo=0;
+        double superficiePiscina = 1;
+        double superficieParcela = 1;
+        do {
+            System.out.println("Introduzca la longitud de la piscina:");
+            longitudPiscina= pedirIntPorTeclado("Has introducido mal la longitud piscina");
+
+            System.out.println("Introduzca la anchura de la piscina:");
+            anchuraPiscina=pedirIntPorTeclado("Has introducido mal la anchura de la piscina");
+
+            System.out.println("Introduzca la longitud de la parcela:");
+            longitudParcela=pedirIntPorTeclado("Has introducido mal la longitud de la parcela");
+
+            System.out.println("Introduzca la anchura de la parcela:");
+            anchuraParcela=pedirIntPorTeclado("Has introducido mal la anchura de la parcela");
+
+            superficiePiscina = anchuraPiscina * longitudPiscina;
+            superficieParcela = anchuraParcela * longitudParcela;
+
+            if (superficieParcela >= superficiePiscina) {
+                aforo = (int) superficiePiscina/2;
+                System.out.println("El aforo de la piscina es de " + aforo + " personas");
+            } else{
+                aforo = (int) superficieParcela/2;
+                System.out.println("El aforo de la piscina es de " + aforo + " personas");
+
+            }
+        }while(continuar);
+
     }
 
-    private static int pedirLongitudParcela() throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        try{
-            return Integer.parseInt(br.readLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Has introducido mal la longitud");
-        }
-        return 0;
-    }
 
 }
