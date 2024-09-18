@@ -1,0 +1,12 @@
+
+g	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ãš²¥ 2
+­
+java:S1192+"ŠDefine a constant instead of duplicating this literal "Ha ocurrido algun error revisar que los datos introducidos sean correctos" 3 times.(ªÒ—–úÿÿÿÿ8äš²¥ 2
+G	java:S106"+Replace this use of System.out by a logger.(Îñë8ïš²¥ 2
+F	java:S106"+Replace this use of System.out by a logger.(îâêD8ñš²¥ 2
+L	java:S106("+Replace this use of System.out by a logger.(­¼êéşÿÿÿÿ8óš²¥ 2
+L	java:S106+"+Replace this use of System.out by a logger.(ªÒ—–úÿÿÿÿ8óš²¥ 2
+L	java:S1063"+Replace this use of System.out by a logger.(æµÄ„ÿÿÿÿÿ8ôš²¥ 2
+L	java:S1066"+Replace this use of System.out by a logger.(ªÒ—–úÿÿÿÿ8ôš²¥ 2
+L	java:S106="+Replace this use of System.out by a logger.(•½»áşÿÿÿÿ8õš²¥ 2
+L	java:S106@"+Replace this use of System.out by a logger.(ªÒ—–úÿÿÿÿ8õš²¥ 2

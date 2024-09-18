@@ -122,7 +122,7 @@ public class Main {
                     System.out.println("El aforo de la piscina es de " + aforo + " personas");
 
                 }
-        }while(continuar);
+        }while(true);
 
     }
 
