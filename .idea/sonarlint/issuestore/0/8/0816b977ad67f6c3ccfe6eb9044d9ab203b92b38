@@ -1,12 +1,0 @@
-
-ž
-java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(æÞ€Ù8œ‚î¦ 2
-]	java:S125	"<This block of commented-out lines of code should be removed.(£Áöüÿÿÿÿ8ž‚î¦ 2
-T
-java:S1135	"2Complete the task associated to this TODO comment.(£Áöüÿÿÿÿ8ž‚î¦ 2
-‰
-java:S1130"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ô÷´Ü8Ÿ‚î¦ 2
-G	java:S106"+Replace this use of System.out by a logger.(Áß‡Ü8¡‚î¦ 2
-]	java:S1254"<This block of commented-out lines of code should be removed.(”Å¥þÿÿÿÿ8Ç¯ô¦ 2
-T
-java:S11353"2Complete the task associated to this TODO comment.(àÃëÞøÿÿÿÿ8£‚î¦ 2
