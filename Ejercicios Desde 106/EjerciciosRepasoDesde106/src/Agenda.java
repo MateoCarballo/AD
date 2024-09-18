@@ -16,10 +16,9 @@ public class Agenda {
 
     public Contacto crearContacto(){
 
-        String nombre= Main.preguntarNombre();
-        String apellidos= Main.preguntarApellidos();
-        int numero=Main.preguntarNumero();
-
+        String nombre= Main.preguntaDevuelveString("Nombre del usuario?");
+        String apellidos= Main.preguntaDevuelveString("Apellidos del usuario?");
+        int numero=Main.preguntaDevuelveInt();
         return new Contacto(nombre,apellidos,numero);
     }
 
@@ -29,7 +28,19 @@ public class Agenda {
         }
     }
     public void eliminarContacto() {
+       String nombreBuscado = Main.preguntaDevuelveString("Introduce el nombre del contacto a eliminar.");
+       int indiceParaRemover = busquedaContactosArrayList(nombreBuscado);
+       this.listaContactos.remove(indiceParaRemover);
+    }
 
+    public int busquedaContactosArrayList(String nombreBuscado){
+
+        for (int i = 0; i <this.listaContactos.size()-1 ; i++) {
+            if(this.listaContactos.get(i).getNombre().equalsIgnoreCase(nombreBuscado)){
+                return i;
+            }
+        }
+        return -10;
     }
 
     public void ordenarListaContactos(){

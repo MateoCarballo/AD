@@ -26,6 +26,7 @@ public class Main {
                     case 0 -> miAgenda.eliminarContacto();
                     default -> System.out.println("Fuera de rango");
                 }
+                miAgenda.ordenarListaContactos();
             }while(continuar!=0);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -33,11 +34,10 @@ public class Main {
 
     }
 
-
-    public static String preguntarNombre(){
+    public static String preguntaDevuelveString(String printPorPantalla){
         while(true){
             try {
-                System.out.println("Nombre del nuevo contacto?");
+                System.out.println(printPorPantalla);
                 return br.readLine();
             } catch (IOException e) {
                 System.out.println("Ha ocurrido algun error revisar que los datos introducidos sean correctos");
@@ -45,17 +45,7 @@ public class Main {
         }
     }
 
-    public static String preguntarApellidos() {
-        while(true){
-            try {
-                System.out.println("Apellidos del nuevo contacto?");
-                return br.readLine();
-            } catch (IOException e) {
-                System.out.println("Ha ocurrido algun error revisar que los datos introducidos sean correctos");
-            }
-        }
-    }
-    public static int preguntarNumero() {
+    public static int preguntaDevuelveInt() {
         while(true){
             try {
                 System.out.println("Numero del nuevo contacto?");
@@ -65,4 +55,6 @@ public class Main {
             }
         }
     }
+
+
 }
