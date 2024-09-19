@@ -30,11 +30,14 @@ public class Agenda {
     public void eliminarContacto() {
        String nombreBuscado = Main.preguntaDevuelveString("Introduce el nombre del contacto a eliminar.");
        int indiceParaRemover = busquedaContactosArrayList(nombreBuscado);
-       this.listaContactos.remove(indiceParaRemover);
+       if(indiceParaRemover!=-10){
+           this.listaContactos.remove(indiceParaRemover);
+       }else{
+           System.out.println("El contacto no se encuentra en la agenda");
+       }
     }
 
     public int busquedaContactosArrayList(String nombreBuscado){
-
         for (int i = 0; i <this.listaContactos.size()-1 ; i++) {
             if(this.listaContactos.get(i).getNombre().equalsIgnoreCase(nombreBuscado)){
                 return i;
@@ -43,11 +46,32 @@ public class Agenda {
         return -10;
     }
 
+    // TODO  revisar que este todo ok. La busqueda binaria y la ordenación
+
+    public int busquedaBinariaContactosArrayList(String nombreBuscado) {
+        int indiceBusqueda;
+        indiceBusqueda=(this.listaContactos.size()-1)/2;
+
+        do{
+            if(!(this.listaContactos.get(indiceBusqueda).getNombre().equalsIgnoreCase(nombreBuscado))){
+                if((this.listaContactos.get(indiceBusqueda).getNombre().compareToIgnoreCase(nombreBuscado))>0){
+                    indiceBusqueda+=indiceBusqueda/2;
+                }else{
+                    indiceBusqueda-=indiceBusqueda/2;
+                }
+            }else{
+                return indiceBusqueda;
+            }
+        }while(this.listaContactos.get(indiceBusqueda).getNombre().equalsIgnoreCase(nombreBuscado));
+        return indiceBusqueda;
+    }
+
     public void ordenarListaContactos(){
+        /*
         Contacto c ;
         int comparador=1;
 
-        while (comparador>0){
+        while (comparador0){
             for (int i = 0; i < this.listaContactos.size()-2; i++) {
                 comparador= this.listaContactos.get(i).getNombre().compareToIgnoreCase(this.listaContactos.get(i+1).getNombre());
                 if (comparador>0) {
@@ -57,9 +81,10 @@ public class Agenda {
                 }
             }
         }
-
+         */
+        this.listaContactos.sort((contacto1,contacto2)->(contacto1.getNombre().compareToIgnoreCase(contacto2.getNombre())));
 
 // TODO basandome en lo que encontre aqui https://es.stackoverflow.com/questions/36804/m%C3%A9todo-sort-para-ordenar-el-arraylist-en-java
-//this.listaContactos.sort((contacto1,contacto2)->(contacto1.getNombre().compareToIgnoreCase(contacto2.getNombre())));
+
     }
 }

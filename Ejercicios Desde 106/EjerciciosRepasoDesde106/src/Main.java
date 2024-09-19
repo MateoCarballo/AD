@@ -4,13 +4,15 @@ import java.io.InputStreamReader;
 
 public class Main {
     static Agenda miAgenda;
-
+    static int continuar=0;
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
         miAgenda = new Agenda();
+        miAgenda.listaContactos.add(new Contacto("Mateo","Carballo",123456789));
+        miAgenda.listaContactos.add(new Contacto("Juan","Pereira",968539876));
+        miAgenda.listaContactos.add(new Contacto("Alberto","Perez",521489632));
         try {
-            int continuar=0;
             do{
                 System.out.println("""
                 Elige una de las opciones:
@@ -23,7 +25,8 @@ public class Main {
                 switch (continuar) {
                     case 1 -> miAgenda.anadirContacto();
                     case 2 -> miAgenda.mostrarContacto();
-                    case 0 -> miAgenda.eliminarContacto();
+                    case 3 -> miAgenda.eliminarContacto();
+                    case 0-> cerrarPrograma();
                     default -> System.out.println("Fuera de rango");
                 }
                 miAgenda.ordenarListaContactos();
@@ -32,6 +35,10 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private static void cerrarPrograma() {
+        continuar=10;
     }
 
     public static String preguntaDevuelveString(String printPorPantalla){
