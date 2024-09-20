@@ -17,8 +17,14 @@ public class Alumno {
         String [] datosJuntos =datosBrutos.split("#");
         this.nombre=datosJuntos[0];
         this.notasMaterias=new int[datosJuntos.length-1];
-        for (int i = 1; i < datosJuntos.length-1; i++) {
-            notasMaterias[i-1]=Integer.parseInt(datosJuntos[i]);
+        try {
+            for (int i = 1; i < datosJuntos.length-1; i++) {
+                if (datosJuntos[i].equalsIgnoreCase(" ")){
+                    this.notasMaterias[i-1]=Integer.parseInt(datosJuntos[i].trim());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -12,9 +12,11 @@ public class Main {
 
         for (int i = 1; i < parts.length-1; i++) {
             listaAlumnos.add(new Alumno(parts[i]));
+            System.out.println(listaAlumnos.get(i-1));
         }
 
-//        System.out.printf("""
+
+//        System.out.println("""
 //                Que operacion quieres realizar sobre el alumno
 //                1.Calcular nota media del alumno(Solo tiene en cuenta modulo cursados).
 //                2.Calcular nota media del modulo(Solo en cuenta alumnos que cursan el modulo)
@@ -22,6 +24,5 @@ public class Main {
 //                4.Mostrar el modulo con mayor nota media.
 //                5.Mejor mejor alumno de cada modulo.
 //                """);
-        System.out.println();
     }
 }
