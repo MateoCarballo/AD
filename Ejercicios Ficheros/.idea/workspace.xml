@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f876907c-6c13-4fa6-9f7f-dca0949c22f7" name="Changes" comment="" />
+    <list default="true" id="f876907c-6c13-4fa6-9f7f-dca0949c22f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Ejercicio Repaso 107/Ejercicio 107/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio Repaso 107/Ejercicio 107/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicio Repaso 107/Ejercicio 107/Ejercicio 107.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicio Repaso 107/Ejercicio 107/Ejercicio 107.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ejercicios Desde 106/.idea/sonarlint/issuestore/5/4/54b127c290900e245d2f3ec13f545bcf0a13eaae" beforeDir="false" afterPath="$PROJECT_DIR$/../Ejercicios Desde 106/.idea/sonarlint/issuestore/5/4/54b127c290900e245d2f3ec13f545bcf0a13eaae" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Ejercicios Ficheros.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Ejercicios Ficheros.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +17,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2mVt2xoiafsDvWw6pOFNAc4Mh1W" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -20,9 +27,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Mateo/Desktop/Acceso-a-Datos/Ejercicios Ficheros",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

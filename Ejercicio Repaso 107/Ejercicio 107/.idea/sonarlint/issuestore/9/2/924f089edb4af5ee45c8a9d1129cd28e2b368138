@@ -1,0 +1,7 @@
+
+2
+java:S1116"Remove this empty statement.(¾ôÎ
+@	java:S106
+"+Replace this use of System.out by a logger.(šŒÚä
+L	java:S106"+Replace this use of System.out by a logger.(ì»åàûÿÿÿÿ8†¿ÏÃ¢2
+]	java:S125"<This block of commented-out lines of code should be removed.(š˜¡×ÿÿÿÿÿ8†¿ÏÃ¢2
