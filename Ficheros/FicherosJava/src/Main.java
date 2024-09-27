@@ -1,4 +1,6 @@
-import FicherosPrueba.ManejoFicheros;
+import FicherosPrueba.FiltrarNombre;
+import FicherosPrueba.FiltrarTamano;
+import FicherosPrueba.ManejoFicheros105;
 
 import java.io.*;
 
@@ -167,11 +169,30 @@ public class Main {
          */
         String rutaFichero = "src\\FicherosPrueba\\Ficheros105\\Fichero105.txt";
         String rutaDirectorio = "src\\FicherosPrueba\\Ficheros105";
-        ManejoFicheros.crearFichero(rutaFichero);
-        ManejoFicheros.borrarFichero(rutaFichero);
-        ManejoFicheros.crearDirectorio(rutaDirectorio);
-        ManejoFicheros.borrarDirectorio(rutaDirectorio);
-        ManejoFicheros.listarDirectorio("src\\FicherosPrueba");
+        ManejoFicheros105.crearFichero(rutaFichero);
+        ManejoFicheros105.borrarFichero(rutaFichero);
+        ManejoFicheros105.crearDirectorio(rutaDirectorio);
+        ManejoFicheros105.borrarDirectorio(rutaDirectorio);
+        ManejoFicheros105.listarDirectorio("src\\FicherosPrueba");
+    }
+
+    static void ejercicio106(){
+    /*
+    Ejercicio 106
+    Utilizando la interfaz FilenameFilter realiza los siguientes apartados:
+    Crear una clase FiltrarNombre que implemente el siguiente método:
+    filtrar(String ruta, String extension): lista solo
+    aquellos archivos de la ruta que tienen una determinada extension
+    Crear una clase FiltrarTamano que implemente el siguiente método:
+    filtrar(String ruta, float minTamano): lista solo
+    aquellos archivos de la ruta que tienen un tamaño mayor que el especificado.
+    Realizar un programa main que permita comprobar el
+    funcionamiento de los métodos anteriores
+    */
+        String rutaFichero = "src\\FicherosPrueba\\Ficheros105\\Fichero105.txt";
+        FiltrarNombre fn = new FiltrarNombre(".txt");
+        FiltrarTamano ft = new FiltrarTamano(100f);
+        File f = new File(rutaFichero);
     }
 
 }
