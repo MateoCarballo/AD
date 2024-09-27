@@ -189,17 +189,10 @@ public class Main {
     Realizar un programa main que permita comprobar el
     funcionamiento de los métodos anteriores
     */
-        String rutaFichero = "src\\FicherosPrueba\\.";
+        String rutaFichero = "src\\FicherosPrueba";
         File f = new File (rutaFichero);
         FiltrarNombre106 fn = new FiltrarNombre106(".txt");
-
-        File[] listadoDirectorio = f.listFiles();
-
-        for (int i = 0; i < listadoDirectorio.length; i++) {
-            if (fn.accept(listadoDirectorio[i],listadoDirectorio[i].getName())) {
-                System.out.println(listadoDirectorio[i].getName());
-            }
-        }
+        fn.filtrar(f);
     }
 
 }
