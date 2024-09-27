@@ -15,3 +15,5 @@ a
 1src/FicherosPrueba/Ficheros106/FicheroPrueba2.txt,2\f\2f48e1d475002b9d8af058e05b8c259560effd0b
 `
 0src/FicherosPrueba/Ficheros106/FicheroPrueba3.md,d\a\daae420c01179c1c831318f2e6e9875653578185
+X
+(src/FicherosPrueba/FiltrarNombre106.java,f\0\f0f4db5278d36d82c86a7d5cccbd0119f582debb

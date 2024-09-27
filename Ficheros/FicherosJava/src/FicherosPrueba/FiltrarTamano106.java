@@ -2,10 +2,10 @@ package FicherosPrueba;
 
 import java.io.File;
 
-public class FiltrarTamano {
+public class FiltrarTamano106 {
     float minTamano;
 
-    public FiltrarTamano(float nimTamano) {
+    public FiltrarTamano106(float nimTamano) {
         this.minTamano = nimTamano;
     }
 

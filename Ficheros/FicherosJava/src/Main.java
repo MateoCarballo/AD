@@ -1,5 +1,4 @@
-import FicherosPrueba.FiltrarNombre;
-import FicherosPrueba.FiltrarTamano;
+import FicherosPrueba.FiltrarNombre106;
 import FicherosPrueba.ManejoFicheros105;
 
 import java.io.*;
@@ -12,7 +11,8 @@ public class Main {
 //        ejercicio101();
 //        ejercicio102();
 //        ejercicio104();
-        ejercicio105();
+//        ejercicio105();
+        ejercicio106();
 //        probarRutas();
 
     }
@@ -189,10 +189,17 @@ public class Main {
     Realizar un programa main que permita comprobar el
     funcionamiento de los métodos anteriores
     */
-        String rutaFichero = "src\\FicherosPrueba\\Ficheros105\\Fichero105.txt";
-        FiltrarNombre fn = new FiltrarNombre(".txt");
-        FiltrarTamano ft = new FiltrarTamano(100f);
-        File f = new File(rutaFichero);
+        String rutaFichero = "src\\FicherosPrueba\\.";
+        File f = new File (rutaFichero);
+        FiltrarNombre106 fn = new FiltrarNombre106(".txt");
+
+        File[] listadoDirectorio = f.listFiles();
+
+        for (int i = 0; i < listadoDirectorio.length; i++) {
+            if (fn.accept(listadoDirectorio[i],listadoDirectorio[i].getName())) {
+                System.out.println(listadoDirectorio[i].getName());
+            }
+        }
     }
 
 }
