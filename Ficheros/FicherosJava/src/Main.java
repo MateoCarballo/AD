@@ -160,9 +160,18 @@ public class Main {
         void listarDirectorio(String ruta): lista el contenido del directorio
         Clase main que permita comprobar el funcionamiento de los métodos anteriores.
         Nota: usa la clase File para realizar el ejercicio
-         */
 
-        ManejoFicheros.crearFichero("src\\FicherosPrueba\\Ficheros105\\Fichero105.txt");
+
+
+
+         */
+        String rutaFichero = "src\\FicherosPrueba\\Ficheros105\\Fichero105.txt";
+        String rutaDirectorio = "src\\FicherosPrueba\\Ficheros105";
+        ManejoFicheros.crearFichero(rutaFichero);
+        ManejoFicheros.borrarFichero(rutaFichero);
+        ManejoFicheros.crearDirectorio(rutaDirectorio);
+        ManejoFicheros.borrarDirectorio(rutaDirectorio);
+        ManejoFicheros.listarDirectorio("src\\FicherosPrueba");
     }
 
 }

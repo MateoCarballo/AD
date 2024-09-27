@@ -1,20 +1,24 @@
 
 |
-java:S1192)"_Define a constant instead of duplicating this literal "Ha ocurrido un error del tipo " 4 times.(Ä©â”8ù¨¼”£2
-v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(íß¢»8ú¨¼”£2
-L	java:S106"+Replace this use of System.out by a logger.(«šÚ…üÿÿÿÿ8ž©¼”£2
-G	java:S106"+Replace this use of System.out by a logger.(å‡Í˜8ž©¼”£2
-L	java:S106"+Replace this use of System.out by a logger.(ã¹‹Ÿþÿÿÿÿ8ž©¼”£2
-L	java:S106"+Replace this use of System.out by a logger.(ó‚ÃÝüÿÿÿÿ8Ÿ©¼”£2
+java:S1192*"_Define a constant instead of duplicating this literal "Ha ocurrido un error del tipo " 5 times.(Ä©â”8åšë•£2
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(íß¢»8çšë•£2
+L	java:S106"+Replace this use of System.out by a logger.(«šÚ…üÿÿÿÿ8—›ë•£2
+G	java:S106"+Replace this use of System.out by a logger.(å‡Í˜8—›ë•£2
+L	java:S106"+Replace this use of System.out by a logger.(ã¹‹Ÿþÿÿÿÿ8—›ë•£2
+L	java:S106"+Replace this use of System.out by a logger.(ó‚ÃÝüÿÿÿÿ8—›ë•£2
 k
-java:S4042%"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ŸÙåÌ8Ÿ©¼”£2
-L	java:S106&"+Replace this use of System.out by a logger.(áÜ·ýüÿÿÿÿ8Ÿ©¼”£2
-G	java:S106)"+Replace this use of System.out by a logger.(Ä©â”8 ©¼”£2
-G	java:S1061"+Replace this use of System.out by a logger.(‚Ëé›8 ©¼”£2
-G	java:S1064"+Replace this use of System.out by a logger.(Ä©â”8¡©¼”£2
-k
-java:S4042;"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ŸÙåÌ8¡©¼”£2
-G	java:S106<"+Replace this use of System.out by a logger.(‚Ëé›8¡©¼”£2
-G	java:S106?"+Replace this use of System.out by a logger.(Ä©â”8¢©¼”£2
-L	java:S106I"+Replace this use of System.out by a logger.(Å­ËÝúÿÿÿÿ8£©¼”£2
-G	java:S106M"+Replace this use of System.out by a logger.(Ä©â”8’Ý¿”£2
+java:S4042&"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ŸÙåÌ8˜›ë•£2
+L	java:S106'"+Replace this use of System.out by a logger.(áÜ·ýüÿÿÿÿ8˜›ë•£2
+G	java:S106*"+Replace this use of System.out by a logger.(Ä©â”8˜›ë•£2
+G	java:S1062"+Replace this use of System.out by a logger.(‚Ëé›8™›ë•£2
+G	java:S1065"+Replace this use of System.out by a logger.(Ä©â”8™›ë•£2
+j
+java:S4042<"NUse "java.nio.file.Files#delete" here for better messages on error conditions.(ÁûùE8š›ë•£2
+G	java:S106="+Replace this use of System.out by a logger.(œÍÀ8š›ë•£2
+G	java:S106@"+Replace this use of System.out by a logger.(Ä©â”8››ë•£2
+G	java:S106J"+Replace this use of System.out by a logger.(º›ÂŒ8œ›ë•£2
+G	java:S106Q"+Replace this use of System.out by a logger.(Ä©â”8œ›ë•£2
+G	java:S106^"+Replace this use of System.out by a logger.(îÑ×†8ä í•£2
+G	java:S106e"+Replace this use of System.out by a logger.(Ä©â”8Íî•£2
+M
+java:S1128"0Remove this unused import 'java.nio.file.Files'.(‚ƒü8žÍî•£2

@@ -2,6 +2,7 @@ package FicherosPrueba;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class ManejoFicheros {
     private ManejoFicheros() {
@@ -44,8 +45,8 @@ public class ManejoFicheros {
 
     public static void crearDirectorio(String path){
         try {
-            File f = new File(path);
-            if((f.exists())&&(f.mkdirs())){
+            File newDirectory = new File(path);
+            if((!newDirectory.exists())&&(newDirectory.mkdirs())){
                 System.out.println("Direcotorio creado con exito");
             }
         } catch (Exception e) {
@@ -56,8 +57,8 @@ public class ManejoFicheros {
     public static void borrarDirectorio(String path){
         try {
             File f = new File(path);
-            if((f.exists())&&(f.delete())){
-                System.out.println("Direcotorio creado con exito");
+            if((f.exists())&&(f.isDirectory())&&(f.delete())){
+                System.out.println("Direcotorio borrado con exito");
             }
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error del tipo "+ e.getMessage());
@@ -67,14 +68,38 @@ public class ManejoFicheros {
     public static void listarDirectorio(String path){
         try {
             File f = new File(path);
-            String[] contenidoDirectorio = f.list();
+            File[] contenidoDirectorio = f.listFiles();
             if ((contenidoDirectorio!=null)&&(contenidoDirectorio.length>0)){
-                for (String s :contenidoDirectorio){
-                    System.out.println(s);
+                for (int i = 0; i <contenidoDirectorio.length ; i++) {
+                    System.out.println(f.getName());
+                    if (contenidoDirectorio[i].isDirectory()){
+                        listarDirectorio(contenidoDirectorio[i].getPath(),i);
+                    }
                 }
             }
         } catch (Exception e) {
             System.out.println("Ha ocurrido un error del tipo "+ e.getMessage());
         }
     }
+    public static void listarDirectorio(String path, int indexacion){
+        try {
+            StringBuilder tabulacion = new StringBuilder("-*");
+            for (int i = 0; i < indexacion; i++) {
+                tabulacion.append("-*");
+            }
+            File f = new File(path);
+            File[] contenidoDirectorio = f.listFiles();
+            if ((contenidoDirectorio!=null)&&(contenidoDirectorio.length>0)){
+                for (int i = 0; i <contenidoDirectorio.length ; i++) {
+                    System.out.println(tabulacion + f.getName());
+                    if (contenidoDirectorio[i].isDirectory()){
+                        listarDirectorio(contenidoDirectorio[i].getPath(),i);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Ha ocurrido un error del tipo "+ e.getMessage());
+        }
+    }
+
 }
