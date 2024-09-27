@@ -1,3 +1,5 @@
+import FicherosPrueba.ManejoFicheros;
+
 import java.io.*;
 
 public class Main {
@@ -7,8 +9,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
 //        ejercicio101();
 //        ejercicio102();
-            ejercicio104();
+//        ejercicio104();
+        ejercicio105();
 //        probarRutas();
+
     }
 
     static void ejercicio101() throws IOException {
@@ -143,6 +147,22 @@ public class Main {
 //            System.out.println(listaFicheros[i].getName());
 //        }
         System.out.println();
+    }
+
+    static void ejercicio105() throws IOException {
+        /*
+        Ejercicio 105
+        Desarrolla un programa Java que defina una clase ManejoFicheros que implemente los siguientes métodos:
+        void crearFichero(String fichero): crea el fichero indicado
+        void borrarFichero(String fichero): borra el fichero indicado.
+        void crearDirectorio(String ruta): crea el directorio indicado.
+        void borrarDirectorio(String ruta): borra el directorio indicado.
+        void listarDirectorio(String ruta): lista el contenido del directorio
+        Clase main que permita comprobar el funcionamiento de los métodos anteriores.
+        Nota: usa la clase File para realizar el ejercicio
+         */
+
+        ManejoFicheros.crearFichero("src\\FicherosPrueba\\Ficheros105\\Fichero105.txt");
     }
 
 }
