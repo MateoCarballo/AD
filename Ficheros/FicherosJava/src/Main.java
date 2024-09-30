@@ -1,7 +1,9 @@
+import FicherosPrueba.Departamento108;
 import FicherosPrueba.FiltrarNombre106;
 import FicherosPrueba.ManejoFicheros105;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -12,7 +14,9 @@ public class Main {
 //        ejercicio102();
 //        ejercicio104();
 //        ejercicio105();
-        ejercicio106();
+//        ejercicio106();
+//        ejercicio107();
+        ejercicio108();
 //        probarRutas();
 
     }
@@ -194,5 +198,93 @@ public class Main {
         FiltrarNombre106 fn = new FiltrarNombre106(".txt");
         fn.filtrar(f);
     }
+
+    static void ejercicio107(){
+        /*
+        Ejercicio 107
+    Desarrolla un programa Java que:
+    Tenga el mét0do clasificarDirectorio(String ruta): lista el contenido del directorio indicado, indicando si los
+    elementos de la lista son ficheros o subdirectorios. En el caso de los ficheros, deben aparecer
+    clasificados según su extensión.
+    Tenga un mét0do main que permita comprobar el funcionamiento del método anterior.
+         */
+        clasificarDirectorio107("src\\FicherosPrueba\\Ficheros107");
+    }
+
+    static void clasificarDirectorio107(String pathString){
+        File path = new File (pathString);
+        File[] files = path.listFiles();
+        String[] fileAsString;
+        System.out.println("Los directorios son:");
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory()) {
+                System.out.println(files[i].getName());
+            }else if(files[i].isDirectory()){
+                fileAsString= files[i].getName().split(".");
+            }
+
+            //TODO pendiente implementar un metodo para filtrar por las extensiones
+        }
+
+    }
+
+    static void ejercicio108() throws IOException {
+        /*
+        Ejercicio 108
+        Desarrolla un programa Java que permita:
+        Escribir en un fichero binario Empleados.dat de manera secuencial, la siguiente información:
+        Departamento "Contabilidad","Informática","Dirección","Análisis","Finanzas","Hardware"
+        Nª Empleados 3,10,2,5,4,8
+        Mostrar la información del fichero anterior de forma secuencial.
+         */
+
+        String [] departamento = {"Contabilidad","Informática","Dirección","Análisis","Finanzas","Hardware"};
+        int [] numeroEmpleados = {3,10,2,5,4,8};
+        String exercisePath = "src\\FicherosPrueba\\Ficheros108";
+        String nombreFichero = "Empleados.dat";
+
+        ArrayList<Departamento108> listaDepartamentos = new ArrayList<Departamento108>();
+
+        Departamento108 dep0 = new Departamento108(departamento[0],numeroEmpleados[0]);
+        Departamento108 dep1 = new Departamento108(departamento[1],numeroEmpleados[1]);
+        Departamento108 dep2 = new Departamento108(departamento[2],numeroEmpleados[2]);
+        Departamento108 dep3 = new Departamento108(departamento[3],numeroEmpleados[3]);
+        Departamento108 dep4 = new Departamento108(departamento[4],numeroEmpleados[4]);
+        Departamento108 dep5 = new Departamento108(departamento[5],numeroEmpleados[5]);
+
+
+        File fileToCreate = new File("src\\FicherosPrueba\\Ficheros108\\"+nombreFichero);
+
+        try {
+            if(!fileToCreate.exists()){
+                fileToCreate.createNewFile();
+            }
+
+            ObjectOutputStream fileToWrite = null;
+
+            ObjectInputStream fileToRead = null;
+
+            fileToWrite = new ObjectOutputStream ( new FileOutputStream (exercisePath+"\\"+nombreFichero) );
+
+            for (Departamento108 d: listaDepartamentos){
+                fileToWrite.writeObject(d);
+            }
+
+            fileToWrite.close();
+            
+            fileToRead = new ObjectInputStream( new FileInputStream (exercisePath+"\\"+nombreFichero) );
+
+            for (Departamento108 d: listaDepartamentos){
+                String s = fileToRead.readObject(d);
+                System.out.println(s);
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Imposible crear el fichero");;
+        }
+
+    }
+
 
 }
