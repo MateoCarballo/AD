@@ -31,7 +31,7 @@ public class ManejoFicheroTexto {
                         ftexto.leer();
                     }
 
-                    case 3 -> System.out.println("Gracisa por usar este PROGRAMON");
+                    case 3 -> System.out.println("Gracias por usar este PROGRAMON");
                     default -> System.out.println("Introduce un valor valido (1-3)");
                 }
             }catch (Exception e){
