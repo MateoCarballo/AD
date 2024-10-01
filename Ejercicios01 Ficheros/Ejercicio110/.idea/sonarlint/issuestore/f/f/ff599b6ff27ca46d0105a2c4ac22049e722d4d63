@@ -1,0 +1,14 @@
+
+e
+java:S2095,"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(“Çü8Øğ¸¾¤2
+e
+java:S2095"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ôıÆš8Øğ¸¾¤2
+e
+java:S2095"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(Ş½†¢8Øğ¸¾¤2
+“
+java:S1130"qRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from constructor's body.(¢¯¾âûÿÿÿÿ8Ûğ¸¾¤2
+G	java:S106"+Replace this use of System.out by a logger.(‰æìö8ßğ¸¾¤2
+G	java:S106 "+Replace this use of System.out by a logger.(“ÇŠ…8áğ¸¾¤2
+F	java:S106""+Replace this use of System.out by a logger.(°•Ş8áğ¸¾¤2
+L	java:S106%"+Replace this use of System.out by a logger.(„ÄÍşÿÿÿÿ8ãğ¸¾¤2
+G	java:S1060"+Replace this use of System.out by a logger.(‰æìö8äğ¸¾¤2
