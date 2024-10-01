@@ -25,7 +25,7 @@ public class Main {
     static void escribirSecuencialBytes(String path) throws IOException {
         File f = new File(path);
         FileWriter fw = null;
-        char [] vectorContenido = "Este documento ha sido escrito mediante la escritura secuencial de bytes".toCharArray();
+        char [] vectorContenido = "Este fragmento se ha escrito caracter por caracter".toCharArray();
         try {
             crearFichero(path);
             fw = new FileWriter(f);
@@ -37,6 +37,9 @@ public class Main {
                 fw.write(vectorContenido[i]);
             }
             fw.append('.');
+            fw.append(' ');
+            fw.write("Este fragmento se ha escrito como una cadena en un solo paso. ");
+
         } catch (IOException e) {
             System.out.println("Error en la escritura");
         }finally {

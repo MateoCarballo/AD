@@ -1,1 +1,1 @@
-Este documento ha sido escrito mediante la escritura secuencial de bytes.
+Este fragmento se ha escrito caracter por caracter. Este fragmento se ha escrito como una cadena en un solo paso.
