@@ -1,0 +1,1 @@
+Este documento ha sido escrito mediante la escritura secuencial de bytes.
