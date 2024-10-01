@@ -25,7 +25,34 @@ public class Main {
             if (!f.exists()&&(f.createNewFile())){
                 System.out.println("Fichero creado con exito");
             }
-            RandomAccessFile raf = new RandomAccessFile(f,"rw");
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error del tipo -> "+ Arrays.toString(e.getStackTrace()));;
+        }
+            escribirDatos(f,apellido,edad,nota);
+            leerDatos(f);
+
+
+    }
+
+    private static void leerDatos(File f) {
+        RandomAccessFile raf;
+        try {
+            raf = new RandomAccessFile(f,"r");
+            raf.seek(0);
+            System.out.println(" APELLIDO   "+"-"+"  EDAD  "+"-"+"   NOTA   ");
+            for (int i = 0; i < 7 ; i++) {
+                System.out.println(raf.readUTF()+"------"+raf.readInt()+"------"+raf.readDouble());
+            }
+            raf.close();
+        } catch (IOException e) {
+            System.out.println("Error en la escritura");
+        }
+    }
+
+    private static void escribirDatos(File f, String[] apellido, int[] edad, double[] nota ) {
+        RandomAccessFile raf;
+        try {
+            raf = new RandomAccessFile(f,"rw");
             raf.seek(raf.length());
 
             for (int i = 0; i < apellido.length; i++) {
@@ -33,17 +60,11 @@ public class Main {
                 raf.writeInt(edad[i]);
                 raf.writeDouble(nota[i]);
             }
-
-            raf.seek(0);
-            System.out.println(" APELLIDO   "+"-"+"  EDAD  "+"-"+"   NOTA   ");
-            for (int i = 0; i <apellido.length ; i++) {
-                System.out.println(raf.readUTF()+"------"+raf.readInt()+"------"+raf.readDouble());
-            }
-
             raf.close();
-
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error del tipo -> "+ Arrays.toString(e.getStackTrace()));;
+            System.out.println("Error en la escritura aleatoria");
         }
     }
+
+
 }
