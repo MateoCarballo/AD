@@ -1,20 +1,20 @@
 
-G	java:S106"+Replace this use of System.out by a logger.(Éçê…8úÚ¹¤2
-G	java:S106"+Replace this use of System.out by a logger.(å‡Í˜8şÚ¹¤2
-L	java:S106)"+Replace this use of System.out by a logger.(ûË€Œûÿÿÿÿ8€Ú¹¤2
+G	java:S106"+Replace this use of System.out by a logger.(Éçê…8„ı¹¤2
+G	java:S106"+Replace this use of System.out by a logger.(å‡Í˜8 „ı¹¤2
+L	java:S106)"+Replace this use of System.out by a logger.(ûË€Œûÿÿÿÿ8¢„ı¹¤2
 L
-java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8€Ú¹¤2
-G	java:S1065"+Replace this use of System.out by a logger.(†ÜŒ§8Ú¹¤2
-G	java:S106<"+Replace this use of System.out by a logger.(¤”ƒ8‚Ú¹¤2
-L	java:S106>"+Replace this use of System.out by a logger.(ŞÒ—üÿÿÿÿ8‚Ú¹¤2
-F	java:S106B"+Replace this use of System.out by a logger.(¯Ş¹L8‚Ú¹¤2
+java:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8£„ı¹¤2
+G	java:S1065"+Replace this use of System.out by a logger.(†ÜŒ§8¤„ı¹¤2
+G	java:S106<"+Replace this use of System.out by a logger.(¤”ƒ8¤„ı¹¤2
+L	java:S106>"+Replace this use of System.out by a logger.(ŞÒ—üÿÿÿÿ8¥„ı¹¤2
+F	java:S106B"+Replace this use of System.out by a logger.(¯Ş¹L8¥„ı¹¤2
 L
-java:S20933"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8ƒÚ¹¤2
-G	java:S106O"+Replace this use of System.out by a logger.(†ÜŒ§8„Ú¹¤2
-L	java:S106V"+Replace this use of System.out by a logger.(Û™Ìûÿÿÿÿ8„Ú¹¤2
-L	java:S106["+Replace this use of System.out by a logger.(£Àäüÿÿÿÿ8†Ú¹¤2
-F	java:S106^"+Replace this use of System.out by a logger.(¯Ş¹L8‡Ú¹¤2
+java:S20933"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8¥„ı¹¤2
+G	java:S106O"+Replace this use of System.out by a logger.(†ÜŒ§8¨„ı¹¤2
+L	java:S106V"+Replace this use of System.out by a logger.(Û™Ìûÿÿÿÿ8¨„ı¹¤2
+L	java:S106["+Replace this use of System.out by a logger.(£Àäüÿÿÿÿ8«„ı¹¤2
+F	java:S106^"+Replace this use of System.out by a logger.(¯Ş¹L8«„ı¹¤2
 L
-java:S2093M"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8‡Ú¹¤2
+java:S2093M"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ8«„ı¹¤2
 O
-java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8‡Ú¹¤2
+java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8¬„ı¹¤2
