@@ -1,0 +1,96 @@
+
+|
+java:S2293ö"YReplace the type specification in this constructor call with the diamond operator ("<>").(Š’—®şÿÿÿÿ8Ö¿¼¤2
+¨
+java:S1862Ş"„This branch can not be reached because the condition duplicates a previous condition in the same sequence of "if/else if" statements(¨ĞôŒÿÿÿÿÿ8Û¿¼¤2
+m
+java:S2095“"OUse try-with-resources or close this "ObjectInputStream" in a "finally" clause.(»Û‡ˆ8°”×¼¤2
+o
+java:S2095†"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(¸Ë˜îÿÿÿÿÿ8›¿¼¤2
+s
+java:S2095‹"PUse try-with-resources or close this "ObjectOutputStream" in a "finally" clause.(äÔéÙúÿÿÿÿ8²”×¼¤2
+e
+java:S2095h"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ôıÆš8›¿¼¤2
+X	java:S125"<This block of commented-out lines of code should be removed.(âÊñ©8¨¿¼¤2
+]	java:S125"<This block of commented-out lines of code should be removed.(ÒÙ–Ğşÿÿÿÿ8¨¿¼¤2
+L	java:S106("+Replace this use of System.out by a logger.(•ù€Šşÿÿÿÿ8«¿¼¤2
+L	java:S106)"+Replace this use of System.out by a logger.(éŒ¦ºùÿÿÿÿ8­¿¼¤2
+G	java:S106,"+Replace this use of System.out by a logger.(Ô–¿®8±¿¼¤2
+L	java:S106/"+Replace this use of System.out by a logger.(÷šè’ûÿÿÿÿ8³¿¼¤2
+L	java:S1063"+Replace this use of System.out by a logger.(ÁÚşùÿÿÿÿ8³¿¼¤2
+G	java:S1065"+Replace this use of System.out by a logger.(ªĞà8µ¿¼¤2
+G	java:S1067"+Replace this use of System.out by a logger.(¸î¤8µ¿¼¤2
+G	java:S1068"+Replace this use of System.out by a logger.( ©ôï8¶¿¼¤2
+L	java:S1069"+Replace this use of System.out by a logger.(ƒµû«ÿÿÿÿÿ8¸¿¼¤2
+G	java:S106:"+Replace this use of System.out by a logger.(ÄœÜÕ8¹¿¼¤2
+G	java:S106;"+Replace this use of System.out by a logger.(¨—â8º¿¼¤2
+L	java:S106<"+Replace this use of System.out by a logger.(¨Ò›úÿÿÿÿ8»¿¼¤2
+L	java:S106>"+Replace this use of System.out by a logger.(œ›…Ôıÿÿÿÿ8½¿¼¤2
+G	java:S106H"+Replace this use of System.out by a logger.(»8¿¿¼¤2
+L	java:S106I"+Replace this use of System.out by a logger.(ï—ğÎşÿÿÿÿ8À¿¼¤2
+G	java:S106P"+Replace this use of System.out by a logger.(°°ò¶8Ã¿¼¤2
+C
+java:S1075R"&Remove this hard-coded path-delimiter.(‰ıÚå8Æ¿¼¤2
+‰
+java:S1130W"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(¨¿¢¦8È¿¼¤2
+]	java:S125j"<This block of commented-out lines of code should be removed.(ë­­õüÿÿÿÿ8Í¿¼¤2
+L	java:S106s"+Replace this use of System.out by a logger.(ÇÃ§åşÿÿÿÿ8Î¿¼¤2
+F	java:S106x"+Replace this use of System.out by a logger.(æ´ŒN8Ï¿¼¤2
+8
+java:S1116x"Remove this empty statement.(æ´ŒN8Ğ¿¼¤2
+_	java:S899„"BDo something with the "boolean" value returned by "createNewFile".(Ø·œÔ8Ó¿¼¤2
+\
+java:S4719†"9Replace charset name argument with StandardCharsets.UTF_8(¸Ë˜îÿÿÿÿÿ8Õ¿¼¤2
+G	java:S106"+Replace this use of System.out by a logger.(Ü­Ğ;8Ø¿¼¤2
+_
+java:S1854•"ARemove this useless assignment to local variable "listaFicheros".(Ä“ôˆ8Ù¿¼¤2
+
+java:S1130’"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(÷Æö±şÿÿÿÿ8Ù¿¼¤2
+P
+java:S1481•"2Remove this unused "listaFicheros" local variable.(Ä“ôˆ8Û¿¼¤2
+H	java:S106—"+Replace this use of System.out by a logger.(ûÓ¾ñ8Û¿¼¤2
+M	java:S106›"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8İ¿¼¤2
+X	java:S125˜"<This block of commented-out lines of code should be removed.(Ğª'8İ¿¼¤2
+^
+java:S1854ß"@Remove this useless assignment to local variable "fileAsString".(š¶ì8ä¿¼¤2
+O
+java:S1481Ù"1Remove this unused "fileAsString" local variable.(‡ˆİ8å¿¼¤2
+H	java:S106Ú"+Replace this use of System.out by a logger.(ºş†­8æ¿¼¤2
+H	java:S106İ"+Replace this use of System.out by a logger.(‡ØÒé8ç¿¼¤2
+P
+java:S1135â"2Complete the task associated to this TODO comment.(£ŸÑ8ë¿¼¤2
+V
+java:S1854ı"8Remove this useless assignment to local variable "dep5".(Ş±¨Ì8ì¿¼¤2
+[
+java:S1854ü"8Remove this useless assignment to local variable "dep4".(Í˜¬¦ûÿÿÿÿ8ì¿¼¤2
+V
+java:S1854û"8Remove this useless assignment to local variable "dep3".(é¯û8í¿¼¤2
+[
+java:S1854ú"8Remove this useless assignment to local variable "dep2".(Ñ‘ÒÖúÿÿÿÿ8í¿¼¤2
+V
+java:S1854ù"8Remove this useless assignment to local variable "dep1".(Ñ€­ü8í¿¼¤2
+[
+java:S1854ø"8Remove this useless assignment to local variable "dep0".(ÊĞ’¢úÿÿÿÿ8í¿¼¤2
+\
+java:S1854“">Remove this useless assignment to local variable "fileToRead".(»Û‡ˆ8ÌùÁ¼¤2
+L
+java:S1481ø")Remove this unused "dep0" local variable.(ÊĞ’¢úÿÿÿÿ8ñ¿¼¤2
+G
+java:S1481ù")Remove this unused "dep1" local variable.(Ñ€­ü8ò¿¼¤2
+L
+java:S1481ú")Remove this unused "dep2" local variable.(Ñ‘ÒÖúÿÿÿÿ8ò¿¼¤2
+G
+java:S1481û")Remove this unused "dep3" local variable.(é¯û8ó¿¼¤2
+L
+java:S1481ü")Remove this unused "dep4" local variable.(Í˜¬¦ûÿÿÿÿ8ó¿¼¤2
+G
+java:S1481ı")Remove this unused "dep5" local variable.(Ş±¨Ì8ó¿¼¤2
+_	java:S899„"BDo something with the "boolean" value returned by "createNewFile".(îÚĞá8õ¿¼¤2
+R
+java:S1481‰"/Remove this unused "fileToRead" local variable.(ÃŒÄ´üÿÿÿÿ8ÓùÁ¼¤2
+D
+java:S1481•"&Remove this unused "d" local variable.(Ü£ß8ØùÁ¼¤2
+^	java:S125–"<This block of commented-out lines of code should be removed.(…ÏÖ ÿÿÿÿÿ8ÚùÁ¼¤2
+M	java:S106œ"+Replace this use of System.out by a logger.(îÍôÖûÿÿÿÿ8ş¿¼¤2
+?
+java:S1116œ"Remove this empty statement.(îÍôÖûÿÿÿÿ8ş¿¼¤2
