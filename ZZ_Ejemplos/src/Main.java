@@ -6,18 +6,20 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+        final String path = "src\\Ficheros\\Secuencial Bytes.txt";
         try {
-            escribirSecuencialBytes("src\\Ficheros\\Secuencial Bytes.txt");
-            leerSecuencialBytes("src\\Ficheros\\Secuencial Bytes.txt");
+            escribirSecuencialBytes(path);
+            leerSecuencialBytes(path);
+            leerBloqueBytes(path);
         } catch (IOException e) {
-            System.out.println("Se ha producido un error durante la escritura");;
+            System.out.println("Se ha producido un error durante la escritura");
         }
     }
 
     static void crearFichero(String path) throws IOException {
         File f = new File(path);
-        if (!f.exists()){
-            f.createNewFile();
+        if (!f.exists()&&(f.createNewFile())){
+            System.out.println("Fichero creado con exito");
         }
     }
     static void escribirSecuencialBytes(String path) throws IOException {
@@ -27,6 +29,10 @@ public class Main {
         try {
             crearFichero(path);
             fw = new FileWriter(f);
+            /*
+            Cada vez que usamos el metood fr.read() saltamos una posicion de lectura cuidado al castear!!
+            cuando casteamos usando el metodo fr.read() saltamos 2 posiciones
+             */
             for (int i = 0; i < vectorContenido.length; i++) {
                 fw.write(vectorContenido[i]);
             }
@@ -49,22 +55,30 @@ public class Main {
             }
             fr = new FileReader(f);
 
-            //******************** ESCRIBE EL CONTENIDO DE FORMA SECUENCIAL ********************
-
-            /*
-            Cada vez que usamos el metood fr.read() saltamos una posicion de lectura cuidado al castear!!
-            cuando casteamos usando el metodo fr.read() saltamos 2 posiciones
-             */
-            System.out.println("Contenido del archivo leido secuencialmente");
             int caracterLeido;
             while ((caracterLeido = fr.read()) != -1) {
                 System.out.print((char) caracterLeido);
             }
             System.out.println(" ");
 
-            // Es necesario cerrar el FileReader y volver a crearlo si no volveremos a leer desde el final del archivo
-            fr.close();
 
+        }catch (IOException e){
+            System.out.println("Error en la lectura");
+        }finally {
+            if(fr!=null){
+                fr.close();
+            }
+        }
+    }
+
+    static void leerBloqueBytes(String path) throws IOException {
+        File f = new File(path);
+        FileReader fr = null;
+        try {
+            if (!f.exists()){
+                System.out.println("No se ha podido encontrar el fichero");
+                return;
+            }
             fr = new FileReader(f);
 
             //******************** ESCRIBE EL CONTENIDO VOLCANDO T0D0 EN UN ARRAY ********************
