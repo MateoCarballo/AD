@@ -13,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -46,38 +47,86 @@ Crea el fichero peliculas.xml que tenga el siguiente contenido:
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             DOMImplementation implementation = docBuilder.getDOMImplementation();
-            Document doc = docBuilder.getDOMImplementation().createDocument(null,"root",null);
+            Document doc = docBuilder.getDOMImplementation().createDocument(null,"peliculas",null);
 
-            Element titulo = doc.createElement("titulo");
-            titulo.setTextContent("Harry Potter");
+            //Creacion del primer elemento RAIZ
 
-            Element ano = doc.createElement("ano");
-            ano.setTextContent("2001");
+            Element peliculas = doc.getDocumentElement();
 
-            Element precio = doc.createElement("precio");
-            precio.setTextContent("8.25");
+            Element titulo1 = doc.createElement("titulo");
+            titulo1.setTextContent("El señor de los anillos");
 
-            Element pelicula = doc.createElement("pelicula");
-            Attr atributoPelicula = doc.createAttribute("id");
-            atributoPelicula.setValue("3");
-            pelicula.setAttributeNode(atributoPelicula);
-            pelicula.appendChild(titulo);
-            pelicula.appendChild(ano);
-            pelicula.appendChild(precio);
+            Element ano1 = doc.createElement("ano");
+            ano1.setTextContent("1999");
+
+            Element precio1 = doc.createElement("precio");
+            precio1.setTextContent("19.99");
+
+            Element pelicula1 = doc.createElement("pelicula");
+            Attr atributoPelicula1 = doc.createAttribute("id");
+            atributoPelicula1.setValue("1");
+            pelicula1.setAttributeNode(atributoPelicula1);
+
+            pelicula1.appendChild(titulo1);
+            pelicula1.appendChild(ano1);
+            pelicula1.appendChild(precio1);
+
+
+            Element titulo2 = doc.createElement("titulo");
+            titulo2.setTextContent("Star Wars");
+
+            Element ano2 = doc.createElement("ano");
+            ano2.setTextContent("2005");
+
+            Element precio2 = doc.createElement("precio");
+            precio2.setTextContent("12.50");
+
+            Element pelicula2 = doc.createElement("pelicula");
+            Attr atributoPelicula2 = doc.createAttribute("id");
+            atributoPelicula2.setValue("2");
+            pelicula2.setAttributeNode(atributoPelicula2);
+
+            pelicula2.appendChild(titulo2);
+            pelicula2.appendChild(ano2);
+            pelicula2.appendChild(precio2);
+
+            Element titulo3 = doc.createElement("titulo");
+            titulo3.setTextContent("Harry Potter");
+
+            Element ano3 = doc.createElement("ano");
+            ano3.setTextContent("2001");
+
+            Element precio3 = doc.createElement("precio");
+            precio3.setTextContent("8.25");
+
+            Element pelicula3 = doc.createElement("pelicula");
+            Attr atributoPelicula3 = doc.createAttribute("id");
+            atributoPelicula3.setValue("3");
+            pelicula3.setAttributeNode(atributoPelicula3);
+
+            pelicula3.appendChild(titulo3);
+            pelicula3.appendChild(ano3);
+            pelicula3.appendChild(precio3);
+
+
+            peliculas.appendChild(pelicula1);
+            peliculas.appendChild(pelicula2);
+            peliculas.appendChild(pelicula3);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("/src/peliculas.xml"));
+            File dirContenedora = new File("src/ArchivosXML");
+            if (!dirContenedora.exists()){
+                dirContenedora.mkdirs();
+            }
+            File f = new File("src/ArchivosXML/peliculas.xml");
+            StreamResult result = new StreamResult(f);
             transformer.transform(source,result);
 
 
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (TransformerConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (TransformerException e) {
-            throw new RuntimeException(e);
+        } catch (ParserConfigurationException | TransformerException e) {
+            System.out.println("Ha ocurrido un error");
         }
 
     }
