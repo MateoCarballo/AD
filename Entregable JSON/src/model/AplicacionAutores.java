@@ -104,10 +104,26 @@ public class AplicacionAutores
         }
         return autoresArray;
     }
-//
-//	private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
-//		// TODO
-//	}
+
+	/**
+	 * Este método recoore el JSONArray buscando en cada objeto si el valor de 'autor:'coincide con el valor que pasamos como parametro al metodo.
+	 * En caso de encontrar un autor con el nombre que buscamos, guardamos el indice en el que se encuentra este objeto dentro de 'indiceAutor' y lo devolvemos
+	 *
+	 * @param nombreAutor Este parametro es el nombre del autor que buscamos dentro del JSONArray.
+	 * @param autores Es la lista de autores sobre la que vamos buscar un autor dado.
+	 * @return devulve el indice en el que se encuentra el autor que buscamos y si no esta contenido en el JSONArray nos devuelve '-1'.
+	 */
+	private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
+		int indiceAutor=-1;
+		JSONObject autor=null;
+		for (int i = 0; i < autores.length(); i++) {
+			autor = (JSONObject) autores.get(i);
+			if (autor.getString("autor").equalsIgnoreCase(nombreAutor)){
+				indiceAutor = i;
+			}
+		}
+		return indiceAutor;
+	}
 
 //	private JSONObject obtenerAutoresJson(String nombreAutor){
 //		// TODO
