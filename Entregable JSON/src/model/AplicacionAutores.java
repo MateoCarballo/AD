@@ -125,9 +125,29 @@ public class AplicacionAutores
 		return indiceAutor;
 	}
 
-//	private JSONObject obtenerAutoresJson(String nombreAutor){
-//		// TODO
-//	}
+	private JSONObject obtenerAutoresJson(String nombreAutor){
+		JSONArray autor =  new JSONArray();
+		JSONObject nombreAutorObjeto = new JSONObject();
+		nombreAutorObjeto.put("nombre",nombreAutor);
+		autor.put(nombreAutorObjeto);
+		try {
+			String librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
+			JSONArray librosArray = new JSONArray(librosString);
+			for (Object libroObject:librosArray){
+				JSONObject libro = (JSONObject) libroObject;
+				if (libro.getString("autor").equalsIgnoreCase(nombreAutor)){
+					JSONObject libroDelAutor = new JSONObject();
+					libroDelAutor.put("titulo",libro.getString("titulo"));
+					libroDelAutor.put("paginas",libro.getString("paginas"));
+					libroDelAutor.put("editorial",libro.getString("editorial"));
+					autor.put(libroDelAutor);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return autor;
+	}
 
 	public void ejecutar(){
 		// TODO
