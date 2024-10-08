@@ -1,45 +1,45 @@
 
 h
-java:S1192>"FDefine a constant instead of duplicating this literal "autor" 3 times.(ë¯±íşÿÿÿÿ8ê†åŞ¦2
+java:S1192C"FDefine a constant instead of duplicating this literal "autor" 3 times.(ë¯±íşÿÿÿÿ8ê†åŞ¦2
 `
-java:S2259]"CA "NullPointerException" could be thrown; "autor" is nullable here.(§à­¤8ù†åŞ¦2
+java:S2259b"CA "NullPointerException" could be thrown; "autor" is nullable here.(§à­¤8ù†åŞ¦2
 x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8ú†åŞ¦2
 C
 java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8ú†åŞ¦2
 
 java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8û†åŞ¦2
 K
-java:S1172E".Remove this unused method parameter "autores".(•ÑÕû8ƒ‡åŞ¦2
+java:S1172J".Remove this unused method parameter "autores".(•ÑÕû8ƒ‡åŞ¦2
 O
-java:S1135F"2Complete the task associated to this TODO comment.(…ïœ†8ƒ‡åŞ¦2
-X	java:S125g"<This block of commented-out lines of code should be removed.(¶™Ô¿8‡‡åŞ¦2
-X	java:S125k"<This block of commented-out lines of code should be removed.(ö›À•8‡‡åŞ¦2
+java:S1135K"2Complete the task associated to this TODO comment.(…ïœ†8ƒ‡åŞ¦2
+X	java:S125l"<This block of commented-out lines of code should be removed.(¶™Ô¿8‡‡åŞ¦2
+X	java:S125p"<This block of commented-out lines of code should be removed.(ö›À•8‡‡åŞ¦2
 T
-java:S1135h"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8‡‡åŞ¦2
+java:S1135m"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8‡‡åŞ¦2
 T
-java:S1135l"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8‡‡åŞ¦2
+java:S1135q"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8‡‡åŞ¦2
 O
-java:S1135p"2Complete the task associated to this TODO comment.(…ïœ†8ˆ‡åŞ¦2
+java:S1135u"2Complete the task associated to this TODO comment.(…ïœ†8ˆ‡åŞ¦2
 O
-java:S1135w"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
-O
-java:S1135{"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
-O
-java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
+java:S1135|"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
 P
-java:S1135ƒ"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
+java:S1135€"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
 P
-java:S1135‡"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
+java:S1135„"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
 P
-java:S1135‹"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+java:S1135ˆ"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
 P
-java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+java:S1135Œ"2Complete the task associated to this TODO comment.(…ïœ†8‰‡åŞ¦2
 P
-java:S1135“"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
 P
-java:S1135—"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+java:S1135”"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
 P
-java:S1135›"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+java:S1135˜"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+P
+java:S1135œ"2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
+P
+java:S1135 "2Complete the task associated to this TODO comment.(…ïœ†8Š‡åŞ¦2
 Q
 java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8Š‡åŞ¦2
 V
@@ -57,6 +57,6 @@ java:S1068 "8Remove this unused "ventanaCambiarTitulo" private field.( ÔØ·øÿÿÿÿ
 S
 java:S1068!"6Remove this unused "ventanaBorrarAutor" private field.(ŠêÎ8‹‡åŞ¦2
 T
-java:S1144E"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8‹‡åŞ¦2
+java:S1144J"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8‹‡åŞ¦2
 Y
-java:S1144S"7Remove this unused private "obtenerAutoresJson" method.(ùÒ¯şÿÿÿÿ8‹‡åŞ¦2
+java:S1144X"7Remove this unused private "obtenerAutoresJson" method.(ùÒ¯şÿÿÿÿ8‹‡åŞ¦2

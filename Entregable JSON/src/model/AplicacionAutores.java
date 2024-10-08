@@ -32,6 +32,11 @@ public class AplicacionAutores
 	private VentanaCambiarTitulo ventanaCambiarTitulo;
 	private VentanaBorrarAutor ventanaBorrarAutor;
 
+	/**
+	 * Este metodo comprueba si el fichero existe y si no existe lo crea y lo llena con el contenido en formato .json
+	 * usando el metood .toString() de la clase JSONArray.
+	 * Creando nuevos objetos libros mediante el metodo crearLibro() que se encuentra justo debajo en la Clase AplicacionAutores.
+	 */
 	private void crearFicheroJson()	{
 		File rutaArchivoJson = new File(RUTA_FICHERO);
 		if (!rutaArchivoJson.exists()){
