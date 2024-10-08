@@ -1,67 +1,59 @@
 
-x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8÷¢–İ¦2
+x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8İô˜Ş¦2
 C
-java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8÷¢–İ¦2
+java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8Şô˜Ş¦2
 
-java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8ø¢–İ¦2
-O
-java:S1135#"2Complete the task associated to this TODO comment.(…ïœ†8ú¢–İ¦2
+java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8Şô˜Ş¦2
 K
-java:S1172&".Remove this unused method parameter "autores".(•ÑÕû8ú¢–İ¦2
+java:S1172E".Remove this unused method parameter "autores".(•ÑÕû8çô˜Ş¦2
 O
-java:S1135'"2Complete the task associated to this TODO comment.(…ïœ†8ú¢–İ¦2
-L	java:S1064"+Replace this use of System.out by a logger.(”Ú¯ıÿÿÿÿ8éñİ¦2
-X	java:S1259"<This block of commented-out lines of code should be removed.(¶™Ô¿8£–İ¦2
+java:S1135F"2Complete the task associated to this TODO comment.(…ïœ†8çô˜Ş¦2
+L	java:S106S"+Replace this use of System.out by a logger.(”Ú¯ıÿÿÿÿ8éô˜Ş¦2
+X	java:S125X"<This block of commented-out lines of code should be removed.(¶™Ô¿8éô˜Ş¦2
+X	java:S125\"<This block of commented-out lines of code should be removed.(ö›À•8éô˜Ş¦2
 T
-java:S1135:"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8£–İ¦2
+java:S1135Y"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8êô˜Ş¦2
 T
-java:S1135>"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8£–İ¦2
+java:S1135]"2Complete the task associated to this TODO comment.(ú†˜”üÿÿÿÿ8êô˜Ş¦2
 O
-java:S1135B"2Complete the task associated to this TODO comment.(…ïœ†8£–İ¦2
+java:S1135a"2Complete the task associated to this TODO comment.(…ïœ†8êô˜Ş¦2
 O
-java:S1135I"2Complete the task associated to this TODO comment.(…ïœ†8‚£–İ¦2
+java:S1135h"2Complete the task associated to this TODO comment.(…ïœ†8êô˜Ş¦2
 O
-java:S1135M"2Complete the task associated to this TODO comment.(…ïœ†8‚£–İ¦2
+java:S1135l"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
 O
-java:S1135Q"2Complete the task associated to this TODO comment.(…ïœ†8‚£–İ¦2
+java:S1135p"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
 O
-java:S1135U"2Complete the task associated to this TODO comment.(…ïœ†8ƒ£–İ¦2
+java:S1135t"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
 O
-java:S1135Y"2Complete the task associated to this TODO comment.(…ïœ†8ƒ£–İ¦2
+java:S1135x"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
 O
-java:S1135]"2Complete the task associated to this TODO comment.(…ïœ†8ƒ£–İ¦2
-O
-java:S1135a"2Complete the task associated to this TODO comment.(…ïœ†8ƒ£–İ¦2
-O
-java:S1135e"2Complete the task associated to this TODO comment.(…ïœ†8ƒ£–İ¦2
-O
-java:S1135i"2Complete the task associated to this TODO comment.(…ïœ†8„£–İ¦2
-O
-java:S1135m"2Complete the task associated to this TODO comment.(…ïœ†8„£–İ¦2
-F
-java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8¶¸œİ¦2
+java:S1135|"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
+P
+java:S1135€"2Complete the task associated to this TODO comment.(…ïœ†8ëô˜Ş¦2
+P
+java:S1135„"2Complete the task associated to this TODO comment.(…ïœ†8ìô˜Ş¦2
+P
+java:S1135ˆ"2Complete the task associated to this TODO comment.(…ïœ†8ìô˜Ş¦2
+P
+java:S1135Œ"2Complete the task associated to this TODO comment.(…ïœ†8ìô˜Ş¦2
 Q
-java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8¶¸œİ¦2
-Q
-java:S1128"/Remove this unused import 'java.io.FileWriter'.(Ã‘ÅÃıÿÿÿÿ8¶¸œİ¦2
-Q
-java:S1128
-"4Remove this unused import 'javax.swing.JOptionPane'.(÷‰Îé8¶¸œİ¦2
-R
-java:S1128"0Remove this unused import 'org.json.JSONObject'.(œÖ´üşÿÿÿÿ8¼ÕŸİ¦2
+java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8Á‘¤Ş¦2
+V
+java:S1128"4Remove this unused import 'java.nio.file.FileStore'.(ï˜Íâûÿÿÿÿ8Â‘¤Ş¦2
 M
-java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28¶¸œİ¦2
+java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28Â‘¤Ş¦2
 W
-java:S1068"5Remove this unused "ventanaCrearAutor" private field.(‰ŸŞËûÿÿÿÿ8„£–İ¦2
+java:S1068"5Remove this unused "ventanaCrearAutor" private field.(‰ŸŞËûÿÿÿÿ8ìô˜Ş¦2
 Q
-java:S1068"4Remove this unused "ventanaMenuAutor" private field.(Ú”€ç8„£–İ¦2
+java:S1068"4Remove this unused "ventanaMenuAutor" private field.(Ú”€ç8ìô˜Ş¦2
 U
-java:S1068"3Remove this unused "ventanaVerDatos" private field.(º¬å±ûÿÿÿÿ8„£–İ¦2
+java:S1068"3Remove this unused "ventanaVerDatos" private field.(º¬å±ûÿÿÿÿ8ìô˜Ş¦2
 Z
-java:S1068"8Remove this unused "ventanaCambiarTitulo" private field.( ÔØ·øÿÿÿÿ8„£–İ¦2
+java:S1068 "8Remove this unused "ventanaCambiarTitulo" private field.( ÔØ·øÿÿÿÿ8ìô˜Ş¦2
 S
-java:S1068 "6Remove this unused "ventanaBorrarAutor" private field.(ŠêÎ8„£–İ¦2
-W
-java:S1144""5Remove this unused private "crearFicheroJson" method.(ú×Ä£úÿÿÿÿ8„£–İ¦2
+java:S1068!"6Remove this unused "ventanaBorrarAutor" private field.(ŠêÎ8íô˜Ş¦2
 T
-java:S1144&"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8„£–İ¦2
+java:S1144E"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8íô˜Ş¦2
+Y
+java:S1144L"7Remove this unused private "obtenerAutoresJson" method.(ùÒ¯şÿÿÿÿ8íô˜Ş¦2

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -32,7 +33,37 @@ public class AplicacionAutores
 	private VentanaBorrarAutor ventanaBorrarAutor;
 
 	private void crearFicheroJson()	{
-		// TODO
+		File rutaArchivoJson = new File(RUTA_FICHERO);
+		if (!rutaArchivoJson.exists()){
+			JSONArray libreria = new JSONArray();
+			libreria.put(crearLibro("María Fernández","Título 1","239","Anaya"));
+			libreria.put(crearLibro("Elvira Nieto","Título 2","430","McMillan"));
+			try (FileWriter fw = new FileWriter(RUTA_FICHERO)){
+				fw.write(libreria.toString(4));
+				fw.flush();
+			}catch (IOException e){
+				JOptionPane.showMessageDialog(null, "Error al crear el archivo JSON: " + e.getMessage(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	/**
+	 *
+	 * @param autor contiene el nombre del autor.
+	 * @param titulo contiene el titulo del libro.
+	 * @param paginas contiene el numero de paginas.
+	 * @param editorial contiene la editorial.
+	 * @return Devuelve un objeto json con el libro completo para poder anadirlo al array de objetos JSON
+	 */
+
+	private JSONObject crearLibro(String autor,String titulo, String paginas, String editorial){
+		JSONObject libro = new JSONObject();
+		libro.put("autor", autor);
+		libro.put("titulo", titulo);
+		libro.put("paginas", paginas);
+		libro.put("editorial", editorial);
+		return libro;
 	}
 
 	private void guardarFicheroJson(JSONArray autores) {
@@ -57,7 +88,7 @@ public class AplicacionAutores
 //	private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
 //		// TODO
 //	}
-//
+
 //	private JSONObject obtenerAutoresJson(String nombreAutor){
 //		// TODO
 //	}
@@ -66,7 +97,7 @@ public class AplicacionAutores
 		// TODO
 		this.ventanaInicioSesion = new VentanaInicioSesion(this);
 		ventanaInicioSesion.setVisible(true);
-		obtenerAutoresJson();
+		crearFicheroJson();
 	}
 
 	public void iniciarValidacion(String nombreAutor, String tituloLibroAutor){

@@ -1,14 +1,14 @@
 [
-  {
-    "autor": "María Fernández",
-    "titulo": "Título 1",
-    "paginas": "239",
-    "editorial": "Anaya"
-  },
-  {
-    "autor": "Elvira Nieto",
-    "titulo": "Título 2",
-    "paginas": "430",
-    "editorial": "McMillan"
-  }
+    {
+        "editorial": "Anaya",
+        "paginas": "239",
+        "titulo": "Título 1",
+        "autor": "María Fernández"
+    },
+    {
+        "editorial": "McMillan",
+        "paginas": "430",
+        "titulo": "Título 2",
+        "autor": "Elvira Nieto"
+    }
 ]
