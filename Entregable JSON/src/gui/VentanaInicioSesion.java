@@ -4,12 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
@@ -69,11 +64,23 @@ public class VentanaInicioSesion extends JFrame implements ActionListener
 		btnValidar.setBounds(176, 215, 118, 23);
 		btnValidar.addActionListener(this);
 		contentPane.add(btnValidar);
+		btnValidar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				//TODO implementar codigo necesario
+			}
+		});
 
 		btnCrearNuevoAutorLibro = new JButton("Crear nuevo autor");
 		btnCrearNuevoAutorLibro.setBounds(10, 303, 149, 23);
 		btnCrearNuevoAutorLibro.addActionListener(this);
 		contentPane.add(btnCrearNuevoAutorLibro);
+		btnCrearNuevoAutorLibro.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				//TODO implementar codigo necesario
+			}
+		});
 	}
 
 	@Override
