@@ -20,7 +20,7 @@ import gui.VentanaVerDatos;
 public class AplicacionAutores
 {
 
-	private final String RUTA_FICHERO = "";
+	private final String RUTA_FICHERO = "resources/libreria.json";
 	private VentanaInicioSesion ventanaInicioSesion;
 	private VentanaCrearAutor ventanaCrearAutor;
 	private VentanaMenuAutor ventanaMenuAutor;

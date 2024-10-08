@@ -78,6 +78,6 @@ public class VentanaInicioSesion extends JFrame implements ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e){
-		// TODO
+		System.out.println("Has pulsado el boton");
 	}
 }

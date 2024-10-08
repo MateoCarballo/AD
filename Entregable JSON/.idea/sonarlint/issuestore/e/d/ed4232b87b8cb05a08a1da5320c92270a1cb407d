@@ -1,6 +1,8 @@
 
 ]
 java:S1192."GDefine a constant instead of duplicating this literal "Tahoma" 5 times.(¡®¹«
+G
+java:S1948"%Make "app" transient or serializable.(•È˜Žøÿÿÿÿ8¢Ã“Ü¦2
 b
 java:S3252#"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ð
 H

@@ -1,7 +1,7 @@
 
-s	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úİ•ò8­†âÛ¦2
->
-java:S1170"!Make this final field static too.(úİ•ò8­†âÛ¦2
+x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8­†âÛ¦2
+C
+java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8­†âÛ¦2
 
 java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8¯†âÛ¦2
 O
@@ -52,8 +52,8 @@ java:S1128
 "0Remove this unused import 'org.json.JSONObject'.(œÖ´üşÿÿÿÿ8şüãÛ¦2
 M
 java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28şüãÛ¦2
-M
-java:S1068"0Remove this unused "RUTA_FICHERO" private field.(úİ•ò8¸†âÛ¦2
+R
+java:S1068"0Remove this unused "RUTA_FICHERO" private field.(èé£öüÿÿÿÿ8¸†âÛ¦2
 W
 java:S1068"5Remove this unused "ventanaCrearAutor" private field.(‰ŸŞËûÿÿÿÿ8¹†âÛ¦2
 Q

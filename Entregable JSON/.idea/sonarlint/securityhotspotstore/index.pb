@@ -11,3 +11,9 @@ P
  src/model/AplicacionAutores.java,9\f\9f0ed300145588651c1a709e3e991566da8074c3
 P
  src/gui/VentanaInicioSesion.java,d\6\d6c9fbd07df7f947312c461dd69584034bc13fb7
+L
+src/gui/VentanaVerDatos.java,9\e\9e7fe659569db7a053f61326682f6cf42d8d4d25
+M
+src/gui/VentanaMenuAutor.java,b\5\b597f7a067088babe39a81d66315ef55c503e74c
+G
+resources/libreria.json,1\3\13fa8dba1efe06f7d4e2a55f7d7481b53afed49e
