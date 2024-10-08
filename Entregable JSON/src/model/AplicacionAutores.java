@@ -71,19 +71,33 @@ public class AplicacionAutores
 	}
 
 	/**
-	 * @return  devuelve un JSONArray con el contenido del archivo que podemos manejar en el programa.
+	 * En este metodo mi objetivo es:
+	 * 	1. Coger tod0 el contenido del .json y guardarlo en un JSONArray.
+	 * 	2. Recorrer ese array y crear un nuevo JSONObject con esta forma "autor": "María Fernández".
+	 * 	3. Anhadir este nuevo objeto json a la nueva JSONArray de autores.
+	 * 	4. Devolver el JSONArray de autores.
+	 *
+	 *
+	 * @return devuelve un objeto JSONArray con todos los autores dentro del fichero especificado en la ruta del programa.
 	 */
 	private JSONArray obtenerAutoresJson() {
         String librosString;
 		JSONArray librosArray=null;
+		JSONArray autoresArray=null;
         try {
             librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
 			librosArray= new JSONArray(librosString);
+			for (Object obj : librosArray){
+				JSONObject jsonObj = (JSONObject) obj;
+				JSONObject autor=null;
+				autor.put("autor",jsonObj.getString("autor")) ;
+				autoresArray.put(autor);
+			}
         } catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Imposible leer los autores del archivo JSON: " + e.getMessage(),
 					"Error", JOptionPane.ERROR_MESSAGE);
         }
-        return librosArray;
+        return autoresArray;
     }
 //
 //	private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
