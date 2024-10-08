@@ -124,6 +124,28 @@ public class AplicacionAutores
 		}
 		return indiceAutor;
 	}
+	private JSONObject obtenerAutoresJson(String nombreAutor){
+		JSONObject autor =  new JSONObject();
+		autor.put("nombre",nombreAutor);
+
+		try {
+			String librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
+			JSONArray librosArray = new JSONArray(librosString);
+			for (Object libroObject:librosArray){
+				JSONObject libro = (JSONObject) libroObject;
+				if (libro.getString("autor").equalsIgnoreCase(nombreAutor)){
+					autor.put("titulo",libro.getString("titulo"));
+					autor.put("paginas",libro.getString("paginas"));
+					autor.put("editorial",libro.getString("editorial"));
+				}
+			}
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error durante la creacion del objeto Json autor ( Que contiene todos sus libros.): " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return autor;
+	}
+	/* DEVUELVE UN JSONARRAY
 
 	private JSONObject obtenerAutoresJson(String nombreAutor){
 		JSONArray autor =  new JSONArray();
@@ -148,6 +170,7 @@ public class AplicacionAutores
 		}
 		return autor;
 	}
+	 */
 
 	public void ejecutar(){
 		// TODO
