@@ -78,9 +78,10 @@ public class AplicacionAutores
 		JSONArray librosArray=null;
         try {
             librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
-			 librosArray= new JSONArray(librosString);
+			librosArray= new JSONArray(librosString);
         } catch (IOException e) {
-            System.out.println("Imposible leer JSON");
+			JOptionPane.showMessageDialog(null, "Imposible leer los autores del archivo JSON: " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
         }
         return librosArray;
     }
