@@ -1,19 +1,17 @@
 
 i
-java:S1192&"GDefine a constant instead of duplicating this literal "Tahoma" 3 times.(ùá¥Óşÿÿÿÿ8ÔÍÛá¦2
-r	java:S1175"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®¦‰îûÿÿÿÿ8ÕÍÛá¦2
+java:S1192&"GDefine a constant instead of duplicating this literal "Tahoma" 3 times.(ùá¥Óşÿÿÿÿ8Ö­Øâ¦2
+r	java:S1175"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®¦‰îûÿÿÿÿ8×­Øâ¦2
 E
-java:S1604C"(Make this anonymous inner class a lambda(íé±Å8ÕÍÛá¦2
+java:S1604C"(Make this anonymous inner class a lambda(íé±Å8×­Øâ¦2
 J
-java:S1604N"(Make this anonymous inner class a lambda(ÎøĞüÿÿÿÿ8ÕÍÛá¦2
+java:S1604N"(Make this anonymous inner class a lambda(ÎøĞüÿÿÿÿ8×­Øâ¦2
 G
-java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8áÍÛá¦2
+java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8ã­Øâ¦2
 k
-java:S3252"IUse static access with "javax.swing.WindowConstants" for "EXIT_ON_CLOSE".(Õû»öşÿÿÿÿ8äÍÛá¦2
+java:S3252"IUse static access with "javax.swing.WindowConstants" for "EXIT_ON_CLOSE".(Õû»öşÿÿÿÿ8å­Øâ¦2
 O
-java:S1135F"2Complete the task associated to this TODO comment.(¤‘­Ş8éÍÛá¦2
-O
-java:S1135Q"2Complete the task associated to this TODO comment.(¤‘­Ş8êÍÛá¦2
-L	java:S106X"+Replace this use of System.out by a logger.(Ü€©Ãûÿÿÿÿ8ëÍÛá¦2
+java:S1135Q"2Complete the task associated to this TODO comment.(¤‘­Ş8í­Øâ¦2
+L	java:S106X"+Replace this use of System.out by a logger.(Ü€©Ãûÿÿÿÿ8î­Øâ¦2
 I
-java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8ëÍÛá¦2
+java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8î­Øâ¦2

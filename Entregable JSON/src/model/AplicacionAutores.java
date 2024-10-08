@@ -179,8 +179,54 @@ public class AplicacionAutores
 		crearFicheroJson();
 	}
 
+	/**
+	 * A este metodo le pasamos como String el nombre del autor y la obra. El metodo se encarga de comprobar si
+	 * existen dentro de nuestro archivo '.json'. Recorriendo el JSONArray que creamos desde el archivo.
+	 * En cada ciclo comprueba si el autor y titulo de ese objeto coinciden con los pasados por parámetro. Además si
+	 * coinciden dentro del mismo ciclo tambien ponemos a true el booleano 'autorYTítulo'. Este nos indica que existe el
+	 * libro que buscamos con el autor que buscamos. Si solo uno de ellos se encuentra, es decir, si el autor se encuentra pero
+	 * no coincide con el titulo, lanzaremos un aviso que la combinacion no es correcta. Si no se encuentra el autor, solo con esa condicion
+	 * entonces saltará otro mensaje avisando de que el autor no existe
+	 *
+	 * @param nombreAutor
+	 * @param tituloLibroAutor
+	 */
 	public void iniciarValidacion(String nombreAutor, String tituloLibroAutor){
-		// TODO
+		JSONArray libreria =  null;
+		boolean tituloRegistro = false;
+		boolean autorRegistro = false;
+
+		boolean autorYTitulo =false;
+
+		try {
+			libreria = new JSONArray(new String(Files.readAllBytes(Paths.get(RUTA_FICHERO))));
+			for (Object o :libreria){
+				boolean autorCiclo = false;
+				boolean tituloCiclo = false;
+				JSONObject libro = (JSONObject) o;
+				if (libro.getString("autor").equalsIgnoreCase(nombreAutor)){
+					autorCiclo = true;
+					autorRegistro = true;
+				}
+				if (libro.getString("titulo").equalsIgnoreCase(tituloLibroAutor)){
+					tituloCiclo = true;
+					tituloRegistro = true;
+				}
+				if (autorCiclo && tituloCiclo){
+					autorYTitulo = true;
+				}
+			}
+			// Si tengo autor o titulo a true significa que existen pero si no tengo autorYTitulo es que no han existido juntas
+			if (((autorRegistro || tituloRegistro)&&(!autorYTitulo))){
+				JOptionPane.showMessageDialog(null, "La combinacion de autor y titulo no existen");
+			} else if (!autorRegistro) {
+				JOptionPane.showMessageDialog(null, "El autor no existe");
+			}
+
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error al validar el autor y título: " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	public void cerrarSesion(){
