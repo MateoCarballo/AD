@@ -221,6 +221,10 @@ public class AplicacionAutores
 				JOptionPane.showMessageDialog(null, "La combinacion de autor y titulo no existen");
 			} else if (!autorRegistro) {
 				JOptionPane.showMessageDialog(null, "El autor no existe");
+			} else {
+				this.ventanaMenuAutor = new VentanaMenuAutor(this,nombreAutor);
+				this.ventanaInicioSesion.setVisible(false);
+				this.ventanaInicioSesion.setVisible(true);
 			}
 
 		} catch (IOException e) {
@@ -246,7 +250,8 @@ public class AplicacionAutores
 	}
 
 	public void mostrarVentanaCrearAutor(){
-		// TODO
+		this.ventanaCrearAutor = new VentanaCrearAutor(this);
+		this.ventanaCrearAutor.setVisible(true);
 	}
 
 	public void mostrarVentanaVerDatos(String nombreAutor){

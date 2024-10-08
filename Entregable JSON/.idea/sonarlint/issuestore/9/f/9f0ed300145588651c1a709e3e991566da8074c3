@@ -1,67 +1,65 @@
 
 l
-java:S1192F"JDefine a constant instead of duplicating this literal "editorial" 3 times.(ö¿òÁøÿÿÿÿ8ı¼ªâ¦2
+java:S1192F"JDefine a constant instead of duplicating this literal "editorial" 3 times.(ö¿òÁøÿÿÿÿ8í¥øâ¦2
 i
-java:S1192D"GDefine a constant instead of duplicating this literal "titulo" 4 times.(––ÏŸşÿÿÿÿ8ı¼ªâ¦2
+java:S1192D"GDefine a constant instead of duplicating this literal "titulo" 4 times.(––ÏŸşÿÿÿÿ8í¥øâ¦2
 c
-java:S11923"FDefine a constant instead of duplicating this literal "Error" 4 times.(¯İî8ı¼ªâ¦2
+java:S11923"FDefine a constant instead of duplicating this literal "Error" 4 times.(¯İî8í¥øâ¦2
 h
-java:S1192C"FDefine a constant instead of duplicating this literal "autor" 6 times.(ë¯±íşÿÿÿÿ8ı¼ªâ¦2
+java:S1192C"FDefine a constant instead of duplicating this literal "autor" 6 times.(ë¯±íşÿÿÿÿ8í¥øâ¦2
 j
-java:S1192E"HDefine a constant instead of duplicating this literal "paginas" 3 times.(üıúÿÿÿÿ8ı¼ªâ¦2
+java:S1192E"HDefine a constant instead of duplicating this literal "paginas" 3 times.(üıúÿÿÿÿ8í¥øâ¦2
 `
-java:S2259b"CA "NullPointerException" could be thrown; "autor" is nullable here.(§à­¤8’½ªâ¦2
-x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8’½ªâ¦2
+java:S2259b"CA "NullPointerException" could be thrown; "autor" is nullable here.(§à­¤8…¦øâ¦2
+x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8…¦øâ¦2
 C
-java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8“½ªâ¦2
-
-java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8“½ªâ¦2
+java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8†¦øâ¦2
+‚
+java:S1450"`Remove the "ventanaCrearAutor" field and declare it as a local variable in the relevant methods.(‰ŸŞËûÿÿÿÿ8„Ïã¦2
+|
+java:S1450"_Remove the "ventanaMenuAutor" field and declare it as a local variable in the relevant methods.(Ú”€ç8¢Óüâ¦2
 K
-java:S1172J".Remove this unused method parameter "autores".(•ÑÕû8š½ªâ¦2
+java:S1172J".Remove this unused method parameter "autores".(•ÑÕû8¦øâ¦2
 O
-java:S1135K"2Complete the task associated to this TODO comment.(…ïœ†8š½ªâ¦2
-^	java:S125–"<This block of commented-out lines of code should be removed.(¤‰Åöûÿÿÿÿ8Ÿ½ªâ¦2
+java:S1135K"2Complete the task associated to this TODO comment.(…ïœ†8¦øâ¦2
+^	java:S125–"<This block of commented-out lines of code should be removed.(¤‰Åöûÿÿÿÿ8’¦øâ¦2
 P
-java:S1135°"2Complete the task associated to this TODO comment.(…ïœ†8Ÿ½ªâ¦2
+java:S1135°"2Complete the task associated to this TODO comment.(…ïœ†8’¦øâ¦2
 P
-java:S1135é"2Complete the task associated to this TODO comment.(…ïœ†8¡½ªâ¦2
+java:S1135í"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135í"2Complete the task associated to this TODO comment.(…ïœ†8¡½ªâ¦2
+java:S1135ñ"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135ñ"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135õ"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135õ"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135ù"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135ù"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135‚"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135ı"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135†"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135Š"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135…"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
-P
-java:S1135‰"2Complete the task associated to this TODO comment.(…ïœ†8¢½ªâ¦2
+java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8–¦øâ¦2
 Q
-java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8¥•Àâ¦2
+java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8„²ã¦2
 V
-java:S1128"4Remove this unused import 'java.nio.file.FileStore'.(ï˜Íâûÿÿÿÿ8¥•Àâ¦2
+java:S1128"4Remove this unused import 'java.nio.file.FileStore'.(ï˜Íâûÿÿÿÿ8„²ã¦2
 M
-java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28¥•Àâ¦2
-W
-java:S1068"5Remove this unused "ventanaCrearAutor" private field.(‰ŸŞËûÿÿÿÿ8£½ªâ¦2
+java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28„²ã¦2
 Q
-java:S1068"4Remove this unused "ventanaMenuAutor" private field.(Ú”€ç8£½ªâ¦2
+java:S1068"4Remove this unused "ventanaMenuAutor" private field.(Ú”€ç8–¦øâ¦2
 U
-java:S1068"3Remove this unused "ventanaVerDatos" private field.(º¬å±ûÿÿÿÿ8£½ªâ¦2
+java:S1068"3Remove this unused "ventanaVerDatos" private field.(º¬å±ûÿÿÿÿ8–¦øâ¦2
 Z
-java:S1068 "8Remove this unused "ventanaCambiarTitulo" private field.( ÔØ·øÿÿÿÿ8£½ªâ¦2
+java:S1068 "8Remove this unused "ventanaCambiarTitulo" private field.( ÔØ·øÿÿÿÿ8–¦øâ¦2
 S
-java:S1068!"6Remove this unused "ventanaBorrarAutor" private field.(ŠêÎ8£½ªâ¦2
+java:S1068!"6Remove this unused "ventanaBorrarAutor" private field.(ŠêÎ8–¦øâ¦2
 T
-java:S1144J"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8£½ªâ¦2
+java:S1144J"7Remove this unused private "guardarFicheroJson" method.(•ÑÕû8–¦øâ¦2
 Y
-java:S1144X"7Remove this unused private "obtenerAutoresJson" method.(ùÒ¯şÿÿÿÿ8£½ªâ¦2
+java:S1144X"7Remove this unused private "obtenerAutoresJson" method.(ùÒ¯şÿÿÿÿ8–¦øâ¦2
 V
-java:S1144t"9Remove this unused private "obtenerPosicionAutor" method.(±µ…ö8£½ªâ¦2
+java:S1144t"9Remove this unused private "obtenerPosicionAutor" method.(±µ…ö8–¦øâ¦2
 Y
-java:S1144"7Remove this unused private "obtenerAutoresJson" method.(¤‰Åöûÿÿÿÿ8£½ªâ¦2
+java:S1144"7Remove this unused private "obtenerAutoresJson" method.(¤‰Åöûÿÿÿÿ8–¦øâ¦2

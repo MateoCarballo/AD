@@ -78,7 +78,7 @@ public class VentanaInicioSesion extends JFrame implements ActionListener
 		btnCrearNuevoAutorLibro.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				//TODO implementar codigo necesario
+				app.mostrarVentanaCrearAutor();
 			}
 		});
 	}
