@@ -16,6 +16,8 @@ C
 java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8†¦øâ¦2
 ‚
 java:S1450"`Remove the "ventanaCrearAutor" field and declare it as a local variable in the relevant methods.(‰ŸŞËûÿÿÿÿ8„Ïã¦2
+
+java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8¥»ã¦2
 |
 java:S1450"_Remove the "ventanaMenuAutor" field and declare it as a local variable in the relevant methods.(Ú”€ç8¢Óüâ¦2
 K
@@ -26,29 +28,27 @@ java:S1135K"2Complete the task associated to this TODO comment.(…ïœ†8¦øâ¦2
 P
 java:S1135°"2Complete the task associated to this TODO comment.(…ïœ†8’¦øâ¦2
 P
-java:S1135í"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135ì"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135ñ"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135ğ"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135õ"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135ô"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135ù"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135ø"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135‚"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135†"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135…"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135Š"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
+java:S1135‰"2Complete the task associated to this TODO comment.(…ïœ†8•¦øâ¦2
 P
-java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8–¦øâ¦2
+java:S1135"2Complete the task associated to this TODO comment.(…ïœ†8–¦øâ¦2
 Q
 java:S1128"/Remove this unused import 'java.io.FileReader'.(Â¡¢äşÿÿÿÿ8„²ã¦2
 V
 java:S1128"4Remove this unused import 'java.nio.file.FileStore'.(ï˜Íâûÿÿÿÿ8„²ã¦2
 M
 java:S1128"1Remove this unused import 'org.json.JSONTokener'.(øèê28„²ã¦2
-Q
-java:S1068"4Remove this unused "ventanaMenuAutor" private field.(Ú”€ç8–¦øâ¦2
 U
 java:S1068"3Remove this unused "ventanaVerDatos" private field.(º¬å±ûÿÿÿÿ8–¦øâ¦2
 Z

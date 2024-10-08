@@ -223,8 +223,7 @@ public class AplicacionAutores
 				JOptionPane.showMessageDialog(null, "El autor no existe");
 			} else {
 				this.ventanaMenuAutor = new VentanaMenuAutor(this,nombreAutor);
-				this.ventanaInicioSesion.setVisible(false);
-				this.ventanaInicioSesion.setVisible(true);
+				this.ventanaMenuAutor.setVisible(true);
 			}
 
 		} catch (IOException e) {
