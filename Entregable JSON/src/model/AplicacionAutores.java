@@ -3,6 +3,9 @@ package model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
 
@@ -35,10 +38,21 @@ public class AplicacionAutores
 	private void guardarFicheroJson(JSONArray autores) {
 		// TODO
 	}
-//
-//	private JSONArray obtenerAutoresJson() {
-//		// TODO
-//	}
+
+	/**
+	 * @return  devuelve un JSONArray con el contenido del archivo que podemos manejar en el programa.
+	 */
+	private JSONArray obtenerAutoresJson() {
+        String librosString;
+		JSONArray librosArray=null;
+        try {
+            librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
+			 librosArray= new JSONArray(librosString);
+        } catch (IOException e) {
+            System.out.println("Imposible leer JSON");
+        }
+        return librosArray;
+    }
 //
 //	private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
 //		// TODO
@@ -52,6 +66,7 @@ public class AplicacionAutores
 		// TODO
 		this.ventanaInicioSesion = new VentanaInicioSesion(this);
 		ventanaInicioSesion.setVisible(true);
+		obtenerAutoresJson();
 	}
 
 	public void iniciarValidacion(String nombreAutor, String tituloLibroAutor){
