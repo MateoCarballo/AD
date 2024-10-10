@@ -62,6 +62,7 @@ public class VentanaVerDatos extends JFrame implements ActionListener {
 		btnVolver.setBounds(99, 278, 89, 23);
 		btnVolver.addActionListener(this);
 		contentPane.add(btnVolver);
+		btnVolver.addActionListener(actionEvent -> VentanaVerDatos.this.dispose());
 
 		etiquetaPaginas = new JLabel("Páginas:");
 		etiquetaPaginas.setFont(new Font("Tahoma", Font.PLAIN, 12));
