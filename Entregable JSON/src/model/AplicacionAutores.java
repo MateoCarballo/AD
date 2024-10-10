@@ -30,6 +30,8 @@ public class AplicacionAutores
 	private VentanaCambiarTitulo ventanaCambiarTitulo;
 	private VentanaBorrarAutor ventanaBorrarAutor;
 
+	// Añado este atributo para poder tener la ultima modificacion del archivo Json.
+
 	private JSONArray listadoAutores;
 
 	public JSONArray getListadoAutores() {
@@ -42,7 +44,8 @@ public class AplicacionAutores
 
 	/**
 	 * Este metodo comprueba si el fichero existe y si no existe lo crea y lo llena con el contenido en formato .json
-	 * usando el metood .toString() de la clase JSONArray.
+	 * usando el metood .toString() de la clase JSONArray. Sustituye al metodo -> guardarFicheroJson(JSONArray autores)
+	 *
 	 * Creando nuevos objetos libros mediante el metodo crearLibro() que se encuentra justo debajo en la Clase AplicacionAutores.
 	 */
 	private void crearFicheroJson()	{
@@ -64,7 +67,7 @@ public class AplicacionAutores
 				setListadoAutores(cargarContenido());
 			}
         } catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Error al comprobar el archivo JSON: " + e.getMessage(),
+			JOptionPane.showMessageDialog(null, "Error al crear el archivo JSON: " + e.getMessage(),
 					"Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -85,10 +88,6 @@ public class AplicacionAutores
 		libro.put("paginas", paginas);
 		libro.put("editorial", editorial);
 		return libro;
-	}
-
-	private void guardarFicheroJson(JSONArray autores) {
-		// TODO
 	}
 
 	/**
@@ -296,7 +295,7 @@ public class AplicacionAutores
 		return getListadoAutores();
 	}
 
-	private void escribirContenidoEnJson(){
+	public void escribirContenidoEnJson(){
 		try(FileWriter fw = new FileWriter(RUTA_FICHERO)){
 			fw.write(listadoAutores.toString(4));
 			fw.flush();
@@ -324,7 +323,10 @@ public class AplicacionAutores
 	}
 
 	public void borrarAutor(String nombreAutor){
-		// TODO
+		getListadoAutores().remove(obtenerPosicionAutor(nombreAutor,getListadoAutores()));
+		escribirContenidoEnJson();
+		ventanaBorrarAutor.dispose();
+		ventanaMenuAutor.dispose();
 	}
 
 	/**
@@ -378,7 +380,8 @@ public class AplicacionAutores
 	}
 
 	public void mostrarVentanaBorrarAutor(String nombreAutor){
-		// TODO
+		this.ventanaBorrarAutor = new VentanaBorrarAutor(this,nombreAutor);
+		this.ventanaBorrarAutor.setVisible(true);
 	}
 
 	public void mostrarMenuAutor(String nombreAutor){

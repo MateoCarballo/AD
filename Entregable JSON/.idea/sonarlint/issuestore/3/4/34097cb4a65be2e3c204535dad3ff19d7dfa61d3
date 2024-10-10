@@ -1,9 +1,15 @@
 
-b
-java:S3252"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ð
-H
-java:S11358"2Complete the task associated to this TODO comment.(…ïœ†
-B
-java:S1068"'Remove this unused "app" private field.(•È˜Žøÿÿÿÿ
-E
-java:S1068"/Remove this unused "nombreAutor" private field.(‡™èã
+J
+java:S1604/"(Make this anonymous inner class a lambda(„Þàóýÿÿÿÿ8í³½¯§2
+J
+java:S1604:"(Make this anonymous inner class a lambda(ÏÑ›¬øÿÿÿÿ8í³½¯§2
+G
+java:S1948"%Make "app" transient or serializable.(•È˜Žøÿÿÿÿ8õ³½¯§2
+i
+java:S3252"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ð8ö³½¯§2
+O
+java:S1135D"2Complete the task associated to this TODO comment.(…ïœ†8û³½¯§2
+I
+java:S1068"'Remove this unused "app" private field.(•È˜Žøÿÿÿÿ8û³½¯§2
+L
+java:S1068"/Remove this unused "nombreAutor" private field.(‡™èã8û³½¯§2

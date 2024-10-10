@@ -71,6 +71,12 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		btnBorrarAutor.setBounds(71, 132, 163, 23);
 		btnBorrarAutor.addActionListener(this);
 		contentPane.add(btnBorrarAutor);
+		btnBorrarAutor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.mostrarVentanaBorrarAutor(textoNombreAutor.getText());
+			}
+		});
 
 		btnCerrarValidacion = new JButton("Cerrar validación");
 		btnCerrarValidacion.setBounds(150, 227, 145, 23);

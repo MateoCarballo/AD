@@ -44,11 +44,23 @@ public class VentanaBorrarAutor extends JFrame implements ActionListener {
 		btnBorrar.setBounds(170, 56, 89, 23);
 		btnBorrar.addActionListener(this);
 		contentPane.add(btnBorrar);
+		btnBorrar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.borrarAutor(nombreAutor);
+			}
+		});
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(35, 56, 89, 23);
 		btnCancelar.addActionListener(this);
 		contentPane.add(btnCancelar);
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				VentanaBorrarAutor.this.dispose();
+			}
+		});
 	}
 
 	@Override
