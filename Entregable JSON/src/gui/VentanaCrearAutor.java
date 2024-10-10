@@ -91,11 +91,24 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
 		btnCrear.setBounds(172, 299, 89, 23);
 		btnCrear.addActionListener(this);
 		contentPane.add(btnCrear);
+		btnCrear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.crearAutor(textoNombreAutor.getText(),textoTituloLibro.getText(),textoPaginas.getText(),textoEditorial.getText());
+				VentanaCrearAutor.this.dispose();
+			}
+		});
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(39, 299, 89, 23);
 		btnCancelar.addActionListener(this);
 		contentPane.add(btnCancelar);
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				VentanaCrearAutor.this.dispose();
+            }
+		});
 	}
 
 	@Override

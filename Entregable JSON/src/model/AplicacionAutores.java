@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
@@ -32,6 +33,16 @@ public class AplicacionAutores
 	private VentanaCambiarTitulo ventanaCambiarTitulo;
 	private VentanaBorrarAutor ventanaBorrarAutor;
 
+	private JSONArray listadoAutores;
+
+	public JSONArray getListadoAutores() {
+		return listadoAutores;
+	}
+
+	public void setListadoAutores(JSONArray listadoAutores) {
+		this.listadoAutores = listadoAutores;
+	}
+
 	/**
 	 * Este metodo comprueba si el fichero existe y si no existe lo crea y lo llena con el contenido en formato .json
 	 * usando el metood .toString() de la clase JSONArray.
@@ -39,19 +50,27 @@ public class AplicacionAutores
 	 */
 	private void crearFicheroJson()	{
 		File rutaArchivoJson = new File(RUTA_FICHERO);
-		if (!rutaArchivoJson.exists()){
-			JSONArray libreria = new JSONArray();
-			libreria.put(crearLibro("María Fernández","Título 1","239","Anaya"));
-			libreria.put(crearLibro("Elvira Nieto","Título 2","430","McMillan"));
-			try (FileWriter fw = new FileWriter(RUTA_FICHERO)){
-				fw.write(libreria.toString(4));
-				fw.flush();
-			}catch (IOException e){
-				JOptionPane.showMessageDialog(null, "Error al crear el archivo JSON: " + e.getMessage(),
-						"Error", JOptionPane.ERROR_MESSAGE);
+        try {
+            if (!rutaArchivoJson.exists() || Files.size(Paths.get(RUTA_FICHERO)) == 0){
+                JSONArray libreria = new JSONArray();
+                libreria.put(crearLibro("María Fernández","Título 1","239","Anaya"));
+                libreria.put(crearLibro("Elvira Nieto","Título 2","430","McMillan"));
+                setListadoAutores(libreria);
+                try (FileWriter fw = new FileWriter(RUTA_FICHERO)){
+                    fw.write(getListadoAutores().toString(4));
+                    fw.flush();
+                }catch (IOException e){
+                    JOptionPane.showMessageDialog(null, "Error al escribir el archivo JSON: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }else{
+				setListadoAutores(cargarContenido());
 			}
-		}
-	}
+        } catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error al comprobar el archivo JSON: " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 	/**
 	 *
@@ -90,13 +109,18 @@ public class AplicacionAutores
 		JSONArray librosArray=null;
 		JSONArray autoresArray=null;
         try {
-            librosString = new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)));
-			librosArray= new JSONArray(librosString);
-			for (Object obj : librosArray){
-				JSONObject jsonObj = (JSONObject) obj;
-				JSONObject autor=null;
-				autor.put("autor",jsonObj.getString("autor")) ;
-				autoresArray.put(autor);
+			Path pathToFile = Paths.get(RUTA_FICHERO);
+			if (!Files.exists(pathToFile) || Files.size(pathToFile) == 0){
+				autoresArray = new JSONArray();
+			}else{
+				librosString = new String(Files.readAllBytes(pathToFile));
+				librosArray= new JSONArray(librosString);
+				for (Object obj : librosArray){
+					JSONObject jsonObj = (JSONObject) obj;
+					JSONObject autor=null;
+					autor.put("autor",jsonObj.getString("autor")) ;
+					autoresArray.put(autor);
+				}
 			}
         } catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Imposible leer los autores del archivo JSON: " + e.getMessage(),
@@ -233,11 +257,41 @@ public class AplicacionAutores
 	}
 
 	public void cerrarSesion(){
-		// TODO
+		//TODO
 	}
 
 	public void crearAutor(String nombre, String titulo, String paginas, String editorial){
-		// TODO
+		JSONArray listaLibrosJSON;
+
+		try(FileWriter fw = new FileWriter(RUTA_FICHERO)) {
+
+			listaLibrosJSON = cargarContenido();
+			System.out.println(listaLibrosJSON);
+			listaLibrosJSON.put(crearLibro(nombre,titulo,paginas,editorial));
+			JOptionPane.showMessageDialog(null, "Libro añadido correctamente");
+
+			fw.write(listaLibrosJSON.toString(4));
+			fw.flush();
+
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error al leer el JSON: " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private JSONArray cargarContenido() {
+
+		try {
+
+			if (Files.size(Paths.get(RUTA_FICHERO)) != 0 ) {
+				setListadoAutores(new JSONArray(new String(Files.readAllBytes(Paths.get(RUTA_FICHERO)))));
+			}
+
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error durante la creacion del objeto Json autor ( Que contiene todos sus libros.): " + e.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return getListadoAutores();
 	}
 
 	public void cambiarTituloLibro(String nombreAutor, String nuevoTitulo){

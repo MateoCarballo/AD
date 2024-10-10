@@ -10,5 +10,29 @@
         "paginas": "430",
         "titulo": "Título 2",
         "autor": "Elvira Nieto"
+    },
+    {
+        "editorial": "a",
+        "paginas": "a",
+        "titulo": "a",
+        "autor": "a"
+    },
+    {
+        "editorial": "s",
+        "paginas": "s",
+        "titulo": "s",
+        "autor": "s"
+    },
+    {
+        "editorial": "s",
+        "paginas": "s",
+        "titulo": "s",
+        "autor": "s"
+    },
+    {
+        "editorial": "a",
+        "paginas": "a",
+        "titulo": "a",
+        "autor": "a"
     }
 ]
