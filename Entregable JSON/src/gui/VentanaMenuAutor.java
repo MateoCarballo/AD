@@ -4,11 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
@@ -30,7 +26,7 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		this.nombreAutor = nombreAutor;
 
 		setTitle("Aplicación autores");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 325, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,45 +45,25 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		btnVerDatos.setBounds(71, 64, 163, 23);
 		btnVerDatos.addActionListener(this);
 		contentPane.add(btnVerDatos);
-		btnVerDatos.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
-				app.mostrarVentanaVerDatos(textoNombreAutor.getText());
-			}
-		});
+		btnVerDatos.addActionListener(actionEvent -> app.mostrarVentanaVerDatos(textoNombreAutor.getText()));
 
 		btnCambiarTituloLibro = new JButton("Cambiar título del libro");
 		btnCambiarTituloLibro.setBounds(71, 98, 163, 23);
 		btnCambiarTituloLibro.addActionListener(this);
 		contentPane.add(btnCambiarTituloLibro);
-		btnCambiarTituloLibro.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
-				app.mostrarVentanaCambiarTitulo(textoNombreAutor.getText());
-			}
-		});
+		btnCambiarTituloLibro.addActionListener(actionEvent -> app.mostrarVentanaCambiarTitulo(textoNombreAutor.getText()));
 
 		btnBorrarAutor = new JButton("Borrar autor");
 		btnBorrarAutor.setBounds(71, 132, 163, 23);
 		btnBorrarAutor.addActionListener(this);
 		contentPane.add(btnBorrarAutor);
-		btnBorrarAutor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
-				app.mostrarVentanaBorrarAutor(textoNombreAutor.getText());
-			}
-		});
+		btnBorrarAutor.addActionListener(actionEvent -> app.mostrarVentanaBorrarAutor(textoNombreAutor.getText()));
 
 		btnCerrarValidacion = new JButton("Cerrar validación");
 		btnCerrarValidacion.setBounds(150, 227, 145, 23);
 		btnCerrarValidacion.addActionListener(this);
 		contentPane.add(btnCerrarValidacion);
-		btnCerrarValidacion.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
-				VentanaMenuAutor.this.dispose();
-			}
-		});
+		btnCerrarValidacion.addActionListener(actionEvent -> VentanaMenuAutor.this.dispose());
 
 		textoNombreAutor = new JTextPane();
 		textoNombreAutor.setEditable(false);
@@ -98,7 +74,6 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO
 	}
 
 }

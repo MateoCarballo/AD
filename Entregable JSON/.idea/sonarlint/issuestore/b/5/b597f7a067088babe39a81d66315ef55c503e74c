@@ -1,19 +1,9 @@
 
-J
-java:S16044"(Make this anonymous inner class a lambda(œÖ¤“şÿÿÿÿ8¦»´¯§2
-J
-java:S1604?"(Make this anonymous inner class a lambda(†­Óÿÿÿÿÿ8§»´¯§2
-D
-java:S1604J"(Make this anonymous inner class a lambda(­„ô8§»´¯§2
-E
-java:S1604U"(Make this anonymous inner class a lambda(‡ĞÖø8§»´¯§2
+£
+java:S1186L"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¼ Òşüÿÿÿÿ8Øµ¶°§2
 G
-java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8¼»´¯§2
-i
-java:S3252!"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ğ8½»´¯§2
-O
-java:S1135e"2Complete the task associated to this TODO comment.(…ïœ†8Å»´¯§2
+java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8¼»´¯§2
 I
-java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8Å»´¯§2
+java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8Å»´¯§2
 L
-java:S1068"/Remove this unused "nombreAutor" private field.(‡™èã8Å»´¯§2
+java:S1068"/Remove this unused "nombreAutor" private field.(‡™èã8Å»´¯§2
