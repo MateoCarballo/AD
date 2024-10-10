@@ -1,10 +1,8 @@
 package model;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import gui.VentanaBorrarAutor;
 import gui.VentanaCambiarTitulo;
@@ -279,6 +276,11 @@ public class AplicacionAutores
 		}
 	}
 
+	/**
+	 * Este método devuelve un JSONArray con el contenido de nuestro archivo, para poder manejarlo dentro de nuestra app
+	 * Así podremos obtener el contenido cada vez que lo necesitemos sin tener que hacerlo en cada punto.
+	 * @return
+	 */
 	private JSONArray cargarContenido() {
 
 		try {
@@ -294,8 +296,31 @@ public class AplicacionAutores
 		return getListadoAutores();
 	}
 
+	private void escribirContenidoEnJson(){
+		try(FileWriter fw = new FileWriter(RUTA_FICHERO)){
+			fw.write(listadoAutores.toString(4));
+			fw.flush();
+		}catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error durante la escritura del archivo .Json","Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	/**
+	 * Este método recoore el JSONArray casteando cada elemento a un JSONObject y buscano si tiene el mismo nombre que el
+	 * que llega como parametro, si es así se cambia el titulo que tiene por el nuevo titulo introducido.
+	 * @param nombreAutor
+	 * @param nuevoTitulo
+	 */
 	public void cambiarTituloLibro(String nombreAutor, String nuevoTitulo){
-		// TODO
+
+		for (Object libroObject:getListadoAutores()) {
+			JSONObject libro = (JSONObject) libroObject;
+			if (libro.getString("autor").equalsIgnoreCase(nombreAutor)) {
+			libro.put("titulo", nuevoTitulo);
+			}
+			escribirContenidoEnJson();
+		}
+		this.ventanaCambiarTitulo.dispose();
 	}
 
 	public void borrarAutor(String nombreAutor){
@@ -348,7 +373,8 @@ public class AplicacionAutores
 	}
 
 	public void mostrarVentanaCambiarTitulo(String nombreAutor){
-		// TODO
+		this.ventanaCambiarTitulo = new VentanaCambiarTitulo(this,nombreAutor);
+		this.ventanaCambiarTitulo.setVisible(true);
 	}
 
 	public void mostrarVentanaBorrarAutor(String nombreAutor){

@@ -14,25 +14,13 @@
     {
         "editorial": "a",
         "paginas": "a",
-        "titulo": "a",
+        "titulo": "Nuevo titulo",
         "autor": "a"
     },
     {
         "editorial": "s",
         "paginas": "s",
-        "titulo": "s",
+        "titulo": "titulo para la letra s",
         "autor": "s"
-    },
-    {
-        "editorial": "s",
-        "paginas": "s",
-        "titulo": "s",
-        "autor": "s"
-    },
-    {
-        "editorial": "a",
-        "paginas": "a",
-        "titulo": "a",
-        "autor": "a"
     }
 ]

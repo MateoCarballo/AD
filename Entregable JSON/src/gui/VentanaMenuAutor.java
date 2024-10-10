@@ -60,6 +60,12 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		btnCambiarTituloLibro.setBounds(71, 98, 163, 23);
 		btnCambiarTituloLibro.addActionListener(this);
 		contentPane.add(btnCambiarTituloLibro);
+		btnCambiarTituloLibro.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.mostrarVentanaCambiarTitulo(textoNombreAutor.getText());
+			}
+		});
 
 		btnBorrarAutor = new JButton("Borrar autor");
 		btnBorrarAutor.setBounds(71, 132, 163, 23);

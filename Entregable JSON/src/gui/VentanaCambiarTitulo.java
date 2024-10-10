@@ -51,11 +51,18 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
 		btnCambiarTitulo.setBounds(134, 111, 89, 23);
 		btnCambiarTitulo.addActionListener(this);
 		contentPane.add(btnCambiarTitulo);
+		btnCambiarTitulo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.cambiarTituloLibro(nombreAutor,textoNuevoTitulo.getText());
+			}
+		});
 
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(21, 111, 89, 23);
 		btnCancelar.addActionListener(this);
 		contentPane.add(btnCancelar);
+		btnCancelar.addActionListener(actionEvent -> VentanaCambiarTitulo.this.dispose());
 	}
 
 	@Override
