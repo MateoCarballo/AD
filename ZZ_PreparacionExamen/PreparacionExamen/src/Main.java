@@ -1,18 +1,19 @@
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.FileStore;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static final String  RUTA_ARCHIVO = "resources/archivos";
+public class Main implements FilenameFilter {
+    static final String  RUTA_ARCHIVO = "PreparacionExamen/resources/archivos";
     public static void main(String[] args) {
         crearDirectorio();
-        crearFichero("archivo.txt");
-        crearFichero("archivo.bin");
-        crearFichero("archivo.dat");
+        crearFichero("Archivo de texto.txt");
+        crearFichero("Archivo binario .bin");
+        crearFichero("Archivo de datos.dat");
+        buscarFicheroPorExtension(RUTA_ARCHIVO, ".txt");
+        buscarFicheroPorNombre(RUTA_ARCHIVO, "Archivo de texto");
+
         escribirFicheroBinario();
     }
 
@@ -34,8 +35,38 @@ public class Main {
         }
     }
 
+
+
+    private static void buscarFicheroPorExtension(String directorioDeBusqueda, String extension) {
+        File pathToSearch = new File(directorioDeBusqueda);
+        ComprobarExtension cf = new ComprobarExtension(extension);
+
+        String[] lista = pathToSearch.list();
+        for (String item: lista){
+            if (cf.accept(pathToSearch,item)){
+                System.out.println("El directorio contiene un archivo con extension "+ cf.getExtension());
+            }
+        }
+    }
+
+    private static void buscarFicheroPorNombre(String directorioDeBusqueda, String nombreArchivo) {
+        File pathToSearch = new File(directorioDeBusqueda);
+        ComprobarArchivo comprobarArch = new ComprobarArchivo(nombreArchivo);
+
+        String[] lista = pathToSearch.list();
+        for (String item: lista){
+            if (comprobarArch.accept(pathToSearch,item)){
+                System.out.println("El directorio contiene un archivo llamado "+ comprobarArch.getNombreArchivo());
+            }
+        }
+    }
+
     private static void escribirFicheroBinario() {
         
     }
 
+    @Override
+    public boolean accept(File dir, String name) {
+        return false;
+    }
 }

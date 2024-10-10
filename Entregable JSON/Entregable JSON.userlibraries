@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Liberias Java" />
+  <library name="json-20240303">
+    <archive path="C:/Users/a22mateoca/Desktop/Acceso-a-Datos/Entregable JSON/resources/json-20240303.jar" />
+    <archive path="C:/Users/a22mateoca/Desktop/Acceso-a-Datos/Entregable JSON/resources/json-simple-1.1.1.jar" />
+    <archive path="C:/Users/a22mateoca/Desktop/Acceso-a-Datos/Entregable JSON" />
+  </library>
+</eclipse-userlibraries>
+
