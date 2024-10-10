@@ -60,8 +60,10 @@ public class AplicacionAutores
         try {
             if (!rutaArchivoJson.exists() || Files.size(Paths.get(RUTA_FICHERO)) == 0){
                 JSONArray libreria = new JSONArray();
+                /* En esta parte cargaba datos para probarlo
                 libreria.put(crearLibro("María Fernández","Título 1","239","Anaya"));
                 libreria.put(crearLibro("Elvira Nieto","Título 2","430","McMillan"));
+                 */
                 setListadoAutores(libreria);
                 try (FileWriter fw = new FileWriter(RUTA_FICHERO)){
                     fw.write(getListadoAutores().toString(4));
