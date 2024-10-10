@@ -49,6 +49,12 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		btnVerDatos.setBounds(71, 64, 163, 23);
 		btnVerDatos.addActionListener(this);
 		contentPane.add(btnVerDatos);
+		btnVerDatos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				app.mostrarVentanaVerDatos(textoNombreAutor.getText());
+			}
+		});
 
 		btnCambiarTituloLibro = new JButton("Cambiar título del libro");
 		btnCambiarTituloLibro.setBounds(71, 98, 163, 23);
@@ -64,6 +70,12 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 		btnCerrarValidacion.setBounds(150, 227, 145, 23);
 		btnCerrarValidacion.addActionListener(this);
 		contentPane.add(btnCerrarValidacion);
+		btnCerrarValidacion.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				VentanaMenuAutor.this.dispose();
+			}
+		});
 
 		textoNombreAutor = new JTextPane();
 		textoNombreAutor.setEditable(false);

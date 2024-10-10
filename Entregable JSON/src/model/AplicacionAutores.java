@@ -302,13 +302,49 @@ public class AplicacionAutores
 		// TODO
 	}
 
+	/**
+	 * A este método le llega el nombre del autor y busca en nuestro JSONArray, el de la app, para encontrar el libro que necesitamos
+	 * Podemos usarlo de esta forma porque sabemos que el libro existe con este autor, solo lo usamos durante la ventana de 'VerDatos'
+	 *
+	 * @param nombreAutor
+	 * @return
+	 */
+	public String obtenerPaginas(String nombreAutor){
+		String paginas = "";
+
+		JSONArray librosArray =getListadoAutores();
+		for (Object libroObject:librosArray){
+			JSONObject libro = (JSONObject) libroObject;
+			if (libro.getString("autor").equalsIgnoreCase(nombreAutor)){
+				return libro.getString("paginas");
+			}
+		}
+
+		return paginas;
+	}
+
+	public String obtenerEditorial(String nombreAutor){
+		String editorial = "";
+
+		JSONArray librosArray =getListadoAutores();
+		for (Object libroObject:librosArray){
+			JSONObject libro = (JSONObject) libroObject;
+			if (libro.getString("autor").equalsIgnoreCase(nombreAutor)){
+				return libro.getString("editorial");
+			}
+		}
+
+		return editorial;
+	}
+
 	public void mostrarVentanaCrearAutor(){
 		this.ventanaCrearAutor = new VentanaCrearAutor(this);
 		this.ventanaCrearAutor.setVisible(true);
 	}
 
 	public void mostrarVentanaVerDatos(String nombreAutor){
-		// TODO
+		this.ventanaVerDatos = new VentanaVerDatos(this,nombreAutor,obtenerPaginas(nombreAutor),obtenerEditorial(nombreAutor));
+		this.ventanaVerDatos.setVisible(true);
 	}
 
 	public void mostrarVentanaCambiarTitulo(String nombreAutor){
