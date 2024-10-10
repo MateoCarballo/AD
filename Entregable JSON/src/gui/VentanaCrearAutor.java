@@ -4,11 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
@@ -94,8 +90,13 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
 		btnCrear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				app.crearAutor(textoNombreAutor.getText(),textoTituloLibro.getText(),textoPaginas.getText(),textoEditorial.getText());
-				VentanaCrearAutor.this.dispose();
+				if (!app.comprobarSiExiste(textoNombreAutor.getText(),textoTituloLibro.getText())){
+					app.crearAutor(textoNombreAutor.getText(),textoTituloLibro.getText(),textoPaginas.getText(),textoEditorial.getText());
+					VentanaCrearAutor.this.dispose();
+				}else{
+					JOptionPane.showMessageDialog(null,"El autor ya tiene un libro con este titulo");
+				}
+
 			}
 		});
 

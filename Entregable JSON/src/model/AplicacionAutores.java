@@ -193,7 +193,7 @@ public class AplicacionAutores
 	}
 
 	/**
-	 * Este método devuelve un JSONArray con el contenido de nuestro archivo que
+	 * Este mét0do devuelve un JSONArray con el contenido de nuestro archivo que
 	 * guardaremos en @listadoAutores para poder manejarlo dentro de nuestra app.
 	 * @return
 	 */
@@ -326,5 +326,25 @@ public class AplicacionAutores
 	public void mostrarMenuAutor(String nombreAutor){
 		this.ventanaMenuAutor = new VentanaMenuAutor(this,nombreAutor);
 		this.ventanaMenuAutor.setVisible(true);
+	}
+
+	/**
+	 * En este metodo recibimos las propiedades de este libro, para comprobar si ya esta escrito en el sistema
+	 * para esto comprobamos si existe algun objeto que comparta titulo y autor con los dados si es asi devuelve true (si existe)
+	 * Si nos devuelve False significa que el titulo y autor no coinciden dentro del mismo objeto y nos permite introducir en nuevo libro en el sistema
+	 *
+	 * @param nombreAutor
+	 * @param tituloLibro
+	 * @return
+	 */
+	public boolean comprobarSiExiste(String nombreAutor,String tituloLibro) {
+		boolean existe = false;
+		for (Object o : getListadoAutores()){
+			JSONObject libro = (JSONObject) o;
+			if ((libro.getString("autor").equalsIgnoreCase(nombreAutor)) && libro.getString("titulo").equalsIgnoreCase(tituloLibro)) {
+				existe = true;
+			}
+		}
+		return existe;
 	}
 }

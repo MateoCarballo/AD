@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="json-20240303">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/resources/json-20240303.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/json-simple-1.1.1.jar!/" />
+      <root url="file://$PROJECT_DIR$" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src" />
+    </SOURCES>
+  </library>
+</component>
