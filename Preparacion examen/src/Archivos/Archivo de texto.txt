@@ -1,0 +1,2 @@
+Esta cadena la escribo secuancialmenteEsta cadena la escribo secuancialmente
+Esta cadena la escribo aleatoriamente
