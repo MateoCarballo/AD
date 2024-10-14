@@ -1,0 +1,6 @@
+Esto es un String
+CadenaEsto es un int
+Esto es un vector de chars
+[C@52cc8049
+Esto es un vector de Strings
+[Vector, de, Strings]
