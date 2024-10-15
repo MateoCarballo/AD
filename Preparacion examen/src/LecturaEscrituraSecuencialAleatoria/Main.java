@@ -1,13 +1,14 @@
+package LecturaEscrituraSecuencialAleatoria;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
 
-        final String RUTA = "src/Archivos";
+        final String RUTA = "src/LecturaEscrituraSecuencialAleatoria/Archivos";
         final String NOMBRE_ARCHIVO_FILEWRITER = "Escrito con FileWriter.txt";
         final String NOMBRE_ARCHIVO_BUFFERWRITER = "Escrito con BufferWriter.txt";
         final String NOMBRE_ARCHIVO_DATAOUTPUTSTREAM = "Escrito con DataOutputStream.txt";
