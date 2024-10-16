@@ -1,0 +1,31 @@
+
+ejercicio 1_teoria.
+
+ejercicio 2_
+.creación fichero.
+.creo clase Usuario para almacenarlo.
+.Almacena objeto.
+.Utiliza clases binarias.
+.Escritura fichero.
+.Lectura fichero.
+
+ejercicio 3
+.Solicita datos consola.
+.Lista los elementos del directorio.
+.Creo una clase que implemente FilenameFilter.
+.Utiliza FilenameFilter para filtrar.
+.Lista los elementos filtrados.
+
+ejercicio 4
+.Carga el fichero XML.
+.Lectura del fichero XML.
+.Procesado del fichero XML.
+.Muestra los datos correctos.
+
+ejercicio 5
+.Lectura de ficheros.
+.Union de palabras.
+.Ordena palabras alfabéticamente.
+.Crea el fichero de salida.
+.Escribe el fichero.
+.Utiliza clases de L/E secuencial.
