@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<personas>
+    <persona nif="12345678A">
+        <nombre>nombre de la primera persona</nombre>
+        <edad>edad persona 1</edad>
+        <cumpleaños>01/01/2020</cumpleaños>
+    </persona>
+</personas>

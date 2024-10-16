@@ -13,3 +13,11 @@ j
 :src/LecturaEscrituraXML/ArchivosXML/Nombre Documento 2.xml,9\d\9d8cf8688eb920cf4995982bfe6af30a28d07fb5
 X
 (src/LecturaEscrituraXML/ArchivosXML.java,0\1\01bea3c1343f668f9bdebc4bac116cc2f5e09e94
+g
+7src/LecturaEscrituraXML/Archivos/Nombre Documento 1.xml,5\f\5f0751032dc18e69fafad2650419494ab09fc8f3
+g
+7src/LecturaEscrituraXML/Archivos/Nombre Documento 2.xml,d\6\d6cdbfc7151faf42e660d7ba02733a686436a349
+s
+Csrc/LecturaEscrituraXML/Archivos/Archivo escrito desde programa.xml,d\1\d1d7ee61aad0df435b44f8fc5762d1bbf1283c6c
+f
+6src/LecturaEscrituraXML/Archivos/Archivo para leer.xml,2\e\2e2cee615cff65295da4195331aba9e86650e520

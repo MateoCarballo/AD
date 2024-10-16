@@ -3,7 +3,6 @@ package LecturaEscrituraXML;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
-import javax.print.attribute.Attribute;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,17 +17,67 @@ public class ArchivosXML {
     final static String RUTA = "src"+File.separator+"LecturaEscrituraXML"+File.separator+"Archivos";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParserConfigurationException, TransformerException {
         
-        crearXML(File.separator + "Nombre Documento 1.xml");
-        crearXML(File.separator + "Nombre Documento 2.xml");
-        /*
+        crearXML(File.separator + "Archivo escrito desde programa.xml");
+        crearXMLPersonas("Archivo para leer.xml");
+//        try {
+//            leerXML();
+//        } catch (ParserConfigurationException | SAXException | IOException e) {
+//            System.out.println("Se ha lanzado una excepcion del tiopo -> " + e.getMessage());
+//        }
+
+    }
+
+    private static void crearXMLPersonas(String nombreArchivo) throws TransformerException, ParserConfigurationException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
-            leerXML();
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            System.out.println("Se ha lanzado una excepcion del tiopo -> " + e.getMessage());
+            DocumentBuilder dBuilder = dbf.newDocumentBuilder();
+            Document xmlPersonas = dBuilder.getDOMImplementation().createDocument(null,"personas",null);
+
+            Element elementoRaiz = xmlPersonas.getDocumentElement();
+
+            Element nombre =  xmlPersonas.createElement("nombre");
+            nombre.setTextContent("nombre de la primera persona");
+
+            Element edad = xmlPersonas.createElement("edad");
+            edad.setTextContent("edad persona 1");
+
+            Element cumple = xmlPersonas.createElement("cumpleaños");
+            cumple.setTextContent("01/01/2020");
+
+            Element persona = xmlPersonas.createElement("persona");
+
+            Attr nif = xmlPersonas.createAttribute("nif");
+            nif.setValue("12345678A");
+
+            persona.setAttributeNode(nif);
+            persona.appendChild(nombre);
+            persona.appendChild(edad);
+            persona.appendChild(cumple);
+
+            elementoRaiz.appendChild(persona);
+
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer trnas = tf.newTransformer();
+
+            trnas.setOutputProperty(OutputKeys.INDENT,"yes");
+
+            File archivo = new File (RUTA + File.separator + nombreArchivo);
+            DOMSource dom = new DOMSource(xmlPersonas);
+            StreamResult sResult = new StreamResult(archivo);
+            trnas.transform(dom,sResult);
+
+
+
+        } catch (ParserConfigurationException e) {
+            throw new ParserConfigurationException("Excepcion ParserConfigurationLanzada");
+        } catch (TransformerConfigurationException e) {
+            throw new TransformerConfigurationException("Excepcion TransformerConfigurationException");
+        } catch (TransformerException e) {
+            throw new TransformerException("Excepcion TransformerException");
         }
-         */
+
     }
 
     private static void leerXML() throws ParserConfigurationException, SAXException, IOException {
@@ -40,8 +89,16 @@ public class ArchivosXML {
             Document documentoxml = db.parse(xml);
 
             documentoxml.getDocumentElement().normalize();
-            System.out.println("Elemento raiz :" +
-                    documentoxml.getDocumentElement().getNodeName());
+            System.out.println("<" + documentoxml.getDocumentElement().getNodeName() + ">");
+
+            NodeList nList = documentoxml.getElementsByTagName("elementoNivel1");
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node n = nList.item(i);
+                if (n.getNodeType() == Node.ELEMENT_NODE){
+                    Element e = (Element) n;
+                    System.out.println("    <" + n.getNodeName() + ">");
+                }
+            }
 
 
         } catch (ParserConfigurationException e) {

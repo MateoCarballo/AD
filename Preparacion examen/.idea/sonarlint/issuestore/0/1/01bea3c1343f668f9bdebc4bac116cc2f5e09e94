@@ -1,21 +1,26 @@
 
-Q
-java:S1066"/Merge this if statement with the enclosing one.(®Øëâüÿÿÿÿ8ƒµ§©2
-{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ç¸Ñ½şÿÿÿÿ8¢±¥§©2
+R
+java:S1066¸"/Merge this if statement with the enclosing one.(®Øëâüÿÿÿÿ8¢Ÿ˜¨©2
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ç¸Ñ½şÿÿÿÿ8£Ÿ˜¨©2
 U
-java:S2755b"3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8µ§©2
+java:S2755="3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8²Ÿ˜¨©2
 U
-java:S2755%"3Disable access to external entities in XML parsing.(ƒ”±êùÿÿÿÿ8µ§©2
+java:S2755V"3Disable access to external entities in XML parsing.(ƒ”±êùÿÿÿÿ8ü”™¨©2
+V
+java:S2755›"3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8²Ÿ˜¨©2
 b
-java:S1124"EReorder the modifiers to comply with the Java Language Specification.(Ÿøï8‘µ§©2
-]	java:S125"<This block of commented-out lines of code should be removed.(¡»¢üùÿÿÿÿ8‹–œ§©2
-L	java:S106+"+Replace this use of System.out by a logger.(¡Û–ÿÿÿÿÿ8•µ§©2
-X	java:S125H"<This block of commented-out lines of code should be removed.(ßïÑ8–µ§©2
-G	java:S106s"+Replace this use of System.out by a logger.(´—Õ8™µ§©2
-G	java:S106u"+Replace this use of System.out by a logger.( ¡äã8™µ§©2
-L	java:S106w"+Replace this use of System.out by a logger.(°ë ›úÿÿÿÿ8™µ§©2
-M	java:S106€"+Replace this use of System.out by a logger.(ŞºîÌøÿÿÿÿ8šµ§©2
-^
-java:S1128"<Remove this unused import 'javax.print.attribute.Attribute'.(öäÇßÿÿÿÿÿ8šµ§©2
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(Ÿøï8´Ÿ˜¨©2
+]	java:S125"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ8òà¡¨©2
+R
+java:S1854b"5Remove this useless assignment to local variable "e".(…¦à‚8ºŸ˜¨©2
+L	java:S106\"+Replace this use of System.out by a logger.(²ç»üÿÿÿÿ8»Ÿ˜¨©2
+C
+java:S1481b"&Remove this unused "e" local variable.(…¦à‚8»Ÿ˜¨©2
+G	java:S106c"+Replace this use of System.out by a logger.(–åó•8»Ÿ˜¨©2
+Y	java:S125"<This block of commented-out lines of code should be removed.(ßïÑ8½Ÿ˜¨©2
+H	java:S106¬"+Replace this use of System.out by a logger.(´—Õ8¿Ÿ˜¨©2
+H	java:S106®"+Replace this use of System.out by a logger.( ¡äã8¿Ÿ˜¨©2
+M	java:S106°"+Replace this use of System.out by a logger.(°ë ›úÿÿÿÿ8¿Ÿ˜¨©2
+M	java:S106¹"+Replace this use of System.out by a logger.(ŞºîÌøÿÿÿÿ8ÀŸ˜¨©2
 I
-java:S1144"",Remove this unused private "leerXML" method.(¦ˆ¼»8¹Ì›§©2
+java:S1144S",Remove this unused private "leerXML" method.(¦ˆ¼»8şà¡¨©2
