@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Personas>
+    <Persona dni="12345678A">
+        <nombre>Nombre</nombre>
+        <edad>25</edad>
+    </Persona>
+    <Persona dni="87654321Z">
+        <nombre>nombre</nombre>
+        <edad>edad</edad>
+    </Persona>
+</Personas>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libreria>
+    <libro isbn="12345678AA">
+        <titulo>Nombre del libro</titulo>
+    </libro>
+    <libro isbn="87654321Z">
+        <titulo>Titulo del libro 2</titulo>
+    </libro>
+</libreria>
