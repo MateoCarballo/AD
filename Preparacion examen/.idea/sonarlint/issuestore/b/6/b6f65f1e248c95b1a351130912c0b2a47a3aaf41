@@ -1,0 +1,21 @@
+
+L
+java:S1066u"/Merge this if statement with the enclosing one.(¼Ìä„8‘ÞÀ¦©2
+U
+java:S2755X"3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8ÝÜÅ¦©2
+U
+java:S2755!"3Disable access to external entities in XML parsing.(ƒ”±êùÿÿÿÿ8›ÞÀ¦©2
+g
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(‹¦’Ôþÿÿÿÿ8ÞÀ¦©2
+G	java:S106"+Replace this use of System.out by a logger.(ìâ¥‹8¥ÞÀ¦©2
+b
+java:S1854$"@Remove this useless assignment to local variable "documentoxml".(Ç¿Žàûÿÿÿÿ8žÞÀ¦©2
+S
+java:S1481$"1Remove this unused "documentoxml" local variable.(Ç¿Žàûÿÿÿÿ8 ÞÀ¦©2
+X	java:S125>"<This block of commented-out lines of code should be removed.(ßžïÑ8¢ÞÀ¦©2
+G	java:S106i"+Replace this use of System.out by a logger.(´—Õ8¥ÞÀ¦©2
+G	java:S106k"+Replace this use of System.out by a logger.( ¡äã8¥ÞÀ¦©2
+L	java:S106m"+Replace this use of System.out by a logger.(°ë ›úÿÿÿÿ8¦ÞÀ¦©2
+L	java:S106v"+Replace this use of System.out by a logger.(ÞºîÌøÿÿÿÿ8ß•É¦©2
+^
+java:S1128"<Remove this unused import 'javax.print.attribute.Attribute'.(öäÇßÿÿÿÿÿ8éÜÅ¦©2

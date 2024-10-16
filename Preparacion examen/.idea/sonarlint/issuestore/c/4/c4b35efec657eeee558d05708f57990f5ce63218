@@ -1,0 +1,34 @@
+
+`	java:S112<"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112U"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+`	java:S112t"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112…"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112”"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+a	java:S112ß"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+f
+java:S1192 "ODefine a constant instead of duplicating this literal "Esto es un int" 3 times.(Î˜á
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(°ƒûÉ
+E	java:S1061"+Replace this use of System.out by a logger.(¥ÛËÍıÿÿÿÿ
+I
+java:S48387"3Change "int" to the type handled by the Collection.(€ãâŒ
+E	java:S1068"+Replace this use of System.out by a logger.(Øú¼Ğúÿÿÿÿ
+?	java:S106:"+Replace this use of System.out by a logger.(°•Ş
+E	java:S106A"+Replace this use of System.out by a logger.(õÕÕòüÿÿÿÿ
+E	java:S106E"+Replace this use of System.out by a logger.(æÈÑûÿÿÿÿ
+E	java:S106G"+Replace this use of System.out by a logger.(ª¢úÓùÿÿÿÿ
+E	java:S106\"+Replace this use of System.out by a logger.(şö’ùÿÿÿÿ
+@	java:S106a"+Replace this use of System.out by a logger.(â”Êé
+E	java:S106g"+Replace this use of System.out by a logger.(„ÄÍşÿÿÿÿ
+@	java:S106m"+Replace this use of System.out by a logger.(Õô¡¾
+E	java:S106n"+Replace this use of System.out by a logger.(šŠ×âşÿÿÿÿ
+E	java:S106o"+Replace this use of System.out by a logger.(šŠ×âşÿÿÿÿ
+E	java:S106p"+Replace this use of System.out by a logger.(šŠ×âşÿÿÿÿ
+E	java:S106q"+Replace this use of System.out by a logger.(šŠ×âşÿÿÿÿ
+E	java:S106r"+Replace this use of System.out by a logger.(šŠ×âşÿÿÿÿ
+E	java:S106y"+Replace this use of System.out by a logger.(ğ¾ôÃÿÿÿÿÿ
+E	java:S106|"+Replace this use of System.out by a logger.(ÑÑ—ûúÿÿÿÿ
+F	java:S106€"+Replace this use of System.out by a logger.(ÑÑ—ûúÿÿÿÿ
+F	java:S106¥"+Replace this use of System.out by a logger.(ÜòÇ°ùÿÿÿÿ
+F	java:S106¸"+Replace this use of System.out by a logger.(ÜòÇ°ùÿÿÿÿ
+A	java:S106Ë"+Replace this use of System.out by a logger.(‰æìö
+]	java:S899Ü"BDo something with the "boolean" value returned by "createNewFile".(ôü¿Ÿÿÿÿÿÿ
