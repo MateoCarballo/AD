@@ -11,3 +11,5 @@ j
 :src/LecturaEscrituraXML/ArchivosXML/Nombre Documento 1.xml,e\d\edfa48a1dc22222b64dfdcbf1d08dd8d9a5500de
 j
 :src/LecturaEscrituraXML/ArchivosXML/Nombre Documento 2.xml,9\d\9d8cf8688eb920cf4995982bfe6af30a28d07fb5
+X
+(src/LecturaEscrituraXML/ArchivosXML.java,0\1\01bea3c1343f668f9bdebc4bac116cc2f5e09e94

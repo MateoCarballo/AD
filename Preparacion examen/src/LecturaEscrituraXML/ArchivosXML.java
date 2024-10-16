@@ -1,3 +1,5 @@
+package LecturaEscrituraXML;
+
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -13,18 +15,20 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ArchivosXML {
-    final static String RUTA = "src"+File.separator+"LecturaEscrituraXML"+File.separator+"ArchivosXML";
+    final static String RUTA = "src"+File.separator+"LecturaEscrituraXML"+File.separator+"Archivos";
 
 
     public static void main(String[] args) {
         
         crearXML(File.separator + "Nombre Documento 1.xml");
         crearXML(File.separator + "Nombre Documento 2.xml");
+        /*
         try {
             leerXML();
         } catch (ParserConfigurationException | SAXException | IOException e) {
             System.out.println("Se ha lanzado una excepcion del tiopo -> " + e.getMessage());
         }
+         */
     }
 
     private static void leerXML() throws ParserConfigurationException, SAXException, IOException {
@@ -34,6 +38,12 @@ public class ArchivosXML {
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document documentoxml = db.parse(xml);
+
+            documentoxml.getDocumentElement().normalize();
+            System.out.println("Elemento raiz :" +
+                    documentoxml.getDocumentElement().getNodeName());
+
+
         } catch (ParserConfigurationException e) {
             throw new ParserConfigurationException("Error ParserConfigurationException");
         } catch (IOException e) {
@@ -114,7 +124,7 @@ public class ArchivosXML {
     private static void crearRutaSiNoExiste(String ruta) {
         File path = new File(ruta);
         if(!path.exists()){
-            if (path.mkdir()){
+            if (path.mkdirs()){
                 System.out.println("Se ha creado con exito la ruta del fichero -> " + ruta);
             }
         }
