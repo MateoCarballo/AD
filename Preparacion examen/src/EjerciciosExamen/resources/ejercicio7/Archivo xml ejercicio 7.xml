@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<nodoRaiz>
+    <ElementoHijo atributohijo="valor atributo 1">Contenido hijo 1</ElementoHijo>
+    <ElementoHijo atributohijo="valor atributo 2">Contenido hijo 2</ElementoHijo>
+</nodoRaiz>

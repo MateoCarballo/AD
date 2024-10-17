@@ -78,7 +78,7 @@ public class Main {
         Persona objetoEscrito = new Persona("nombre","apellidos",30);
         File f = new File(ruta);
 
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));) {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f))) {
             oos.writeObject(objetoEscrito);
             oos.flush();
         } catch (IOException e) {
@@ -90,7 +90,6 @@ public class Main {
 
         try (DataInputStream dis = new DataInputStream(new FileInputStream(file))){
             System.out.println("*************************** LECTURA CON DATAINPUTSTREAM ***********************");
-
             int lectura = dis.read();
 
             while(lectura != 46 && lectura != -1){
@@ -105,7 +104,7 @@ public class Main {
     }
 
     private static void leerArchivoBufferedReader(File file) {
-        try (BufferedReader br = new BufferedReader(new FileReader(file))){
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))){
             System.out.println("*************************** LECTURA CON BUFFEREDREADER ***********************");
             System.out.println(br.readLine());
             System.out.println(br.readLine());
@@ -170,7 +169,7 @@ public class Main {
         File f = new File(ruta);
         char [] vectorChar = {'V','E','C','T','O','R'};
         String [] vectorString = {"Vector","de","Strings"};
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(f))){
+        try(BufferedWriter bw = new BufferedWriter(new BufferedWriter(new FileWriter(f)))){
             bw.write("Esto es un String"+"\n");
             bw.write("Cadena");
             bw.write("Esto es un int"+"\n");

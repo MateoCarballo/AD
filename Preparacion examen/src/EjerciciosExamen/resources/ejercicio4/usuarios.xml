@@ -3,16 +3,13 @@
     <usuario premium="no">
         <nombre>Mateo</nombre>
         <clave>1234</clave>
-        <clave>HolaMateo</clave>
     </usuario>
     <usuario premium="si">
         <nombre>Adrian</nombre>
         <clave>6789</clave>
-        <clave>HolaAdrian</clave>
     </usuario>
     <usuario premium="no">
         <nombre>David</nombre>
         <clave>5678</clave>
-        <clave>HolaDavid</clave>
     </usuario>
 </usuarios>

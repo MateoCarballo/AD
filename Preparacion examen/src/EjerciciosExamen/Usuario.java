@@ -5,36 +5,34 @@ import java.io.Serializable;
 
 public class Usuario implements Serializable {
     private String nombre;
-    private String contrasenha;
-    private String usuario;
+    private int edad;
 
-    public Usuario(String nombre, String contrasenha, String usuario) {
+
+    public Usuario(String nombre, int edad) {
         this.nombre = nombre;
-        this.contrasenha = contrasenha;
-        this.usuario = usuario;
+        this.edad = edad;
     }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getContrasenha() {
-        return contrasenha;
-    }
-
-    public void setContrasenha(String contrasenha) {
-        this.contrasenha = contrasenha;
-    }
-
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", edad=" + edad +
+                '}';
     }
 }
