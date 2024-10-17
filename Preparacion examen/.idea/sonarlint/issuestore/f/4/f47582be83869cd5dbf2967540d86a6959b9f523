@@ -1,50 +1,56 @@
 
-h	java:S112¤"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
-h	java:S112¬"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
-h	java:S112´"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
-h	java:S112¼"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
-h	java:S112÷"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
-h	java:S112‚"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8¹úüÏ©2
+h	java:S112¨"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8±Ÿ¥Ò©2
+h	java:S112°"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8±Ÿ¥Ò©2
+h	java:S112¸"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8±Ÿ¥Ò©2
+h	java:S112À"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8²Ÿ¥Ò©2
+h	java:S112û"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8²Ÿ¥Ò©2
+h	java:S112†"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8²Ÿ¥Ò©2
 {
-java:S1192Ğ"XUse already-defined constant 'NOMBRE_ARCHIVO_DAT' instead of duplicating its value here.(´ô‰ûÿÿÿÿ8ºúüÏ©2
-e
-java:S1192E"HDefine a constant instead of duplicating this literal "Usuario" 3 times.(şÒö”8»÷ÂĞ©2
-c
-java:S1192H"GDefine a constant instead of duplicating this literal "nombre" 4 times.(¨H8»÷ÂĞ©2
+java:S1192Ô"XUse already-defined constant 'NOMBRE_ARCHIVO_DAT' instead of duplicating its value here.(´ô‰ûÿÿÿÿ8²Ÿ¥Ò©2
+d
+java:S1192("GDefine a constant instead of duplicating this literal "nombre" 6 times.(¬üß–8²Ÿ¥Ò©2
 i
-java:S1192Ï"KDefine a constant instead of duplicating this literal "ejercicio2" 4 times.(®²¡†8ºúüÏ©2
+java:S1192Ó"KDefine a constant instead of duplicating this literal "ejercicio2" 4 times.(®²¡†8²Ÿ¥Ò©2
 j
-java:S1192F"HDefine a constant instead of duplicating this literal "premium" 3 times.(ğ‰Îçúÿÿÿÿ8»÷ÂĞ©2
+java:S1192J"HDefine a constant instead of duplicating this literal "premium" 3 times.(ğ‰Îçúÿÿÿÿ8²Ÿ¥Ò©2
 c
-java:S1192J"FDefine a constant instead of duplicating this literal "clave" 3 times.(ùê€³8»÷ÂĞ©2
+java:S1192)"FDefine a constant instead of duplicating this literal "clave" 5 times.(øÅÒ©8ÿ»«Ò©2
+j
+java:S1192!"HDefine a constant instead of duplicating this literal "usuario" 5 times.(í”Ç×ıÿÿÿÿ8²Ÿ¥Ò©2
+d
+java:S1192"GDefine a constant instead of duplicating this literal "region" 3 times.(‡ÛÈ„8²Ÿ¥Ò©2
 K
-java:S1066{"/Merge this if statement with the enclosing one.(•Íé`8ºúüÏ©2
+java:S1066"/Merge this if statement with the enclosing one.(•Íé`8³Ÿ¥Ò©2
 R
-java:S1066ì"/Merge this if statement with the enclosing one.(ŠıÖîûÿÿÿÿ8»úüÏ©2
+java:S1066ğ"/Merge this if statement with the enclosing one.(ŠıÖîûÿÿÿÿ8³Ÿ¥Ò©2
 R
-java:S1066”"/Merge this if statement with the enclosing one.(ŒŠ—áşÿÿÿÿ8»úüÏ©2
-{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(œàñĞøÿÿÿÿ8½úüÏ©2
-P
-java:S2755<"3Disable access to external entities in XML parsing.(Ò‹ñÙ8Ü¯…Ğ©2
+java:S1066˜"/Merge this if statement with the enclosing one.(ŒŠ—áşÿÿÿÿ8³Ÿ¥Ò©2
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(œàñĞøÿÿÿÿ8µŸ¥Ò©2
 U
-java:S2755"3Disable access to external entities in XML parsing.(ŸÂ¾çıÿÿÿÿ8Ü÷ÂĞ©2
+java:S2755"3Disable access to external entities in XML parsing.(÷Æİ½şÿÿÿÿ8ÓŸ¥Ò©2
+P
+java:S2755@"3Disable access to external entities in XML parsing.(Ò‹ñÙ8ïé¦Ò©2
 g
-java:S1124"EReorder the modifiers to comply with the Java Language Specification.(”ü¾‘ÿÿÿÿÿ8ÔúüÏ©2
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(”ü¾‘ÿÿÿÿÿ8ÖŸ¥Ò©2
 b
-java:S1124"EReorder the modifiers to comply with the Java Language Specification.(´ÇÃà8ÔúüÏ©2
-
-java:S1130"qRemove the declaration of thrown exception 'org.xml.sax.SAXException', as it cannot be thrown from method's body.(‹Ä«§8ë„Ğ©2
-X	java:S125"<This block of commented-out lines of code should be removed.(†š÷Ç8‚ë„Ğ©2
-L	java:S106|"+Replace this use of System.out by a logger.(‚ƒÀöúÿÿÿÿ8ÜúüÏ©2
-M	java:S106“"+Replace this use of System.out by a logger.(²ß’Ñÿÿÿÿÿ8İúüÏ©2
-_	java:S899¢"BDo something with the "boolean" value returned by "createNewFile".(ÜŸ¹Æ8ŞúüÏ©2
-d	java:S899ª"BDo something with the "boolean" value returned by "createNewFile".(ˆïŞÃıÿÿÿÿ8ßúüÏ©2
-_	java:S899²"BDo something with the "boolean" value returned by "createNewFile".(ç¨ÿì8ßúüÏ©2
-_	java:S899º"BDo something with the "boolean" value returned by "createNewFile".(Õáì÷8ßúüÏ©2
-H	java:S106Á"+Replace this use of System.out by a logger.(º›ÂŒ8ßúüÏ©2
-H	java:S106ß"+Replace this use of System.out by a logger.(ËŠ…·8âúüÏ©2
-M	java:S106í"+Replace this use of System.out by a logger.(á÷áµıÿÿÿÿ8ãúüÏ©2
-H	java:S106Š"+Replace this use of System.out by a logger.(„Ò°Â8æúüÏ©2
-M	java:S106•"+Replace this use of System.out by a logger.(»ÅÙüÿÿÿÿ8çúüÏ©2
-L
-java:S1144"/Remove this unused private "ejercicio5" method.(ù‹’Ä8 ë„Ğ©2
+java:S1124"EReorder the modifiers to comply with the Java Language Specification.(´ÇÃà8ÖŸ¥Ò©2
+Ÿ
+java:S1130"Remove the declaration of thrown exception 'javax.xml.transform.TransformerException', as it cannot be thrown from method's body.(‹Ä«§8×Ÿ¥Ò©2
+]	java:S125"<This block of commented-out lines of code should be removed.(á®ÀÙıÿÿÿÿ8×Ÿ¥Ò©2
+G	java:S106"+Replace this use of System.out by a logger.(‡ÛÈ„8ÚŸ¥Ò©2
+G	java:S106%"+Replace this use of System.out by a logger.(¥®‰ò8ÚŸ¥Ò©2
+G	java:S106("+Replace this use of System.out by a logger.(¬üß–8ÛŸ¥Ò©2
+G	java:S106)"+Replace this use of System.out by a logger.(øÅÒ©8áŸ¥Ò©2
+M	java:S106€"+Replace this use of System.out by a logger.(‚ƒÀöúÿÿÿÿ8âŸ¥Ò©2
+M	java:S106—"+Replace this use of System.out by a logger.(²ß’Ñÿÿÿÿÿ8åŸ¥Ò©2
+_	java:S899¦"BDo something with the "boolean" value returned by "createNewFile".(ÜŸ¹Æ8áŸ¥Ò©2
+d	java:S899®"BDo something with the "boolean" value returned by "createNewFile".(ˆïŞÃıÿÿÿÿ8âŸ¥Ò©2
+_	java:S899¶"BDo something with the "boolean" value returned by "createNewFile".(ç¨ÿì8âŸ¥Ò©2
+_	java:S899¾"BDo something with the "boolean" value returned by "createNewFile".(Õáì÷8âŸ¥Ò©2
+H	java:S106Å"+Replace this use of System.out by a logger.(º›ÂŒ8æŸ¥Ò©2
+H	java:S106ã"+Replace this use of System.out by a logger.(ËŠ…·8éŸ¥Ò©2
+M	java:S106ñ"+Replace this use of System.out by a logger.(á÷áµıÿÿÿÿ8éŸ¥Ò©2
+H	java:S106"+Replace this use of System.out by a logger.(„Ò°Â8ğ×§Ò©2
+M	java:S106™"+Replace this use of System.out by a logger.(»ÅÙüÿÿÿÿ8¹¼«Ò©2
+Q
+java:S11447"/Remove this unused private "ejercicio4" method.(§èÉøÿÿÿÿ8éŸ¥Ò©2

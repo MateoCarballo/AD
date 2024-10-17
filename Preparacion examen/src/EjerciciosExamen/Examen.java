@@ -16,28 +16,32 @@ public class Examen {
     public static void main(String[] args) throws IOException, TransformerException, ParserConfigurationException, SAXException {
         ejercicio2();
         ejercicio3();
-        ejercicio4();
-       // ejercicio5();
+        //ejercicio4();
+        ejercicio5();
     }
 
 
 
     private static void ejercicio5() throws SAXException, IOException, ParserConfigurationException {
-        File ficheroXML = new File("src/EjerciciosExamen/resources/ejercicio4/ejercicio4.xml");
+        File ficheroXML = new File("src/EjerciciosExamen/resources/ejercicio4/usuarios.xml");
         try {
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ficheroXML);
-            document.getDocumentElement().normalize();
+           Document archivoxml = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ficheroXML);
+           archivoxml.getDocumentElement().normalize();
+           Element usuarios = archivoxml.getDocumentElement();
+           System.out.println("<" + archivoxml.getDocumentElement().getNodeName() + " "+ usuarios.getAttributeNode("region").getName() + "=" +archivoxml.getDocumentElement().getAttribute("region")+">");
 
+           NodeList listaDeNodos = archivoxml.getElementsByTagName("usuario");
 
-            NodeList nList = document.getElementsByTagName("coche");
-
-            for (int i = 0; i < nList.getLength(); i++) {
-                Node n = nList.item(i);
-                if(n.getNodeType() == Node.ELEMENT_NODE){
-                    Element element = (Element) n;
-                    element.getElementsByTagName("marca").item(0).getTextContent();
+            for (int i = 0; i < listaDeNodos.getLength(); i++) {
+                Node nodoUsuario = listaDeNodos.item(i);
+                System.out.println("    <" + nodoUsuario.getNodeName()+">");
+                if (nodoUsuario.getNodeType() == Node.ELEMENT_NODE){
+                    Element elementoUsuario = (Element) nodoUsuario;
+                    System.out.println("        <" + "nombre" +">"+ elementoUsuario.getElementsByTagName("nombre").item(0).getTextContent() + "</nombre>" );
+                    System.out.println("        <" + "clave" +">"+ elementoUsuario.getElementsByTagName("clave").item(0).getTextContent() +"</nombre>");
                 }
             }
+
 
         } catch (ParserConfigurationException e) {
             throw new ParserConfigurationException("Error");
@@ -66,7 +70,7 @@ public class Examen {
             region.setValue("Europa");
             usuarios.setAttributeNode(region);
 
-            Element usuario=document.createElement("Usuario");
+            Element usuario=document.createElement("usuario");
             Attr premium=document.createAttribute("premium");
             premium.setValue("no");
             Element nombre= document.createElement("nombre");
@@ -79,7 +83,7 @@ public class Examen {
             usuario.setAttributeNode(premium);
             usuarios.appendChild(usuario);
 
-            usuario=document.createElement("Usuario");
+            usuario=document.createElement("usuario");
             premium=document.createAttribute("premium");
             premium.setValue("si");
             nombre= document.createElement("nombre");
@@ -92,7 +96,7 @@ public class Examen {
             usuario.setAttributeNode(premium);
             usuarios.appendChild(usuario);
 
-            usuario=document.createElement("Usuario");
+            usuario=document.createElement("usuario");
             premium=document.createAttribute("premium");
             premium.setValue("no");
             nombre= document.createElement("nombre");
