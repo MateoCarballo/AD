@@ -2,12 +2,12 @@
 R
 java:S1066¸"/Merge this if statement with the enclosing one.(®Øëâüÿÿÿÿ8¢Ÿ˜¨©2
 {	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ç¸Ñ½şÿÿÿÿ8£Ÿ˜¨©2
-U
-java:S2755="3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8²Ÿ˜¨©2
-U
-java:S2755V"3Disable access to external entities in XML parsing.(ƒ”±êùÿÿÿÿ8ü”™¨©2
 V
 java:S2755›"3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8²Ÿ˜¨©2
+U
+java:S2755V"3Disable access to external entities in XML parsing.(ƒ”±êùÿÿÿÿ8ü”™¨©2
+U
+java:S2755="3Disable access to external entities in XML parsing.(ƒ¶ŠÊûÿÿÿÿ8²Ÿ˜¨©2
 b
 java:S1124"EReorder the modifiers to comply with the Java Language Specification.(Ÿøï8´Ÿ˜¨©2
 ]	java:S125"<This block of commented-out lines of code should be removed.(ñ¥ùšøÿÿÿÿ8òà¡¨©2

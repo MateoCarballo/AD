@@ -1,16 +1,129 @@
-package EjerciciosExamen.resources;
+package EjerciciosExamen;
 
-import EjerciciosExamen.FiltradoExtensiones;
-import EjerciciosExamen.Usuario;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 public class Examen {
     final static String RUTA_CARPETA = "src" + File.separator + "EjerciciosExamen" + File.separator + "resources";
     final static String NOMBRE_ARCHIVO_DAT = "ejercicio2.dat";
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TransformerException, ParserConfigurationException, SAXException {
         ejercicio2();
         ejercicio3();
+        ejercicio4();
+       // ejercicio5();
+    }
+
+
+
+    private static void ejercicio5() throws SAXException, IOException, ParserConfigurationException {
+        File ficheroXML = new File("src/EjerciciosExamen/resources/ejercicio4/ejercicio4.xml");
+        try {
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ficheroXML);
+            document.getDocumentElement().normalize();
+
+
+            NodeList nList = document.getElementsByTagName("coche");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node n = nList.item(i);
+                if(n.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) n;
+                    element.getElementsByTagName("marca").item(0).getTextContent();
+                }
+            }
+
+        } catch (ParserConfigurationException e) {
+            throw new ParserConfigurationException("Error");
+        } catch (IOException e) {
+            throw new IOException(e);
+        } catch (SAXException e) {
+            throw new SAXException(e);
+        }
+    }
+
+    private static void ejercicio4() throws ParserConfigurationException, TransformerException {
+        ejercicio4CrearDirectorio();
+        ejercicio4CrearDocument();
+    }
+
+    private static void ejercicio4CrearDocument() throws ParserConfigurationException, TransformerException {
+        try {
+            //Creacion de la representacion en nuestro programa del xml(el archivo xml no existe todavia)
+            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().getDOMImplementation().createDocument(null,"usuarios",null);
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+
+            //Rellenar de contenido el xml
+            Element usuarios = document.getDocumentElement();
+            Attr region=document.createAttribute("region");
+            region.setValue("Europa");
+            usuarios.setAttributeNode(region);
+
+            Element usuario=document.createElement("Usuario");
+            Attr premium=document.createAttribute("premium");
+            premium.setValue("no");
+            Element nombre= document.createElement("nombre");
+            nombre.setTextContent("Mateo");
+            Element clave= document.createElement("clave");
+            clave.setTextContent("1234");
+
+            usuario.appendChild(nombre);
+            usuario.appendChild(clave);
+            usuario.setAttributeNode(premium);
+            usuarios.appendChild(usuario);
+
+            usuario=document.createElement("Usuario");
+            premium=document.createAttribute("premium");
+            premium.setValue("si");
+            nombre= document.createElement("nombre");
+            nombre.setTextContent("Adrian");
+            clave= document.createElement("clave");
+            clave.setTextContent("6789");
+
+            usuario.appendChild(nombre);
+            usuario.appendChild(clave);
+            usuario.setAttributeNode(premium);
+            usuarios.appendChild(usuario);
+
+            usuario=document.createElement("Usuario");
+            premium=document.createAttribute("premium");
+            premium.setValue("no");
+            nombre= document.createElement("nombre");
+            nombre.setTextContent("David");
+            clave= document.createElement("clave");
+            clave.setTextContent("5678");
+
+            usuario.appendChild(nombre);
+            usuario.appendChild(clave);
+            usuario.setAttributeNode(premium);
+            usuarios.appendChild(usuario);
+
+            DOMSource domSource=new DOMSource(document);
+            StreamResult streamResult=new StreamResult(new File("src/EjerciciosExamen/resources/ejercicio4/usuarios.xml"));
+            transformer.transform(domSource,streamResult);
+        } catch (ParserConfigurationException e) {
+            throw new ParserConfigurationException("error");
+        } catch (TransformerConfigurationException e) {
+            throw new TransformerConfigurationException("Error");
+        } catch (TransformerException e) {
+            throw new TransformerException("Transformer Exception");
+        }
+    }
+
+    private static void ejercicio4CrearDirectorio() {
+        File directorio = new File("src/EjerciciosExamen/resources/ejercicio4");
+        if (!directorio.exists()){
+            if (directorio.mkdirs()){
+                System.out.println("Creado el directorio con ruta -> " + directorio.getPath());
+            }
+        }
     }
 
     private static void ejercicio3() {

@@ -1,0 +1,10 @@
+
+E	java:S106"+Replace this use of System.err by a logger.(šÕ†âùÿÿÿÿ
+@	java:S106"+Replace this use of System.err by a logger.(×òı¶
+@	java:S106"+Replace this use of System.err by a logger.(á“‹–
+E	java:S106"+Replace this use of System.err by a logger.(Ÿ•‡³øÿÿÿÿ
+E	java:S106"+Replace this use of System.err by a logger.(‹Íîşÿÿÿÿ
+@	java:S106"+Replace this use of System.err by a logger.(©¼«
+“
+java:S1130."xRemove the declaration of thrown exception 'java.io.FileNotFoundException' which is a subclass of 'java.io.IOException'.(‡çØğÿÿÿÿÿ
+@	java:S106;"+Replace this use of System.out by a logger.(ÇÙÌÓ

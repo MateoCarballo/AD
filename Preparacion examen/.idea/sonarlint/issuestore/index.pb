@@ -1,23 +1,29 @@
 
-D
-src/ArchivosXML.java,b\6\b6f65f1e248c95b1a351130912c0b2a47a3aaf41
 a
 1src/LecturaEscrituraSecuencialAleatoria/Main.java,c\4\c4b35efec657eeee558d05708f57990f5ce63218
-b
-2src/LecturaEscrituraXML/ArchivosXML/archivoXML.xml,c\6\c67f5fca6bce8c568152585a040ea1bb06914cdd
-J
-src/ManejoExcepciones.java,7\d\7de413b1a50168e0c8887968821df91c33db9502
-j
-:src/LecturaEscrituraXML/ArchivosXML/Nombre Documento 1.xml,e\d\edfa48a1dc22222b64dfdcbf1d08dd8d9a5500de
-j
-:src/LecturaEscrituraXML/ArchivosXML/Nombre Documento 2.xml,9\d\9d8cf8688eb920cf4995982bfe6af30a28d07fb5
 X
 (src/LecturaEscrituraXML/ArchivosXML.java,0\1\01bea3c1343f668f9bdebc4bac116cc2f5e09e94
-g
-7src/LecturaEscrituraXML/Archivos/Nombre Documento 1.xml,5\f\5f0751032dc18e69fafad2650419494ab09fc8f3
-g
-7src/LecturaEscrituraXML/Archivos/Nombre Documento 2.xml,d\6\d6cdbfc7151faf42e660d7ba02733a686436a349
 s
 Csrc/LecturaEscrituraXML/Archivos/Archivo escrito desde programa.xml,d\1\d1d7ee61aad0df435b44f8fc5762d1bbf1283c6c
 f
 6src/LecturaEscrituraXML/Archivos/Archivo para leer.xml,2\e\2e2cee615cff65295da4195331aba9e86650e520
+]
+-src/EjerciciosExamen/FiltradoExtensiones.java,a\c\ac930ea62d8e2c326bd32d6f994c6100654e0861
+P
+ src/EjerciciosExamen/Examen.java,f\4\f47582be83869cd5dbf2967540d86a6959b9f523
+V
+&src/Excepciones/ManejoExcepciones.java,5\e\5e07165eac16ced0edd6480a9ae41974a4853415
+h
+8src/EjerciciosExamen/resources/ejercicio4/ejercicio4.xml,4\6\46369fe47b75c03b5209c03344aeaccda2d8bdb6
+d
+4src/EjerciciosExamen/resources/ejercicio4/Coche.java,4\2\42e00d35705f18435e42fe49cf437e280d933a34
+c
+3src/EjerciciosExamen/resources/ejercicio4/moto.java,9\a\9a894b0252efd896d9397065517fccfaf317629c
+c
+3src/EjerciciosExamen/resources/ejercicio4/Moto.java,c\6\c6e3ffe03c97da8253eed79a8e05fbdde322b5cd
+e
+5src/EjerciciosExamen/resources/ejercicio3/archivo.xml,5\7\57b417991d1ff246e8a784a42f1f03c90070d80a
+s
+Csrc/EjerciciosExamen/resources/ejercicio3/archivo con etiquetas.xml,4\d\4d77bfe864e2bf0ec6a2a6bd67ccd0986dfc41b5
+f
+6src/EjerciciosExamen/resources/ejercicio4/usuarios.xml,1\d\1d559e0d684a07253337b54b5064375738115d79

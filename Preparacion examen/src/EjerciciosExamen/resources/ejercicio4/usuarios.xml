@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<usuarios region="Europa">
+    <Usuario premium="no">
+        <nombre>Mateo</nombre>
+        <clave>1234</clave>
+    </Usuario>
+    <Usuario premium="si">
+        <nombre>Adrian</nombre>
+        <clave>6789</clave>
+    </Usuario>
+    <Usuario premium="no">
+        <nombre>David</nombre>
+        <clave>5678</clave>
+    </Usuario>
+</usuarios>
