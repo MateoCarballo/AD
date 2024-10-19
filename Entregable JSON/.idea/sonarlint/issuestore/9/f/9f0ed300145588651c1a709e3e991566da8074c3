@@ -1,20 +1,21 @@
 
 i
-java:S1192^"GDefine a constant instead of duplicating this literal "titulo" 3 times.(––ÏŸşÿÿÿÿ8îÕ£°§2
+java:S1192a"GDefine a constant instead of duplicating this literal "titulo" 4 times.(––ÏŸşÿÿÿÿ8Ú€ßµª2
 c
-java:S1192G"FDefine a constant instead of duplicating this literal "Error" 6 times.(¯İî8îÕ£°§2
+java:S1192J"FDefine a constant instead of duplicating this literal "Error" 6 times.(¯İî8Ú€ßµª2
 h
-java:S1192]"FDefine a constant instead of duplicating this literal "autor" 6 times.(ë¯±íşÿÿÿÿ8îÕ£°§2
+java:S1192`"FDefine a constant instead of duplicating this literal "autor" 7 times.(ë¯±íşÿÿÿÿ8Ú€ßµª2
 R
-java:S1141B"5Extract this nested try block into a separate method.(‚Ñ«¹8îÕ£°§2
-x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8†Ö£°§2
+java:S1141E"5Extract this nested try block into a separate method.(‚Ñ«¹8Û€ßµª2
+x	java:S116"WRename this field "RUTA_FICHERO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èé£öüÿÿÿÿ8“ßµª2
 C
-java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8‡Ö£°§2
+java:S1170"!Make this final field static too.(èé£öüÿÿÿÿ8“ßµª2
 ‚
-java:S1450"`Remove the "ventanaCrearAutor" field and declare it as a local variable in the relevant methods.(‰ŸŞËûÿÿÿÿ8‡Ö£°§2
+java:S1450"`Remove the "ventanaCrearAutor" field and declare it as a local variable in the relevant methods.(‰ŸŞËûÿÿÿÿ8•ßµª2
 
-java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8ˆÖ£°§2
+java:S1450"bRemove the "ventanaInicioSesion" field and declare it as a local variable in the relevant methods.(ú ³Â8•ßµª2
 €
-java:S1450"^Remove the "ventanaVerDatos" field and declare it as a local variable in the relevant methods.(º¬å±ûÿÿÿÿ8ˆÖ£°§2
+java:S1450"^Remove the "ventanaVerDatos" field and declare it as a local variable in the relevant methods.(º¬å±ûÿÿÿÿ8–ßµª2
+]	java:S125A"<This block of commented-out lines of code should be removed.(à×ÚÓşÿÿÿÿ8 ßµª2
 P
-java:S1135®"2Complete the task associated to this TODO comment.(¤ó»å8“Ö£°§2
+java:S1135±"2Complete the task associated to this TODO comment.(¤ó»å8¬ßµª2

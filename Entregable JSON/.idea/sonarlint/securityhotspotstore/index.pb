@@ -17,3 +17,17 @@ M
 src/gui/VentanaMenuAutor.java,b\5\b597f7a067088babe39a81d66315ef55c503e74c
 G
 resources/libreria.json,1\3\13fa8dba1efe06f7d4e2a55f7d7481b53afed49e
+K
+src/model/Validaciones.java,4\7\47cb055638a3960d65d037485cbc9aae59e3aa9a
+R
+"src/model/NombreAutorNoValido.java,7\3\738c9267eef9a67576c899a1367a71b37e829fde
+V
+&src/model/NumeroDePaginasNoValido.java,d\0\d09a72f277c32d6eb228f031872d7b768091d4ae
+^
+.src/model/excepciones/NombreAutorNoValido.java,3\1\3155c4e47968dce04e04ba10e2dbc07e62fd501d
+b
+2src/model/excepciones/NumeroDePaginasNoValido.java,4\5\4592f767f4929abb3aeef658407f07e8c4e20a7c
+Z
+*src/model/excepciones/ElAutorYaExiste.java,3\c\3c817981dad7c597d60b10f3c8b6ecc31f4aa4c4
+X
+(src/model/validaciones/Validaciones.java,4\1\417daa39d9235fbc8b9aa1ad3006aeb82cdb1cf7

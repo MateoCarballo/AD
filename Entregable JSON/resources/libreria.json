@@ -1,6 +1,14 @@
-[{
-    "editorial": "a",
-    "paginas": "a",
-    "titulo": "a",
-    "autor": "a"
-}]
+[
+    {
+        "editorial": "a",
+        "paginas": "a",
+        "titulo": "1234",
+        "autor": "Alberto Daniel"
+    },
+    {
+        "editorial": "Editorial",
+        "paginas": "10000",
+        "titulo": "Libro del autor A",
+        "autor": "Albertito-Pelon"
+    }
+]

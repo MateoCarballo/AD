@@ -1,15 +1,19 @@
 
 d
-java:S1192."GDefine a constant instead of duplicating this literal "Tahoma" 5 times.(¡®¹«8Ó‘Ù«§2
+java:S1192."GDefine a constant instead of duplicating this literal "Tahoma" 5 times.(¡®¹«8õÑ„¶ª2
 J
-java:S1604^"(Make this anonymous inner class a lambda(¼Ãèõıÿÿÿÿ8Ô‘Ù«§2
+java:S1604^"(Make this anonymous inner class a lambda(¼Ãèõıÿÿÿÿ8öÑ„¶ª2
 J
-java:S1604j"(Make this anonymous inner class a lambda(ÏÑ›¬øÿÿÿÿ8Ô‘Ù«§2
+java:S1604t"(Make this anonymous inner class a lambda(ÏÑ›¬øÿÿÿÿ8öÑ„¶ª2
 G
-java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8ì‘Ù«§2
+java:S1948"%Make "app" transient or serializable.(•È˜øÿÿÿÿ8‹Ò„¶ª2
 i
-java:S3252#"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ğ8ï‘Ù«§2
+java:S3252#"LUse static access with "javax.swing.WindowConstants" for "DISPOSE_ON_CLOSE".(Òœ Ğ8Ò„¶ª2
+g
+java:S2147i"ECombine this catch with the one at line 103, which has the same body.(Ò¿ˆÁùÿÿÿÿ8‘¶‡¶ª2
 O
-java:S1135t"2Complete the task associated to this TODO comment.(…ïœ†8‚’Ù«§2
+java:S1135~"2Complete the task associated to this TODO comment.(…ïœ†8Ò„¶ª2
+d
+java:S1128"BRemove this unused import 'model.excepciones.NombreAutorNoValido'.(Ê½Ş ÿÿÿÿÿ8‡‡¶ª2
 I
-java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8‚’Ù«§2
+java:S1068"'Remove this unused "app" private field.(•È˜øÿÿÿÿ8Ò„¶ª2

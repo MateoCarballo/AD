@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
+import model.validaciones.Validaciones;
+import model.excepciones.NombreAutorNoValido;
 
 public class VentanaInicioSesion extends JFrame implements ActionListener
 {
@@ -67,8 +69,14 @@ public class VentanaInicioSesion extends JFrame implements ActionListener
 		btnValidar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				app.iniciarValidacion(textoAutor.getText(),textoTitulo.getText());
-			}
+				try {
+					if ((Validaciones.validarNombreAutor(textoAutor.getText()))){
+						app.iniciarValidacion(textoAutor.getText(),textoTitulo.getText());
+					}
+				} catch (NombreAutorNoValido e) {
+					JOptionPane.showMessageDialog(null,e.getMessage());
+				}
+            }
 		});
 
 		btnCrearNuevoAutorLibro = new JButton("Crear nuevo autor");

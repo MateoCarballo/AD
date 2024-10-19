@@ -8,6 +8,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
+import model.excepciones.ElAutorYaExiste;
+import model.excepciones.NombreAutorNoValido;
+import model.excepciones.NumeroDePaginasNoValido;
+import model.validaciones.Validaciones;
 
 public class VentanaCrearAutor extends JFrame implements ActionListener {
 
@@ -90,14 +94,19 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
 		btnCrear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				if (!app.comprobarSiExiste(textoNombreAutor.getText(),textoTituloLibro.getText())){
-					app.crearAutor(textoNombreAutor.getText(),textoTituloLibro.getText(),textoPaginas.getText(),textoEditorial.getText());
-					VentanaCrearAutor.this.dispose();
-				}else{
-					JOptionPane.showMessageDialog(null,"El autor ya tiene un libro con este titulo");
-				}
+                try {
+                    if (!app.comprobarSiExiste(textoNombreAutor.getText(),textoTituloLibro.getText())){
+						Validaciones.validarNumeroDePaginas(textoPaginas.getText());
+                        app.crearAutor(textoNombreAutor.getText(),textoTituloLibro.getText(),textoPaginas.getText(),textoEditorial.getText());
+                        VentanaCrearAutor.this.dispose();
+                    }
+                } catch (ElAutorYaExiste e) {
+                    JOptionPane.showMessageDialog(null,e.getMessage());
+                } catch (NumeroDePaginasNoValido e) {
+					JOptionPane.showMessageDialog(null,e.getMessage());
+                }
 
-			}
+            }
 		});
 
 		btnCancelar = new JButton("Cancelar");

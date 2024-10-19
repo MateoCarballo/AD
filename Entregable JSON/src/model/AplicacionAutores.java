@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
 
+import model.excepciones.ElAutorYaExiste;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -339,13 +340,16 @@ public class AplicacionAutores
 	 * @param tituloLibro
 	 * @return
 	 */
-	public boolean comprobarSiExiste(String nombreAutor,String tituloLibro) {
+	public boolean comprobarSiExiste(String nombreAutor,String tituloLibro) throws ElAutorYaExiste {
 		boolean existe = false;
 		for (Object o : getListadoAutores()){
 			JSONObject libro = (JSONObject) o;
 			if ((libro.getString("autor").equalsIgnoreCase(nombreAutor)) && libro.getString("titulo").equalsIgnoreCase(tituloLibro)) {
 				existe = true;
 			}
+		}
+		if (existe){
+			throw new ElAutorYaExiste("El autor que intentas añadir ya existe dentro de la base de datos");
 		}
 		return existe;
 	}
