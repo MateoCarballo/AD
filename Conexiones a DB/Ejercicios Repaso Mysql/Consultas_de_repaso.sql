@@ -33,6 +33,6 @@ SELECT prv_nome FROM provedores;
 -- Obtener la lista de las poblaciones en las que existan clientes.
 SELECT DISTINCT clt_poboacion FROM clientes;
 -- Mostrar el precio de venta de todos los artículos y el precio que resultaría después de aplicarles un incremento del 10%.
-
+SELECT art_nome AS nombre, art_pv AS precio, (art_pv * 1.1) AS precio_resultado from artigos order by nombre; 
 
 
