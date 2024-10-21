@@ -34,5 +34,8 @@ SELECT prv_nome FROM provedores;
 SELECT DISTINCT clt_poboacion FROM clientes;
 -- Mostrar el precio de venta de todos los artículos y el precio que resultaría después de aplicarles un incremento del 10%.
 SELECT art_nome AS nombre, art_pv AS precio, (art_pv * 1.1) AS precio_resultado from artigos order by nombre; 
-
+-- Mostrar el número de cliente, apellidos y nombre de todos los clientes de Madrid.
+SELECT clt_id as cliente , clt_nome AS nombre, clt_apelidos AS apellidos from clientes where clt_poboacion = "Madrid";
+-- Seleccionar el código, descripción y peso de los artículos que pesen más de 500 gramos.
+SELECT art_codigo AS codigo, art_nome AS nombre, art_peso AS peso from artigos where art_peso > 500 ORDER BY peso;
 
