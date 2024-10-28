@@ -16,4 +16,11 @@ public class ConnMySQL {
         }
     }
 
+    public static Connection getInstance(){
+        if(conn == null){
+            new ConnMySQL();
+        }
+        return conn;
+    }
+
 }
