@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="mysql-connector-j-9.0.0" level="project" />
+    <orderEntry type="library" name="mysql-connector-j-9.1.0" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="23b0974d-0c52-418f-9931-fa6d2d1894d6" />
