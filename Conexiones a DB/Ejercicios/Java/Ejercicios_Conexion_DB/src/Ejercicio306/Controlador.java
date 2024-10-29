@@ -17,9 +17,12 @@ public class Controlador implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         //TODO: USAR e.getActionCommand() PARA SABER QUE SE ESTÁ EJECUTANDO
-        e.getActionCommand().equalsIgnoreCase("BUSCAR");
+
         //TODO: OBTENER PARÁMETROS DE LA VISTA, OBTENER INFORMACIÓN USUARIO Y PINTAR EL VALOR EN LA VISTA
-        model.obtenerResultados(view.getValue());
+        if (e.getActionCommand().equals("BUSCAR")){
+            view.escribirResultado(model.obtenerResultados(view.getValue()));
+        }
+
     }
 
     public void arrancaApp() {

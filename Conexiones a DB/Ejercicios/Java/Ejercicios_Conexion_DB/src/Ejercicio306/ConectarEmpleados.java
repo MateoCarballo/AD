@@ -21,7 +21,7 @@ public class ConectarEmpleados {
     }
 
     public static Connection getInstance(){
-        if (connection != null){
+        if (connection == null){
             new ConectarEmpleados();
         }
         return connection;

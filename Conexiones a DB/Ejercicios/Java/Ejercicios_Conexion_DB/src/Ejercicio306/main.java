@@ -15,7 +15,6 @@ public class main {
         vista.setController(controlador);
         // TODO: INSTANCIAR EL MODELO, LA VISTA Y EL CONTROLADOR
         // TODO: ARRANCAR LA VISTA Y ESTABLECERLER EL CONTROLADOR
-        
     }
     
 }

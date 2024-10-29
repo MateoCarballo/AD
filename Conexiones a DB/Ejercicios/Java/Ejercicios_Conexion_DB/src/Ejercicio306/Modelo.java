@@ -2,36 +2,32 @@ package Ejercicio306;
 
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class Modelo {
-    private Connection conn;
-    public Modelo(){
-        this.conn = ConectarEmpleados.getInstance();
-    }
 
-    public void obtenerResultados(String consulta){
-        String query = "SELECT * FROM empleado WHERE NSS = " + consulta;
-        ArrayList<String> datosEmpleado = new ArrayList<>();
+
+    public String obtenerResultados(String numeroSS){
+        String query = "SELECT * FROM empleado WHERE NSS = 11122" ;
+        String cadenaResultado= "";
+        PreparedStatement preparedStatement;
         try {
-            Statement preparedStatement = conn.createStatement();
-            ResultSet resultSet = preparedStatement.executeQuery(query);
-            while (resultSet.next()){
-                datosEmpleado.add(resultSet.getString("NSS"));
-                datosEmpleado.add(resultSet.getString("Nombre"));
-                datosEmpleado.add(resultSet.getString("Apel1"));
-                datosEmpleado.add(resultSet.getString("Apel2"));
-                datosEmpleado.add(resultSet.getString("Sexo"));
-                datosEmpleado.add(resultSet.getString("Dirección"));
-                datosEmpleado.add(resultSet.getString("Fechanac"));
-                datosEmpleado.add(String.valueOf(resultSet.getInt("Salario")));
-                datosEmpleado.add(String.valueOf(resultSet.getInt("Numdept")));
-                datosEmpleado.add(resultSet.getString("NSSsup"));
-            }
+            Connection conn = ConectarEmpleados.getInstance();
+            preparedStatement = conn.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            cadenaResultado = (resultSet.getString("NSS")+
+                    resultSet.getString("Nombre")+
+                    resultSet.getString("Apel1")+
+                    resultSet.getString("Apel2")+
+                    resultSet.getString("Sexo")+
+                    resultSet.getString("Dirección")+
+                    resultSet.getString("Fechanac")+
+                    String.valueOf(resultSet.getInt("Salario"))+
+                    String.valueOf(resultSet.getInt("Numdept"))+
+                    resultSet.getString("NSSsup"));
         }catch (SQLException e){
             System.out.println();
         }
-
+        return cadenaResultado;
     }
 
     // TODO: DEFINICIÓN DE LA CONEXIÓN CON LA BASE DE DATOS
