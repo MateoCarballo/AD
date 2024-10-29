@@ -12,7 +12,7 @@ public class Ejercicio302 {
         //Segundo apartado del ejercicio
         //mostrarInformacionTablaProyecto();
         //Tercer apartado
-        //insertarNuevoProyecto();
+        insertarNuevoProyecto();
         //Cuarto apartaado
         int numeroDeProyecto = 11;
         //eliminarProyectoPorId(numeroDeProyecto);
