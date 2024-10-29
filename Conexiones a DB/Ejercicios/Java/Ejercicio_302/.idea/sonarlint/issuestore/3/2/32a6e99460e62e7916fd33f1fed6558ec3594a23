@@ -6,11 +6,7 @@ java:S1170"!Make this final field static too.(€†´–8Ó°Æ˜­2
 >
 java:S1170	"!Make this final field static too.(ùŞôŠ8Ó°Æ˜­2
 >
-java:S3010"!Remove this assignment of "conn".(¸ú°ı8Ü°Æ˜­2
-R
-java:S2209"5Change this instance-reference to a static reference.(¸ú°ı8á°Æ˜­2
+java:S3010"!Remove this assignment of "conn".(ªô–8¶Äİº­2
 S
-java:S6437"6Revoke and change this password, as it is compromised.(¸ú°ı8ä°Æ˜­2
+java:S6437"6Revoke and change this password, as it is compromised.(ªô–8ä°Æ˜­2
 L	java:S106"+Replace this use of System.out by a logger.(©şêÜúÿÿÿÿ8½êÆ˜­2
-J
-java:S1068"(Remove this unused "conn" private field.(ÎœÈ³ÿÿÿÿÿ8é°Æ˜­2

@@ -1,2 +1,40 @@
 
-E	java:S106"+Replace this use of System.out by a logger.(‚ŞÏ¥ıÿÿÿÿ
+g	java:S112`"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8äå­¿­2
+}
+java:S1192Û"ZDefine a constant instead of duplicating this literal "Numero de departamento : " 3 times.(Á¶€ºüÿÿÿÿ8åå­¿­2
+s
+java:S1192w"VDefine a constant instead of duplicating this literal "Numero de proyecto : " 3 times.(‰ªÇî8åå­¿­2
+m
+java:S2095§"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(Ñ½‹ó8Óæ­¿­2
+r
+java:S2095"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(õó†Àıÿÿÿÿ8Óæ­¿­2
+q
+java:S2095W"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(°£—¾ùÿÿÿÿ8Óæ­¿­2
+l
+java:S2095¬"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(×‹¹\8Óæ­¿­2
+m
+java:S2095¢"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(²¶ğ¦8Óæ­¿­2
+r
+java:S2095±"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(’Ø«Éüÿÿÿÿ8Óæ­¿­2
+T
+java:S2589c"7Remove this expression which always evaluates to "true"(ş³ñã8Óæ­¿­2
+Y
+java:S25891"7Remove this expression which always evaluates to "true"(â¹şÃùÿÿÿÿ8Óæ­¿­2
+f
+java:S1854"DRemove this useless assignment to local variable "numeroDeProyecto".(È×šÕşÿÿÿÿ8Õæ­¿­2
+X	java:S125
+"<This block of commented-out lines of code should be removed.(¢×…8Öæ­¿­2
+W
+java:S1481"5Remove this unused "numeroDeProyecto" local variable.(È×šÕşÿÿÿÿ8Öæ­¿­2
+X	java:S125"<This block of commented-out lines of code should be removed.(û”ş²8Öæ­¿­2
+]	java:S125:"<This block of commented-out lines of code should be removed.(ší°Ğûÿÿÿÿ8Ùæ­¿­2
+Q
+java:S1128"4Remove this unused import 'java.util.logging.Level'.(…µÛ¶8ÖÀ¯¿­2
+\
+java:S1144#":Remove this unused private "eliminarProyectoPorId" method.(ÑÇ¯óüÿÿÿÿ8äæ­¿­2
+\
+java:S1144S":Remove this unused private "insertarNuevoProyecto" method.(ší°Ğûÿÿÿÿ8òç¯¿­2
+f
+java:S1144k"DRemove this unused private "mostrarInformacionTablaProyecto" method.(œÕÿÑıÿÿÿÿ8äæ­¿­2
+]
+java:S1144’":Remove this unused private "mostrarTodasLasTablas" method.(‹Èâíşÿÿÿÿ8äæ­¿­2
