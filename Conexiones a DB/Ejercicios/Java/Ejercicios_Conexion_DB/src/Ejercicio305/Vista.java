@@ -1,14 +1,32 @@
-package ejercicio305;
+package Ejercicio305;
 
 public class Vista extends javax.swing.JFrame {
-
-    //TODO: DEFINIR EL CONTROLADOR, ESTABLECER EL CONTROLADOR COMO actionListener
-    //TODO: USAR jButton1.setActionCommand PARA ASIGNAR UN NOMBRE AL COMANDO
+    //TODO: DEFINIR EL CONTROLADOR
+    Controlador controller;
     //TODO: MÉTODO DE OBTENCIÓN DE VALORES DE LOS jTextFields Y ESCRIBIR EN ELLOS
     
     public Vista() {
     }
-    
+
+    public void setController(Controlador controlador){
+        this.controller = controlador;
+        //TODO:ESTABLECER EL CONTROLADOR COMO actionListener
+        jButton1.addActionListener(controller);
+        //TODO: USAR jButton1.setActionCommand PARA ASIGNAR UN NOMBRE AL COMANDO
+        jButton1.setActionCommand("SUMAR");
+    }
+    //TODO: MÉTODO DE OBTENCIÓN DE VALORES DE LOS jTextFields Y ESCRIBIR EN ELLOS
+    public String[] obtenerValoresJTextFields(){
+        String[] campos = new String[3];
+        campos[0] = jTextField1.getText();
+        campos[1] = jTextField2.getText();
+        return campos;
+    }
+
+    public void escribirResultado(String resultado){
+        jTextPane1.setText(resultado);
+    }
+
     public void arranca(){
         initComponents();
         setLocationRelativeTo(null);
