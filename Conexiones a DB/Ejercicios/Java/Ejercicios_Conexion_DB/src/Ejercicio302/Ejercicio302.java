@@ -1,3 +1,5 @@
+package Ejercicio302;
+
 import java.sql.*;
 
 import static java.lang.System.*;

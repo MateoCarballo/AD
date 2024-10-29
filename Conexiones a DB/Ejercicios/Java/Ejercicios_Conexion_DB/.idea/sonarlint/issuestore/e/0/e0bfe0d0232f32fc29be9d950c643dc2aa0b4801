@@ -1,0 +1,22 @@
+
+g	java:S112a"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8äå­¿­2
+}
+java:S1192Ü"ZDefine a constant instead of duplicating this literal "Numero de departamento : " 3 times.(Á¶€ºüÿÿÿÿ8åå­¿­2
+s
+java:S1192x"VDefine a constant instead of duplicating this literal "Numero de proyecto : " 3 times.(‰ªÇî8åå­¿­2
+u	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ñõäI8ñà¿­2
+f
+java:S1854"DRemove this useless assignment to local variable "numeroDeProyecto".(È×šÕşÿÿÿÿ8Õæ­¿­2
+X	java:S125"<This block of commented-out lines of code should be removed.(¢×…8Öæ­¿­2
+W
+java:S1481"5Remove this unused "numeroDeProyecto" local variable.(È×šÕşÿÿÿÿ8Öæ­¿­2
+X	java:S125"<This block of commented-out lines of code should be removed.(û”ş²8Öæ­¿­2
+]	java:S125;"<This block of commented-out lines of code should be removed.(ší°Ğûÿÿÿÿ8Ùæ­¿­2
+\
+java:S1144$":Remove this unused private "eliminarProyectoPorId" method.(ÑÇ¯óüÿÿÿÿ8äæ­¿­2
+\
+java:S1144T":Remove this unused private "insertarNuevoProyecto" method.(ší°Ğûÿÿÿÿ8òç¯¿­2
+f
+java:S1144l"DRemove this unused private "mostrarInformacionTablaProyecto" method.(œÕÿÑıÿÿÿÿ8äæ­¿­2
+]
+java:S1144“":Remove this unused private "mostrarTodasLasTablas" method.(‹Èâíşÿÿÿÿ8äæ­¿­2

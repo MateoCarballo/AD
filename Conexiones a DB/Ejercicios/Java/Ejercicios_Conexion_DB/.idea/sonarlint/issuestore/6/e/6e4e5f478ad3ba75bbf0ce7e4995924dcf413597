@@ -1,0 +1,11 @@
+
+’
+java:S1319
+"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ΧρΐΆϋÿÿÿÿ8¨κμΐ­2
+u	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(²Κ‰@8©κμΐ­2
+l
+java:S2259"O"NullPointerException" will be thrown when invoking method "buscarEmpleados()".(•¦η8ύτρΐ­2
+X
+java:S6437"6Revoke and change this password, as it is compromised.(— ‚ύωÿÿÿÿ8³κμΐ­2
+L	java:S106"+Replace this use of System.out by a logger.(ΜΈ‡κϋÿÿÿÿ8΄κμΐ­2
+G	java:S106!"+Replace this use of System.out by a logger.(χ«θ8µκμΐ­2
