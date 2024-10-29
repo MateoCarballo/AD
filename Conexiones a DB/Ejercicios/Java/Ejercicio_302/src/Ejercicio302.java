@@ -1,9 +1,8 @@
 import java.sql.*;
-import java.util.logging.Level;
 
 import static java.lang.System.*;
 
-public class Main {
+public class Ejercicio302 {
     public static void main(String[] args) {
         //Primer apartado del ejercicio
         mostrarInformacionConexion();
@@ -18,7 +17,7 @@ public class Main {
     }
 
     private static void mostrarInformacionConexion() {
-        Connection connection = ConnMySQL.getInstance();
+        Connection connection = ConexionEmpleados.getInstance();
         DatabaseMetaData dbmd = null;
         try {
             dbmd = connection.getMetaData();
@@ -33,7 +32,7 @@ public class Main {
     }
 
     private static void eliminarProyectoPorId(int idProyecto) {
-        Connection conn = ConnMySQL.getInstance();
+        Connection conn = ConexionEmpleados.getInstance();
         PreparedStatement preparedStatement = null;
 
         try {
@@ -81,7 +80,7 @@ private static void insertarNuevoProyecto() {
     }
 */
     private static void insertarNuevoProyecto() {
-        Connection connection = ConnMySQL.getInstance();
+        Connection connection = ConexionEmpleados.getInstance();
         PreparedStatement preparedStatement = null;
         try {
              preparedStatement= connection.prepareStatement("INSERT INTO proyecto VALUES (?,?,?,?)");
@@ -105,7 +104,7 @@ private static void insertarNuevoProyecto() {
     }
 
     private static void mostrarInformacionTablaProyecto() {
-        Connection connection = ConnMySQL.getInstance();
+        Connection connection = ConexionEmpleados.getInstance();
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("SELECT * FROM proyecto");
@@ -144,7 +143,7 @@ private static void insertarNuevoProyecto() {
     }
 
     private static void mostrarTodasLasTablas() {
-        Connection connection = ConnMySQL.getInstance();
+        Connection connection = ConexionEmpleados.getInstance();
         String consultaEmpleado = "SELECT * FROM empleado";
         String consultaDepartamento = "SELECT * FROM departamento";
         String consultaEmpleadoProyecto = "SELECT * FROM empleadoproyecto";

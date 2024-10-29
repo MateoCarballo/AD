@@ -2,13 +2,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnMySQL {
+public class ConexionEmpleados {
     static Connection conn;
     private final String usuario = "root";
     private final String clave = "abc123.";
     private final String url = "jdbc:mysql://localhost:3306/Empleados";
 
-    private ConnMySQL(){
+    private ConexionEmpleados(){
         try{
             conn = DriverManager.getConnection(url,usuario,clave);
         }catch (SQLException e){
@@ -18,7 +18,7 @@ public class ConnMySQL {
 
     public static Connection getInstance(){
         if(conn == null){
-            new ConnMySQL();
+            new ConexionEmpleados();
         }
         return conn;
     }

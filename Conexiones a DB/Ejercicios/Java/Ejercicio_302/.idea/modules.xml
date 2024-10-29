@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ejercicio_302.iml" filepath="$PROJECT_DIR$/Ejercicio_302.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EjerciciosConexionDB.iml" filepath="$PROJECT_DIR$/EjerciciosConexionDB.iml" />
     </modules>
   </component>
 </project>
