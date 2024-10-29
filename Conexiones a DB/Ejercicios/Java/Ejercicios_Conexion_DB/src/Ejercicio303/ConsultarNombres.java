@@ -12,13 +12,7 @@ public class ConsultarNombres {
     }
 
     private static Connection conectarDB() {
-        Connection conexion = null;
-        try {
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/Empleados","root","abc123.");
-        } catch (SQLException e) {
-            System.out.println("Error durante la conexion a la base de datos");
-        }
-        return conexion;
+        return ConexionEmpleados.getInstance();
     }
 
     private static ArrayList<String> buscarEmpleados(Connection conn, char inicial) {
