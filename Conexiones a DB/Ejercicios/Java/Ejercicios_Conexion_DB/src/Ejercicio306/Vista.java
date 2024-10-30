@@ -99,5 +99,9 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+
+    public void borrarJTextArea() {
+        jTextArea1.setText("");
+    }
     // End of variables declaration//GEN-END:variables
 }

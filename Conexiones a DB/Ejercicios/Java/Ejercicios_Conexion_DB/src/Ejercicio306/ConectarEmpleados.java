@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConectarEmpleados {
 
     public static Connection conn;
-    private String URL = "jdbc:mysql://localhost:3306/Empleados";
+    private String URL = "jdbc:mysql://localhost:3306/empleados";
     private String USER = "root";
     private String PSW = "abc123.";
 
