@@ -1,6 +1,5 @@
 package Ejercicio306;
 
-import java.util.ArrayList;
 
 public class Vista extends javax.swing.JFrame {
     //TODO: DEFINIR EL CONTROLADOR,
@@ -12,7 +11,7 @@ public class Vista extends javax.swing.JFrame {
 
     // TODO: ESTABLECER EL CONTROLADOR COMO actionListener
     public void setController(Controlador controlador) {
-        this.controller = controlador;
+        controller = controlador;
         jButton1.addActionListener(controller);
         jButton1.setActionCommand("BUSCAR");
     }
@@ -23,7 +22,7 @@ public class Vista extends javax.swing.JFrame {
 
     public void escribirResultado(String datosEmpleado){
         // TODO que le llegue algun tipo de lista para poder repetir la operacion de escritura
-        jTextArea1.setText(datosEmpleado);
+        jTextArea1.append(datosEmpleado);
     }
 
 

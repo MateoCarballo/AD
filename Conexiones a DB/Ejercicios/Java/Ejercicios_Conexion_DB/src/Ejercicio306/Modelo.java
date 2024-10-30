@@ -7,7 +7,7 @@ public class Modelo {
 
 
     public String obtenerResultados(String numeroSS){
-        String query = "SELECT * FROM empleado WHERE NSS = 11122" ;
+        String query = "SELECT * FROM empleado WHERE NSS = numeroSS" ;
         String cadenaResultado= "";
         PreparedStatement preparedStatement;
         try {

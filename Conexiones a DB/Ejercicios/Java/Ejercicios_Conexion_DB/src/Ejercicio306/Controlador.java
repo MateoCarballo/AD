@@ -27,5 +27,6 @@ public class Controlador implements ActionListener{
 
     public void arrancaApp() {
         view.arrancar();
+
     }
 }
