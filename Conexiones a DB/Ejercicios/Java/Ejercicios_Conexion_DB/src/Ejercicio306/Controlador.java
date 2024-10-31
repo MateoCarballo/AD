@@ -20,13 +20,24 @@ public class Controlador implements ActionListener{
 
         //TODO: OBTENER PARÁMETROS DE LA VISTA, OBTENER INFORMACIÓN USUARIO Y PINTAR EL VALOR EN LA VISTA
         if (e.getActionCommand().equals("BUSCAR")){
-            view.escribirResultado(model.obtenerResultados(view.getValue()));
+            pintarDatosEmpleado(model.obtenerResultados(view.getValue()));
         }
 
     }
 
     public void arrancaApp() {
         view.arrancar();
+
+    }
+
+    public void pintarDatosEmpleado(String [] valoresEmpleado){
+        String[] columnas = {"NSS","Nombre","Primer apellido","Segundo apellido","Sexo","Dirección","Fecha de nacimiento","Salario","Número de departamento","NSS suplente"};
+        view.borrarJTextArea();
+        for (int i = 0; i < valoresEmpleado.length; i++) {
+            view.escribirResultado(columnas[i] + " : ");
+            view.escribirResultado(valoresEmpleado[i]);
+            view.escribirResultado("\n");
+        }
 
     }
 }
