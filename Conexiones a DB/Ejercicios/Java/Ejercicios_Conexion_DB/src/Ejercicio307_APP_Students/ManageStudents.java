@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ManageStudents {
-    Connection connection;
+    private Connection connection;
     final String URL ;
     final String USR;
     final String PSW;
@@ -44,7 +44,7 @@ public class ManageStudents {
         int filasAfectadas = 0;
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(
-                "INSERT INTO student (id,name,surname,age) VALUES (?,?,?,?)");){
+                "INSERT INTO student (id,name,surname,age) VALUES (?,?,?,?)")){
             preparedStatement.setString(1,student.getId());
             preparedStatement.setString(2,student.getName());
             preparedStatement.setString(3,student.getSurname());
@@ -64,6 +64,7 @@ public class ManageStudents {
         return new Student();
     }
     public boolean deleteStudent(String id){
+        openConnection();
         int filasAfectadas = 0;
         boolean borradoExitoso = false;
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM student WHERE id = ?")){
