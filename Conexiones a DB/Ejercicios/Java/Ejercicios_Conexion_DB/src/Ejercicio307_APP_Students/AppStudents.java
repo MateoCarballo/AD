@@ -1,20 +1,25 @@
 package Ejercicio307_APP_Students;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class AppStudents {
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private ArrayList <Student> students;
     static final String PATRON_INDICE_PRINCIPAL = "^[1-6]$";
     static final String PATRON_NOMBRE_Y_APELLIDOS = "^[A-Z][a-zñáéíóú]{0,19}$";
     static final String PATRON_EDAD = "^[1-9][0-9]?$";
     static final String PATRON_DNI = "^[0-9]{8}[A-Z]$";
-    ManageStudents manage;
+    private final ManageStudents manage;
 
     public AppStudents(ManageStudents manageStudents){
         this.manage = manageStudents;
+    }
+
+    public void initApp() {
+        students = manage.getStudents();
     }
 
     private void menuPrincipal (){
@@ -48,7 +53,6 @@ public class AppStudents {
               case 4 -> verDatosStudent();
               case 5 -> verTodosLosDatos();
               case 6 -> continuar = false;
-
             }
         }while(continuar);
     }
@@ -104,16 +108,34 @@ public class AppStudents {
         }
     }
 
-    private static void bajaStudent() {
+    private void bajaStudent() {
+        String id = "";
         System.out.println("Introduzca el DNI del alumno que desea eliminar");
         try {
-            if (compronarDatoIntroducido(br.readLine()
-                    ,PATRON_DNI)){
-
+            do{
+                id = br.readLine();
+            }while(!(compronarDatoIntroducido(id,PATRON_DNI)));
+            if (!existeEstudiante(id)){
+                System.out.println("No se ha encontrado nignun estudiante con ese ID");
+            }
+            if (!manage.deleteStudent(id)){
+                System.out.println("******* No se ha podido eliminar el student en el metodo 'Manage.deleteStudent' ******* ");
+            } else {
+                System.out.println("******* ALUMNO ELIMINADO CON EXITO *******");
             }
         } catch (IOException e) {
             System.out.println("Error al introducir el DNI para eliminar student");
         }
+    }
+
+    private boolean existeEstudiante(String id) {
+        boolean existeStudent = false;
+        for(Student s : students){
+            if (id.equalsIgnoreCase(s.getId())){
+                existeStudent = true;
+            }
+        }
+        return existeStudent;
     }
 
     private static void actualizaStudent() {
