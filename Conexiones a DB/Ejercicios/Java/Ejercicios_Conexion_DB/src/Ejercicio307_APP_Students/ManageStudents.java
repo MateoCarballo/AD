@@ -81,9 +81,59 @@ public class ManageStudents {
 
         return borradoExitoso;
     }
-    public boolean modifyStudent(Student student){
+    public boolean modifyStudent(Student student,int tipoConsulta){
+        openConnection();
+        String query = "";
+        String updateId = "UPDATE student SET id = ? WHERE id = ?";
+        String updateName = "UPDATE student SET name = ? WHERE id = ?";
+        String updateSurname = "UPDATE student SET surname = ? WHERE id = ?";
+        String updateAge = "UPDATE student SET age = ? WHERE id = ?";
+        PreparedStatement preparedStatement;
+        try{
+
+        switch (tipoConsulta){
+            // TODO: Pendiente de implementar cada metodo para modificar cada parametro completo o los que sean necesarios. Quiza preguntando que quieres modificar y crear una consulta para cada caso. Aun tengo que darle un vuelta
+            case 1 -> {
+                query = updateId ;
+                preparedStatement = connection.prepareStatement(query);
+                modifyStudentId(preparedStatement,student.getId());
+            }
+            case 2 -> {
+                query = updateName ;
+                preparedStatement = connection.prepareStatement(query);
+                modifyStudentName(preparedStatement,student.getName());
+            }
+            case 3 -> {
+                query = updateSurname ;
+                preparedStatement = connection.prepareStatement(query);
+                modifyStudentSurname(preparedStatement,student.getSurname());
+            }
+            case 4 ->{
+                query = updateAge ;
+                preparedStatement = connection.prepareStatement(query);
+                modifyStudentAge(preparedStatement,student.getAge());
+            }
+        }
+
+
+
+        }catch (SQLException e){
+            System.out.println("Error al modificar el estudiante");
+        }
         return true;
     }
+    private void modifyStudentId(PreparedStatement preparedStatement, String newId) {
+    }
+
+    private void modifyStudentName(PreparedStatement preparedStatement, String name) {
+    }
+
+    private void modifyStudentSurname(PreparedStatement preparedStatement, String newSurname) {
+    }
+
+    private void modifyStudentAge(PreparedStatement preparedStatement, int newAge) {
+    }
+
     public ArrayList <Student> getStudents(){
         openConnection();
         ArrayList<Student> students = new ArrayList<>();

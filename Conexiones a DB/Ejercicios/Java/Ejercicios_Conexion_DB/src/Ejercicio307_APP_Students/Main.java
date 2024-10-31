@@ -5,7 +5,7 @@ public class Main {
         ManageStudents manageStudents = new ManageStudents(
                 "jdbc:mysql://localhost:3306/school","root","abc123.");
         AppStudents app = new AppStudents(manageStudents);
-        app.initApp();
+        app.getValuesFromDB();
         app.arranca();
     }
 }

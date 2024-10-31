@@ -18,15 +18,16 @@ public class AppStudents {
         this.manage = manageStudents;
     }
 
-    public void initApp() {
+    public void getValuesFromDB() {
         students = manage.getStudents();
     }
 
     private void menuPrincipal (){
         String entradaTeclado = "";
         boolean continuar = true;
-        boolean datosOK = false;
+        boolean datosOK;
         do{
+            getValuesFromDB();
             System.out.println("""
                     1. MATRICULAR UN ESTUDIANTE.
                     2. DAR DE BAJA A UN ESTUDIANTE.
@@ -138,7 +139,34 @@ public class AppStudents {
         return existeStudent;
     }
 
-    private static void actualizaStudent() {
+    private void actualizaStudent() {
+        String id = "";
+        System.out.println("Introduzca el DNI del alumno que desea modificar");
+        try {
+            do{
+                id = br.readLine();
+            }while(!(compronarDatoIntroducido(id,PATRON_DNI)));
+            if (!existeEstudiante(id)){
+                System.out.println("No se ha encontrado nignun estudiante con ese ID");
+            }
+            if (!manage.modifyStudent(encontrarStudent(id))){
+                System.out.println("******* No se ha podido modificar el student en el metodo 'Manage.modifyStudent()' ******* ");
+            } else {
+                System.out.println("******* ALUMNO MODIFICADO CON EXITO *******");
+            }
+        } catch (IOException e) {
+            System.out.println("Error al introducir el DNI para eliminar student");
+        }
+    }
+
+    private Student encontrarStudent(String id) {
+        int index = -1;
+        for (int i = 0; i < students.size(); i++) {
+            if(students.get(i).getId().equalsIgnoreCase(id)){
+                index = i;
+            }
+        }
+        return students.get(index);
     }
 
     private static void verDatosStudent() {
