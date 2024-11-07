@@ -1,5 +1,6 @@
 package Ejercicio308_School_MVC;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class Vista extends javax.swing.JFrame {
@@ -22,19 +23,48 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JTextField idTextField;
     private javax.swing.JTextField ageTextField;
     // End of variables declaration  
-    
-    //TODO: DEFINIR EL CONTROLADOR, ESTABLECER EL CONTROLADOR COMO actionListener
-    //TODO: USAR jButton1.setActionCommand PARA ASIGNAR UN NOMBRE AL COMANDO
+
+    private Controlador controller;
+
+
+    private void setController(Controlador controlador){
+        //TODO: DEFINIR EL CONTROLADOR, ESTABLECER EL CONTROLADOR COMO actionListener
+        controller = controlador;
+        jButton1.addActionListener(controller);
+        jButton2.addActionListener(controller);
+        jButton3.addActionListener(controller);
+        //TODO: USAR jButton1.setActionCommand PARA ASIGNAR UN NOMBRE AL COMANDO
+        jButton1.setActionCommand("SAVE");
+        jButton2.setActionCommand("UPDATE");
+        jButton3.setActionCommand("DELETE");
+
+    }
+
     //TODO: M�TODO DE OBTENCI�N DE VALORES DEL jTextFields Y ESCRIBIR EN EL jTextArea
+
+    public String[] getTextFieldValues(){
+        String [] textFieldValues = {idTextField.getText(),nameTextField.getText(),idTextField.getText(),ageTextField.getText()} ;
+        return textFieldValues;
+    }
+
+    public void writteValues(Student student){
+        jTable1.s
+    }
+
+
     //TODO: FUNCI�N DE ACTUALIZACION DE DATOS DE LA TABLA, UTILIZAR DefaultTableModel PARA ACTUALIZAR LOS VALORES
+
+
     
     public Vista() {
     }
 
-    public void arrancar() {
+    public void arrancar(Controlador controlador) {
         initComponents();
         setLocationRelativeTo(null);
         setVisible(true);
+        setController(controlador);
+        this.controller.getDataBaseValues();
     }
     
     @SuppressWarnings("unchecked")
