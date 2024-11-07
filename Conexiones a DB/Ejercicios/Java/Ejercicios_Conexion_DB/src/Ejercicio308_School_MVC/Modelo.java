@@ -1,3 +1,5 @@
+package Ejercicio308_School_MVC;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class Modelo {
 	
 	/** 
-	 * MISMO CÓDIGO QUE EN LA ACTIVIDAD ANTERIOR 
+	 * MISMO Cï¿½DIGO QUE EN LA ACTIVIDAD ANTERIOR 
 	 * */
 
 	private Connection connection;
@@ -24,7 +26,7 @@ public class Modelo {
 		try {
 			this.connection = DriverManager.getConnection(url, usuario, clave);
 		}catch(SQLException sqle) {
-			System.out.println("Error al abrir la conexión");
+			System.out.println("Error al abrir la conexiï¿½n");
 		}
 	}
 	
@@ -32,7 +34,7 @@ public class Modelo {
 		try {
 			this.connection.close();
 		}catch(SQLException sqle) {
-			System.out.println("Error al cerrar la conexión");
+			System.out.println("Error al cerrar la conexiï¿½n");
 		}
 	}
 	

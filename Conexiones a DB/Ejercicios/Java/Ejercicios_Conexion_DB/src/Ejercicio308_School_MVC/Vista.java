@@ -1,3 +1,5 @@
+package Ejercicio308_School_MVC;
+
 import javax.swing.table.DefaultTableModel;
 
 public class Vista extends javax.swing.JFrame {
@@ -23,8 +25,8 @@ public class Vista extends javax.swing.JFrame {
     
     //TODO: DEFINIR EL CONTROLADOR, ESTABLECER EL CONTROLADOR COMO actionListener
     //TODO: USAR jButton1.setActionCommand PARA ASIGNAR UN NOMBRE AL COMANDO
-    //TODO: MÉTODO DE OBTENCIÓN DE VALORES DEL jTextFields Y ESCRIBIR EN EL jTextArea
-    //TODO: FUNCIÓN DE ACTUALIZACION DE DATOS DE LA TABLA, UTILIZAR DefaultTableModel PARA ACTUALIZAR LOS VALORES
+    //TODO: Mï¿½TODO DE OBTENCIï¿½N DE VALORES DEL jTextFields Y ESCRIBIR EN EL jTextArea
+    //TODO: FUNCIï¿½N DE ACTUALIZACION DE DATOS DE LA TABLA, UTILIZAR DefaultTableModel PARA ACTUALIZAR LOS VALORES
     
     public Vista() {
     }
