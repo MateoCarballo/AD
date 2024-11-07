@@ -21,6 +21,7 @@ public class ManageStudents {
         if (connection == null){
             try {
                 connection = DriverManager.getConnection(URL,USR,PSW);
+                System.out.println("Conexion establecida");
             } catch (SQLException e) {
                 System.out.println("Error durante la conexion con la DB School");
             }
@@ -81,58 +82,37 @@ public class ManageStudents {
 
         return borradoExitoso;
     }
-    public boolean modifyStudent(Student student,int tipoConsulta){
+    public boolean modifyStudent(Student student,int tipoDeConsulta,String nuevaEntrada){
         openConnection();
+        int filasAfectadas=-10;
         String query = "";
         String updateId = "UPDATE student SET id = ? WHERE id = ?";
         String updateName = "UPDATE student SET name = ? WHERE id = ?";
         String updateSurname = "UPDATE student SET surname = ? WHERE id = ?";
         String updateAge = "UPDATE student SET age = ? WHERE id = ?";
+        String [] listadoSentenciasSQL = {updateId,updateName,updateSurname,updateAge};
         PreparedStatement preparedStatement;
         try{
+            query = listadoSentenciasSQL[tipoDeConsulta];
+            preparedStatement = connection.prepareStatement(query);
 
-        switch (tipoConsulta){
-            // TODO: Pendiente de implementar cada metodo para modificar cada parametro completo o los que sean necesarios. Quiza preguntando que quieres modificar y crear una consulta para cada caso. Aun tengo que darle un vuelta
-            case 1 -> {
-                query = updateId ;
-                preparedStatement = connection.prepareStatement(query);
-                modifyStudentId(preparedStatement,student.getId());
+            if (tipoDeConsulta != 3){
+                preparedStatement.setString(1,nuevaEntrada);
+                preparedStatement.setString(2, student.getId());
+            } else {
+                preparedStatement.setInt(1,Integer.parseInt(nuevaEntrada));
+                preparedStatement.setString(2, student.getId());
             }
-            case 2 -> {
-                query = updateName ;
-                preparedStatement = connection.prepareStatement(query);
-                modifyStudentName(preparedStatement,student.getName());
-            }
-            case 3 -> {
-                query = updateSurname ;
-                preparedStatement = connection.prepareStatement(query);
-                modifyStudentSurname(preparedStatement,student.getSurname());
-            }
-            case 4 ->{
-                query = updateAge ;
-                preparedStatement = connection.prepareStatement(query);
-                modifyStudentAge(preparedStatement,student.getAge());
-            }
-        }
 
+             filasAfectadas = preparedStatement.executeUpdate();
 
-
-        }catch (SQLException e){
+          }catch (SQLException e){
             System.out.println("Error al modificar el estudiante");
         }
-        return true;
-    }
-    private void modifyStudentId(PreparedStatement preparedStatement, String newId) {
-    }
-
-    private void modifyStudentName(PreparedStatement preparedStatement, String name) {
+        closeConnection();
+        return filasAfectadas != -10;
     }
 
-    private void modifyStudentSurname(PreparedStatement preparedStatement, String newSurname) {
-    }
-
-    private void modifyStudentAge(PreparedStatement preparedStatement, int newAge) {
-    }
 
     public ArrayList <Student> getStudents(){
         openConnection();

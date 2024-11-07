@@ -9,6 +9,7 @@ public class AppStudents {
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private ArrayList <Student> students;
     static final String PATRON_INDICE_PRINCIPAL = "^[1-6]$";
+    static final String PATRON_INDICE_MODIFICAR = "^[1-5]$";
     static final String PATRON_NOMBRE_Y_APELLIDOS = "^[A-Z][a-zñáéíóú]{0,19}$";
     static final String PATRON_EDAD = "^[1-9][0-9]?$";
     static final String PATRON_DNI = "^[0-9]{8}[A-Z]$";
@@ -20,6 +21,7 @@ public class AppStudents {
 
     public void getValuesFromDB() {
         students = manage.getStudents();
+        System.out.println("Valores cargados en programa desde DB");
     }
 
     private void menuPrincipal (){
@@ -140,23 +142,107 @@ public class AppStudents {
     }
 
     private void actualizaStudent() {
-        String id = "";
-        System.out.println("Introduzca el DNI del alumno que desea modificar");
+        String dniAnterior = "";
+        String opcionElegida = "";
+        do{
+            try {
+                System.out.println("Introduzca el DNI del alumno que desea modificar");
+                dniAnterior = br.readLine();
+            } catch (IOException e) {
+                System.out.println("Error durante la introduccion del dni del alumno.");
+            }
+            if (!compronarDatoIntroducido(dniAnterior,PATRON_DNI)){
+                System.out.println("Revisa el DNI introducido, no es un DNI valido o el alumno no está registrado");
+            }
+        }while(!compronarDatoIntroducido(dniAnterior,PATRON_DNI) || (!existeEstudiante(dniAnterior)));
+        
         try {
             do{
-                id = br.readLine();
-            }while(!(compronarDatoIntroducido(id,PATRON_DNI)));
-            if (!existeEstudiante(id)){
-                System.out.println("No se ha encontrado nignun estudiante con ese ID");
+                System.out.println("""
+                    1. Modificar DNI.
+                    2. Modificar nombre.
+                    3. Modificar apellido.
+                    4. Modificar edad.
+                    5. Cancelar operación.
+                    """);
+                opcionElegida = br.readLine();
+            }while(!compronarDatoIntroducido(opcionElegida,PATRON_INDICE_MODIFICAR));
+            
+            int opcionElegidaInt = Integer.parseInt(opcionElegida);
+            
+            switch (opcionElegidaInt){
+                case 1 -> modificarId(dniAnterior);
+                case 2 -> modificarNombre(dniAnterior);
+                case 3 -> modificarApellido(dniAnterior);
+                case 4 -> modificarEdad(dniAnterior);
             }
-            if (!manage.modifyStudent(encontrarStudent(id))){
-                System.out.println("******* No se ha podido modificar el student en el metodo 'Manage.modifyStudent()' ******* ");
-            } else {
-                System.out.println("******* ALUMNO MODIFICADO CON EXITO *******");
-            }
+            
         } catch (IOException e) {
             System.out.println("Error al introducir el DNI para eliminar student");
         }
+    }
+    
+    private void modificarId(String dniAnterior) {
+        String nuevoDNI = "";
+        do{
+            try {
+                System.out.println("Introduce el nuevo DNI para el alumno");
+                nuevoDNI = br.readLine();
+                if(compronarDatoIntroducido(nuevoDNI,PATRON_DNI)){
+                    manage.modifyStudent(encontrarStudent(dniAnterior),0,nuevoDNI);
+                }
+            } catch (IOException e) {
+                System.out.println("Error en la lectura del nuevo DNI");
+            }
+
+        }while(!compronarDatoIntroducido(dniAnterior,PATRON_DNI));
+    }
+    
+    
+    private void modificarNombre(String dni) {
+        String nuevoNombre = "";
+        do{
+            try {
+                System.out.println("Introduce el nuevo nombre para el alumno");
+                nuevoNombre = br.readLine();
+                if(compronarDatoIntroducido(nuevoNombre,PATRON_NOMBRE_Y_APELLIDOS)){
+                    manage.modifyStudent(encontrarStudent(dni),1,nuevoNombre);
+                }
+            } catch (IOException e) {
+                System.out.println("Error en la lectura del nuevo nombre");
+            }
+
+        }while(!compronarDatoIntroducido(nuevoNombre,PATRON_NOMBRE_Y_APELLIDOS));
+    }
+    private void modificarApellido(String dni) {
+        String nuevoApellido = "";
+        do{
+            try {
+                System.out.println("Introduce el nuevo apellido para el alumno");
+                nuevoApellido = br.readLine();
+                if(compronarDatoIntroducido(nuevoApellido,PATRON_NOMBRE_Y_APELLIDOS)){
+                    manage.modifyStudent(encontrarStudent(dni),2,nuevoApellido);
+                }
+            } catch (IOException e) {
+                System.out.println("Error en la lectura del nuevo apellido");
+            }
+
+        }while(!compronarDatoIntroducido(nuevoApellido,PATRON_NOMBRE_Y_APELLIDOS));
+    }
+    private void modificarEdad(String dni) {
+        String nuevaEdad = "";
+        do{
+            try {
+                System.out.println("Introduce la nueva edad para el alumno");
+                nuevaEdad = br.readLine();
+                if(compronarDatoIntroducido(nuevaEdad,PATRON_EDAD)){
+                    manage.modifyStudent(encontrarStudent(dni),3,nuevaEdad);
+                }
+            } catch (IOException e) {
+                System.out.println("Error en la lectura de la nueva edad");
+            }
+
+        }while(!compronarDatoIntroducido(nuevaEdad,PATRON_EDAD));
     }
 
     private Student encontrarStudent(String id) {
