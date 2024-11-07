@@ -1,8 +1,7 @@
 package Ejercicio309.database;
 
 public interface OperacionesInt {
-    public boolean existsClient(String s);
-
-    public boolean isBorrowed(String idBook);
-
+    boolean existsClient(String s);
+    boolean isBorrowed(String idBook);
+    void addLoan(String code, String idClient);
 }
