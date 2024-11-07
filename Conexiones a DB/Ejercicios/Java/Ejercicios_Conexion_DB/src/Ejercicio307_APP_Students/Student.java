@@ -51,11 +51,12 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Estudiante : " + "\n" +
-                "id = " + id + "\n" +
-                "name= " + name  + "\n" +
-                "surname= " + surname  + "\n" +
-                "age= " + age + "\n" ;
+        return "Estudiante --------------<> " + "\n" +
+                "id -> " + id + "\n" +
+                "name-> " + name  + "\n" +
+                "surname-> " + surname  + "\n" +
+                "age-> " + age + "\n" +
+                "-------------------------<>";
 
     }
 }

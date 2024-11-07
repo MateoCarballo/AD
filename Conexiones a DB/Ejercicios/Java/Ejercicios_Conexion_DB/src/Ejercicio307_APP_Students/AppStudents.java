@@ -255,10 +255,29 @@ public class AppStudents {
         return students.get(index);
     }
 
-    private static void verDatosStudent() {
+    private void verDatosStudent() {
+        String dni= "";
+        do{
+            try {
+                System.out.println("Introduce el DNI para el alumno");
+                dni = br.readLine();
+                if(compronarDatoIntroducido(dni,PATRON_DNI)){
+                    System.out.println(encontrarStudent(dni));
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error en la lectura del nuevo DNI");
+            }
+
+        }while(!compronarDatoIntroducido(dni,PATRON_DNI));
+
     }
 
-    private static void verTodosLosDatos() {
+    private void verTodosLosDatos() {
+        getValuesFromDB();
+        for (Student s: students){
+            System.out.println(s);
+        }
     }
 
     private static boolean compronarDatoIntroducido(String entradaTeclado, String patronRegex) {
