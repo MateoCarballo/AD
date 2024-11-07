@@ -66,7 +66,8 @@ public class Modelo {
 			ResultSet rs = ps.executeQuery();			
 			Student st = null; 
 			while(rs.next())
-				st = new Student(rs.getString("id"), rs.getString("name"), rs.getString("surname"),rs.getInt("age"));
+				st = new Student(rs.getString("id"), rs.getString("name"),
+						rs.getString("surname"),rs.getInt("age"));
 			
 			return st;
 			

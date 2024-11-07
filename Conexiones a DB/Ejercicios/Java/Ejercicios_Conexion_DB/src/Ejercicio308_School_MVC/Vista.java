@@ -2,6 +2,7 @@ package Ejercicio308_School_MVC;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class Vista extends javax.swing.JFrame {
 
@@ -43,12 +44,20 @@ public class Vista extends javax.swing.JFrame {
     //TODO: M�TODO DE OBTENCI�N DE VALORES DEL jTextFields Y ESCRIBIR EN EL jTextArea
 
     public String[] getTextFieldValues(){
-        String [] textFieldValues = {idTextField.getText(),nameTextField.getText(),idTextField.getText(),ageTextField.getText()} ;
+        String [] textFieldValues = {idTextField.getText(),nameTextField.getText(),surnameTextField.getText(),ageTextField.getText()} ;
         return textFieldValues;
     }
 
-    public void writteValues(Student student){
-        jTable1.s
+    public void writteValues(){
+        ArrayList <Student> students = controller.getDataBaseValues();
+        String[] columnHeaders = {"ID", "Name", "Surname", "Age"};
+        DefaultTableModel model = new DefaultTableModel(columnHeaders, 0);
+
+        for (Student st : students) {
+            model.addRow(new Object[] {st.getId(), st.getName(), st.getSurname(), st.getAge()});
+        }
+
+        jTable1.setModel(model);
     }
 
 

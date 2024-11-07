@@ -2,7 +2,7 @@ package Ejercicio308_School_MVC;
 
 public class Main {
 
-	public static void Main(String[] args) {
+	public static void main(String[] args) {
 		// TODO: INSTANCIAR EL MODELO, LA VISTA Y EL CONTROLADOR
 		Modelo modelo = new Modelo();
 		Vista vista = new Vista();
