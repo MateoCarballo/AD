@@ -1,0 +1,11 @@
+package Ejercicio308_School_MVC;
+
+public class Main {
+
+	public static void Main(String[] args) {
+		// TODO: INSTANCIAR EL MODELO, LA VISTA Y EL CONTROLADOR
+        // TODO: ARRANCHAR LA VISTA Y ESTABLECERLE EL CONTROLADOR
+		// TODO: ACTUALIZAR LA TABLA CON LA LISTA DE TODOS LOS ALUMNOS
+	}
+
+}
