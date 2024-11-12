@@ -34,7 +34,6 @@ FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
 FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
+INSERT INTO productos (nombre_producto,precio,stock)
+VALUES ('nombre',19.99,100);
 
-INSERT INTO productos (id_producto, nombre_producto, precio, stock) VALUES ("Nombre",10.95,1000);
-
-SELECT * FROM productos;
