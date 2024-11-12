@@ -34,6 +34,7 @@ public class Modelo {
             preparedStatement.setString(2,nif);
             preparedStatement.setInt(3,telefono);
             preparedStatement.setString(4,email);
+
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -51,7 +52,7 @@ public class Modelo {
     public void eliminarProveedor(int id){
         Connection connectionPostgree = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = connectionPostgree.prepareStatement
-                ("DELETE FROM proveedores WHERE id_proveedor = id")){
+                ("DELETE FROM proveedores WHERE id_proveedor = ?")){
 
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
