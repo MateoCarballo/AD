@@ -31,14 +31,17 @@ public class Modelo {
     }
 
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
+
+        // TODO aquí tengo que duplicarlo a narices,no?
         modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
                 ("INSERT INTO proveedores(nombre_proveedor, contacto) " +
                         "VALUES (?, ROW(?,?,?))")){
             preparedStatement.setString(1,nombreProveedor);
-            preparedStatement.setString(2,nif);
-            preparedStatement.setInt(3,telefono);
-            preparedStatement.setString(4,email);
+            preparedStatement.setString(2,nombreProveedor);
+            preparedStatement.setString(3,nif);
+            preparedStatement.setInt(4,telefono);
+            preparedStatement.setString(5,email);
 
             preparedStatement.executeUpdate();
 
@@ -156,5 +159,27 @@ public class Modelo {
         }
     }
 
+
+    void listarProductosBajoStock(int stock){
+        modeloConnection = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement(
+                "SELECT nombre_producto as Nombre, stock as Stock FROM productos WHERE stock <= ?")){
+            preparedStatement.setInt(1,stock);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Producto product = new Producto();
+            while(resultSet.next()){
+                product.setNombre_producto(resultSet.getString(1));
+                product.setStock(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try {
+                modeloConnection.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+    }
 
 }

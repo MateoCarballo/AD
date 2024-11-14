@@ -78,11 +78,11 @@ VALUES
 -- INSERT PARA LOS PROVEEDORES
 INSERT INTO proveedores (nombre_proveedor, contacto)
 VALUES
-    ('Lenovo', ('Carlos Rodríguez', '234567890', '555-3456', 'c.rodriguez@lenovo.com')),
-    ('HP', ('Ana García', '345678901', '555-4567', 'ana.garcia@hp.com')),
-    ('Seagate', ('Luis Pérez', '456789012', '555-5678', 'luis.perez@seagate.com')),
-    ('Samsung', ('Marta López', '567890123', '555-6789', 'marta.lopez@samsung.com')),
-    ('Canon', ('José Álvarez', '678901234', '555-7890', 'jose.alvarez@canon.com'));
+    ('Lenovo', ('Carlos Rodríguez', '23456789A', '555-3456', 'c.rodriguez@lenovo.com')),
+    ('HP', ('Ana García', '34567890A', '555-4567', 'ana.garcia@hp.com')),
+    ('Seagate', ('Luis Pérez', '45678901A', '555-5678', 'luis.perez@seagate.com')),
+    ('Samsung', ('Marta López', '56789012A', '555-6789', 'marta.lopez@samsung.com')),
+    ('Canon', ('José Álvarez', '67890123A', '555-7890', 'jose.alvarez@canon.com'));
 
 -- INSERT PARA LOS PRODUCTOS
 -- Productos informáticos relacionados con las categorías previamente insertadas
