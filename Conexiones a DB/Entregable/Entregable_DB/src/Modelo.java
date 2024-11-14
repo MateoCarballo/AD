@@ -1,11 +1,14 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
+import javax.xml.transform.stream.StreamResult;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Modelo {
+    //TODO gestionar cada error por separado
     private Connection modeloConnection;
 
     public void crearCategoria(String nombreCategoria){
@@ -80,6 +83,50 @@ public class Modelo {
             preparedStatement.setInt(3,anho_nacimiento);
 
             preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try {
+                modeloConnection.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+    }
+
+    public void eliminarUsuario(int id){
+        //TODO pendiente de crear un metodo para compronar si existe el usuario en la base de datos
+
+        if (comprobarUsuarioExiste(id)){
+            modeloConnection = MySQL_Connection.getMySQLConnection();
+            try(PreparedStatement preparedStatement = modeloConnection.prepareStatement
+                    ("DELETE FROM usuarios WHERE id_usuario = ?")){
+                preparedStatement.setInt(1,id);
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally{
+                try {
+                    modeloConnection.close();
+                } catch (SQLException e) {
+                    System.out.println("Error al cerrar la conexion");
+                }
+            }
+        }
+
+
+    }
+
+    private boolean comprobarUsuarioExiste(int idParaComprobar) {
+        modeloConnection = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement
+                ("SELECT nombre FROM usuarios WHERE id_usuario = ?")){
+            preparedStatement.setInt(1,idParaComprobar);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
