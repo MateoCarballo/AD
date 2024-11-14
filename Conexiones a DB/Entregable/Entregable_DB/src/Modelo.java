@@ -138,4 +138,23 @@ public class Modelo {
             }
         }
     }
+
+    public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
+        // TODO  Preguntar a Jose añadir a una DB y luego a la otra en diferentes conexiones simultaneas ? o paso a paso?
+        modeloConnection = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement(
+                "INSERT INTO productos VALUES (?,?,?)")){
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try {
+                modeloConnection.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+    }
+
+
 }
