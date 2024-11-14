@@ -1,19 +1,21 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
-import javax.xml.transform.stream.StreamResult;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Modelo {
     //TODO gestionar cada error por separado
-    private Connection modeloConnection;
+    private Connection modeloConnectionMySQL;
+    private Connection modeloConnectionPostgre;
+
 
     public void crearCategoria(String nombreCategoria){
-        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("INSERT INTO categorias(nombre_categoria) VALUES (?)")){
             preparedStatement.setString(1,nombreCategoria);
             preparedStatement.executeUpdate();
@@ -22,7 +24,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionPostgre.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -33,8 +35,8 @@ public class Modelo {
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
 
         // TODO aquí tengo que duplicarlo a narices,no?
-        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("INSERT INTO proveedores(nombre_proveedor, contacto) " +
                         "VALUES (?, ROW(?,?,?))")){
             preparedStatement.setString(1,nombreProveedor);
@@ -49,7 +51,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionPostgre.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -58,8 +60,8 @@ public class Modelo {
     }
 
     public void eliminarProveedor(int id){
-        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("DELETE FROM proveedores WHERE id_proveedor = ?")){
 
             preparedStatement.setInt(1,id);
@@ -69,7 +71,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionPostgre.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -77,8 +79,8 @@ public class Modelo {
     }
 
     public void crearUsuario(String nombre, String email, int anho_nacimiento){
-        modeloConnection = MySQL_Connection.getMySQLConnection();
-        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("INSERT INTO usuarios VALUES (?,?,?) ")){
 
             preparedStatement.setString(1,nombre);
@@ -91,7 +93,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -102,8 +104,8 @@ public class Modelo {
         //TODO pendiente de crear un metodo para compronar si existe el usuario en la base de datos
 
         if (comprobarUsuarioExiste(id)){
-            modeloConnection = MySQL_Connection.getMySQLConnection();
-            try(PreparedStatement preparedStatement = modeloConnection.prepareStatement
+            modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+            try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                     ("DELETE FROM usuarios WHERE id_usuario = ?")){
                 preparedStatement.setInt(1,id);
                 preparedStatement.executeUpdate();
@@ -112,7 +114,7 @@ public class Modelo {
                 throw new RuntimeException(e);
             } finally{
                 try {
-                    modeloConnection.close();
+                    modeloConnectionMySQL.close();
                 } catch (SQLException e) {
                     System.out.println("Error al cerrar la conexion");
                 }
@@ -123,8 +125,8 @@ public class Modelo {
     }
 
     private boolean comprobarUsuarioExiste(int idParaComprobar) {
-        modeloConnection = MySQL_Connection.getMySQLConnection();
-        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("SELECT nombre FROM usuarios WHERE id_usuario = ?")){
             preparedStatement.setInt(1,idParaComprobar);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -135,7 +137,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -144,15 +146,15 @@ public class Modelo {
 
     public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
         // TODO  Preguntar a Jose añadir a una DB y luego a la otra en diferentes conexiones simultaneas ? o paso a paso?
-        modeloConnection = MySQL_Connection.getMySQLConnection();
-        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement(
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                 "INSERT INTO productos VALUES (?,?,?)")){
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -161,25 +163,70 @@ public class Modelo {
 
 
     void listarProductosBajoStock(int stock){
-        modeloConnection = MySQL_Connection.getMySQLConnection();
-        try(PreparedStatement preparedStatement = modeloConnection.prepareStatement(
-                "SELECT nombre_producto as Nombre, stock as Stock FROM productos WHERE stock <= ?")){
+        String nombre = "";
+        int stockEncontrado = 0;
+        ArrayList <Producto> productosFiltrados = new ArrayList<>();
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
+                "SELECT nombre_producto, stock FROM productos WHERE stock <= ?")){
             preparedStatement.setInt(1,stock);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Producto product = new Producto();
+
             while(resultSet.next()){
-                product.setNombre_producto(resultSet.getString(1));
-                product.setStock(resultSet.getInt(1));
+                nombre = resultSet.getString(1);
+                stockEncontrado = resultSet.getInt(1);
+                productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally{
             try {
-                modeloConnection.close();
+                modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
         }
+    }
+
+    /*
+    Obtener el total de pedidos realizados por cada usuario (MySQL)
+    Se implementará una función con la siguiente cabecera:
+    void obtenerTotalPedidosUsuarios().
+    Mediante una consulta se tendrá que obtener toda la información e
+    imprimir por pantalla: el nombre del usuario y el total de pedidos que ha hecho.
+     */
+    void obtenerTotalPedidosUsuarios(){
+        ArrayList <Usuario> usuariosFiltrados = new ArrayList<Usuario>();
+        int contadorNumeroUsuarios = 0;
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
+                "SELECT id_usuario FROM usuario")){
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                contadorNumeroUsuarios++;
+            }
+            //TODO sin completar
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try{
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+        /*
+        Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
+        Se implementará una función con la siguiente cabecera: void obtenerCantidadProductosEnCadaAlmacen().
+        Mediante una consulta se tendrá que obtener toda la información solicitada y pintar por pantalla el
+        nombre del almacén y el total de productos de los que dispone.
+         */
+    void obtenerCantidadProductosEnCadaAlmacen(){
+
     }
 
 }
