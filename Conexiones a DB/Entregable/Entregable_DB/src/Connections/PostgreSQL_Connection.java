@@ -8,7 +8,7 @@ public class PostgreSQL_Connection {
     private final String URL = "jdbc:postgresql://localhost:5432/Almacenes";
     private final String USER = "root";
     private final String PASSWORD = "abc123.";
-    private static Connection connection;
+    public static Connection connection;
 
     private PostgreSQL_Connection() {
         try {

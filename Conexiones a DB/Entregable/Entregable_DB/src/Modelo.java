@@ -1,3 +1,4 @@
+import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
 import java.sql.Connection;
@@ -5,10 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Modelo {
+    private Connection modeloConnection;
 
     public void crearCategoria(String nombreCategoria){
-        Connection connectionPostgree = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = connectionPostgree.prepareStatement
+        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
                 ("INSERT INTO categorias(nombre_categoria) VALUES (?)")){
             preparedStatement.setString(1,nombreCategoria);
             preparedStatement.executeUpdate();
@@ -17,7 +19,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                connectionPostgree.close();
+                modeloConnection.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -26,8 +28,8 @@ public class Modelo {
     }
 
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
-        Connection connectionPostgree = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = connectionPostgree.prepareStatement
+        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
                 ("INSERT INTO proveedores(nombre_proveedor, contacto) " +
                         "VALUES (?, ROW(?,?,?))")){
             preparedStatement.setString(1,nombreProveedor);
@@ -41,7 +43,7 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                connectionPostgree.close();
+                modeloConnection.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -50,8 +52,8 @@ public class Modelo {
     }
 
     public void eliminarProveedor(int id){
-        Connection connectionPostgree = PostgreSQL_Connection.getPostgreSQLConnection();
-        try (PreparedStatement preparedStatement = connectionPostgree.prepareStatement
+        modeloConnection = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
                 ("DELETE FROM proveedores WHERE id_proveedor = ?")){
 
             preparedStatement.setInt(1,id);
@@ -61,11 +63,32 @@ public class Modelo {
             throw new RuntimeException(e);
         } finally{
             try {
-                connectionPostgree.close();
+                modeloConnection.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
         }
     }
 
+    public void crearUsuario(String nombre, String email, int anho_nacimiento){
+        modeloConnection = MySQL_Connection.getMySQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnection.prepareStatement
+                ("INSERT INTO usuarios VALUES (?,?,?) ")){
+
+            preparedStatement.setString(1,nombre);
+            preparedStatement.setString(2,email);
+            preparedStatement.setInt(3,anho_nacimiento);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try {
+                modeloConnection.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+    }
 }

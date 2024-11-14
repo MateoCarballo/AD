@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class VentanaPrincipal extends JFrame {
     JComboBox<String> comboOpciones;
@@ -42,7 +44,7 @@ public class VentanaPrincipal extends JFrame {
         setVisible(true);
 
         // Agregar ActionListener (aunque no tenga implementación todavía)
-        btnEjecutar.addActionListener(e -> { ejecutarAccion();});
+        btnEjecutar.addActionListener(e -> VentanaPrincipal.this.ejecutarAccion());
 
 
     }
