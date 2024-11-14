@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaCrearProveedor extends JFrame {
-    JTextField textFieldNombreProveedor, textFieldTelefono, textFieldDireccion;
+    JTextField textFieldNombreProveedor,
+            textFieldTelefono,
+            textFieldEmail,
+            textFieldNIF;
     JButton btnCrearProveedor;
 
     VentanaCrearProveedor() {
@@ -16,11 +19,14 @@ public class VentanaCrearProveedor extends JFrame {
         JLabel labelNombreProveedor = new JLabel("Nombre del proveedor:");
         textFieldNombreProveedor = new JTextField(20);
 
+        JLabel labelNif = new JLabel("NIF:");
+        textFieldNIF = new JTextField(20);
+
         JLabel labelTelefono = new JLabel("Teléfono:");
         textFieldTelefono = new JTextField(20);
 
-        JLabel labelDireccion = new JLabel("Dirección:");
-        textFieldDireccion = new JTextField(20);
+        JLabel labelEmail = new JLabel("E-mail:");
+        textFieldEmail = new JTextField(20);
 
         // Crear el botón para crear el proveedor
         btnCrearProveedor = new JButton("Crear");
@@ -28,10 +34,12 @@ public class VentanaCrearProveedor extends JFrame {
         // Agregar los componentes a la ventana
         add(labelNombreProveedor);
         add(textFieldNombreProveedor);
+        add(labelNif);
+        add(textFieldNIF);
         add(labelTelefono);
         add(textFieldTelefono);
-        add(labelDireccion);
-        add(textFieldDireccion);
+        add(labelEmail);
+        add(textFieldEmail);
         add(btnCrearProveedor);
 
         // Ajustar el tamaño de la ventana y centrarla

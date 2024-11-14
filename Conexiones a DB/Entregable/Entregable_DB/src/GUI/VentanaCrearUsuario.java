@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaCrearUsuario extends JFrame {
-    JTextField textFieldNombreUsuario, textFieldCorreoUsuario, textFieldTelefonoUsuario;
+    JTextField textFieldNombreUsuario, textFieldCorreoUsuario, textFieldAnhoNacimiento;
     JButton btnCrearUsuario;
 
     VentanaCrearUsuario() {
@@ -19,8 +19,8 @@ public class VentanaCrearUsuario extends JFrame {
         JLabel labelCorreoUsuario = new JLabel("Correo electrónico:");
         textFieldCorreoUsuario = new JTextField(20);
 
-        JLabel labelTelefonoUsuario = new JLabel("Teléfono:");
-        textFieldTelefonoUsuario = new JTextField(20);
+        JLabel labelAnhoNacimiento = new JLabel("Año de nacimiento:");
+        textFieldAnhoNacimiento = new JTextField(20);
 
         // Crear el botón para crear el usuario
         btnCrearUsuario = new JButton("Crear");
@@ -30,8 +30,8 @@ public class VentanaCrearUsuario extends JFrame {
         add(textFieldNombreUsuario);
         add(labelCorreoUsuario);
         add(textFieldCorreoUsuario);
-        add(labelTelefonoUsuario);
-        add(textFieldTelefonoUsuario);
+        add(labelAnhoNacimiento);
+        add(textFieldAnhoNacimiento);
         add(btnCrearUsuario);
 
         // Ajustar el tamaño de la ventana y centrarla
@@ -46,7 +46,7 @@ public class VentanaCrearUsuario extends JFrame {
     private void crearUsuario() {
         String nombre = textFieldNombreUsuario.getText();
         String correo = textFieldCorreoUsuario.getText();
-        String telefono = textFieldTelefonoUsuario.getText();
+        String telefono = textFieldAnhoNacimiento.getText();
 
         // Lógica para crear un nuevo usuario (aquí solo se muestra en consola, deberías agregar la lógica de base de datos)
         System.out.println("Usuario creado: " + nombre + ", " + correo + ", " + telefono);

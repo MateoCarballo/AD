@@ -13,14 +13,14 @@ public class VentanaEliminarUsuario extends JFrame {
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         // Crear el campo de texto para ingresar el nombre del usuario
-        JLabel labelNombreUsuarioEliminar = new JLabel("Nombre del usuario a eliminar:");
+        JLabel labelIdUsuarioParaEliminar = new JLabel("Id del usuario a eliminar:");
         textFieldNombreUsuarioEliminar = new JTextField(20);
 
         // Crear el botón para eliminar el usuario
         btnEliminarUsuario = new JButton("Eliminar");
 
         // Agregar los componentes a la ventana
-        add(labelNombreUsuarioEliminar);
+        add(labelIdUsuarioParaEliminar);
         add(textFieldNombreUsuarioEliminar);
         add(btnEliminarUsuario);
 

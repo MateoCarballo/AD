@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaEliminarProveedor extends JFrame {
-    JTextField textFieldProveedorEliminar;
+    JTextField textFieldIdProveedorEliminar;
     JButton btnEliminarProveedor;
 
     VentanaEliminarProveedor() {
@@ -13,15 +13,15 @@ public class VentanaEliminarProveedor extends JFrame {
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         // Crear el campo de texto para ingresar el nombre del proveedor
-        JLabel labelProveedorEliminar = new JLabel("Nombre del proveedor a eliminar:");
-        textFieldProveedorEliminar = new JTextField(20);
+        JLabel labelProveedorEliminar = new JLabel("ID del proveedor a eliminar:");
+        textFieldIdProveedorEliminar = new JTextField(20);
 
         // Crear el botón para eliminar el proveedor
         btnEliminarProveedor = new JButton("Eliminar");
 
         // Agregar los componentes a la ventana
         add(labelProveedorEliminar);
-        add(textFieldProveedorEliminar);
+        add(textFieldIdProveedorEliminar);
         add(btnEliminarProveedor);
 
         // Ajustar el tamaño de la ventana y centrarla
