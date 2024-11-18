@@ -21,20 +21,18 @@ public class Modelo {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la creacion de la categoría");;
         } finally{
             try {
                 modeloConnectionPostgre.close();
             } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
+                System.out.println("Error al cerrar la conexion Postgre");
             }
         }
 
     }
 
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
-
-        // TODO aquí tengo que duplicarlo a narices,no?
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("INSERT INTO proveedores(nombre_proveedor, contacto) " +
@@ -86,7 +84,6 @@ public class Modelo {
             preparedStatement.setString(1,nombre);
             preparedStatement.setString(2,email);
             preparedStatement.setInt(3,anho_nacimiento);
-
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -145,10 +142,28 @@ public class Modelo {
     }
 
     public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
-        // TODO  Preguntar a Jose añadir a una DB y luego a la otra en diferentes conexiones simultaneas ? o paso a paso?
+        // TODO  trabajando aquí
+        int idProdutcotIntroducido = -1;
+        PreparedStatement preparedStatement;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "INSERT INTO productos VALUES (?,?,?)")){
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        //INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID
+        try{
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "INSERT INTO productos (nombre_producto,precio,stock) " +
+                            "VALUES (?,?,?)");
+            preparedStatement.setString(1,nombre);
+            preparedStatement.setDouble(2,precio);
+            preparedStatement.setInt(3,stock);
+            preparedStatement.executeUpdate();
+
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "SELECT LAST_INSERT_ID();");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                idProdutcotIntroducido = resultSet.getInt(1);
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -159,10 +174,41 @@ public class Modelo {
                 System.out.println("Error al cerrar la conexion");
             }
         }
+
+        int idProveedor = -1;
+        int idCategoria = -1;
+        try{
+
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
+            preparedStatement.setString(1,nombre_categoria);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                idCategoria = resultSet.getInt(1);
+            }
+            
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "INSERT INTO productos (id_producto,id_proveedor,id_categoria) " +
+                            "VALUES (?,?,?)");
+            preparedStatement.setInt(1,idProdutcotIntroducido);
+            preparedStatement.setInt(2,idProveedor);
+            preparedStatement.setInt(3,idCategoria);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally{
+            try {
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+
     }
 
 
-    public void listarProductosBajoStock(int stock){
+        public void listarProductosBajoStock(int stock){
         String nombre = "";
         int stockEncontrado = 0;
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
@@ -188,6 +234,33 @@ public class Modelo {
             }
         }
     }
+
+    /*
+    Eliminar un producto por su nombre (MySQL + PostgreSQL)
+    Se implementará una función con la siguiente cabecera:
+    void eliminarProductoPorNombre(String nombre).
+    Se tendrá que eliminar el producto de ambas bases de datos.
+
+    */
+
+    public void eliminarProductoPorNombre(String nombre){
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
+                ""
+        )){
+
+        }catch (SQLException e){
+            System.out.println("Error en la conexion a la DB MySQL");
+        }finally {
+            try {
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                System.out.println("Error al desconectarnos de la base de datos MySQL");;
+            }
+        }
+    }
+
 
     /*
     Obtener el total de pedidos realizados por cada usuario (MySQL)
