@@ -162,7 +162,7 @@ public class Modelo {
     }
 
 
-    void listarProductosBajoStock(int stock){
+    public void listarProductosBajoStock(int stock){
         String nombre = "";
         int stockEncontrado = 0;
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
@@ -196,18 +196,21 @@ public class Modelo {
     Mediante una consulta se tendrá que obtener toda la información e
     imprimir por pantalla: el nombre del usuario y el total de pedidos que ha hecho.
      */
-    void obtenerTotalPedidosUsuarios(){
+    public ArrayList <Usuario> obtenerTotalPedidosUsuarios(){
         ArrayList <Usuario> usuariosFiltrados = new ArrayList<Usuario>();
         int contadorNumeroUsuarios = 0;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "SELECT id_usuario FROM usuario")){
+                "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total FROM pedidos as p INNER JOIN usuarios as u WHERE p.id_usuario = u.id_usuario GROUP BY u.nombre;")){
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                contadorNumeroUsuarios++;
+                    String nombre = resultSet.getString("Usuario");
+                    int numeroPedidos = resultSet.getInt("Total");
+                    usuariosFiltrados.add(new Usuario(nombre,numeroPedidos));
             }
-            //TODO sin completar
+
+            return usuariosFiltrados;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -217,7 +220,7 @@ public class Modelo {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-        };
+        }
     }
         /*
         Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)

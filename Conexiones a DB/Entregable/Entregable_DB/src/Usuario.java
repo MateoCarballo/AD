@@ -1,32 +1,22 @@
 public class Usuario {
-    private int id_usuario;
-    private String Usuario;
+    private String nombreUsuario;
     private int numeroDePedidos;
 
     public Usuario(){
 
     }
 
-    public Usuario(int id_usuario, String usuario, int numeroDePedidos) {
-        this.id_usuario = id_usuario;
-        Usuario = usuario;
+    public Usuario(String nombreUsuario, int id_usuario) {
+        nombreUsuario = nombreUsuario;
         this.numeroDePedidos = numeroDePedidos;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
     public String getUsuario() {
-        return Usuario;
+        return nombreUsuario;
     }
 
     public void setUsuario(String usuario) {
-        Usuario = usuario;
+        nombreUsuario = usuario;
     }
 
     public int getNumeroDePedidos() {
