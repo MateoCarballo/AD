@@ -1,38 +1,56 @@
--- Crear base de datos (si es necesario)
-DROP DATABASE IF EXISTS Almacenes;
-CREATE DATABASE Almacenes;
+/*
+-- Base de datos: almacenes
 
--- Cambiar a la base de datos
-\c Almacenes;
+*/
+-- Eliminar la base de datos si ya existe
+DROP DATABASE IF EXISTS almacenes;
 
--- Crear las tablas sin usar SERIAL para el id_producto
+-- Crear la base de datos
+CREATE DATABASE almacenes
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Spanish_Spain.1252'
+    LC_CTYPE = 'Spanish_Spain.1252'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+-- Cambiar a la base de datos creada
+SET search_path TO almacenes;
+
+-- Crear tablas y tipo compuesto
 CREATE TABLE almacenes (
     id_almacen       SERIAL PRIMARY KEY,  
-    nombre_almacen   VARCHAR(50),
-    ubicacion        VARCHAR(50)
+    nombre_almacen   VARCHAR(100),
+    ubicacion        VARCHAR(100)
 );
 
 CREATE TABLE categorias (
     id_categoria     SERIAL PRIMARY KEY,  
-    nombre_categoria VARCHAR(50)
+    nombre_categoria VARCHAR(100)
 );
 
--- Crear tipo para contacto
+-- Crear tipo compuesto para contacto
 CREATE TYPE type_contacto AS (
-    nombre_contacto  VARCHAR(50),
-    nif              VARCHAR(15),
-    telefono         VARCHAR(15),
+    nombre_contacto  VARCHAR(100),
+    nif              VARCHAR(10),
+    telefono         VARCHAR(9),
     email            VARCHAR(75)
 );
 
+-- Crear tabla de proveedores
 CREATE TABLE proveedores (
     id_proveedor     SERIAL PRIMARY KEY,  
-    nombre_proveedor VARCHAR(50),
-    contacto         type_contacto
+    nombre_proveedor VARCHAR(100),
+    contacto         type_contacto,
+    -- Sincronizar nombre_proveedor con nombre_contacto al insertar o actualizar
+    CONSTRAINT chk_nombre_proveedor CHECK (nombre_proveedor = (contacto).nombre_contacto)
 );
 
 CREATE TABLE productos (
-    id_producto      INTEGER PRIMARY KEY,  -- No es serial porque este ID viene dado de la otra DB MySQL
+    id_producto      INTEGER PRIMARY KEY,  -- No es serial porque este ID viene dado de otra DB MySQL
     id_proveedor     INTEGER,
     id_categoria     INTEGER,
     FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor) ON DELETE CASCADE,
@@ -48,6 +66,7 @@ CREATE TABLE almacenes_productos (
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
+-- Insertar datos en la tabla almacenes
 INSERT INTO almacenes (nombre_almacen, ubicacion)
 VALUES 
     ('Tech Galicia - Almacén A Coruña', 'Avenida de los Castros, 123, A Coruña'),
@@ -55,6 +74,7 @@ VALUES
     ('Tech Galicia - Almacén Vigo', 'Avenida de Madrid, 22, Vigo'),
     ('Tech Galicia - Almacén Ourense', 'Rúa do Progreso, 67, Ourense');
 
+-- Insertar datos en la tabla categorias
 INSERT INTO categorias (nombre_categoria)
 VALUES 
     ('PC de sobremesa'),
@@ -64,14 +84,16 @@ VALUES
     ('Impresora'),
     ('Accesorio');
 
+-- Insertar datos en la tabla proveedores
 INSERT INTO proveedores (nombre_proveedor, contacto)
 VALUES
-    ('Lenovo', ('Carlos Rodríguez', '23456789A', '555-3456', 'c.rodriguez@lenovo.com')),
-    ('HP', ('Ana García', '34567890A', '555-4567', 'ana.garcia@hp.com')),
-    ('Seagate', ('Luis Pérez', '45678901A', '555-5678', 'luis.perez@seagate.com')),
-    ('Samsung', ('Marta López', '56789012A', '555-6789', 'marta.lopez@samsung.com')),
-    ('Canon', ('José Álvarez', '67890123A', '555-7890', 'jose.alvarez@canon.com'));
+    ('Carlos Rodríguez', ('Carlos Rodríguez', '23456789A', '555-3456', 'c.rodriguez@lenovo.com')),
+    ('Ana García', ('Ana García', '34567890A', '555-4567', 'ana.garcia@hp.com')),
+    ('Luis Pérez', ('Luis Pérez', '45678901A', '555-5678', 'luis.perez@seagate.com')),
+    ('Marta López', ('Marta López', '56789012A', '555-6789', 'marta.lopez@samsung.com')),
+    ('José Álvarez', ('José Álvarez', '67890123A', '555-7890', 'jose.alvarez@canon.com'));
 
+-- Insertar datos en la tabla productos
 INSERT INTO productos (id_producto, id_proveedor, id_categoria)
 VALUES 
     (1, 1, 1),  -- Lenovo: PC de sobremesa
@@ -85,6 +107,7 @@ VALUES
     (9, 2, 3),  -- HP: Monitor 27"
     (10, 1, 6); -- Lenovo: Accesorio teclado mecánico
 
+-- Insertar datos en la tabla almacenes_productos
 INSERT INTO almacenes_productos (id_almacen, id_producto, cantidad)
 VALUES
     (1, 1, 100),  -- Almacén A Coruña: 100 unidades de PC de sobremesa
@@ -96,5 +119,3 @@ VALUES
     (4, 7, 80),   -- Almacén Ourense: 80 unidades de Canon Impresora
     (4, 8, 110),  -- Almacén Ourense: 110 unidades de Samsung Monitor 24"
     (1, 9, 30);   -- Almacén A Coruña: 30 unidades de Lenovo Teclado mecánico
-
-
