@@ -167,7 +167,7 @@ Se añadirá en la base de datos MySQL y en la base de datos PostgreSQL.
 El identificador del producto tendrá que ser el mismo en ambas bases de datos.
  */
     public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
-        // TODO  trabajando aquí
+
         int idProdutcotIntroducido = -1;
         int idProveedor = -1;
         int idCategoria = -1;
@@ -268,7 +268,67 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     }
 
 
-        public void listarProductosBajoStock(int stock){
+    /*
+    7
+    Eliminar un producto por su nombre (MySQL + PostgreSQL)
+    Se implementará una función con la siguiente cabecera:
+    void eliminarProductoPorNombre(String nombre).
+    Se tendrá que eliminar el producto de ambas bases de datos.
+
+    */
+
+    public void eliminarProductoPorNombre(String nombre){
+        //TODO trabajando aquí
+        //Llamo a un metodo para que me devuelva el id_producot si existe en la DB
+        int idProducto = buscarProducto(nombre);
+
+        eliminarRegistrosDelProducto(idProducto);
+
+        /*Lllamos a un metodo para ejecutar el borrado de las tablas como una
+            transaccion
+        * */
+
+    }
+
+    public int buscarProducto(String nombre){
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet;
+        int filasAfectadas = -1;
+        int idProducto=-1;
+
+        //BUSCAMOS EL 'id_producto' EN LA BASE DE DATOS MYSQL
+        try{
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "SELECT id_producto FROM productos WHERE nombre = ?");
+            preparedStatement.setString(1,nombre);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                idProducto = resultSet.getInt(1);
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error en la busqueda del producto por nombre");
+        }finally{
+            try {
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion con MySQL");
+            }
+        }
+
+        return idProducto;
+
+    }
+
+    private void eliminarRegistrosDelProducto(int idProducto) {
+        //con.setAutoCommit(false);
+        //con.setAutoCommit(true);
+    }
+
+
+    public void listarProductosBajoStock(int stock){
         String nombre = "";
         int stockEncontrado = 0;
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
@@ -291,32 +351,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
-            }
-        }
-    }
-
-    /*
-    Eliminar un producto por su nombre (MySQL + PostgreSQL)
-    Se implementará una función con la siguiente cabecera:
-    void eliminarProductoPorNombre(String nombre).
-    Se tendrá que eliminar el producto de ambas bases de datos.
-
-    */
-
-    public void eliminarProductoPorNombre(String nombre){
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-
-        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                ""
-        )){
-
-        }catch (SQLException e){
-            System.out.println("Error en la conexion a la DB MySQL");
-        }finally {
-            try {
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al desconectarnos de la base de datos MySQL");;
             }
         }
     }
