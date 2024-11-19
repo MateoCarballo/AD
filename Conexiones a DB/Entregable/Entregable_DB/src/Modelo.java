@@ -1,10 +1,7 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Modelo {
@@ -174,10 +171,20 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         int idProdutcotIntroducido = -1;
         int idProveedor = -1;
         int idCategoria = -1;
+        ResultSet resultSet;
         PreparedStatement preparedStatement = null;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
-        //INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID
+        /*
+        Pasos seguidos para llevar a cabo la insercion de un nuevo producto:
+            1 -> INSERTAR EL PRODUCTO EN DB MYSQL Y OBTENER EL ID (del nuevo producto creado).
+            2 -> OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS (POSTGRE)
+            3 -> OBTENER EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES (POSTGRE)
+            4 -> INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
+                TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
+         */
+
+        //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
         try{
             preparedStatement = modeloConnectionMySQL.prepareStatement(
                     "INSERT INTO productos (nombre_producto,precio,stock) " +
@@ -190,36 +197,56 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             preparedStatement = modeloConnectionMySQL.prepareStatement(
                     "SELECT LAST_INSERT_ID();");
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idProdutcotIntroducido = resultSet.getInt(1);
             }
 
         } catch (SQLException e) {
             System.out.println("Error en la creacion de un producto en la DB MySQL");
-        }finally {
-            try{
-                preparedStatement.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar el prepared statement");
-            }
         }
 
+        // OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
         try{
             preparedStatement = modeloConnectionPostgre.prepareStatement(
                     "SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
             preparedStatement.setString(1,nombre_categoria);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idCategoria = resultSet.getInt(1);
             }
-            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println("Error durante la busqueda del id_producto en la tabla proveedores");;
+        } finally{
+            try {
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion");
+            }
+        }
+
+        // OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
+        try{
 
             preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "SELECT id_proveedor FROM proveedores WHERE contacto.nif = ?"
+                    "SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?"
             );
 
+            preparedStatement.setString(1,nif);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                idProveedor = resultSet.getInt(1);
+            }
+        }catch (SQLException e){
+            System.out.println();
+        }
 
+
+
+        /* INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
+         TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
+         */
+        try{
             preparedStatement = modeloConnectionPostgre.prepareStatement(
                     "INSERT INTO productos (id_producto,id_proveedor,id_categoria) " +
                             "VALUES (?,?,?)");
@@ -229,7 +256,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error durante la insercion de los datos en la tabla productos de postgre");;
         } finally{
             try {
                 modeloConnectionMySQL.close();
