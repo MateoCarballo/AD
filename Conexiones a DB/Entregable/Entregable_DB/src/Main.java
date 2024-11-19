@@ -4,7 +4,11 @@ public class Main {
     public static void main(String[] args) {
 
         Modelo m = new Modelo();
-        m.crearProducto("Nombre Producto Java",10.99,50,
-                "Nombre categoria","123456789A");
+        //m.crearCategoria("Categoría de prueba");
+        //m.crearProveedor("Nombre prueba proveedor","12345678A",123456789,"email@deprueba.com");
+        // m.eliminarProveedor(8);
+        //m.crearUsuario("Nombre prueba","email@prueba.com",2024);
+        //m.eliminarUsuario(5);
+
     }
 }

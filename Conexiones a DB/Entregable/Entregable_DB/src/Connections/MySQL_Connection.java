@@ -24,5 +24,17 @@ public class MySQL_Connection {
         }
          return connection;
     }
+    public static void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+                System.out.println("Conexión a MySQL cerrada con éxito.");
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexión con MySQL:");
+                e.printStackTrace();
+            }
+        }
+    }
 }
 

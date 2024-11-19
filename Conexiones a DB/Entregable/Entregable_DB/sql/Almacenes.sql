@@ -35,7 +35,7 @@ CREATE TABLE categorias (
 -- Crear tipo compuesto para contacto
 CREATE TYPE type_contacto AS (
     nombre_contacto  VARCHAR(100),
-    nif              VARCHAR(10),
+    nif              VARCHAR(9),
     telefono         VARCHAR(9),
     email            VARCHAR(75)
 );
