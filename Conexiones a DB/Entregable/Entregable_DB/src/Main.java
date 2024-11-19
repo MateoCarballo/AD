@@ -10,5 +10,7 @@ public class Main {
         //m.crearUsuario("Nombre prueba","email@prueba.com",2024);      //4
         //m.eliminarUsuario(5);     //5
         //m.crearProducto("nombre producto prueba",99.99,1000,"Monitor","67890123A"); //6
+        m.eliminarProductoPorNombre("nombre producto prueba");
+
     }
 }

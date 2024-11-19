@@ -1,6 +1,7 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
+import java.io.PipedOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ public class Modelo {
     private Connection modeloConnectionPostgre;
 
 /*
-Crear una nueva categoría (PostgreSQL).
+1 -> Crear una nueva categoría (PostgreSQL).
 Se implementará una función con la siguiente cabecera: void crearCategoria(String nombreCategoria).
 Se recibirá un String que será el nombreCategoria y se añadirá a la base de datos.
 * */
@@ -35,7 +36,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
 
     }
 /*
-* Crear un nuevo proveedor (PostgreSQL)
+* 2 -> Crear un nuevo proveedor (PostgreSQL)
 Se implementará una función con la siguiente cabecera: void crearNuevoProveedor(String nombreProveedor, String nif, int telefono, String email).
 Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
 * */
@@ -64,7 +65,7 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
 
     }
 /*
-Eliminar un nuevo proveedor (PostgreSQL)
+3 -> Eliminar un nuevo proveedor (PostgreSQL)
 Se implementará una función con la siguiente cabecera: void eliminarProveedor(int id).
 Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la base de datos.
  */
@@ -88,7 +89,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
         }
     }
 /*
-Crear un nuevo usuario (MySQL)
+4 -> Crear un nuevo usuario (MySQL)
 Se implementará una función con la siguiente cabecera: void crearUsuario(String nombre, String email, int anho_nacimiento).
 Se recibirán todos los datos del usuario.
  */
@@ -114,7 +115,7 @@ Se recibirán todos los datos del usuario.
         }
     }
 /*
-Eliminar un usuario (MySQL)
+5 -> Eliminar un usuario (MySQL)
 Se implementará una función con la siguiente cabecera: void eliminarUsuario(int id).
 Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la base de datos.
  */
@@ -159,7 +160,7 @@ Metodo añadido por mi cuenta para asegurarme de que el usuario existe antes de 
         return existeUsuario;
     }
 /*
-Crear nuevo producto (nombre, precio, stock, categoria, proveedor) (MySQL + PostgreSQL)
+6 -> Crear nuevo producto (nombre, precio, stock, categoria, proveedor) (MySQL + PostgreSQL)
 Se implementará una función con la siguiente cabecera:
 void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif).
 Se tendrá que obtener el id de la categoría y el id del proveedor a partir del nombre y del nif.
@@ -204,6 +205,12 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         } catch (SQLException e) {
             System.out.println("Error en la creacion de un producto en la DB MySQL");
+        }finally {
+            try {
+                modeloConnectionMySQL.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerra la conexion con DB MySQL");
+            }
         }
 
         // OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
@@ -243,7 +250,8 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
 
 
-        /* INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
+        /*
+        7 -> INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
          TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
          */
         try{
@@ -279,43 +287,34 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
     public void eliminarProductoPorNombre(String nombre){
         //TODO trabajando aquí
-        //Llamo a un metodo para que me devuelva el id_producot si existe en la DB
+
+        //Llamo a un metodo para que me devuelva el id_producto si existe en la DB
         int idProducto = buscarProducto(nombre);
 
+        //Lllamos a un metodo para ejecutar el borrado de las tablas como una transacción
         eliminarRegistrosDelProducto(idProducto);
 
-        /*Lllamos a un metodo para ejecutar el borrado de las tablas como una
-            transaccion
-        * */
+
 
     }
 
     public int buscarProducto(String nombre){
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
-        int filasAfectadas = -1;
         int idProducto=-1;
 
         //BUSCAMOS EL 'id_producto' EN LA BASE DE DATOS MYSQL
-        try{
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "SELECT id_producto FROM productos WHERE nombre = ?");
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
+                "SELECT id_producto FROM productos WHERE nombre_producto= ?")){
             preparedStatement.setString(1,nombre);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
-                idProducto = resultSet.getInt(1);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    idProducto = resultSet.getInt(1);
+                }
+            }catch (SQLException e){
+                System.out.println("Error al leer los resultados con resulset de la DB MySQL");
             }
-
         }catch (SQLException e){
             System.out.println("Error en la busqueda del producto por nombre");
-        }finally{
-            try {
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion con MySQL");
-            }
         }
 
         return idProducto;
@@ -324,7 +323,69 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
     private void eliminarRegistrosDelProducto(int idProducto) {
         //con.setAutoCommit(false);
-        //con.setAutoCommit(true);
+
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        PreparedStatement preparedStatement;
+        int affectedRows = -1;
+
+        // EMPEZAMOS LA TRANSACCION
+        try {
+            modeloConnectionMySQL.setAutoCommit(false);
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar el auto commit a false");
+        }
+        // 1 -> BORRADO EN MYSQL
+
+        // 1.1 -> Borrado de la tabla 'pedidos_productos'
+        try {
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "DELETE FROM pedidos_productos WHERE id_producto = ?");
+            preparedStatement.setInt(1,idProducto);
+            affectedRows =  preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error durante el borrado del producto en la tabla pedidos_productos en MySQL");
+        }
+        // 1.2 -> Borrado de la tabla 'productos'
+        try {
+            preparedStatement = modeloConnectionMySQL.prepareStatement(
+                    "DELETE FROM productos WHERE id_producto = ?");
+            preparedStatement.setInt(1,idProducto);
+            affectedRows =  preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error durante el borrado del producto en la tabla productos en MySQL");
+        }
+
+        // 2 -> BORRADO EN POSTGRE
+
+        // 2.1 -> Borrado de la tabla alamacenes_productos
+        try {
+            preparedStatement = modeloConnectionPostgre.prepareStatement(
+                    "DELETE FROM almacenes_productos WHERE id_producto = ?");
+            preparedStatement.setInt(1,idProducto);
+            affectedRows = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error durante el borrado del producto en la tabla alamacenes_productos en Postgre");
+        }
+
+        // 2.2 -> Borrado de la tabla productos
+        try {
+            preparedStatement = modeloConnectionPostgre.prepareStatement(
+                    "DELETE FROM productos WHERE id_producto = ?");
+            preparedStatement.setInt(1,idProducto);
+            affectedRows = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error durante el borrado del producto en la tabla productos en Postgre");
+        }
+
+        // CERRAMOS LA TRANSACCION
+        try {
+            modeloConnectionMySQL.setAutoCommit(true);
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar el auto commit a true");
+        }
     }
 
 
