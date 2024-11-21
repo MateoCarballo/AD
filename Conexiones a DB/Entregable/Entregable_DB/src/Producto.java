@@ -46,8 +46,79 @@ public class Producto {
         this.nombreCategoria = nombreCategoria;
     }
 
+    public int getId_producto() {
+        return id_producto;
+    }
 
-   public String toStringTuneado(){
-       return "Nombre -> " + getNombre_producto() + "\n" + "Stock -> " + getStock() + "\n";
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public String getNombreProveedor() {
+        return nombreProveedor;
+    }
+
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+    }
+
+    public String getNifProveedor() {
+        return nifProveedor;
+    }
+
+    public void setNifProveedor(String nifProveedor) {
+        this.nifProveedor = nifProveedor;
+    }
+
+    public String getTelefonoProveedor() {
+        return telefonoProveedor;
+    }
+
+    public void setTelefonoProveedor(String telefonoProveedor) {
+        this.telefonoProveedor = telefonoProveedor;
+    }
+
+    public String getEmailProveedor() {
+        return emailProveedor;
+    }
+
+    public void setEmailProveedor(String emailProveedor) {
+        this.emailProveedor = emailProveedor;
+    }
+
+    public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+
+    public String toStringTuneado(){
+       return "Nombre -> " + getNombreProducto() + "\n" + "Stock -> " + getStock() + "\n";
    }
 }
