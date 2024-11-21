@@ -121,4 +121,26 @@ public class Producto {
     public String toStringTuneado(){
        return "Nombre -> " + getNombreProducto() + "\n" + "Stock -> " + getStock() + "\n";
    }
+    public String toStringTuneadoMetodo11A(){
+        return "ID Producto -> " + getId_producto() + "\n" +
+                "Nombre proveedor  -> " + getNombreProveedor() + "\n" +
+                "NIF proveedor -> " + getNifProveedor() +"\n" +
+                "Telefono proveedor -> " + getTelefonoProveedor() +"\n" +
+                "Email -> " + getEmailProveedor() + "\n" +
+                "Nombre categoría -> " + getNombreCategoria() + "\n"
+                ;
+    }
+    public String toStringTuneadoMetodo11B(){
+        return "ID Producto -> " + getId_producto() + "\n" +
+                "Nombre producto -> " + getNombreProducto() + "\n" +
+                "Precio producto -> " + getPrecio() + "\n" +
+                "Stock producto -> " + getStock() + "\n" +
+                "Nombre proveedor  -> " + getNombreProveedor() + "\n" +
+                "NIF proveedor -> " + getNifProveedor() +"\n" +
+                "Telefono proveedor -> " + getTelefonoProveedor() +"\n" +
+                "Email -> " + getEmailProveedor() + "\n" +
+                "Nombre categoría -> " + getNombreCategoria() + "\n"
+                ;
+    }
+
 }
