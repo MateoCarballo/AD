@@ -13,6 +13,7 @@ public class Main {
         //m.eliminarProductoPorNombre("nombre producto prueba");
         //m.listarProductosBajoStock(50);
         //m.obtenerTotalPedidosUsuarios();
-        m.obtenerCantidadProductosEnCadaAlmacen();
+        //m.obtenerCantidadProductosEnCadaAlmacen();
+        m.listarTodosProductosConCategoriaYProveedor();
     }
 }

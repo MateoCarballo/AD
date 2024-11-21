@@ -497,8 +497,32 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     Se realizará una consulta en MySQL para obtener el nombre, precio y stock del producto
     Se concatenará y se mostrarán todos los datos indicados anteriormente usando Java.
      */
-   void listarTodosProductosConCategoriaYProveedor(){
+   public void listarTodosProductosConCategoriaYProveedor(){
+       modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+       modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
 
+       try (PreparedStatement preparedStatement =
+                    modeloConnectionPostgre.prepareStatement("SELECT prod.id_producto, prov.nombre_proveedor, (prov.contacto).nif, (prov.contacto).telefono, (prov.contacto).email, cate.nombre_categoria FROM productos as prod INNER JOIN categorias as cate ON prod.id_categoria = cate.id_categoria INNER JOIN proveedores as prov ON prod.id_proveedor = prov.id_proveedor;")){
+           try(ResultSet resultSet = preparedStatement.executeQuery()){
+               while(resultSet.next()){
+                   int idProducto = resultSet.getInt(1);
+                   String nombre = resultSet.getString(2);
+                   String nif = resultSet.getString(3);
+                   String telefono = resultSet.getString(4);
+                   String email = resultSet.getString(5);
+                   String nombreCategoria = resultSet.getString(6);
+                   System.out.println("ID Producto -> " + idProducto + "\n" +
+                                        "Nombre -> " + nombre + "\n" +
+                                        "NIF -> " + nif + "\n" +
+                                        "Telefono -> " + telefono + "\n" +
+                                        "e-mail -> " + email + "\n" +
+                                        "Nombre categoría -> " + nombreCategoria + "\n");
+               }
+           } catch (Exception e) {
+               System.out.println("Error al recuperar los datos de la DB mediante ' Result Set ' ");
+           }
+       } catch (SQLException e) {
+           System.out.println("Error durante la consulta a la DB Postgre");       }
     }
 
 }
