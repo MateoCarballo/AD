@@ -464,12 +464,40 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         }
     }
         /*
-        Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
+        10 -> Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
         Se implementará una función con la siguiente cabecera: void obtenerCantidadProductosEnCadaAlmacen().
         Mediante una consulta se tendrá que obtener toda la información solicitada y pintar por pantalla el
         nombre del almacén y el total de productos de los que dispone.
          */
-    void obtenerCantidadProductosEnCadaAlmacen(){
+    public void obtenerCantidadProductosEnCadaAlmacen(){
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
+                "SELECT a.nombre_almacen, SUM(ap.cantidad) FROM almacenes as a INNER JOIN almacenes_productos as ap ON a.id_almacen = ap.id_almacen GROUP BY a.nombre_almacen")){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while(resultSet.next()){
+                    String s = resultSet.getString(1);
+                    int i = resultSet.getInt(2);
+                    System.out.println("Almacen  " + s + "\n" +
+                            "Cantidad de productos -> " + i + "\n" );
+                }
+            }catch (SQLException e){
+                System.out.println("Error al recuperar los datos de la DB Postgre");
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error durante la obtencion de la cantidad de productos por alamacen");
+            e.printStackTrace();
+        }
+    }
+    /*
+    11 -> Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
+    Se implementará una función con la siguiente cabecera: void listarTodosProductosConCategoriaYProveedor().
+    Se realizará una primera consulta en PostgreSQL que permita obtener toda la información del producto:
+     id, nombre, nif, teléfono e email del proveedor así como el nombre de la categoría.
+    Se realizará una consulta en MySQL para obtener el nombre, precio y stock del producto
+    Se concatenará y se mostrarán todos los datos indicados anteriormente usando Java.
+     */
+   void listarTodosProductosConCategoriaYProveedor(){
 
     }
 
