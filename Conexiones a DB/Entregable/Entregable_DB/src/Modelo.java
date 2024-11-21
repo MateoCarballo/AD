@@ -554,4 +554,18 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
     }
 
+    /*
+    11 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
+    Se implementará una función con la siguiente cabecera: void obtenerUsuariosCompraronProductosCategoria(int idCategoria).
+    Se recibirá el id de la categoría y se obtendrá en PostgreSQL el id de los productos que pertenezcan a esa categoría.
+    En MySQL se obtendrá el nombre de los usuarios que han comprado algún producto de los indicados anteriormente.
+    Se mostrará por pantalla el nombre de los usuarios.
+     */
+    public void obtenerUsuariosCompraronProductosCategoria(int idCategoria){
+        // Obtener el id_producto de los productos de esa categoria POSTGRE
+        // Obtener el id_usuario que han comprado los productos obtenidos en postgre.
+        // Mostras el nombre_usuario de los que han comprado productos de esa categoria.
+
+    }
+
 }
