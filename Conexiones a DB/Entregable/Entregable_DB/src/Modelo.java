@@ -531,25 +531,26 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        } catch (SQLException e) {
            System.out.println("Error durante la consulta a la DB Postgre");
        }
-/*
 
        try(PreparedStatement preparedStatement =
-                   modeloConnectionMySQL.prepareStatement("SELECT nombre, precio, stock_producto FROM productos WHERE id_producto = ?")){
+                   modeloConnectionMySQL.prepareStatement("SELECT nombre_producto, precio, stock FROM productos WHERE id_producto = ?")){
            for (Producto p : listaProductoDesdePostgre){
+               preparedStatement.setInt(1, p.getId_producto());
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
                     if(resultSet.next()){
                         p.setNombreProducto(resultSet.getString(1));
                         p.setPrecio(resultSet.getDouble(2));
                         p.setStock(resultSet.getInt(3));
-                        p.toStringTuneadoMetodo11B();
+                        System.out.println(p.toStringTuneadoMetodo11B());;
                     }
                 }catch (SQLException e){
                     System.out.println("Error al obtner los datos desde la DB MySQL");
                 }
-           }}catch (SQLException e){
+           }
+       }catch (SQLException e){
            System.out.println("Error al conectar con la DB de MySQL");
        }
- */
+
 
     }
 
