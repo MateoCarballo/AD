@@ -172,7 +172,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
  */
     public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
 
-        int idProdutcotIntroducido = -1;
+        int idProductoIntroducido = -1;
         int idProveedor = -1;
         int idCategoria = -1;
         ResultSet resultSet;
@@ -190,20 +190,18 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
         try{
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "INSERT INTO productos (nombre_producto,precio,stock) " +
-                            "VALUES (?,?,?)");
+            preparedStatement = modeloConnectionMySQL.prepareStatement
+                    ("INSERT INTO productos (nombre_producto,precio,stock) VALUES (?,?,?)");
             preparedStatement.setString(1,nombre);
             preparedStatement.setDouble(2,precio);
             preparedStatement.setInt(3,stock);
             preparedStatement.executeUpdate();
 
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "SELECT LAST_INSERT_ID();");
+            preparedStatement = modeloConnectionMySQL.prepareStatement("SELECT LAST_INSERT_ID()");
 
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                idProdutcotIntroducido = resultSet.getInt(1);
+                idProductoIntroducido = resultSet.getInt(1);
             }
 
         } catch (SQLException e) {
@@ -218,15 +216,15 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
         try{
-            preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
+            preparedStatement = modeloConnectionPostgre.prepareStatement
+                    ("SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
             preparedStatement.setString(1,nombre_categoria);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 idCategoria = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println("Error durante la busqueda del id_producto en la tabla proveedores");;
+            System.out.println("Error durante la busqueda del 'id_categoria' en la tabla categorias");
         } finally{
             try {
                 modeloConnectionMySQL.close();
@@ -238,9 +236,8 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // 3.OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
         try{
 
-            preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?"
-            );
+            preparedStatement = modeloConnectionPostgre.prepareStatement
+                    ("SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?");
 
             preparedStatement.setString(1,nif);
             resultSet = preparedStatement.executeQuery();
@@ -248,7 +245,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 idProveedor = resultSet.getInt(1);
             }
         }catch (SQLException e){
-            System.out.println();
+            System.out.println("Error durante la busqueda del 'id_proveedor");
         }
 
 
@@ -261,7 +258,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             preparedStatement = modeloConnectionPostgre.prepareStatement(
                     "INSERT INTO productos (id_producto,id_proveedor,id_categoria) " +
                             "VALUES (?,?,?)");
-            preparedStatement.setInt(1,idProdutcotIntroducido);
+            preparedStatement.setInt(1,idProductoIntroducido);
             preparedStatement.setInt(2,idProveedor);
             preparedStatement.setInt(3,idCategoria);
             preparedStatement.executeUpdate();
@@ -288,7 +285,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     */
 
     public void eliminarProductoPorNombre(String nombre){
-        //TODO trabajando aquí
 
         //Llamo a un metodo para que me devuelva el id_producto si existe en la DB
         int idProducto = buscarProducto(nombre);
@@ -324,7 +320,12 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     }
 
     private void eliminarRegistrosDelProducto(int idProducto) {
-        //con.setAutoCommit(false);
+
+        /*
+        1 -> En MySQL:
+            1.1 ->  Borrado de la tabla 'pedidos_productos'.
+            1.2 ->  Borrado de la tabla 'productos'.
+         */
 
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
@@ -555,7 +556,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
            System.out.println("Error al conectar con la DB de MySQL");
        }
     }
-
 
 
 }
