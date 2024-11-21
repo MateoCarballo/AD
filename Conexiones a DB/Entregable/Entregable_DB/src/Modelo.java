@@ -24,7 +24,8 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             //TODO mostras una ventana emergente que confierme el insert y las filas afectadas.
 
         } catch (SQLException e) {
-            System.out.println("Error en la creacion de la categoría");
+            System.out.println("Error en la creacion de la categoria");
+            e.printStackTrace();
         } finally{
             try {
                 modeloConnectionPostgre.close();
@@ -51,9 +52,11 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
             preparedStatement.setString(5,email);
             //TODO pendiente de revisar que los datos introducidos sean correctos (Esto se puede generalizar a todos los metodos)
             preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println("Error durante la creacion del proveedor");
+            e.printStackTrace();
         } finally{
             try {
                 modeloConnectionPostgre.close();
@@ -79,6 +82,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
 
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor");
+            e.printStackTrace();
         } finally{
             try {
                 modeloConnectionPostgre.close();
@@ -104,7 +108,7 @@ Se recibirán todos los datos del usuario.
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("Error durante la creaciond de un nuevo usario");
+            System.out.println("Error durante la creacion de un nuevo usario");
         } finally{
             try {
                 modeloConnectionMySQL.close();
@@ -125,7 +129,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
             try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                     ("DELETE FROM usuarios WHERE id_usuario = ?")){
                 preparedStatement.setInt(1,id);
-                preparedStatement.executeUpdate();
+                int rowsAffected = preparedStatement.executeUpdate();
 
             } catch (SQLException e) {
                 System.out.println("Error durante la eliminacion de un nuevo usuario");
@@ -550,8 +554,8 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        }catch (SQLException e){
            System.out.println("Error al conectar con la DB de MySQL");
        }
-
-
     }
+
+
 
 }
