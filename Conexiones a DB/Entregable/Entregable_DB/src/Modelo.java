@@ -213,7 +213,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             }
         }
 
-        // OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
+        //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
         try{
             preparedStatement = modeloConnectionPostgre.prepareStatement(
                     "SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
@@ -232,7 +232,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             }
         }
 
-        // OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
+        // 3.OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
         try{
 
             preparedStatement = modeloConnectionPostgre.prepareStatement(
@@ -251,7 +251,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
 
         /*
-        7 -> INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
+        4.INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
          TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
          */
         try{
@@ -277,8 +277,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
 
     /*
-    7
-    Eliminar un producto por su nombre (MySQL + PostgreSQL)
+    7 -> Eliminar un producto por su nombre (MySQL + PostgreSQL)
     Se implementará una función con la siguiente cabecera:
     void eliminarProductoPorNombre(String nombre).
     Se tendrá que eliminar el producto de ambas bases de datos.
@@ -388,6 +387,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         }
     }
 
+    /*
+    8 -> Listar los productos con bajo stock (menos de X unidades disponibles) (MySQL)
+    Se implementará una función con la siguiente cabecera: void listarProductosBajoStock(int stock) .
+    Mediante una única consulta se tendrá que obtener el conjunto de filas resultante y mostrar el nombre de los productos junto con su stock.
+     */
 
     public void listarProductosBajoStock(int stock){
         String nombre = "";
@@ -401,12 +405,16 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
             while(resultSet.next()){
                 nombre = resultSet.getString(1);
-                stockEncontrado = resultSet.getInt(1);
+                stockEncontrado = resultSet.getInt(2);
                 productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
 
+            for(Producto p: productosFiltrados){
+                System.out.println(p.toStringTuneado());
+            }
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error al buscar los productos por stock");
         } finally{
             try {
                 modeloConnectionMySQL.close();

@@ -51,4 +51,8 @@ public class Producto {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+   public String toStringTuneado(){
+       return "Nombre -> " + getNombre_producto() + "\n" + "Stock -> " + getStock() + "\n";
+   }
 }
