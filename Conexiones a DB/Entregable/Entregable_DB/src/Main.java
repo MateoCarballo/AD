@@ -12,6 +12,6 @@ public class Main {
         //m.crearProducto("nombre producto prueba",99.99,1000,"Monitor","67890123A"); //6
         //m.eliminarProductoPorNombre("nombre producto prueba");
         //m.listarProductosBajoStock(50);
-
+        m.obtenerTotalPedidosUsuarios();
     }
 }

@@ -1,7 +1,6 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
-import java.io.PipedOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -25,7 +24,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             //TODO mostras una ventana emergente que confierme el insert y las filas afectadas.
 
         } catch (SQLException e) {
-            System.out.println("Error en la creacion de la categoría");;
+            System.out.println("Error en la creacion de la categoría");
         } finally{
             try {
                 modeloConnectionPostgre.close();
@@ -155,7 +154,7 @@ Metodo añadido por mi cuenta para asegurarme de que el usuario existe antes de 
             existeUsuario = resultSet.next();
 
         } catch (SQLException e) {
-           System.out.println("Error durante la busqueda de usuario por id");;;
+           System.out.println("Error durante la busqueda de usuario por id");
         }
         return existeUsuario;
     }
@@ -173,7 +172,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         int idProveedor = -1;
         int idCategoria = -1;
         ResultSet resultSet;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         /*
@@ -395,7 +394,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
     public void listarProductosBajoStock(int stock){
         String nombre = "";
-        int stockEncontrado = 0;
+        int stockEncontrado;
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
@@ -408,7 +407,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 stockEncontrado = resultSet.getInt(2);
                 productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
-
+            // TODO llevarme esto a una ventana donde pueda printearlo sonbre un elemento
             for(Producto p: productosFiltrados){
                 System.out.println(p.toStringTuneado());
             }
@@ -426,35 +425,41 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
 
     /*
-    Obtener el total de pedidos realizados por cada usuario (MySQL)
+    9 -> Obtener el total de pedidos realizados por cada usuario (MySQL)
     Se implementará una función con la siguiente cabecera:
     void obtenerTotalPedidosUsuarios().
     Mediante una consulta se tendrá que obtener toda la información e
     imprimir por pantalla: el nombre del usuario y el total de pedidos que ha hecho.
      */
-    public ArrayList <Usuario> obtenerTotalPedidosUsuarios(){
+    public void obtenerTotalPedidosUsuarios(){
         ArrayList <Usuario> usuariosFiltrados = new ArrayList<Usuario>();
-        int contadorNumeroUsuarios = 0;
+        int contadorNumeroUsuarios;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total FROM pedidos as p INNER JOIN usuarios as u WHERE p.id_usuario = u.id_usuario GROUP BY u.nombre;")){
+                "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total " +
+                        "FROM pedidos as p " +
+                        "INNER JOIN usuarios as u " +
+                        "WHERE p.id_usuario = u.id_usuario " +
+                        "GROUP BY u.nombre")){
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                    String nombre = resultSet.getString("Usuario");
-                    int numeroPedidos = resultSet.getInt("Total");
+                    String nombre = resultSet.getString(1);
+                    int numeroPedidos = resultSet.getInt(2);
                     usuariosFiltrados.add(new Usuario(nombre,numeroPedidos));
             }
-
-            return usuariosFiltrados;
+            //TODO llevar esto a una ventana
+            for(Usuario u: usuariosFiltrados){
+                System.out.println(u.toStringTuneado());
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(" Error al buscar la informacion necesaria para printear los pedidos registrados para cada usuario");
         }finally {
             try{
                 modeloConnectionMySQL.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error al cerrar la conexion con Mysql");
             }
         }
     }

@@ -6,16 +6,16 @@ public class Usuario {
 
     }
 
-    public Usuario(String nombreUsuario, int id_usuario) {
-        nombreUsuario = nombreUsuario;
+    public Usuario(String nombreUsuario, int numeroDePedidos) {
+        this.nombreUsuario = nombreUsuario;
         this.numeroDePedidos = numeroDePedidos;
     }
 
-    public String getUsuario() {
+    public String getNombreUsuario() {
         return nombreUsuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setNombreUsuario(String usuario) {
         nombreUsuario = usuario;
     }
 
@@ -25,5 +25,9 @@ public class Usuario {
 
     public void setNumeroDePedidos(int numeroDePedidos) {
         this.numeroDePedidos = numeroDePedidos;
+    }
+
+    public String toStringTuneado(){
+        return "Nombre -> " + getNombreUsuario() + "\n" + "Número de pedidos -> " + getNumeroDePedidos() + "\n";
     }
 }
