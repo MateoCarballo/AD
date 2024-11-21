@@ -25,6 +25,15 @@ public class Producto {
         this.stock = stock;
     }
 
+    public Producto(int id_producto, String nombreProveedor, String nifProveedor, String telefonoProveedor, String emailProveedor, String nombreCategoria) {
+        this.id_producto = id_producto;
+        this.nombreProveedor = nombreProveedor;
+        this.nifProveedor = nifProveedor;
+        this.telefonoProveedor = telefonoProveedor;
+        this.emailProveedor = emailProveedor;
+        this.nombreCategoria = nombreCategoria;
+    }
+
     public Producto(int id_producto, String nombreProducto, double precio, int stock, String nombreProveedor, String nifProveedor, String telefonoProveedor, String emailProveedor, String nombreCategoria) {
         this.id_producto = id_producto;
         this.nombreProducto = nombreProducto;
@@ -37,37 +46,6 @@ public class Producto {
         this.nombreCategoria = nombreCategoria;
     }
 
-    public int getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
-    }
-
-    public String getNombre_producto() {
-        return nombreProducto;
-    }
-
-    public void setNombre_producto(String nombre_producto) {
-        this.nombreProducto = nombre_producto;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
    public String toStringTuneado(){
        return "Nombre -> " + getNombre_producto() + "\n" + "Stock -> " + getStock() + "\n";
