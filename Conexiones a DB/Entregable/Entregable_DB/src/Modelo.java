@@ -513,9 +513,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        String nombreCategoria;
        ArrayList <Producto> listaProductoDesdePostgre = new ArrayList<Producto>();
 
+       // TODO cargarme esta mierda de metodo para hacerlo, iterar dos veces las consultas.
 
        try (PreparedStatement preparedStatement =
-                    modeloConnectionPostgre.prepareStatement("SELECT prod.id_producto, prov.nombre_proveedor, (prov.contacto).nif, (prov.contacto).telefono, (prov.contacto).email, cate.nombre_categoria FROM productos as prod INNER JOIN categorias as cate ON prod.id_categoria = cate.id_categoria INNER JOIN proveedores as prov ON prod.id_proveedor = prov.id_proveedor;")){
+                    modeloConnectionPostgre.prepareStatement
+                            ("SELECT prod.id_producto, prov.nombre_proveedor, (prov.contacto).nif, (prov.contacto).telefono, (prov.contacto).email, cate.nombre_categoria FROM productos as prod INNER JOIN categorias as cate ON prod.id_categoria = cate.id_categoria INNER JOIN proveedores as prov ON prod.id_proveedor = prov.id_proveedor;")){
            try(ResultSet resultSet = preparedStatement.executeQuery()){
                while(resultSet.next()){
                    idProducto = resultSet.getInt(1);
@@ -556,6 +558,30 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
            System.out.println("Error al conectar con la DB de MySQL");
        }
     }
+/*
+12 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
+Se implementará una función con la siguiente cabecera: void obtenerUsuariosCompraronProductosCategoria(int idCategoria).
+Se recibirá el id de la categoría y se obtendrá en PostgreSQL el id de los productos que pertenezcan a esa categoría.
+En MySQL se obtendrá el nombre de los usuarios que han comprado algún producto de los indicados anteriormente.
+Se mostrará por pantalla el nombre de los usuarios.
+ */
+    public void obtenerUsuariosCompraronProductosCategoria(int idCategoria){
+        //TODO trabajando aquí
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
+                ("SELECT id_producto FROM productos WHERE id_categoria = ?")){
+            preparedStatement.setInt(1,idCategoria);
+            try(ResultSet resulset = preparedStatement.executeQuery()){
+                if (resulset.next()){
+                    preparedStatement.
+                    resulset.getInt(1);
+                }
+            }
 
+        }catch (SQLException e){
 
+        }
+
+    }
 }
