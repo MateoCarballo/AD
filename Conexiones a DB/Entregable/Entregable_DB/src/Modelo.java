@@ -569,18 +569,47 @@ Se mostrará por pantalla el nombre de los usuarios.
         //TODO trabajando aquí
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
-                ("SELECT id_producto FROM productos WHERE id_categoria = ?")){
-            preparedStatement.setInt(1,idCategoria);
-            try(ResultSet resulset = preparedStatement.executeQuery()){
-                if (resulset.next()){
-                    preparedStatement.
-                    resulset.getInt(1);
+        int idProducto = -1;
+
+        //SACAR EL id_producto DESDE LA DB POSTGRE
+        try(PreparedStatement preparedStatementPostgre = modeloConnectionPostgre.
+                prepareStatement("SELECT id_producto WHERE id_categoria = ?")){
+            preparedStatementPostgre.setInt(1,idCategoria);
+            try(ResultSet resultSetPostgre = preparedStatementPostgre.executeQuery()){
+                while(resultSetPostgre.next()){
+                    idProducto = resultSetPostgre.getInt(1);
+                    /*
+                    usr es la tabla         'usuarios'
+                    ped es la tabla         'pedidos'
+                    ped_prod es la tabla    'pedidos_productos'
+                     */
+                    try(PreparedStatement preparedStatementMySQL = modeloConnectionMySQL.
+                            prepareStatement("""
+                                    SELECT usr.nombre
+                                    FROM usuarios as usr
+                                    INNER JOIN pedidos as ped
+                                    ON usr.id_usuario = ped.id_usuario
+                                    INNER JOIN pedidos_productos as ped_prod
+                                    ON ped_prod.id_pedido = ped.id_pedido
+                                    WHERE ped_prod.id_producto = ?
+                                    """)){
+                        preparedStatementMySQL.setInt(1,idProducto);
+                        try(ResultSet resultSetMySQL = preparedStatementMySQL.executeQuery()){
+                            while(resultSetMySQL.next()){
+                                System.out.println(resultSetMySQL.getString(1));
+                            }
+                        }catch (Exception e) {
+                            System.out.println("Error en el reesul set de MySQL");
+                        }
+                    }catch (Exception e) {
+                        System.out.println("Error en el prepared statement de MySQL");
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println("Error en el resul set de Postgre");
             }
-
         }catch (SQLException e){
-
+            System.out.println("Error en el prepared statement de Postgre");
         }
 
     }
