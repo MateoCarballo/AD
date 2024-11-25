@@ -1,9 +1,17 @@
 import GUI.VentanaPrincipal;
 
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
 
-        Modelo m = new Modelo();
+        App app = new App(new Modelo());
+        try {
+            app.iniciarApp();
+        } catch (IOException e) {
+            System.out.println("Error del tipo IOExcepcion");
+            e.printStackTrace();
+        }
         //m.crearCategoria("Categoría de prueba"); //1
         //m.crearProveedor("Nombre prueba proveedor","12345678A",123456789,"email@deprueba.com"); //2
         // m.eliminarProveedor(8);        //3

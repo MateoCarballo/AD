@@ -2,7 +2,14 @@ import java.io.*;
 
 public class App {
     public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    public void iniciarÇApp() throws IOException {
+    private Modelo m;
+    public App (Modelo m){
+        this.m = m;
+    }
+
+    public void iniciarApp() throws IOException {
+
+        String entradaTeclado;
         System.out.println("""
                 ############################################################
                                             MENU
@@ -19,7 +26,18 @@ public class App {
                 11. Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
                 12. Obtener todos los Usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
                 """);
-        String entradaTeclado = br.readLine();
+        do{
+             entradaTeclado = br.readLine();
+             //TODO introducir el patron regex que corresponda
+        }while(!comprobarPatronRegex(entradaTeclado,"PATRON REGEX"));
+
+        switch (Integer.parseInt(entradaTeclado)){
+            case 1 ->
+            case 2 ->
+        }
+
+
+
     }
 
     public boolean comprobarPatronRegex(String string, String pattern){
