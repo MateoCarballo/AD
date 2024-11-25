@@ -15,6 +15,6 @@ public class Main {
         //m.obtenerTotalPedidosUsuarios(); //9
         //m.obtenerCantidadProductosEnCadaAlmacen(); //10
         //m.listarTodosProductosConCategoriaYProveedor(); //11
-        m.obtenerUsuariosCompraronProductosCategoria(1);                          //12
+        //m.obtenerUsuariosCompraronProductosCategoria(1); //12
     }
 }

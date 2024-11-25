@@ -18,7 +18,9 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
     public void crearCategoria(String nombreCategoria){
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
-                ("INSERT INTO categorias(nombre_categoria) VALUES (?)")){
+                ("""
+                        INSERT INTO categorias(nombre_categoria)
+                        VALUES (?)""")){
             preparedStatement.setString(1,nombreCategoria);
             int rowsAffected = preparedStatement.executeUpdate();
             //TODO mostras una ventana emergente que confierme el insert y las filas afectadas.
@@ -43,8 +45,10 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
-                ("INSERT INTO proveedores(nombre_proveedor, contacto) " +
-                        "VALUES (?, ROW(?,?,?,?))")){
+                ("""
+                        INSERT
+                        INTO proveedores(nombre_proveedor, contacto)
+                        VALUES (?, ROW(?,?,?,?))""")){
             preparedStatement.setString(1,nombreProveedor);
             preparedStatement.setString(2,nombreProveedor);
             preparedStatement.setString(3,nif);
@@ -75,7 +79,10 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
         //TODO pendiente de comprobar que el proveedor existe antes de intentar eliminarlo de la DB
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
-                ("DELETE FROM proveedores WHERE id_proveedor = ?")){
+                ("""
+                        DELETE
+                        FROM proveedores
+                        WHERE id_proveedor = ?""")){
 
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
@@ -100,7 +107,10 @@ Se recibirán todos los datos del usuario.
         //TODO gestionar que los valores que llegan aquí cumplan con la forma que deberian tener (año con 4 digitos, formato email y nombre en mayusculas)
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
-                ("INSERT INTO usuarios (nombre,email,ano_nacimiento) VALUES (?,?,?) ")){
+                ("""
+                        INSERT
+                        INTO usuarios (nombre,email,ano_nacimiento)
+                        VALUES (?,?,?)""")){
 
             preparedStatement.setString(1,nombre);
             preparedStatement.setString(2,email);
@@ -127,7 +137,10 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         if (comprobarUsuarioExiste(id)){
             try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
-                    ("DELETE FROM usuarios WHERE id_usuario = ?")){
+                    ("""
+                            DELETE
+                            FROM usuarios
+                            WHERE id_usuario = ?""")){
                 preparedStatement.setInt(1,id);
                 int rowsAffected = preparedStatement.executeUpdate();
 
@@ -151,7 +164,10 @@ Metodo añadido por mi cuenta para asegurarme de que el usuario existe antes de 
         boolean existeUsuario = false;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
-                ("SELECT nombre FROM usuarios WHERE id_usuario = ?")){
+                ("""
+                        SELECT nombre
+                        FROM usuarios
+                        WHERE id_usuario = ?""")){
             preparedStatement.setInt(1,idParaComprobar);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -191,7 +207,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
         try{
             preparedStatement = modeloConnectionMySQL.prepareStatement
-                    ("INSERT INTO productos (nombre_producto,precio,stock) VALUES (?,?,?)");
+                    ("""
+                            INSERT
+                            INTO productos (nombre_producto,precio,stock)
+                            VALUES (?,?,?)""");
             preparedStatement.setString(1,nombre);
             preparedStatement.setDouble(2,precio);
             preparedStatement.setInt(3,stock);
@@ -217,7 +236,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
         try{
             preparedStatement = modeloConnectionPostgre.prepareStatement
-                    ("SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
+                    ("""
+                            SELECT id_categoria
+                            FROM categorias
+                            WHERE nombre_categoria = ?""");
             preparedStatement.setString(1,nombre_categoria);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
@@ -237,7 +259,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         try{
 
             preparedStatement = modeloConnectionPostgre.prepareStatement
-                    ("SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?");
+                    ("""
+                            SELECT id_proveedor
+                            FROM proveedores
+                            WHERE (contacto).nif = ?""");
 
             preparedStatement.setString(1,nif);
             resultSet = preparedStatement.executeQuery();
@@ -256,8 +281,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
          */
         try{
             preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "INSERT INTO productos (id_producto,id_proveedor,id_categoria) " +
-                            "VALUES (?,?,?)");
+                    """
+                            INSERT
+                            INTO productos (id_producto,id_proveedor,id_categoria)
+                            VALUES (?,?,?)""");
             preparedStatement.setInt(1,idProductoIntroducido);
             preparedStatement.setInt(2,idProveedor);
             preparedStatement.setInt(3,idCategoria);
@@ -302,7 +329,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         //BUSCAMOS EL 'id_producto' EN LA BASE DE DATOS MYSQL
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "SELECT id_producto FROM productos WHERE nombre_producto= ?")){
+                """
+                        SELECT id_producto
+                        FROM productos
+                        WHERE nombre_producto= ?""")){
             preparedStatement.setString(1,nombre);
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 while (resultSet.next()){
@@ -343,7 +373,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // 1.1 -> Borrado de la tabla 'pedidos_productos'
         try {
             preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "DELETE FROM pedidos_productos WHERE id_producto = ?");
+                    """
+                            DELETE
+                            FROM pedidos_productos
+                            WHERE id_producto = ?""");
             preparedStatement.setInt(1,idProducto);
             affectedRows =  preparedStatement.executeUpdate();
 
@@ -353,7 +386,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // 1.2 -> Borrado de la tabla 'productos'
         try {
             preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "DELETE FROM productos WHERE id_producto = ?");
+                    """
+                            DELETE
+                            FROM productos
+                            WHERE id_producto = ?""");
             preparedStatement.setInt(1,idProducto);
             affectedRows =  preparedStatement.executeUpdate();
 
@@ -366,7 +402,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // 2.1 -> Borrado de la tabla alamacenes_productos
         try {
             preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "DELETE FROM almacenes_productos WHERE id_producto = ?");
+                    """
+                            DELETE
+                            FROM almacenes_productos
+                            WHERE id_producto = ?
+                            """);
             preparedStatement.setInt(1,idProducto);
             affectedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -403,7 +443,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "SELECT nombre_producto, stock FROM productos WHERE stock <= ?")){
+                """
+                        SELECT nombre_producto, stock
+                        FROM productos 
+                        WHERE stock <= ?""")){
             preparedStatement.setInt(1,stock);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -441,11 +484,12 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         int contadorNumeroUsuarios;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
-                "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total " +
-                        "FROM pedidos as p " +
-                        "INNER JOIN usuarios as u " +
-                        "WHERE p.id_usuario = u.id_usuario " +
-                        "GROUP BY u.nombre")){
+                """
+                        "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total 
+                        FROM pedidos as p
+                        INNER JOIN usuarios as u 
+                        WHERE p.id_usuario = u.id_usuario 
+                        GROUP BY u.nombre""")){
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
@@ -477,7 +521,10 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     public void obtenerCantidadProductosEnCadaAlmacen(){
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
-                "SELECT a.nombre_almacen, SUM(ap.cantidad) FROM almacenes as a INNER JOIN almacenes_productos as ap ON a.id_almacen = ap.id_almacen GROUP BY a.nombre_almacen")){
+                """
+                        SELECT a.nombre_almacen, SUM(ap.cantidad) 
+                        FROM almacenes as a INNER JOIN almacenes_productos as ap ON a.id_almacen = ap.id_almacen 
+                        GROUP BY a.nombre_almacen""")){
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 while(resultSet.next()){
                     String s = resultSet.getString(1);
@@ -515,9 +562,13 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
        // TODO cargarme esta mierda de metodo para hacerlo, iterar dos veces las consultas.
 
-       try (PreparedStatement preparedStatement =
-                    modeloConnectionPostgre.prepareStatement
-                            ("SELECT prod.id_producto, prov.nombre_proveedor, (prov.contacto).nif, (prov.contacto).telefono, (prov.contacto).email, cate.nombre_categoria FROM productos as prod INNER JOIN categorias as cate ON prod.id_categoria = cate.id_categoria INNER JOIN proveedores as prov ON prod.id_proveedor = prov.id_proveedor;")){
+       try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
+                            ("""
+                                    SELECT prod.id_producto, prov.nombre_proveedor, (prov.contacto).nif, (prov.contacto).telefono, (prov.contacto).email, cate.nombre_categoria 
+                                    FROM productos as prod 
+                                    INNER JOIN categorias as cate ON prod.id_categoria = cate.id_categoria 
+                                    INNER JOIN proveedores as prov ON prod.id_proveedor = prov.id_proveedor""")){
+
            try(ResultSet resultSet = preparedStatement.executeQuery()){
                while(resultSet.next()){
                    idProducto = resultSet.getInt(1);
@@ -540,7 +591,9 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        }
 
        try(PreparedStatement preparedStatement =
-                   modeloConnectionMySQL.prepareStatement("SELECT nombre_producto, precio, stock FROM productos WHERE id_producto = ?")){
+                   modeloConnectionMySQL.prepareStatement("""
+                           SELECT nombre_producto, precio, stock
+                           FROM productos WHERE id_producto = ?""")){
            for (Producto p : listaProductoDesdePostgre){
                preparedStatement.setInt(1, p.getId_producto());
                 try(ResultSet resultSet = preparedStatement.executeQuery()){
