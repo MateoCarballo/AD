@@ -573,7 +573,10 @@ Se mostrará por pantalla el nombre de los usuarios.
 
         //SACAR EL id_producto DESDE LA DB POSTGRE
         try(PreparedStatement preparedStatementPostgre = modeloConnectionPostgre.
-                prepareStatement("SELECT id_producto WHERE id_categoria = ?")){
+                prepareStatement("""
+                        SELECT id_producto 
+                        FROM productos 
+                        WHERE id_categoria = ?""")){
             preparedStatementPostgre.setInt(1,idCategoria);
             try(ResultSet resultSetPostgre = preparedStatementPostgre.executeQuery()){
                 while(resultSetPostgre.next()){
