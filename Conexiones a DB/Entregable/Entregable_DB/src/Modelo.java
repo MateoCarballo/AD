@@ -399,6 +399,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             1.2 ->  Borrado de la tabla 'productos'.
          */
 
+
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         PreparedStatement preparedStatement;
@@ -425,6 +426,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         } catch (SQLException e) {
             System.out.println("Error durante el borrado del producto en la tabla pedidos_productos en MySQL");
+            try {
+                modeloConnectionMySQL.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            }
         }
         // 1.2 -> Borrado de la tabla 'productos'
         try {
@@ -438,6 +444,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         } catch (SQLException e) {
             System.out.println("Error durante el borrado del producto en la tabla productos en MySQL");
+            try {
+                modeloConnectionMySQL.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            }
         }
 
         // 2 -> BORRADO EN POSTGRE
@@ -454,6 +465,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             affectedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error durante el borrado del producto en la tabla alamacenes_productos en Postgre");
+            try {
+                modeloConnectionPostgre.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            }
         }
 
         // 2.2 -> Borrado de la tabla productos
@@ -464,6 +480,11 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             affectedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error durante el borrado del producto en la tabla productos en Postgre");
+            try {
+                modeloConnectionPostgre.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            }
         }
 
         // CERRAMOS LA TRANSACCION
