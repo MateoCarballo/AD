@@ -664,4 +664,67 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     }
 
 
+
+    /*
+    12 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
+    Se implementará una función con la siguiente cabecera: void obtenerUsuariosCompraronProductosCategoria(int idCategoria).
+    Se recibirá el id de la categoría y se obtendrá en PostgreSQL el id de los productos que pertenezcan a esa categoría.
+    En MySQL se obtendrá el nombre de los usuarios que han comprado algún producto de los indicados anteriormente.
+    Se mostrará por pantalla el nombre de los usuarios.
+     */
+
+
+    public void obtenerUsuariosCompraronProductosCategoria(int idCategoria){
+        //TODO trabajando aquí
+        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        int idProducto = -1;
+
+        //SACAR EL id_producto DESDE LA DB POSTGRE
+        try(PreparedStatement preparedStatementPostgre = modeloConnectionPostgre.
+                prepareStatement("""
+                        SELECT id_producto 
+                        FROM productos 
+                        WHERE id_categoria = ?""")){
+            preparedStatementPostgre.setInt(1,idCategoria);
+            try(ResultSet resultSetPostgre = preparedStatementPostgre.executeQuery()){
+                while(resultSetPostgre.next()){
+                    idProducto = resultSetPostgre.getInt(1);
+                    /*
+                    usr es la tabla         'usuarios'
+                    ped es la tabla         'pedidos'
+                    ped_prod es la tabla    'pedidos_productos'
+                     */
+                    try(PreparedStatement preparedStatementMySQL = modeloConnectionMySQL.
+                            prepareStatement("""
+                                    SELECT usr.nombre
+                                    FROM usuarios as usr
+                                    INNER JOIN pedidos as ped
+                                    ON usr.id_usuario = ped.id_usuario
+                                    INNER JOIN pedidos_productos as ped_prod
+                                    ON ped_prod.id_pedido = ped.id_pedido
+                                    WHERE ped_prod.id_producto = ?
+                                    """)){
+                        preparedStatementMySQL.setInt(1,idProducto);
+                        try(ResultSet resultSetMySQL = preparedStatementMySQL.executeQuery()){
+                            while(resultSetMySQL.next()){
+                                System.out.println(resultSetMySQL.getString(1));
+                            }
+                        }catch (Exception e) {
+                            System.out.println("Error en el reesul set de MySQL");
+                        }
+                    }catch (Exception e) {
+                        System.out.println("Error en el prepared statement de MySQL");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error en el resul set de Postgre");
+            }
+        }catch (SQLException e){
+            System.out.println("Error en el prepared statement de Postgre");
+        }
+
     }
+}
+
+
