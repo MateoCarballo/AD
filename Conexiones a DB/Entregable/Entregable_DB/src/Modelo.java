@@ -51,7 +51,6 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
             preparedStatement.setString(3,nif);
             preparedStatement.setString(4,String.valueOf(telefono));
             preparedStatement.setString(5,email);
-            //TODO pendiente de revisar que los datos introducidos sean correctos (Esto se puede generalizar a todos los metodos)
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -498,11 +497,13 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             preparedStatement.setInt(1,stock);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+
             while(resultSet.next()){
                 nombre = resultSet.getString(1);
                 stockEncontrado = resultSet.getInt(2);
                 productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
+
             // TODO llevarme esto a una ventana donde pueda printearlo sonbre un elemento
             for(Producto p: productosFiltrados){
                 System.out.println(p.toStringTuneado());

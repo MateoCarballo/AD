@@ -11,7 +11,7 @@ public class App {
 
         String entradaTeclado;
         System.out.println("""
-                ############################################################
+                ##############################################################################################
                                             MENU
                 1.  Crear una nueva categoría (PostgreSQL)
                 2.  Crear un nuevo proveedor (PostgreSQL)
@@ -25,6 +25,7 @@ public class App {
                 10. Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
                 11. Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
                 12. Obtener todos los Usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
+                ##############################################################################################
                 """);
         /*
         do{
@@ -46,9 +47,12 @@ public class App {
     }
 
     private void obtieneDatosCrearCategoria() {
-        System.out.println("Introduce el nombre de la nueva categoria");
+        String nombreCategoria;
         try {
-            String nombreCategoria = br.readLine();
+            do {
+                System.out.println("Introduce el nombre de la nueva categoria");
+                nombreCategoria = br.readLine();
+            }while(!comprobarPatronRegex(nombreCategoria,"[a-zA-Z | \\s]{1,20}"));
             m.crearCategoria(nombreCategoria);
         } catch (IOException e) {
             System.out.println("Error al recoger el nombre de la nueva categoria");
@@ -56,11 +60,11 @@ public class App {
     }
 
     public void obtieneDatosCrearProveedor() {
-        String  nombreProveedor;
-        String  nifProveedor;
-        int     telefonoProveedor;
+        String  nombreProveedor = null;
+        String  nifProveedor = null;
+        int     telefonoProveedor = -1;
         String  telefonoProveedor1;
-        String  emailProveedor;
+        String  emailProveedor = null;
 
 
         try {
@@ -101,12 +105,15 @@ public class App {
                 System.out.println("Email del nuevo proveedor");
                 emailProveedor = br.readLine();
             }while(!comprobarPatronRegex(emailProveedor,"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
-
-                    // "^[a-z]{1,35}[@]{1}[a-z]{1,15}[.]{1}""^[a-z]{1,35}[@]{1}[a-z]{1,15}[.]{1}"
-
         } catch (IOException e) {
             System.out.println("Error al recoger el NIF del nuevo proveedor");
         }
+
+       if (nombreProveedor != null && nifProveedor != null && emailProveedor != null && telefonoProveedor != -1){
+           m.crearProveedor(nombreProveedor,nifProveedor,telefonoProveedor,emailProveedor);
+       }
+
+
     }
 
 
