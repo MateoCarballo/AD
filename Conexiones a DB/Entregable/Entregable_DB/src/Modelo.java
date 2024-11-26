@@ -22,9 +22,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                         INSERT INTO categorias(nombre_categoria)
                         VALUES (?)""")){
             preparedStatement.setString(1,nombreCategoria);
-            int rowsAffected = preparedStatement.executeUpdate();
-            //TODO mostras una ventana emergente que confierme el insert y las filas afectadas.
-
+            if (preparedStatement.executeUpdate() == 1) System.out.println("Categoria creada con exito !");
         } catch (SQLException e) {
             System.out.println("Error en la creacion de la categoria");
             e.printStackTrace();
@@ -56,7 +54,6 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
             preparedStatement.setString(5,email);
             //TODO pendiente de revisar que los datos introducidos sean correctos (Esto se puede generalizar a todos los metodos)
             preparedStatement.executeUpdate();
-            int rowsAffected = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println("Error durante la creacion del proveedor");
@@ -76,8 +73,25 @@ Se implementará una función con la siguiente cabecera: void eliminarProveedor(
 Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la base de datos.
  */
     public void eliminarProveedor(int id){
-        //TODO pendiente de comprobar que el proveedor existe antes de intentar eliminarlo de la DB
+
+        // SETEAR EN NULL LA CLAVE FORANEA DE LA TABLA 'productos'
+
         modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
+                ("""
+                        UPDATE productos
+                        SET id_proveedor = null
+                        WHERE id_proveedor = ?;""")){
+
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos)");
+            e.printStackTrace();
+        }
+        // Eliminar de la tabla productos
+
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
                         DELETE
@@ -88,7 +102,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("Error durante la eliminacion del proveedor");
+            System.out.println("Error durante la eliminacion del proveedor como clave primaria (tabla proveedores)");
             e.printStackTrace();
         } finally{
             try {
