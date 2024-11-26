@@ -90,7 +90,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
             System.out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos)");
             e.printStackTrace();
         }
-        // Eliminar de la tabla productos
+        // ELIMINAR DE LA TABLA 'productos'
 
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
@@ -165,7 +165,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
             }
         }
 
-        // BORRAMOS EL USUARIO
+        // BORRAMOS EL USUARIO EN LA TABLA 'usuarios'
 
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         if (comprobarUsuarioExiste(id)){
@@ -175,7 +175,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                             FROM usuarios
                             WHERE id_usuario = ?""")){
                 preparedStatement.setInt(1,id);
-                int rowsAffected = preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
 
             } catch (SQLException e) {
                 System.out.println("Error durante la eliminacion de un nuevo usuario");
@@ -237,6 +237,13 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
          */
 
+        try {
+            modeloConnectionMySQL.setAutoCommit(false);
+            modeloConnectionPostgre.setAutoCommit(false);
+        } catch (SQLException e) {
+            System.out.println("Error al intentar para la opcion de autocommit para realizar una transaccion");;
+        }
+
         //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
         try{
             preparedStatement = modeloConnectionMySQL.prepareStatement
@@ -282,6 +289,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             System.out.println("Error durante la busqueda del 'id_categoria' en la tabla categorias");
         } finally{
             try {
+                modeloConnectionMySQL.setAutoCommit(true);
                 modeloConnectionMySQL.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
@@ -327,7 +335,8 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             System.out.println("Error durante la insercion de los datos en la tabla productos de postgre");;
         } finally{
             try {
-                modeloConnectionMySQL.close();
+                modeloConnectionPostgre.setAutoCommit(true);
+                modeloConnectionPostgre.close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion");
             }
@@ -398,6 +407,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // EMPEZAMOS LA TRANSACCION
         try {
             modeloConnectionMySQL.setAutoCommit(false);
+            modeloConnectionPostgre.setAutoCommit(false);
         } catch (SQLException e) {
             System.out.println("Error al cambiar el auto commit a false");
         }
@@ -459,6 +469,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         // CERRAMOS LA TRANSACCION
         try {
             modeloConnectionMySQL.setAutoCommit(true);
+            modeloConnectionPostgre.setAutoCommit(true);
         } catch (SQLException e) {
             System.out.println("Error al cambiar el auto commit a true");
         }
