@@ -147,7 +147,26 @@ Se implementará una función con la siguiente cabecera: void eliminarUsuario(in
 Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la base de datos.
  */
     public void eliminarUsuario(int id){
-        //TODO pendiente de crear un metodo para compronar si existe el usuario en la base de datos
+
+        // PONE A NULL EL VALOR DE LA CLAVE FORANEA QUE CONTIENE EL ID DEL USUARIO QUE VAMOS A ELIMINAR
+
+        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
+        if (comprobarUsuarioExiste(id)){
+            try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
+                    ("""
+                            UPDATE pedidos
+                            SET id_usuario = null
+                            WHERE id_usuario = ?""")){
+                preparedStatement.setInt(1,id);
+                preparedStatement.executeUpdate();
+
+            } catch (SQLException e) {
+                System.out.println("Error durante la eliminacion como clave foránea en la tabla pedidos");
+            }
+        }
+
+        // BORRAMOS EL USUARIO
+
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         if (comprobarUsuarioExiste(id)){
             try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
