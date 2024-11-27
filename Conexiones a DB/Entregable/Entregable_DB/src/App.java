@@ -24,7 +24,7 @@ public class App {
             String entradaTeclado;
             System.out.println("""
                 #############################################################################################################
-                                                            MENU
+                                                                    MENU
                 0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
                 2.  Crear un nuevo proveedor (PostgreSQL)
