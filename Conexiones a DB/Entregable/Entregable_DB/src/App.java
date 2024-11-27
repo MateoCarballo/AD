@@ -54,7 +54,7 @@ public class App {
                 case 4 -> obtieneCrearNuevoUsuario();
                 case 5 -> obtieneDatosEliminarUsuario();
                 case 6 -> obtieneDatosCrearNuevoProducto();
-                case 7 -> obtieneDatosCrearProveedor();
+                case 7 -> obtieneDatosEliminarProductoPorNombre();
                 case 8 -> obtieneDatosCrearProveedor();
                 case 9 -> obtieneDatosCrearProveedor();
                 case 10 -> obtieneDatosCrearProveedor();
@@ -182,7 +182,6 @@ public class App {
     }
     //6
     private void obtieneDatosCrearNuevoProducto(){
-        //crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif)
         String nombreProducto, nombreCategoria, nif, precio, stock;
 
         try {
@@ -208,8 +207,23 @@ public class App {
             }while(!comprobarPatronRegex(nif,NIF_PATTERN));
             m.crearProducto(nombreProducto,Double.parseDouble(precio),Integer.parseInt(stock),nombreCategoria,nif);
         } catch (IOException e) {
-            System.out.println("Error al recoger el id del proveedor a eliminar");
+            System.out.println("Error al recoger el datos para crear un nuevo producto");
         }
+    }
+    //7
+    private void obtieneDatosEliminarProductoPorNombre(){
+        String nombreProductoParaEliminar;
+        try {
+            do {
+                System.out.println("Introduce el nombre del producto para eliminarlo");
+                nombreProductoParaEliminar = br.readLine();
+            }while(!comprobarPatronRegex(nombreProductoParaEliminar,NOMBRE_PATTERN));
+
+            m.eliminarProductoPorNombre(nombreProductoParaEliminar);
+        } catch (IOException e) {
+            System.out.println("Error al recoger el datos para eliminar un producto por nombre");
+        }
+
     }
     public boolean comprobarPatronRegex(String string, String pattern){
             return string.matches(pattern);
