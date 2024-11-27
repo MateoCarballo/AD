@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Modelo {
-    //TODO gestionar cada error por separado
+
     private Connection modeloConnectionMySQL;
     private Connection modeloConnectionPostgre;
 
@@ -115,7 +115,6 @@ Se implementará una función con la siguiente cabecera: void crearUsuario(Strin
 Se recibirán todos los datos del usuario.
  */
     public void crearUsuario(String nombre, String email, int anho_nacimiento){
-        //TODO gestionar que los valores que llegan aquí cumplan con la forma que deberian tener (año con 4 digitos, formato email y nombre en mayusculas)
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("""
@@ -251,7 +250,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             preparedStatement.executeUpdate();
 
             preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "SELECT LAST_INSERT_ID();");
+                    "SELECT LAST_INSERT_ID()");
 
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
