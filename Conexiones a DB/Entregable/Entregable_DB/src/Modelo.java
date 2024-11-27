@@ -340,14 +340,12 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     */
 
     public void eliminarProductoPorNombre(String nombre){
-        //TODO trabajando aquí
+        //TODO falta probar
 
-        //Llamo a un metodo para que me devuelva el id_producto si existe en la DB
-        int idProducto = buscarProducto(nombre);
-
-        //Lllamos a un metodo para ejecutar el borrado de las tablas como una transacción
-        eliminarRegistrosDelProducto(idProducto);
-
+        if (!(buscarProducto(nombre) == -1)){
+            //Lllamos a un metodo para ejecutar el borrado de las tablas como una transacción
+            eliminarRegistrosDelProducto(buscarProducto(nombre));
+        }
 
 
     }
@@ -503,7 +501,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
 
-            // TODO llevarme esto a una ventana donde pueda printearlo sonbre un elemento
+            // TODO llevarme esto a una ventana donde pueda printearlo sobre un elemento
             for(Producto p: productosFiltrados){
                 System.out.println(p.toStringTuneado());
             }
