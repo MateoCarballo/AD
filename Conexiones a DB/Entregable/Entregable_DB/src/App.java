@@ -19,8 +19,8 @@ public class App {
         do{
             String entradaTeclado;
             System.out.println("""
-                ##############################################################################################
-                                            MENU
+                #############################################################################################################
+                                                            MENU
                 0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
                 2.  Crear un nuevo proveedor (PostgreSQL)
@@ -34,7 +34,7 @@ public class App {
                 10. Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
                 11. Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
                 12. Obtener todos los Usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
-                ##############################################################################################
+                #############################################################################################################
                 """);
         /*
         do{
@@ -47,19 +47,19 @@ public class App {
 
 
             switch (Integer.parseInt(entradaTeclado)){
-                case 0 -> continuar = false;
-                case 1 -> obtieneDatosCrearCategoria();
-                case 2 -> obtieneDatosCrearProveedor();
-                case 3 -> obtieneDatosEliminarProveedor();
-                case 4 -> obtieneCrearNuevoUsuario();
-                case 5 -> obtieneDatosEliminarUsuario();
-                case 6 -> obtieneDatosCrearNuevoProducto();
-                case 7 -> obtieneDatosEliminarProductoPorNombre();
-                case 8 -> obtieneDatosCrearProveedor();
-                case 9 -> obtieneDatosCrearProveedor();
-                case 10 -> obtieneDatosCrearProveedor();
-                case 11 -> obtieneDatosCrearProveedor();
-                case 12 -> obtieneDatosCrearProveedor();
+                case 0 ->   continuar = false;
+                case 1 ->   obtieneDatosCrearCategoria();
+                case 2 ->   obtieneDatosCrearProveedor();
+                case 3 ->   obtieneDatosEliminarProveedor();
+                case 4 ->   obtieneCrearNuevoUsuario();
+                case 5 ->   obtieneDatosEliminarUsuario();
+                case 6 ->   obtieneDatosCrearNuevoProducto();
+                case 7 ->   obtieneDatosEliminarProductoPorNombre();
+                case 8 ->   obtenerDatosListarProductosBajoStock();
+                case 9 ->   listarTotalPedidosUsuarios();
+                case 10 ->  listarTotalPedidosPorAlmacen();
+                case 11 ->  listarProductosCategoriasProveedores();
+                case 12 ->  obtenerDatosObtenerUsuariosCompraronCategoria();
             }
 
         }while(continuar);
@@ -223,8 +223,50 @@ public class App {
         } catch (IOException e) {
             System.out.println("Error al recoger el datos para eliminar un producto por nombre");
         }
-
     }
+    //8
+    private void obtenerDatosListarProductosBajoStock(){
+        String stock;
+        try {
+            do {
+                System.out.println("Introduce el numero de stock maximo que quieres mostar");
+                stock = br.readLine();
+            }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
+
+            m.listarProductosBajoStock(Integer.parseInt(stock));
+        } catch (IOException e) {
+            System.out.println("Error al recoger el datos para eliminar un producto por nombre");
+        }
+    }
+    //9
+    private void listarTotalPedidosUsuarios(){
+        m.obtenerTotalPedidosUsuarios();
+    }
+    //10
+    private void listarTotalPedidosPorAlmacen(){
+        m.obtenerCantidadProductosEnCadaAlmacen();
+    }
+    //11
+    private void listarProductosCategoriasProveedores(){
+        m.listarTodosProductosConCategoriaYProveedor();
+    }
+    //12
+    private void obtenerDatosObtenerUsuariosCompraronCategoria(){
+        String idCategoria;
+        try {
+            do {
+                System.out.println("Introduce el id de la categoria para listar los usuarios que han comprado productos de ella");
+                idCategoria = br.readLine();
+            }while(!comprobarPatronRegex(idCategoria,ID_PATTERN));
+
+            m.obtenerUsuariosCompraronProductosCategoria(Integer.parseInt(idCategoria));
+        } catch (IOException e) {
+            System.out.println("Error al recoger el datos para listar usuarios que han comprado productos de una categoria dada");
+        }
+    }
+
+
+    //Comprobador de patrones regex
     public boolean comprobarPatronRegex(String string, String pattern){
             return string.matches(pattern);
     }
