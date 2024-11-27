@@ -6,6 +6,13 @@ public class App {
     public App (Modelo m){
         this.m = m;
     }
+    private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
+    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$";
+    private final String TELEFONO_PATTERN = "^\\d{9}$";
+    private final String ID_PATTERN = "^\\d{1,50}$";
+    private final String CORREO_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$";
+    private final String PRECIO_PATTERN = "^(0|[1-9]\\d*)(\\.\\d{1,2})?$";
+    private final String STOCK_PATTERN = "^[1-9]\\d*$";
 
     public void iniciarApp() throws IOException {
         boolean continuar = true;
@@ -45,8 +52,8 @@ public class App {
                 case 2 -> obtieneDatosCrearProveedor();
                 case 3 -> obtieneDatosEliminarProveedor();
                 case 4 -> obtieneCrearNuevoUsuario();
-                case 5 -> obtieneDatosCrearProveedor();
-                case 6 -> obtieneDatosCrearProveedor();
+                case 5 -> obtieneDatosEliminarUsuario();
+                case 6 -> obtieneDatosCrearNuevoProducto();
                 case 7 -> obtieneDatosCrearProveedor();
                 case 8 -> obtieneDatosCrearProveedor();
                 case 9 -> obtieneDatosCrearProveedor();
@@ -58,20 +65,20 @@ public class App {
         }while(continuar);
     }
 
-
+    // 1
     private void obtieneDatosCrearCategoria() {
     String nombreCategoria;
     try {
         do {
             System.out.println("Introduce el nombre de la nueva categoria");
             nombreCategoria = br.readLine();
-        }while(!comprobarPatronRegex(nombreCategoria,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
+        }while(!comprobarPatronRegex(nombreCategoria,NOMBRE_PATTERN));
         m.crearCategoria(nombreCategoria);
     } catch (IOException e) {
         System.out.println("Error al recoger el nombre de la nueva categoria");
     }
 }
-
+    //2
     private void obtieneDatosCrearProveedor() {
     String  nombreProveedor = null;
     String  nifProveedor = null;
@@ -83,7 +90,7 @@ public class App {
         do {
             System.out.println("Nombre del nuevo proveedor");
             nombreProveedor = br.readLine();
-        }while(!comprobarPatronRegex(nombreProveedor,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
+        }while(!comprobarPatronRegex(nombreProveedor,NOMBRE_PATTERN));
     } catch (IOException e) {
         System.out.println("Error al recoger el nombre del nuevo proveedor");
     }
@@ -92,7 +99,7 @@ public class App {
         do {
             System.out.println("NIF para el nuevo proveedor");
             nifProveedor = br.readLine();
-        }while(!comprobarPatronRegex(nifProveedor,"^[1-9][0-9]{7}[A-Za-z]$"));
+        }while(!comprobarPatronRegex(nifProveedor,NIF_PATTERN));
     } catch (IOException e) {
         System.out.println("Error al recoger el NIF del nuevo proveedor");
     }
@@ -101,7 +108,7 @@ public class App {
         do {
             System.out.println("Telefono de contacto del proveedor");
             telefonoProveedor1 = br.readLine();
-        }while(!comprobarPatronRegex(telefonoProveedor1,"^\\d{9}$"));
+        }while(!comprobarPatronRegex(telefonoProveedor1,TELEFONO_PATTERN));
         telefonoProveedor = Integer.parseInt(telefonoProveedor1);
     } catch (IOException e) {
         System.out.println("Error al recoger el telefono del nuevo proveedor");
@@ -111,7 +118,7 @@ public class App {
         do {
             System.out.println("Email del nuevo proveedor");
             emailProveedor = br.readLine();
-        }while(!comprobarPatronRegex(emailProveedor,"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"));
+        }while(!comprobarPatronRegex(emailProveedor,CORREO_PATTERN));
     } catch (IOException e) {
         System.out.println("Error al recoger el email del nuevo proveedor");
     }
@@ -121,20 +128,20 @@ public class App {
     }
 
     }
-
+    //3
     private void obtieneDatosEliminarProveedor() {
         String idProveedorParaEliminar;
         try {
             do {
                 System.out.println("Introduce el ID para eliminar");
                 idProveedorParaEliminar = br.readLine();
-            }while(!comprobarPatronRegex(idProveedorParaEliminar,"^\\d{9}$"));
+            }while(!comprobarPatronRegex(idProveedorParaEliminar,ID_PATTERN));
             m.eliminarProveedor(Integer.parseInt(idProveedorParaEliminar));
         } catch (IOException e) {
             System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
-
+    //4
     private void obtieneCrearNuevoUsuario() {
         String nombre, correo, anho;
 
@@ -159,8 +166,51 @@ public class App {
             System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
+    //5
+    private void obtieneDatosEliminarUsuario(){
+        String idUsuarioEliminar;
+        try {
+            do {
+                System.out.println("Introduce el nombre del nuevo usuario");
+                idUsuarioEliminar = br.readLine();
+            }while(!comprobarPatronRegex(idUsuarioEliminar,ID_PATTERN));
 
+            m.eliminarUsuario(Integer.parseInt(idUsuarioEliminar));
+        } catch (IOException e) {
+            System.out.println("Error al recoger el id del proveedor a eliminar");
+        }
+    }
+    //6
+    private void obtieneDatosCrearNuevoProducto(){
+        //crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif)
+        String nombreProducto, nombreCategoria, nif, precio, stock;
 
+        try {
+            do {
+                System.out.println("Introduce el nombre del nuevo producto");
+                nombreProducto = br.readLine();
+            }while(!comprobarPatronRegex(nombreProducto,NOMBRE_PATTERN));
+            do {
+                System.out.println("Introduce el precio del nuevo producto");
+                precio = br.readLine();
+            }while(!comprobarPatronRegex(precio,PRECIO_PATTERN));
+            do {
+                System.out.println("Introduce el stock del nuevo producto");
+                stock = br.readLine();
+            }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
+            do {
+                System.out.println("Introduce el nombre de la categoria del nuevo producto");
+                nombreCategoria = br.readLine();
+            }while(!comprobarPatronRegex(nombreCategoria,NOMBRE_PATTERN));
+            do {
+                System.out.println("Introduce el nif del nuevo producto");
+                nif = br.readLine();
+            }while(!comprobarPatronRegex(nif,NIF_PATTERN));
+            m.crearProducto(nombreProducto,Double.parseDouble(precio),Integer.parseInt(stock),nombreCategoria,nif);
+        } catch (IOException e) {
+            System.out.println("Error al recoger el id del proveedor a eliminar");
+        }
+    }
     public boolean comprobarPatronRegex(String string, String pattern){
             return string.matches(pattern);
     }
