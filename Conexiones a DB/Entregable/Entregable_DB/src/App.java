@@ -8,11 +8,13 @@ public class App {
     }
 
     public void iniciarApp() throws IOException {
-
-        String entradaTeclado;
-        System.out.println("""
+        boolean continuar = true;
+        do{
+            String entradaTeclado;
+            System.out.println("""
                 ##############################################################################################
                                             MENU
+                0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
                 2.  Crear un nuevo proveedor (PostgreSQL)
                 3.  Eliminar un nuevo proveedor (PostgreSQL)
@@ -37,87 +39,129 @@ public class App {
             entradaTeclado = br.readLine();
 
 
-        switch (Integer.parseInt(entradaTeclado)){
-            case 1 -> obtieneDatosCrearCategoria();
-            case 2 -> obtieneDatosCrearProveedor();
-        }
+            switch (Integer.parseInt(entradaTeclado)){
+                case 0 -> continuar = false;
+                case 1 -> obtieneDatosCrearCategoria();
+                case 2 -> obtieneDatosCrearProveedor();
+                case 3 -> obtieneDatosEliminarProveedor();
+                case 4 -> obtieneCrearNuevoUsuario();
+                case 5 -> obtieneDatosCrearProveedor();
+                case 6 -> obtieneDatosCrearProveedor();
+                case 7 -> obtieneDatosCrearProveedor();
+                case 8 -> obtieneDatosCrearProveedor();
+                case 9 -> obtieneDatosCrearProveedor();
+                case 10 -> obtieneDatosCrearProveedor();
+                case 11 -> obtieneDatosCrearProveedor();
+                case 12 -> obtieneDatosCrearProveedor();
+            }
 
-
-
+        }while(continuar);
     }
+
 
     private void obtieneDatosCrearCategoria() {
-        String nombreCategoria;
+    String nombreCategoria;
+    try {
+        do {
+            System.out.println("Introduce el nombre de la nueva categoria");
+            nombreCategoria = br.readLine();
+        }while(!comprobarPatronRegex(nombreCategoria,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
+        m.crearCategoria(nombreCategoria);
+    } catch (IOException e) {
+        System.out.println("Error al recoger el nombre de la nueva categoria");
+    }
+}
+
+    private void obtieneDatosCrearProveedor() {
+    String  nombreProveedor = null;
+    String  nifProveedor = null;
+    int     telefonoProveedor = -1;
+    String  telefonoProveedor1;
+    String  emailProveedor = null;
+
+    try {
+        do {
+            System.out.println("Nombre del nuevo proveedor");
+            nombreProveedor = br.readLine();
+        }while(!comprobarPatronRegex(nombreProveedor,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
+    } catch (IOException e) {
+        System.out.println("Error al recoger el nombre del nuevo proveedor");
+    }
+
+    try {
+        do {
+            System.out.println("NIF para el nuevo proveedor");
+            nifProveedor = br.readLine();
+        }while(!comprobarPatronRegex(nifProveedor,"^[1-9][0-9]{7}[A-Za-z]$"));
+    } catch (IOException e) {
+        System.out.println("Error al recoger el NIF del nuevo proveedor");
+    }
+
+    try {
+        do {
+            System.out.println("Telefono de contacto del proveedor");
+            telefonoProveedor1 = br.readLine();
+        }while(!comprobarPatronRegex(telefonoProveedor1,"^\\d{9}$"));
+        telefonoProveedor = Integer.parseInt(telefonoProveedor1);
+    } catch (IOException e) {
+        System.out.println("Error al recoger el telefono del nuevo proveedor");
+    }
+
+    try {
+        do {
+            System.out.println("Email del nuevo proveedor");
+            emailProveedor = br.readLine();
+        }while(!comprobarPatronRegex(emailProveedor,"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"));
+    } catch (IOException e) {
+        System.out.println("Error al recoger el email del nuevo proveedor");
+    }
+
+    if (nombreProveedor != null && nifProveedor != null && emailProveedor != null && telefonoProveedor != -1){
+        m.crearProveedor(nombreProveedor,nifProveedor,telefonoProveedor,emailProveedor);
+    }
+
+    }
+
+    private void obtieneDatosEliminarProveedor() {
+        String idProveedorParaEliminar;
         try {
             do {
-                System.out.println("Introduce el nombre de la nueva categoria");
-                nombreCategoria = br.readLine();
-            }while(!comprobarPatronRegex(nombreCategoria,"[a-zA-Z | \\s]{1,20}"));
-            m.crearCategoria(nombreCategoria);
+                System.out.println("Introduce el ID para eliminar");
+                idProveedorParaEliminar = br.readLine();
+            }while(!comprobarPatronRegex(idProveedorParaEliminar,"^\\d{9}$"));
+            m.eliminarProveedor(Integer.parseInt(idProveedorParaEliminar));
         } catch (IOException e) {
-            System.out.println("Error al recoger el nombre de la nueva categoria");
+            System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
 
-    public void obtieneDatosCrearProveedor() {
-        String  nombreProveedor = null;
-        String  nifProveedor = null;
-        int     telefonoProveedor = -1;
-        String  telefonoProveedor1;
-        String  emailProveedor = null;
-
+    private void obtieneCrearNuevoUsuario() {
+        String nombre, correo, anho;
 
         try {
             do {
-                System.out.println("Nombre del nuevo proveedor");
-                nombreProveedor = br.readLine();
-            }while(!comprobarPatronRegex(nombreProveedor,"[a-zA-Z | \\s]{1,20}"));
-        } catch (IOException e) {
-            System.out.println("Error al recoger el nombre del nuevo proveedor");
-        }
+                System.out.println("Introduce el nombre del nuevo usuario");
+                nombre = br.readLine();
+            }while(!comprobarPatronRegex(nombre,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
 
-
-        try {
             do {
-                System.out.println("NIF para el nuevo proveedor");
-                nifProveedor = br.readLine();
-            }while(!comprobarPatronRegex(nifProveedor,"^[1-9]{1}[0-9]{7}[A-Z]{1}"));
-        } catch (IOException e) {
-            System.out.println("Error al recoger el NIF del nuevo proveedor");
-        }
+                System.out.println("Introduce el correo del nuevo usuario");
+                correo = br.readLine();
+            }while(!comprobarPatronRegex(correo,"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"));
 
-
-
-        try {
             do {
-                System.out.println("Telefono de contacto del proveedor");
-                telefonoProveedor1 = br.readLine();
-            }while(!comprobarPatronRegex(telefonoProveedor1,"[0-9]{9}"));
-            telefonoProveedor = Integer.parseInt(telefonoProveedor1);
+                System.out.println("Introduce el año de nacimiento del nuevo usuario");
+                anho = br.readLine();
+            }while(!comprobarPatronRegex(anho,"19[0-9]{2}|20[0-9]{2}|2100"));
+
+            m.crearUsuario(nombre,correo,Integer.parseInt(anho));
         } catch (IOException e) {
-            System.out.println("Error al recoger el NIF del nuevo proveedor");
+            System.out.println("Error al recoger el id del proveedor a eliminar");
         }
-
-
-
-        try {
-            do {
-                System.out.println("Email del nuevo proveedor");
-                emailProveedor = br.readLine();
-            }while(!comprobarPatronRegex(emailProveedor,"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"));
-        } catch (IOException e) {
-            System.out.println("Error al recoger el NIF del nuevo proveedor");
-        }
-
-       if (nombreProveedor != null && nifProveedor != null && emailProveedor != null && telefonoProveedor != -1){
-           m.crearProveedor(nombreProveedor,nifProveedor,telefonoProveedor,emailProveedor);
-       }
-
-
     }
 
 
     public boolean comprobarPatronRegex(String string, String pattern){
-        return string.matches(pattern);
+            return string.matches(pattern);
     }
 }
