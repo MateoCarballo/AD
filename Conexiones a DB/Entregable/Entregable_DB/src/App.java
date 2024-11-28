@@ -7,6 +7,7 @@ public class App {
     private final String MENU_PATTERN = "";
     private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
     private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$";
+    private final String NOMBRE_PRODUCTO_PATTERN = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-_.\"]{1,50}$";
     private final String TELEFONO_PATTERN = "^\\d{9}$";
     private final String ID_PATTERN = "^\\d{1,50}$";
     private final String CORREO_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$";
@@ -197,7 +198,7 @@ public class App {
             do {
                 System.out.println("Introduce el nombre del nuevo producto");
                 nombreProducto = br.readLine();
-            }while(!comprobarPatronRegex(nombreProducto,NOMBRE_PATTERN));
+            }while(!comprobarPatronRegex(nombreProducto,NOMBRE_PRODUCTO_PATTERN));
             do {
                 System.out.println("Introduce el precio del nuevo producto");
                 precio = br.readLine();
@@ -207,16 +208,17 @@ public class App {
                 stock = br.readLine();
             }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
             do {
-                System.out.println("Introduce el nombre de la categoria del nuevo producto");
+                System.out.println("Introduce el nombre de la categoria del nuevo producto (debe existir en la DB almacenes)");
                 nombreCategoria = br.readLine();
             }while(!comprobarPatronRegex(nombreCategoria,NOMBRE_PATTERN));
             do {
-                System.out.println("Introduce el nif del nuevo producto");
+                System.out.println("Introduce el nif proveedor del producto (debe existir en la DB almacenes)");
                 nif = br.readLine();
             }while(!comprobarPatronRegex(nif,NIF_PATTERN));
             m.crearProducto(nombreProducto,Double.parseDouble(precio),Integer.parseInt(stock),nombreCategoria,nif);
         } catch (IOException e) {
             System.out.println("Error al recoger el datos para crear un nuevo producto");
+            e.printStackTrace();
         }
     }
 
@@ -227,7 +229,7 @@ public class App {
             do {
                 System.out.println("Introduce el nombre del producto para eliminarlo");
                 nombreProductoParaEliminar = br.readLine();
-            }while(!comprobarPatronRegex(nombreProductoParaEliminar,NOMBRE_PATTERN));
+            }while(!comprobarPatronRegex(nombreProductoParaEliminar,NOMBRE_PRODUCTO_PATTERN));
 
             m.eliminarProductoPorNombre(nombreProductoParaEliminar);
         } catch (IOException e) {

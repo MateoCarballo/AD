@@ -26,6 +26,13 @@ public class Main {
 
         // TODO Dudas en cuanto a la gestion de las aperturas y cierres de la
         //  conexion para poder permitir varias operaciones del mismo tipo
+
+        //TODO es necesario commitear al acabar la transaccion ? sin haberlo escrito en un metodo me borro esa tupla
+
+        //TODO en el metodo 7 tengo dudas con el orden de los try catch donde enlazarlos 77para asegurarme de que salta  y no ejecuta el codigo si se produce un error
+
+
+
         //m.crearCategoria(" "); //1
         //m.crearProveedor("Nombre prueba proveedor","12345678A",123456789,"email@deprueba.com"); //2
         //m.eliminarProveedor(2);        //3

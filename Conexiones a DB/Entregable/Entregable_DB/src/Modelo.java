@@ -77,6 +77,7 @@ Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
 
         } catch (SQLException e) {
             System.out.println("Error durante la creacion del proveedor");
+            e.printStackTrace();
         }
     }
 /*
@@ -123,12 +124,11 @@ Se recibirán todos los datos del usuario.
  */
     public void crearUsuario(String nombre, String email, int anho_nacimiento){
         long idGenerado = -1;
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("""
                         INSERT
                         INTO usuarios (nombre,email,ano_nacimiento)
-                        VALUES (?,?,?)""")){
+                        VALUES (?,?,?)""",Statement.RETURN_GENERATED_KEYS)){
 
             preparedStatement.setString(1,nombre);
             preparedStatement.setString(2,email);
@@ -140,10 +140,11 @@ Se recibirán todos los datos del usuario.
                     }
                 }
             }
-            if (idGenerado == 1) System.out.println("Usuario creado con exito! El nuevo id para el usuario es -> " + idGenerado);
+            if (idGenerado != 1) System.out.println("Usuario creado con exito! El nuevo id para el usuario es -> " + idGenerado);
 
         } catch (SQLException e) {
-            System.out.println("Error durante la creaciond de un nuevo usario");
+            System.out.println("Error durante la creacion de un nuevo usario");
+            e.printStackTrace();
         }
     }
 /*
@@ -154,8 +155,6 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
     public void eliminarUsuario(int id){
 
         // PONE A NULL EL VALOR DE LA CLAVE FORANEA QUE CONTIENE EL ID DEL USUARIO QUE VAMOS A ELIMINAR
-
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         if (comprobarUsuarioExiste(id)){
             try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                     ("""
@@ -172,8 +171,6 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
         }
 
         // BORRAMOS EL USUARIO EN LA TABLA 'usuarios'
-
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         if (comprobarUsuarioExiste(id)){
             try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                     ("""
@@ -195,7 +192,6 @@ Metodo añadido por mi cuenta para asegurarme de que el usuario existe antes de 
  */
     private boolean comprobarUsuarioExiste(int idParaComprobar) {
         boolean existeUsuario = false;
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("""
                         SELECT nombre
@@ -221,11 +217,9 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
  */
     public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
 
-        int idProductoIntroducido = -1;
+        int idProductoGenerada = -1;
         int idProveedor = -1;
         int idCategoria = -1;
-        ResultSet resultSet;
-        PreparedStatement preparedStatement;
         /*
         Pasos seguidos para llevar a cabo la insercion de un nuevo producto:
             1 -> INSERTAR EL PRODUCTO EN DB MYSQL Y OBTENER EL ID (del nuevo producto creado).
@@ -238,101 +232,119 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         try {
             modeloConnectionMySQL.setAutoCommit(false);
             modeloConnectionPostgre.setAutoCommit(false);
-        } catch (SQLException e) {
-            System.out.println("Error al intentar para la opcion de autocommit para realizar una transaccion");;
-        }
 
-        //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
-        try{
-            preparedStatement = modeloConnectionMySQL.prepareStatement
-                    ("INSERT INTO productos (nombre_producto,precio,stock) VALUES (?,?,?)");
-            preparedStatement.setString(1,nombre);
-            preparedStatement.setDouble(2,precio);
-            preparedStatement.setInt(3,stock);
-            preparedStatement.executeUpdate();
+            //1.INSERTAMOS EN LA BASE DE DATOS MYSQL EL NUEVO PRODUCTO PARA GENERAR UN ID Y RECUPERAR EL VALOR DEL ULTIMO ID
+            try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
+                    ("INSERT INTO productos (nombre_producto,precio,stock) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS)){
 
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
-                    "SELECT LAST_INSERT_ID()");
+                preparedStatement.setString(1,nombre);
+                preparedStatement.setDouble(2,precio);
+                preparedStatement.setInt(3,stock);
 
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                idProductoIntroducido = resultSet.getInt(1);
+                if (preparedStatement.executeUpdate() == 1){
+                    try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                        while(resultSet.next()){
+                            idProductoGenerada = resultSet.getInt(1);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error en la creacion de un producto en la DB MySQL");
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
-            System.out.println("Error en la creacion de un producto en la DB MySQL");
-        }
-
-        //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
-        try{
-            preparedStatement = modeloConnectionPostgre.prepareStatement
-                    ("SELECT id_categoria FROM categorias WHERE nombre_categoria = ?");
-            preparedStatement.setString(1,nombre_categoria);
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                idCategoria = resultSet.getInt(1);
+            //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
+            try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
+                    ("SELECT id_categoria FROM categorias WHERE nombre_categoria = ?")){
+                preparedStatement.setString(1,nombre_categoria);
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    while(resultSet.next()){
+                        idCategoria = resultSet.getInt(1);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante la busqueda del id_producto en la tabla proveedores");
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            System.out.println("Error durante la busqueda del id_producto en la tabla proveedores");;
-        }
 
-        // 3.OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
-        try{
-
-            preparedStatement = modeloConnectionPostgre.prepareStatement
-                    ("SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?");
-
-            preparedStatement.setString(1,nif);
-            resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                idProveedor = resultSet.getInt(1);
+            // 3.OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
+            try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
+                    ("SELECT id_proveedor FROM proveedores WHERE (contacto).nif = ?")){
+                preparedStatement.setString(1,nif);
+                try(ResultSet resultSet = preparedStatement.executeQuery()){
+                    while(resultSet.next()){
+                        idProveedor = resultSet.getInt(1);
+                    }
+                }
+            }catch (SQLException e){
+                System.out.println("Error al obtener el id del proveedor desde el nif");
+                e.printStackTrace();
             }
-        }catch (SQLException e){
-            System.out.println();
-        }
 
         /*
         4.INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
          TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
          */
-        try{
-            preparedStatement = modeloConnectionPostgre.prepareStatement(
+            try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
                     "INSERT INTO productos (id_producto,id_proveedor,id_categoria) " +
-                            "VALUES (?,?,?)");
-            preparedStatement.setInt(1,idProductoIntroducido);
-            preparedStatement.setInt(2,idProveedor);
-            preparedStatement.setInt(3,idCategoria);
-            preparedStatement.executeUpdate();
+                            "VALUES (?,?,?)")){
+                preparedStatement.setInt(1,idProductoGenerada);
+                preparedStatement.setInt(2,idProveedor);
+                preparedStatement.setInt(3,idCategoria);
+                if (preparedStatement.executeUpdate() == 1 ){
+                    System.out.println("Producto creado con exito! \n"
+                            +"El nuevo id para el producto es -> "+ idProductoGenerada + "\n"
+                            +"Su proveedor tiene el id -> " + idProveedor + "\n"
+                            +"Su categorias tiene el id -> " + idCategoria + "\n");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error durante la insercion de los datos en la tabla productos de postgre");
+                e.printStackTrace();
+            }
+
 
         } catch (SQLException e) {
-            System.out.println("Error durante la insercion de los datos en la tabla productos de postgre");;
+            System.out.println("Error al intentar para la opcion de autocommit para realizar una transaccion");
+            e.printStackTrace();
+        }
+
+        try{
+            modeloConnectionPostgre.commit();
+            modeloConnectionMySQL.commit();
+        } catch (SQLException e) {
+            System.out.println("Error al intentar commitear los cambios para cerrar la transaccion");
+        }
+
+        try{
+            modeloConnectionMySQL.setAutoCommit(true);
+            modeloConnectionPostgre.setAutoCommit(true);
+        } catch (SQLException e) {
+            System.out.println("Error al devolver el estado del autocommit a true");
+            e.printStackTrace();
         }
     }
-
-
-    /*
-    7 -> Eliminar un producto por su nombre (MySQL + PostgreSQL)
-    Se implementará una función con la siguiente cabecera:
-    void eliminarProductoPorNombre(String nombre).
-    Se tendrá que eliminar el producto de ambas bases de datos.
-
-    */
+/*
+7 -> Eliminar un producto por su nombre (MySQL + PostgreSQL)
+Se implementará una función con la siguiente cabecera:
+void eliminarProductoPorNombre(String nombre).
+Se tendrá que eliminar el producto de ambas bases de datos.
+*/
 
     public void eliminarProductoPorNombre(String nombre){
         //TODO falta probar
+        int idProducto = buscarProducto(nombre);
 
-        if (!(buscarProducto(nombre) == -1)){
+        if (idProducto != -1){
+            System.out.println("Producto encontrado con id: " + idProducto);
             //Lllamos a un metodo para ejecutar el borrado de las tablas como una transacción
-            eliminarRegistrosDelProducto(buscarProducto(nombre));
+            eliminarRegistrosDelProducto(idProducto);
         }
 
 
     }
 
     public int buscarProducto(String nombre){
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         int idProducto=-1;
-
         //BUSCAMOS EL 'id_producto' EN LA BASE DE DATOS MYSQL
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                 """
@@ -350,111 +362,116 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         }catch (SQLException e){
             System.out.println("Error en la busqueda del producto por nombre");
         }
-
         return idProducto;
-
     }
 
     private void eliminarRegistrosDelProducto(int idProducto) {
-        PreparedStatement preparedStatement;
-        int affectedRows = -1;
-
         // EMPEZAMOS LA TRANSACCION
         try {
             modeloConnectionMySQL.setAutoCommit(false);
             modeloConnectionPostgre.setAutoCommit(false);
-        } catch (SQLException e) {
-            System.out.println("Error al cambiar el auto commit a false");
-        }
-        // 1 -> BORRADO EN MYSQL
+            // 1 -> BORRADO EN MYSQL
 
-        // 1.1 -> Borrado de la tabla 'pedidos_productos'
-        try {
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
+            // 1.1 -> BORRADO de la tupla que contiene id_producto en la tabla 'pedidos_productos'
+            try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                     """
                             DELETE
                             FROM pedidos_productos
-                            WHERE id_producto = ?""");
-            preparedStatement.setInt(1,idProducto);
-            affectedRows =  preparedStatement.executeUpdate();
+                            WHERE id_producto = ?""")){
 
-        } catch (SQLException e) {
-            System.out.println("Error durante el borrado del producto en la tabla pedidos_productos en MySQL");
-            try {
-                modeloConnectionMySQL.rollback();
-            } catch (SQLException ex) {
-                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+                preparedStatement.setInt(1,idProducto);
+                if (preparedStatement.executeUpdate() == 1) System.out.println("Borrado producto como clave foranea en la tabla 'pedidos_productos' ## MySQL");
+
+            } catch (SQLException e) {
+                System.out.println("Error durante el borrado del producto en la tabla 'pedidos_productos' en MySQL: " + e.getMessage());
+                e.printStackTrace();
+                try {
+                    modeloConnectionMySQL.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error al hacer rollback en MySQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
             }
-        }
-        // 1.2 -> Borrado de la tabla 'productos'
-        try {
-            preparedStatement = modeloConnectionMySQL.prepareStatement(
+            // 1.2 -> Borrado en la tabla 'productos' de la tupla con el nombre introducido
+            try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                     """
                             DELETE
                             FROM productos
-                            WHERE id_producto = ?""");
-            preparedStatement.setInt(1,idProducto);
-            affectedRows =  preparedStatement.executeUpdate();
+                            WHERE id_producto = ?""")){
+                preparedStatement.setInt(1,idProducto);
+                if (preparedStatement.executeUpdate() == 1) System.out.println("Borrado producto como clave primaria en la tabla 'productos' ## MySQL");
 
-        } catch (SQLException e) {
-            System.out.println("Error durante el borrado del producto en la tabla productos en MySQL");
-            try {
-                modeloConnectionMySQL.rollback();
-            } catch (SQLException ex) {
-                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            } catch (SQLException e) {
+                System.out.println("Error durante el borrado del producto en la tabla productos en MySQL: " + e.getMessage());
+                e.printStackTrace();
+                try {
+                    modeloConnectionMySQL.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error al hacer rollback en MySQL: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
             }
-        }
 
-        // 2 -> BORRADO EN POSTGRE
+            // 2 -> BORRADO EN POSTGRE
 
-        // 2.1 -> Borrado de la tabla alamacenes_productos
-        try {
-            preparedStatement = modeloConnectionPostgre.prepareStatement(
+            // 2.1 -BORRADO de la tupla que contiene id_producto en la tabla 'alamacenes_productos'
+            try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
                     """
                             DELETE
                             FROM almacenes_productos
-                            WHERE id_producto = ?
-                            """);
-            preparedStatement.setInt(1,idProducto);
-            affectedRows = preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error durante el borrado del producto en la tabla alamacenes_productos en Postgre");
-            try {
-                modeloConnectionPostgre.rollback();
-            } catch (SQLException ex) {
-                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+                            WHERE id_producto = ?""")){
+                preparedStatement.setInt(1,idProducto);
+                if (preparedStatement.executeUpdate() == 1) System.out.println("Borrado producto como clave foránea en la tabla 'almacenes_productos' ## POSTGRE");
+            } catch (SQLException e) {
+                System.out.println("Error durante el borrado del producto en la tabla alamacenes_productos en Postgre: " + e.getMessage());
+                try {
+                    modeloConnectionPostgre.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error al hacer rollback en Postgre: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
             }
-        }
 
-        // 2.2 -> Borrado de la tabla productos
-        try {
-            preparedStatement = modeloConnectionPostgre.prepareStatement(
-                    "DELETE FROM productos WHERE id_producto = ?");
-            preparedStatement.setInt(1,idProducto);
-            affectedRows = preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error durante el borrado del producto en la tabla productos en Postgre");
-            try {
-                modeloConnectionPostgre.rollback();
-            } catch (SQLException ex) {
-                System.out.println("Error al volver al punto de guardado antes de la transaccion");
+            // 2.2 -> Borrado en la tabla 'productos' de la tupla con el nombre introducido
+            try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
+                    "DELETE FROM productos WHERE id_producto = ?")){
+                preparedStatement.setInt(1,idProducto);
+                if (preparedStatement.executeUpdate() == 1) System.out.println("Borrado producto como clave primaria en la tabla 'productos' ## POSTGRE");
+            } catch (SQLException e) {
+                System.out.println("Error durante el borrado del producto en la tabla productos en Postgre: " + e.getMessage());
+                try {
+                    modeloConnectionPostgre.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error al hacer rollback en Postgre: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
             }
-        }
+            //REALIZAMOS COMMITS
+            try {
+                modeloConnectionMySQL.commit();
+                modeloConnectionPostgre.commit();
+            } catch (SQLException e) {
+                System.out.println("Error al realizar el commit de la transaccion");
+            }
 
-        // CERRAMOS LA TRANSACCION
-        try {
-            modeloConnectionMySQL.setAutoCommit(true);
-            modeloConnectionPostgre.setAutoCommit(true);
         } catch (SQLException e) {
+            System.out.println("Error al cambiar el auto commit a false");
+        }finally{
+            // CERRAMOS LA TRANSACCION
+            try {
+                modeloConnectionMySQL.setAutoCommit(true);
+                modeloConnectionPostgre.setAutoCommit(true);
+            } catch (SQLException e) {
             System.out.println("Error al cambiar el auto commit a true");
+            }
         }
     }
 
-    /*
-    8 -> Listar los productos con bajo stock (menos de X unidades disponibles) (MySQL)
-    Se implementará una función con la siguiente cabecera: void listarProductosBajoStock(int stock) .
-    Mediante una única consulta se tendrá que obtener el conjunto de filas resultante y mostrar el nombre de los productos junto con su stock.
-     */
+/*
+8 -> Listar los productos con bajo stock (menos de X unidades disponibles) (MySQL)
+Se implementará una función con la siguiente cabecera: void listarProductosBajoStock(int stock) .
+Mediante una única consulta se tendrá que obtener el conjunto de filas resultante y mostrar el nombre de los productos junto con su stock.
+ */
 
     public void listarProductosBajoStock(int stock){
         String nombre = "";
@@ -466,17 +483,16 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                         FROM productos 
                         WHERE stock <= ?""")){
             preparedStatement.setInt(1,stock);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while(resultSet.next()){
+                    nombre = resultSet.getString(1);
+                    stockEncontrado = resultSet.getInt(2);
+                    productosFiltrados.add(new Producto(nombre,stockEncontrado));
+                }
 
-
-            while(resultSet.next()){
-                nombre = resultSet.getString(1);
-                stockEncontrado = resultSet.getInt(2);
-                productosFiltrados.add(new Producto(nombre,stockEncontrado));
-            }
-
-            for(Producto p: productosFiltrados){
-                System.out.println(p.toStringTuneado());
+                for(Producto p: productosFiltrados){
+                    System.out.println(p.toStringTuneado());
+                }
             }
 
         } catch (SQLException e) {
@@ -484,45 +500,44 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         }
     }
 
-    /*
-    9 -> Obtener el total de pedidos realizados por cada usuario (MySQL)
-    Se implementará una función con la siguiente cabecera:
-    void obtenerTotalPedidosUsuarios().
-    Mediante una consulta se tendrá que obtener toda la información e
-    imprimir por pantalla: el nombre del usuario y el total de pedidos que ha hecho.
-     */
+/*
+9 -> Obtener el total de pedidos realizados por cada usuario (MySQL)
+Se implementará una función con la siguiente cabecera:
+void obtenerTotalPedidosUsuarios().
+Mediante una consulta se tendrá que obtener toda la información e
+imprimir por pantalla: el nombre del usuario y el total de pedidos que ha hecho.
+*/
     public void obtenerTotalPedidosUsuarios(){
-        ArrayList <Usuario> usuariosFiltrados = new ArrayList<Usuario>();
-        int contadorNumeroUsuarios;
+        ArrayList <Usuario> usuariosFiltrados = new ArrayList<>();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                 """
-                        "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total 
+                        SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total 
                         FROM pedidos as p
                         INNER JOIN usuarios as u 
                         WHERE p.id_usuario = u.id_usuario 
                         GROUP BY u.nombre""")){
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
                     String nombre = resultSet.getString(1);
                     int numeroPedidos = resultSet.getInt(2);
                     usuariosFiltrados.add(new Usuario(nombre,numeroPedidos));
-            }
+                }
 
-            for(Usuario u: usuariosFiltrados){
-                System.out.println(u.toStringTuneado());
+                for(Usuario u: usuariosFiltrados){
+                    System.out.println(u.toStringTuneado());
+                }
             }
-
         } catch (SQLException e) {
-            System.out.println(" Error al buscar la informacion necesaria para printear los pedidos registrados para cada usuario");
+            System.out.println(" Error al buscar la informacion necesaria para printear los pedidos registrados para cada usuario: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-        /*
-        10 -> Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
-        Se implementará una función con la siguiente cabecera: void obtenerCantidadProductosEnCadaAlmacen().
-        Mediante una consulta se tendrá que obtener toda la información solicitada y pintar por pantalla el
-        nombre del almacén y el total de productos de los que dispone.
-         */
+/*
+10 -> Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
+Se implementará una función con la siguiente cabecera: void obtenerCantidadProductosEnCadaAlmacen().
+Mediante una consulta se tendrá que obtener toda la información solicitada y pintar por pantalla el
+nombre del almacén y el total de productos de los que dispone.
+*/
     public void obtenerCantidadProductosEnCadaAlmacen(){
         try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
                 """
@@ -545,14 +560,14 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             e.printStackTrace();
         }
     }
-    /*
-    11 -> Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
-    Se implementará una función con la siguiente cabecera: void listarTodosProductosConCategoriaYProveedor().
-    Se realizará una primera consulta en PostgreSQL que permita obtener toda la información del producto:
-     id, nombre, nif, teléfono e email del proveedor así como el nombre de la categoría.
-    Se realizará una consulta en MySQL para obtener el nombre, precio y stock del producto
-    Se concatenará y se mostrarán todos los datos indicados anteriormente usando Java.
-     */
+/*
+11 -> Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
+Se implementará una función con la siguiente cabecera: void listarTodosProductosConCategoriaYProveedor().
+Se realizará una primera consulta en PostgreSQL que permita obtener toda la información del producto:
+ id, nombre, nif, teléfono e email del proveedor así como el nombre de la categoría.
+Se realizará una consulta en MySQL para obtener el nombre, precio y stock del producto
+Se concatenará y se mostrarán todos los datos indicados anteriormente usando Java.
+*/
    public void listarTodosProductosConCategoriaYProveedor(){
        int idProducto;
        String nombreProducto;
@@ -614,13 +629,13 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        }
     }
 
-    /*
-    12 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
-    Se implementará una función con la siguiente cabecera: void obtenerUsuariosCompraronProductosCategoria(int idCategoria).
-    Se recibirá el id de la categoría y se obtendrá en PostgreSQL el id de los productos que pertenezcan a esa categoría.
-    En MySQL se obtendrá el nombre de los usuarios que han comprado algún producto de los indicados anteriormente.
-    Se mostrará por pantalla el nombre de los usuarios.
-     */
+/*
+12 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
+Se implementará una función con la siguiente cabecera: void obtenerUsuariosCompraronProductosCategoria(int idCategoria).
+Se recibirá el id de la categoría y se obtendrá en PostgreSQL el id de los productos que pertenezcan a esa categoría.
+En MySQL se obtendrá el nombre de los usuarios que han comprado algún producto de los indicados anteriormente.
+Se mostrará por pantalla el nombre de los usuarios.
+*/
 
     public void obtenerUsuariosCompraronProductosCategoria(int idCategoria){
         int idProducto = -1;
