@@ -18,6 +18,10 @@ public class App {
         this.m = m;
     }
 
+    public Modelo getM() {
+        return m;
+    }
+
     public void iniciarApp() throws IOException {
         boolean continuar = true;
         do{
@@ -78,6 +82,7 @@ public class App {
         System.out.println("Error al recoger el nombre de la nueva categoria");
     }
 }
+
     //2
     private void obtieneDatosCrearProveedor() {
     String  nombreProveedor = null;
@@ -128,6 +133,7 @@ public class App {
     }
 
     }
+
     //3
     private void obtieneDatosEliminarProveedor() {
         String idProveedorParaEliminar;
@@ -141,6 +147,7 @@ public class App {
             System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
+
     //4
     private void obtieneCrearNuevoUsuario() {
         String nombre, correo, anho;
@@ -166,6 +173,7 @@ public class App {
             System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
+
     //5
     private void obtieneDatosEliminarUsuario(){
         String idUsuarioEliminar;
@@ -180,6 +188,7 @@ public class App {
             System.out.println("Error al recoger el id del proveedor a eliminar");
         }
     }
+
     //6
     private void obtieneDatosCrearNuevoProducto(){
         String nombreProducto, nombreCategoria, nif, precio, stock;
@@ -210,6 +219,7 @@ public class App {
             System.out.println("Error al recoger el datos para crear un nuevo producto");
         }
     }
+
     //7
     private void obtieneDatosEliminarProductoPorNombre(){
         String nombreProductoParaEliminar;
@@ -224,6 +234,7 @@ public class App {
             System.out.println("Error al recoger el datos para eliminar un producto por nombre");
         }
     }
+
     //8
     private void obtenerDatosListarProductosBajoStock(){
         String stock;
@@ -238,18 +249,22 @@ public class App {
             System.out.println("Error al recoger el datos para eliminar un producto por nombre");
         }
     }
+
     //9
     private void listarTotalPedidosUsuarios(){
         m.obtenerTotalPedidosUsuarios();
     }
+
     //10
     private void listarTotalPedidosPorAlmacen(){
         m.obtenerCantidadProductosEnCadaAlmacen();
     }
+
     //11
     private void listarProductosCategoriasProveedores(){
         m.listarTodosProductosConCategoriaYProveedor();
     }
+
     //12
     private void obtenerDatosObtenerUsuariosCompraronCategoria(){
         String idCategoria;

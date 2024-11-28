@@ -1,18 +1,30 @@
-import GUI.VentanaPrincipal;
+import Connections.MySQL_Connection;
+import Connections.PostgreSQL_Connection;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         
-        App app = new App(new Modelo());
+        App app = new App(new Modelo(MySQL_Connection.getMySQLConnection(), PostgreSQL_Connection.getPostgreSQLConnection()));
 
         try {
             app.iniciarApp();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error del tipo IOExcepcion");
             e.printStackTrace();
+        }finally{
+            try {
+                app.getM().getModeloConnectionMySQL().close();
+                app.getM().getModeloConnectionPostgre().close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar alguna de las conexiones");
+                e.printStackTrace();
+            }
         }
+
+        // TODO Dudas en cuanto a la gestion de las aperturas y cierres de la conexion para poder permitir varias operaciones del mismo tipo
         //m.crearCategoria(" "); //1
         //m.crearProveedor("Nombre prueba proveedor","12345678A",123456789,"email@deprueba.com"); //2
         //m.eliminarProveedor(2);        //3

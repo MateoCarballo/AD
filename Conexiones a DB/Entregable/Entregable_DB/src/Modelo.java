@@ -1,6 +1,7 @@
 import Connections.MySQL_Connection;
 import Connections.PostgreSQL_Connection;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -9,28 +10,42 @@ public class Modelo {
     private Connection modeloConnectionMySQL;
     private Connection modeloConnectionPostgre;
 
-/*
+    public Modelo(Connection modeloConnectionMySQL, Connection modeloConnectionPostgre) {
+        this.modeloConnectionMySQL = modeloConnectionMySQL;
+        this.modeloConnectionPostgre = modeloConnectionPostgre;
+    }
+
+    public Connection getModeloConnectionMySQL() {
+        return modeloConnectionMySQL;
+    }
+
+    public Connection getModeloConnectionPostgre() {
+        return modeloConnectionPostgre;
+    }
+    /*
 1 -> Crear una nueva categoría (PostgreSQL).
 Se implementará una función con la siguiente cabecera: void crearCategoria(String nombreCategoria).
 Se recibirá un String que será el nombreCategoria y se añadirá a la base de datos.
 * */
 
     public void crearCategoria(String nombreCategoria){
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        int idGenerado = -1;
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
                         INSERT INTO categorias(nombre_categoria)
-                        VALUES (?)""")){
+                        VALUES (?)""", Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,nombreCategoria);
-            if (preparedStatement.executeUpdate() == 1) System.out.println("Categoria creada con exito !");
+            if (preparedStatement.executeUpdate() == 1) {
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                    if (resultSet.next()){
+                        idGenerado = resultSet.getInt(1);
+                    }
+                }
+            }
+            if (idGenerado != -1) System.out.println("Categoría creada con exito! El nuevo id para la categoría es -> " + idGenerado);
         } catch (SQLException e) {
             System.out.println("Error en la creacion de la categoría");
-        } finally{
-            try {
-                modeloConnectionPostgre.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion Postgre");
-            }
+            e.printStackTrace();
         }
 
     }
@@ -40,29 +55,29 @@ Se implementará una función con la siguiente cabecera: void crearNuevoProveedo
 Se recibirá todos los datos del proveedor y se añadirán en la base de datos.
 * */
     public void crearProveedor(String nombreProveedor, String nif, int telefono, String email ){
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
+        long idGenerado = -1;
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
                         INSERT
                         INTO proveedores(nombre_proveedor, contacto)
-                        VALUES (?, ROW(?,?,?,?))""")){
+                        VALUES (?, ROW(?,?,?,?))""", Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,nombreProveedor);
             preparedStatement.setString(2,nombreProveedor);
             preparedStatement.setString(3,nif);
             preparedStatement.setString(4,String.valueOf(telefono));
             preparedStatement.setString(5,email);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() == 1) {
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                    if (resultSet.next()){
+                        idGenerado = resultSet.getInt(1);
+                    }
+                }
+            }
+            if (idGenerado != 1) System.out.println("Proveedor creado con exito! El nuevo id para el proveedor es -> " + idGenerado);
 
         } catch (SQLException e) {
             System.out.println("Error durante la creacion del proveedor");
-        } finally{
-            try {
-                modeloConnectionPostgre.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
-
     }
 /*
 3 -> Eliminar un nuevo proveedor (PostgreSQL)
@@ -72,8 +87,6 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
     public void eliminarProveedor(int id){
 
         // SETEAR EN NULL LA CLAVE FORANEA DE LA TABLA 'productos'
-
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
                         UPDATE productos
@@ -81,13 +94,13 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                         WHERE id_proveedor = ?""")){
 
             preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() == 1) System.out.println("La referencia al proveedor con id " + id + " en la tabla 'productos' ha sido eliminada.");
 
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos)");
             e.printStackTrace();
         }
-        // ELIMINAR DE LA TABLA 'productos'
+        // ELIMINAR DE LA TABLA 'proveedores'
 
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
@@ -96,7 +109,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                         WHERE id_proveedor = ?""")){
 
             preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() == 1) System.out.println("Proveedor eliminado con exito!");
 
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor");
@@ -115,6 +128,7 @@ Se implementará una función con la siguiente cabecera: void crearUsuario(Strin
 Se recibirán todos los datos del usuario.
  */
     public void crearUsuario(String nombre, String email, int anho_nacimiento){
+        long idGenerado = -1;
         modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try (PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement
                 ("""
@@ -125,7 +139,14 @@ Se recibirán todos los datos del usuario.
             preparedStatement.setString(1,nombre);
             preparedStatement.setString(2,email);
             preparedStatement.setInt(3,anho_nacimiento);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() == 1) {
+                try(ResultSet resultSet = preparedStatement.getGeneratedKeys()){
+                    if (resultSet.next()){
+                         idGenerado = resultSet.getInt(1);
+                    }
+                }
+            }
+            if (idGenerado == 1) System.out.println("Usuario creado con exito! El nuevo id para el usuario es -> " + idGenerado);
 
         } catch (SQLException e) {
             System.out.println("Error durante la creaciond de un nuevo usario");
@@ -154,7 +175,8 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                             SET id_usuario = null
                             WHERE id_usuario = ?""")){
                 preparedStatement.setInt(1,id);
-                preparedStatement.executeUpdate();
+                if (preparedStatement.executeUpdate() == 1) System.out.println("La referencia al usuario con id " + id + " en la tabla 'pedidos' ha sido puesta a null.");
+
 
             } catch (SQLException e) {
                 System.out.println("Error durante la eliminacion como clave foránea en la tabla pedidos");
@@ -171,7 +193,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                             FROM usuarios
                             WHERE id_usuario = ?""")){
                 preparedStatement.setInt(1,id);
-                preparedStatement.executeUpdate();
+                if (preparedStatement.executeUpdate() == 1) System.out.println("Usuario eliminado con exito!");
 
             } catch (SQLException e) {
                 System.out.println("Error durante la eliminacion de un nuevo usuario");
