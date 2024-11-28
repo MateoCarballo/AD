@@ -546,10 +546,10 @@ nombre del almacén y el total de productos de los que dispone.
                         GROUP BY a.nombre_almacen""")){
             try(ResultSet resultSet = preparedStatement.executeQuery()){
                 while(resultSet.next()){
-                    String s = resultSet.getString(1);
-                    int i = resultSet.getInt(2);
-                    System.out.println("Almacen  " + s + "\n" +
-                            "Cantidad de productos -> " + i + "\n" );
+                    String nombreAlmacen = resultSet.getString(1);
+                    int cantidadProductos = resultSet.getInt(2);
+                    System.out.println("Almacen  " + nombreAlmacen + "\n" +
+                            "Cantidad de productos -> " + cantidadProductos + "\n" );
                 }
             }catch (SQLException e){
                 System.out.println("Error al recuperar los datos de la DB Postgre");

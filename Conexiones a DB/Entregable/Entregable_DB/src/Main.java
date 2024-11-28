@@ -30,7 +30,7 @@ public class Main {
 
         //TODO es necesario commitear al acabar la transaccion ? sin haberlo escrito en un metodo me borro esa tupla
 
-        //TODO en el metodo 7 tengo dudas con el orden de los try catch donde enlazarlos 77para asegurarme de que salta  y no ejecuta el codigo si se produce un error
+        //TODO en el metodo 7 tengo dudas con el orden de los try catch donde enlazarlos para asegurarme de que salta  y no ejecuta el codigo si se produce un error
 
         // TODO Los metodos que necesitan una transaccion dudas en cuanto al anidamiento de los
         //  bloques try catch y donde colocar las opciones de rollback y de autocommit, necesitaria ponerle returns para que
