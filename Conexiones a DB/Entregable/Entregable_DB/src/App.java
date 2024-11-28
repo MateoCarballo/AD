@@ -188,7 +188,7 @@ public class App {
         String idUsuarioEliminar;
         try {
             do {
-                System.out.println("Introduce el nombre del nuevo usuario");
+                System.out.println("Introduce el ID del usuario a eliminar");
                 idUsuarioEliminar = br.readLine();
             }while(!comprobarPatronRegex(idUsuarioEliminar,ID_PATTERN));
 

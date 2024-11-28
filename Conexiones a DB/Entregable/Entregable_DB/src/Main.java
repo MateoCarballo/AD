@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args){
-        // TODO PARTE UNO esto esta bien ?? EL pasar las conexiones y solo cerrarlos al acabar el programa?
+
         App app = new App(new Modelo(MySQL_Connection.getMySQLConnection(), PostgreSQL_Connection.getPostgreSQLConnection()));
 
         try {
@@ -16,7 +16,6 @@ public class Main {
             e.printStackTrace();
         }finally{
             try {
-                // TODO PARTE DOS
                 app.getM().getModeloConnectionMySQL().close();
                 app.getM().getModeloConnectionPostgre().close();
             } catch (SQLException e) {
@@ -24,18 +23,6 @@ public class Main {
                 e.printStackTrace();
             }
         }
-
-        // TODO Dudas en cuanto a la gestion de las aperturas y cierres de la
-        //  conexion para poder permitir varias operaciones del mismo tipo
-
-        //TODO es necesario commitear al acabar la transaccion ? sin haberlo escrito en un metodo me borro esa tupla
-
-        //TODO en el metodo 7 tengo dudas con el orden de los try catch donde enlazarlos para asegurarme de que salta  y no ejecuta el codigo si se produce un error
-
-        // TODO Los metodos que necesitan una transaccion dudas en cuanto al anidamiento de los
-        //  bloques try catch y donde colocar las opciones de rollback y de autocommit, necesitaria ponerle returns para que
-        //  salte siempre o deberia de generar nuevas excepciones para gestionar estos errores ?
-
 
 
         //m.crearCategoria(" "); //1

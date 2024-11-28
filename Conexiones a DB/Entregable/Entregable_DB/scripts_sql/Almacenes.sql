@@ -10,15 +10,12 @@ CREATE DATABASE almacenes
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
-    LC_COLLATE = 'Spanish_Spain.1252'
-    LC_CTYPE = 'Spanish_Spain.1252'
+    LC_COLLATE = 'Galician_Spain.1252'
+    LC_CTYPE = 'Galician_Spain.1252'
     LOCALE_PROVIDER = 'libc'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
-
--- Cambiar a la base de datos creada
-SET search_path TO almacenes;
 
 -- Crear tablas y tipo compuesto
 CREATE TABLE almacenes (
@@ -53,8 +50,8 @@ CREATE TABLE productos (
     id_producto      INTEGER PRIMARY KEY,  -- No es serial porque este ID viene dado de otra DB MySQL
     id_proveedor     INTEGER,
     id_categoria     INTEGER,
-    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor) ON DELETE CASCADE,
-    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE CASCADE
+    FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor) ON DELETE SET NULL,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE SET NULL
 );
 
 CREATE TABLE almacenes_productos (
@@ -62,8 +59,8 @@ CREATE TABLE almacenes_productos (
     id_producto      INTEGER NOT NULL,
     cantidad         INTEGER NOT NULL,
     PRIMARY KEY (id_almacen, id_producto),
-    FOREIGN KEY (id_almacen) REFERENCES almacenes(id_almacen),
-    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+    FOREIGN KEY (id_almacen) REFERENCES almacenes(id_almacen) ON DELETE SET NULL,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE SET NULL
 );
 
 -- Insertar datos en la tabla almacenes

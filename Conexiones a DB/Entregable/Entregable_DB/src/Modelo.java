@@ -87,7 +87,7 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
  */
     public void eliminarProveedor(int id){
 
-        // SETEAR EN NULL LA CLAVE FORANEA DE LA TABLA 'productos'
+        // ELIMINAR LA CLAVE FORANEA DE LA TABLA 'productos'
         try (PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement
                 ("""
                         UPDATE productos
@@ -95,7 +95,11 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                         WHERE id_proveedor = ?""")){
 
             preparedStatement.setInt(1,id);
-            if (preparedStatement.executeUpdate() == 1) System.out.println("La referencia al proveedor con id " + id + " en la tabla 'productos' ha sido eliminada.");
+            if (preparedStatement.executeUpdate() == 1) {
+                System.out.println("La referencia al proveedor con id " + id + " en la tabla 'productos' ha sido eliminada.");
+            }else{
+                System.out.println("El proveedor no se ha eliminado como clave foranea de la tabla productos");
+            }
 
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos)");
@@ -110,7 +114,11 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
                         WHERE id_proveedor = ?""")){
 
             preparedStatement.setInt(1,id);
-            if (preparedStatement.executeUpdate() == 1) System.out.println("Proveedor eliminado con exito!");
+            if (preparedStatement.executeUpdate() == 1){
+                System.out.println("Proveedor eliminado con exito!");
+            }else{
+                System.out.println("El proveedor no se ha eliminado como clave primaria de la tabla proveedores");
+            }
 
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor");
@@ -215,7 +223,7 @@ Se tendrá que obtener el id de la categoría y el id del proveedor a partir del
 Se añadirá en la base de datos MySQL y en la base de datos PostgreSQL.
 El identificador del producto tendrá que ser el mismo en ambas bases de datos.
  */
-    public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif){
+    public void crearProducto(String nombre, Double precio, int stock, String nombre_categoria, String nif) {
 
         int idProductoGenerada = -1;
         int idProveedor = -1;
@@ -228,7 +236,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             4 -> INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
                 TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
          */
-
+        boolean error = false;
         try {
             modeloConnectionMySQL.setAutoCommit(false);
             modeloConnectionPostgre.setAutoCommit(false);
@@ -249,6 +257,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                     }
                 }
             } catch (SQLException e) {
+                error = true;
                 System.out.println("Error en la creacion de un producto en la DB MySQL");
                 e.printStackTrace();
             }
@@ -302,17 +311,29 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 e.printStackTrace();
             }
 
+            try{
+                if(!error){
+                    modeloConnectionPostgre.commit();
+                    modeloConnectionMySQL.commit();
+                }else{
+                    modeloConnectionPostgre.rollback();
+                    modeloConnectionMySQL.rollback();
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error al intentar commitear los cambios para cerrar la transaccion");
+            }
 
         } catch (SQLException e) {
             System.out.println("Error al intentar para la opcion de autocommit para realizar una transaccion");
-            e.printStackTrace();
-        }
+            try{
+                modeloConnectionPostgre.rollback();
+                modeloConnectionMySQL.rollback();
+            }catch (SQLException ex){
+                System.out.println("Error en el rollback :" + e.getMessage());
+            }
 
-        try{
-            modeloConnectionPostgre.commit();
-            modeloConnectionMySQL.commit();
-        } catch (SQLException e) {
-            System.out.println("Error al intentar commitear los cambios para cerrar la transaccion");
+            e.printStackTrace();
         }
 
         try{
