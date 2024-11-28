@@ -1,7 +1,6 @@
 import java.io.*;
 
 public class App {
-    private boolean error = false;
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //Patron para los menus, numeros del 1 al 12
     private final String MENU_PATTERN = "^(1[0-2]|[0-9])$";
@@ -32,7 +31,6 @@ public class App {
             }
             System.out.println("");
             System.out.println("""
-                                                                    
                                                                     MENU
                 0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
@@ -51,6 +49,7 @@ public class App {
             for (int i = 0; i < 110; i++) {
                 System.out.print("\u2550");
             }
+            System.out.println();
 
             do {
                 entradaTeclado = br.readLine();
