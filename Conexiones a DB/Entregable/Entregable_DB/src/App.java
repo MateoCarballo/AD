@@ -1,18 +1,22 @@
 import java.io.*;
 
 public class App {
-    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private Modelo m;
-    public App (Modelo m){
-        this.m = m;
-    }
+
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    //Patron para los menus, numeros del 1 al 12
+    private final String MENU_PATTERN = "";
     private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
-    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$";
+    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$";
     private final String TELEFONO_PATTERN = "^\\d{9}$";
     private final String ID_PATTERN = "^\\d{1,50}$";
     private final String CORREO_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$";
     private final String PRECIO_PATTERN = "^(0|[1-9]\\d*)(\\.\\d{1,2})?$";
     private final String STOCK_PATTERN = "^[1-9]\\d*$";
+    private final Modelo m;
+
+    public App (Modelo m){
+        this.m = m;
+    }
 
     public void iniciarApp() throws IOException {
         boolean continuar = true;
@@ -20,7 +24,7 @@ public class App {
             String entradaTeclado;
             System.out.println("""
                 #############################################################################################################
-                                                            MENU
+                                                                    MENU
                 0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
                 2.  Crear un nuevo proveedor (PostgreSQL)
@@ -36,14 +40,10 @@ public class App {
                 12. Obtener todos los Usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
                 #############################################################################################################
                 """);
-        /*
-        do{
-             entradaTeclado = br.readLine();
-             //TODO introducir el patron regex que corresponda
-        }while(!comprobarPatronRegex(entradaTeclado,"PATRON REGEX"));
-         */
 
-            entradaTeclado = br.readLine();
+            do {
+                entradaTeclado = br.readLine();
+            }while(comprobarPatronRegex(entradaTeclado,MENU_PATTERN));
 
 
             switch (Integer.parseInt(entradaTeclado)){
@@ -149,7 +149,7 @@ public class App {
             do {
                 System.out.println("Introduce el nombre del nuevo usuario");
                 nombre = br.readLine();
-            }while(!comprobarPatronRegex(nombre,"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,20}$"));
+            }while(!comprobarPatronRegex(nombre, "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$"));
 
             do {
                 System.out.println("Introduce el correo del nuevo usuario");
