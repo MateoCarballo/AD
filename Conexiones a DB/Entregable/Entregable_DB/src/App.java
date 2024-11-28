@@ -1,10 +1,10 @@
 import java.io.*;
 
 public class App {
-
+    private boolean error = false;
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //Patron para los menus, numeros del 1 al 12
-    private final String MENU_PATTERN = "";
+    private final String MENU_PATTERN = "^(1[0-2]|[0-9])$";
     private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
     private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$";
     private final String NOMBRE_PRODUCTO_PATTERN = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-_.\"]{1,50}$";
@@ -27,8 +27,12 @@ public class App {
         boolean continuar = true;
         do{
             String entradaTeclado;
+            for (int i = 0; i < 110; i++) {
+                System.out.print("\u2550");
+            }
+            System.out.println("");
             System.out.println("""
-                #############################################################################################################
+                                                                    
                                                                     MENU
                 0.  Salir de la aplicacion.
                 1.  Crear una nueva categoría (PostgreSQL)
@@ -43,16 +47,21 @@ public class App {
                 10. Obtener la cantidad de productos almacenados por cada almacén (PostgreSQL)
                 11. Listar todos los productos con sus respectivas categorías y proveedores (PostgreSQL)
                 12. Obtener todos los Usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
-                #############################################################################################################
                 """);
+            for (int i = 0; i < 110; i++) {
+                System.out.print("\u2550");
+            }
 
             do {
                 entradaTeclado = br.readLine();
-            }while(comprobarPatronRegex(entradaTeclado,MENU_PATTERN));
+                if (!comprobarPatronRegex(entradaTeclado,MENU_PATTERN)){
+                    System.out.println("Introduce un numero entre 0 y 12");
+                }
+            }while(!comprobarPatronRegex(entradaTeclado,MENU_PATTERN));
 
 
             switch (Integer.parseInt(entradaTeclado)){
-                case 0 ->   continuar = false;
+                case 0 ->   continuar = cerrarApp();
                 case 1 ->   obtieneDatosCrearCategoria();
                 case 2 ->   obtieneDatosCrearProveedor();
                 case 3 ->   obtieneDatosEliminarProveedor();
@@ -286,5 +295,34 @@ public class App {
     //Comprobador de patrones regex
     public boolean comprobarPatronRegex(String string, String pattern){
             return string.matches(pattern);
+    }
+
+    public boolean cerrarApp(){
+        System.out.println("""
+                
+                ░░░░░░░░░░░░▄▄░░░░░░░░░░░░░░
+                ░░░░░░░░░░░█░░█░░░░░░░░░░░░░
+                ░░░░░░░░░░░█░░█░░░░░░░░░░░░░
+                ░░░░░░░░░░█░░░█░░░░░░░░░░░░░
+                ░░░░░░░░░█░░░░█░░░░░░░░░░░░░
+                ██████▄▄█░░░░░██████▄░░░░░░░
+                ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░░░░░░
+                ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░░░░░░
+                ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░░░░░░
+                ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░░░░░░
+                ▓▓▓▓▓▓█░░░░░░░░░░░░░░█░░░░░░
+                ▓▓▓▓▓▓█████░░░░░░░░░██░░░░░░
+                █████▀░░░░▀▀████████░░░░░░░░
+                ░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+                ╔════╗░░╔════╗╔═══╗░░░░░░░░░
+                ║████║░░║████║║███╠═══╦═════╗
+                ╚╗██╔╝░░╚╗██╔╩╣██╠╝███║█████║
+                ░║██║░░░░║██║╔╝██║███╔╣██══╦╝
+                ░║██║╔══╗║██║║██████═╣║████║
+                ╔╝██╚╝██╠╝██╚╬═██║███╚╣██══╩╗
+                ║███████║████║████║███║█████║
+                ╚═══════╩════╩════════╩═════╝
+                """);
+        return false;
     }
 }
