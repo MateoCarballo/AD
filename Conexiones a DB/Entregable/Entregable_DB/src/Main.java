@@ -24,7 +24,8 @@ public class Main {
             }
         }
 
-        // TODO Dudas en cuanto a la gestion de las aperturas y cierres de la conexion para poder permitir varias operaciones del mismo tipo
+        // TODO Dudas en cuanto a la gestion de las aperturas y cierres de la
+        //  conexion para poder permitir varias operaciones del mismo tipo
         //m.crearCategoria(" "); //1
         //m.crearProveedor("Nombre prueba proveedor","12345678A",123456789,"email@deprueba.com"); //2
         //m.eliminarProveedor(2);        //3

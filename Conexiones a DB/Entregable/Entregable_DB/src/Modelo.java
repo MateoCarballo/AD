@@ -114,12 +114,6 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
         } catch (SQLException e) {
             System.out.println("Error durante la eliminacion del proveedor");
             e.printStackTrace();
-        } finally{
-            try {
-                modeloConnectionPostgre.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
     }
 /*
@@ -150,12 +144,6 @@ Se recibirán todos los datos del usuario.
 
         } catch (SQLException e) {
             System.out.println("Error durante la creaciond de un nuevo usario");
-        } finally{
-            try {
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
     }
 /*
@@ -197,12 +185,6 @@ Se tendrá que comprobar si el id indicado existe y si es así, eliminarlo de la
 
             } catch (SQLException e) {
                 System.out.println("Error durante la eliminacion de un nuevo usuario");
-            } finally{
-                try {
-                    modeloConnectionMySQL.close();
-                } catch (SQLException e) {
-                    System.out.println("Error al cerrar la conexion");
-                }
             }
         }
 
@@ -244,8 +226,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         int idCategoria = -1;
         ResultSet resultSet;
         PreparedStatement preparedStatement;
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         /*
         Pasos seguidos para llevar a cabo la insercion de un nuevo producto:
             1 -> INSERTAR EL PRODUCTO EN DB MYSQL Y OBTENER EL ID (del nuevo producto creado).
@@ -281,12 +261,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         } catch (SQLException e) {
             System.out.println("Error en la creacion de un producto en la DB MySQL");
-        }finally {
-            try {
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerra la conexion con DB MySQL");
-            }
         }
 
         //  2.OBTENEMOS EL id_categoria DESDE EL DATO 'nombre_categoria' DE LA TABLA CATEGORIAS
@@ -300,13 +274,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             }
         } catch (SQLException e) {
             System.out.println("Error durante la busqueda del id_producto en la tabla proveedores");;
-        } finally{
-            try {
-                modeloConnectionMySQL.setAutoCommit(true);
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
 
         // 3.OBTENEMOS EL id_proveedor DESDE EL DATO 'nif' DEL TIPO DE DATO 'Contacto' DESDE LA TABLA PROVEEDORES
@@ -324,8 +291,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
             System.out.println();
         }
 
-
-
         /*
         4.INSERTAR EN LA DB POSTGRE EL NUEVO PRODUCTO INTRODUCIDO EN LA DB MYSQL,
          TRAYENDO DESDE AHI LA 'id_producto' Y BUSCANDO 'id_proveedor' e 'id_categoria' EN LAS TABLAS DE LA BASE DE DATOS POSTGRE
@@ -341,15 +306,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
 
         } catch (SQLException e) {
             System.out.println("Error durante la insercion de los datos en la tabla productos de postgre");;
-        } finally{
-            try {
-                modeloConnectionPostgre.setAutoCommit(true);
-                modeloConnectionPostgre.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
-
     }
 
 
@@ -399,10 +356,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     }
 
     private void eliminarRegistrosDelProducto(int idProducto) {
-
-
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         PreparedStatement preparedStatement;
         int affectedRows = -1;
 
@@ -507,7 +460,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         String nombre = "";
         int stockEncontrado;
         ArrayList <Producto> productosFiltrados = new ArrayList<>();
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                 """
                         SELECT nombre_producto, stock
@@ -523,22 +475,14 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                 productosFiltrados.add(new Producto(nombre,stockEncontrado));
             }
 
-            // TODO llevarme esto a una ventana donde pueda printearlo sobre un elemento
             for(Producto p: productosFiltrados){
                 System.out.println(p.toStringTuneado());
             }
 
         } catch (SQLException e) {
             System.out.println("Error al buscar los productos por stock");
-        } finally{
-            try {
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion");
-            }
         }
     }
-
 
     /*
     9 -> Obtener el total de pedidos realizados por cada usuario (MySQL)
@@ -550,7 +494,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     public void obtenerTotalPedidosUsuarios(){
         ArrayList <Usuario> usuariosFiltrados = new ArrayList<Usuario>();
         int contadorNumeroUsuarios;
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
                 """
                         "SELECT u.nombre as Usuario, COUNT(p.id_pedido) as Total 
@@ -565,19 +508,13 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
                     int numeroPedidos = resultSet.getInt(2);
                     usuariosFiltrados.add(new Usuario(nombre,numeroPedidos));
             }
-            //TODO llevar esto a una ventana
+
             for(Usuario u: usuariosFiltrados){
                 System.out.println(u.toStringTuneado());
             }
 
         } catch (SQLException e) {
             System.out.println(" Error al buscar la informacion necesaria para printear los pedidos registrados para cada usuario");
-        }finally {
-            try{
-                modeloConnectionMySQL.close();
-            } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexion con Mysql");
-            }
         }
     }
         /*
@@ -587,7 +524,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
         nombre del almacén y el total de productos de los que dispone.
          */
     public void obtenerCantidadProductosEnCadaAlmacen(){
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
         try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
                 """
                         SELECT a.nombre_almacen, SUM(ap.cantidad) 
@@ -618,8 +554,6 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     Se concatenará y se mostrarán todos los datos indicados anteriormente usando Java.
      */
    public void listarTodosProductosConCategoriaYProveedor(){
-       modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
-       modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
        int idProducto;
        String nombreProducto;
        String nif;
@@ -678,11 +612,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
        }catch (SQLException e){
            System.out.println("Error al conectar con la DB de MySQL");
        }
-
-
     }
-
-
 
     /*
     12 -> Obtener todos los usuarios que han comprado algún producto de una categoria dada (MySQL + PostgreSQL).
@@ -692,11 +622,7 @@ El identificador del producto tendrá que ser el mismo en ambas bases de datos.
     Se mostrará por pantalla el nombre de los usuarios.
      */
 
-
     public void obtenerUsuariosCompraronProductosCategoria(int idCategoria){
-        //TODO trabajando aquí
-        modeloConnectionPostgre = PostgreSQL_Connection.getPostgreSQLConnection();
-        modeloConnectionMySQL = MySQL_Connection.getMySQLConnection();
         int idProducto = -1;
 
         //SACAR EL id_producto DESDE LA DB POSTGRE
