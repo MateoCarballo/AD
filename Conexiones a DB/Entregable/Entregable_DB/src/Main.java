@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        Modelo m = new Modelo();
+        
         App app = new App(new Modelo());
 
         try {
