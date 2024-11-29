@@ -88,7 +88,7 @@ VALUES
     (2, 4, 3),  -- Pedido 2: 3 unidades de Seagate Disco Duro HDD
     (3, 5, 1),  -- Pedido 3: 1 unidad de Samsung Disco Duro SSD
     (3, 6, 2),  -- Pedido 3: 2 unidades de Impresora Canon
-    (4, 7, 1);  -- Pedido 4: 1 unidad de Monitor Samsung 24"
+    (4, 7, 1),  -- Pedido 4: 1 unidad de Monitor Samsung 24"
     (5, 11, 2),  -- Pedido 5: 2 unidades de Tablet Samsung
     (5, 12, 1),  -- Pedido 5: 1 unidad de Auriculares Bose
     (6, 13, 3),  -- Pedido 6: 3 unidades de Cámara Nikon DSLR
