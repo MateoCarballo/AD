@@ -1,5 +1,3 @@
-package Connections;
-
 public class Categoria {
     private final int idCategoria;
     private final String nombreCategoria;

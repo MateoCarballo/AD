@@ -13,3 +13,7 @@ I
 scripts_sql/Almacenes.sql,4\6\4617c152c6f486efaee7a796184371d6171f4452
 N
 src/Connections/Categoria.java,f\3\f36f17830545a5e19a47cc64733de1da5828db05
+B
+src/Categoria.java,1\c\1c0f4632e379f4e169887ac8c2ce99eded2d4c93
+B
+src/Proveedor.java,3\b\3b753c8f7990ed2cee85c193133c82c655adc535

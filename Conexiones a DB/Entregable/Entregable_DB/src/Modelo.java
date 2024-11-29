@@ -1,5 +1,3 @@
-import Connections.Categoria;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -710,7 +708,7 @@ Se mostrará por pantalla el nombre de los usuarios.
     }
 
     public ArrayList mostrasCategorias() {
-        ArrayList <Categoria> categoriasInscritasDB = new ArrayList<Categoria>();
+        ArrayList <Categoria> categoriasInscritasDB = new ArrayList<>();
         try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
                 "SELECT * FROM categorias")){
             try(ResultSet resultSet = preparedStatement.executeQuery()){
@@ -725,6 +723,32 @@ Se mostrará por pantalla el nombre de los usuarios.
         } catch (SQLException e) {
             out.println("Error en la consulta a la tabla 'categorias' en la DB POSTGRE " + e.getMessage());        }
         return categoriasInscritasDB;
+    }
+
+    public ArrayList mostrarProveedores(){
+        ArrayList<Proveedor> proveedoresInscritosDB = new ArrayList<>();
+
+        try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
+                "SELECT id_proveedor, nombre_proveedor, (contacto).nombre_contacto, (contacto).nif, (contacto).telefono, (contacto).email FROM proveedores")){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while(resultSet.next()){
+                    //Parte del proveedor
+                    int id = resultSet.getInt(1);
+                    String nombre = resultSet.getString(2);
+                    //Parte del contacto
+                    String nombreContacto = resultSet.getString(3);
+                    String nif = resultSet.getString(4);
+                    String telefono = resultSet.getString(5);
+                    String email = resultSet.getString(6);
+                    proveedoresInscritosDB.add(new Proveedor(id,nombre,new Proveedor.Contacto(nombreContacto,nif,telefono,email)));
+                }
+            }catch (SQLException e) {
+                out.println("Error al mostras los proveedores de la tabla 'proveedores' en la DB POSTGRE " + e.getMessage());
+            }
+        }catch (SQLException e) {
+            out.println("Error en la consulta a la tabla 'proveedores' en la DB POSTGRE " + e.getMessage());
+        }
+        return proveedoresInscritosDB;
     }
 }
 

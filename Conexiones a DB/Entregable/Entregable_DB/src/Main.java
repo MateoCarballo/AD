@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args){
-
         App app = new App(new Modelo(MySQL_Connection.getMySQLConnection(), PostgreSQL_Connection.getPostgreSQLConnection()));
 
         try {

@@ -1,5 +1,3 @@
-import Connections.Categoria;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -205,6 +203,7 @@ public class App {
     private void obtieneDatosCrearNuevoProducto(){
         String nombreProducto, nombreCategoria, nif, precio, stock;
         ArrayList <Categoria> listadoCategorias;
+        ArrayList <Proveedor> listadoProveedores;
         boolean existeCategoria = false;
         boolean existeProveedor = false;
         try {
@@ -221,15 +220,17 @@ public class App {
                 stock = br.readLine();
             }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
             do {
-                System.out.println("Selecciona la categoria del producto");
+                System.out.println("Selecciona una de las categorias existentes");
                 listadoCategorias = muestraCategorias();
                 nombreCategoria = br.readLine();
                 existeCategoria = comrpobarExisteCategoria(nombreCategoria,listadoCategorias);
             }while(!existeCategoria);
             do {
                 System.out.println("Introduce el nif proveedor del producto (debe existir en la DB almacenes)");
+                listadoProveedores = mostrarProveedores();
                 nif = br.readLine();
-            }while(!comprobarPatronRegex(nif,NIF_PATTERN));
+                existeProveedor = comprobarExisteProveedor(nif,listadoProveedores);
+            }while(!existeProveedor);
             m.crearProducto(nombreProducto,Double.parseDouble(precio),Integer.parseInt(stock),nombreCategoria,nif);
         } catch (IOException e) {
             System.out.println("Error al recoger el datos para crear un nuevo producto");
@@ -304,7 +305,7 @@ public class App {
         categorias = m.mostrasCategorias();
 
         for (Categoria c : categorias){
-            System.out.println(c);
+            System.out.println(c.getNombreCategoria());
         }
         return categorias;
     }
@@ -319,6 +320,24 @@ public class App {
         return false;
     }
 
+    public ArrayList mostrarProveedores(){
+        ArrayList < Proveedor> proveedores = new ArrayList<>();
+        proveedores = m.mostrarProveedores();
+
+        for (Proveedor p : proveedores){
+            System.out.println("-" + p.getContacto().getNombreContacto() + "\u2550" + p.getContacto().getNif());
+        }
+        return proveedores;
+    }
+
+    public boolean comprobarExisteProveedor(String nifProovedorParaComprobar, ArrayList<Proveedor> listadoProveedores){
+      for (Proveedor p : listadoProveedores){
+          if (p.getContacto().getNif().equalsIgnoreCase(nifProovedorParaComprobar)){
+              return true;
+          }
+      }
+      return false;
+    }
 
     //Comprobador de patrones regex
     public boolean comprobarPatronRegex(String string, String pattern){
