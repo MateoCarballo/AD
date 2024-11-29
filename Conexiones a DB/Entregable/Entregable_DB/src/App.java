@@ -1,4 +1,7 @@
+import Connections.Categoria;
+
 import java.io.*;
+import java.util.ArrayList;
 
 public class App {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -201,7 +204,9 @@ public class App {
     //6
     private void obtieneDatosCrearNuevoProducto(){
         String nombreProducto, nombreCategoria, nif, precio, stock;
-
+        ArrayList <Categoria> listadoCategorias;
+        boolean existeCategoria = false;
+        boolean existeProveedor = false;
         try {
             do {
                 System.out.println("Introduce el nombre del nuevo producto");
@@ -216,9 +221,11 @@ public class App {
                 stock = br.readLine();
             }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
             do {
-                System.out.println("Introduce el nombre de la categoria del nuevo producto (debe existir en la DB almacenes)");
+                System.out.println("Selecciona la categoria del producto");
+                listadoCategorias = muestraCategorias();
                 nombreCategoria = br.readLine();
-            }while(!comprobarPatronRegex(nombreCategoria,NOMBRE_PATTERN));
+                existeCategoria = comrpobarExisteCategoria(nombreCategoria,listadoCategorias);
+            }while(!existeCategoria);
             do {
                 System.out.println("Introduce el nif proveedor del producto (debe existir en la DB almacenes)");
                 nif = br.readLine();
@@ -288,6 +295,28 @@ public class App {
         } catch (IOException e) {
             System.out.println("Error al recoger el datos para listar usuarios que han comprado productos de una categoria dada");
         }
+    }
+
+
+    // Muestra las categorias que existen en la DB
+    public ArrayList muestraCategorias(){
+        ArrayList < Categoria> categorias = new ArrayList<>();
+        categorias = m.mostrasCategorias();
+
+        for (Categoria c : categorias){
+            System.out.println(c);
+        }
+        return categorias;
+    }
+
+    // Comprueba que el nombre introducido pertenece a una categoria
+    public boolean comrpobarExisteCategoria(String categoriaParaComprobar, ArrayList<Categoria> listadoCategorias){
+        for (Categoria c :listadoCategorias){
+            if (c.getNombreCategoria().equalsIgnoreCase(categoriaParaComprobar)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

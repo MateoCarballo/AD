@@ -1,3 +1,5 @@
+import Connections.Categoria;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -705,6 +707,24 @@ Se mostrará por pantalla el nombre de los usuarios.
             out.println("Error en el prepared statement de Postgre");
         }
 
+    }
+
+    public ArrayList mostrasCategorias() {
+        ArrayList <Categoria> categoriasInscritasDB = new ArrayList<Categoria>();
+        try(PreparedStatement preparedStatement = modeloConnectionPostgre.prepareStatement(
+                "SELECT * FROM categorias")){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    int idCategoria = resultSet.getInt(1);
+                    String nombreCategoria = resultSet.getString(2);
+                    categoriasInscritasDB.add(new Categoria(idCategoria,nombreCategoria));
+                }
+            } catch (SQLException e) {
+                out.println("Error al mostras las categorias de la tabla 'categorias' en la DB POSTGRE " + e.getMessage());
+            }
+        } catch (SQLException e) {
+            out.println("Error en la consulta a la tabla 'categorias' en la DB POSTGRE " + e.getMessage());        }
+        return categoriasInscritasDB;
     }
 }
 
