@@ -13,6 +13,10 @@ public class Producto {
 
     }
 
+    public Producto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
     public Producto(String nombreProducto, int stock) {
         this.nombreProducto = nombreProducto;
         this.stock = stock;

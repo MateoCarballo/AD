@@ -750,6 +750,25 @@ Se mostrará por pantalla el nombre de los usuarios.
         }
         return proveedoresInscritosDB;
     }
+
+    public ArrayList mostrarProductos(){
+        ArrayList<Producto> productosInscritosDB = new ArrayList<>();
+
+        try(PreparedStatement preparedStatement = modeloConnectionMySQL.prepareStatement(
+                "SELECT nombre_producto FROM productos")){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while(resultSet.next()){
+                    String nombreProducto = resultSet.getString(1);
+                    productosInscritosDB.add(new Producto(nombreProducto));
+                }
+            }catch (SQLException e) {
+                out.println("Error al mostras los proveedores de la tabla 'proveedores' en la DB POSTGRE " + e.getMessage());
+            }
+        }catch (SQLException e) {
+            out.println("Error en la consulta a la tabla 'proveedores' en la DB POSTGRE " + e.getMessage());
+        }
+        return productosInscritosDB;
+    }
 }
 
 

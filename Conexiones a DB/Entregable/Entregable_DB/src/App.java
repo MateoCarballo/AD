@@ -240,12 +240,16 @@ public class App {
 
     //7
     private void obtieneDatosEliminarProductoPorNombre(){
+        ArrayList<Producto> listadoProductos = new ArrayList<>();
+        boolean existeProducto;
         String nombreProductoParaEliminar;
         try {
             do {
                 System.out.println("Introduce el nombre del producto para eliminarlo");
+                listadoProductos = muestraProductos();
                 nombreProductoParaEliminar = br.readLine();
-            }while(!comprobarPatronRegex(nombreProductoParaEliminar,NOMBRE_PRODUCTO_PATTERN));
+                existeProducto = comprobarExisteProducto(nombreProductoParaEliminar,listadoProductos);
+            }while(!existeProducto);
 
             m.eliminarProductoPorNombre(nombreProductoParaEliminar);
         } catch (IOException e) {
@@ -319,7 +323,7 @@ public class App {
         }
         return false;
     }
-
+    // Muestra los proveedores
     public ArrayList mostrarProveedores(){
         ArrayList < Proveedor> proveedores = new ArrayList<>();
         proveedores = m.mostrarProveedores();
@@ -329,7 +333,7 @@ public class App {
         }
         return proveedores;
     }
-
+    // Comprueba que exista el dato introducido
     public boolean comprobarExisteProveedor(String nifProovedorParaComprobar, ArrayList<Proveedor> listadoProveedores){
       for (Proveedor p : listadoProveedores){
           if (p.getContacto().getNif().equalsIgnoreCase(nifProovedorParaComprobar)){
@@ -338,6 +342,32 @@ public class App {
       }
       return false;
     }
+    // Muestra los productos existentes para borrar
+    public ArrayList muestraProductos(){
+        ArrayList < Producto> productos = new ArrayList<>();
+        productos = m.mostrarProductos();
+
+        for (Producto prod : productos){
+            System.out.println("-" + prod.getNombreProducto());
+        }
+        return productos;
+
+    }
+
+    public boolean comprobarExisteProducto(String productoParaComprobar,ArrayList<Producto> listadoProductos){
+        for (Producto p : listadoProductos){
+            if (p.getNombreProducto().equalsIgnoreCase(productoParaComprobar)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
 
     //Comprobador de patrones regex
     public boolean comprobarPatronRegex(String string, String pattern){
