@@ -82,17 +82,17 @@ VALUES
 -- Asignamos productos a pedidos con cantidades arbitrarias
 INSERT INTO pedidos_productos (id_pedido, id_producto, cantidad)
 VALUES
-    (1, 1, 2),  -- Pedido 1: 2 unidades de PC de sobremesa
-    (1, 2, 1),  -- Pedido 1: 1 unidad de Laptop Lenovo
-    (2, 3, 1),  -- Pedido 2: 1 unidad de Laptop HP
-    (2, 4, 3),  -- Pedido 2: 3 unidades de Seagate Disco Duro HDD
-    (3, 5, 1),  -- Pedido 3: 1 unidad de Samsung Disco Duro SSD
-    (3, 6, 2),  -- Pedido 3: 2 unidades de Impresora Canon
-    (4, 7, 1),  -- Pedido 4: 1 unidad de Monitor Samsung 24"
-    (5, 11, 2),  -- Pedido 5: 2 unidades de Tablet Samsung
-    (5, 12, 1),  -- Pedido 5: 1 unidad de Auriculares Bose
-    (6, 13, 3),  -- Pedido 6: 3 unidades de Cámara Nikon DSLR
-    (6, 14, 1),  -- Pedido 6: 1 unidad de Tarjeta gráfica NVIDIA GTX 3060
-    (7, 15, 2),  -- Pedido 7: 2 unidades de Procesador AMD Ryzen 5
-    (8, 11, 1),  -- Pedido 8: 1 unidad de Tablet Samsung
-    (8, 13, 1);  -- Pedido 8: 1 unidad de Cámara Nikon DSLR
+    (1, 1, 2),      -- Pedido 1: 2 unidades de PC de sobremesa
+    (1, 2, 1),      -- Pedido 1: 1 unidad de Laptop Lenovo
+    (2, 3, 1),      -- Pedido 2: 1 unidad de Laptop HP
+    (2, 4, 3),      -- Pedido 2: 3 unidades de Seagate Disco Duro HDD
+    (3, 5, 1),      -- Pedido 3: 1 unidad de Samsung Disco Duro SSD
+    (3, 6, 2),      -- Pedido 3: 2 unidades de Impresora Canon
+    (4, 7, 1),      -- Pedido 4: 1 unidad de Monitor Samsung 24"
+    (5, 11, 2),     -- Pedido 5: 2 unidades de Tablet Samsung
+    (5, 12, 1),     -- Pedido 5: 1 unidad de Auriculares Bose
+    (6, 13, 3),     -- Pedido 6: 3 unidades de Cámara Nikon DSLR
+    (6, 14, 1),     -- Pedido 6: 1 unidad de Tarjeta gráfica NVIDIA GTX 3060
+    (7, 15, 2),     -- Pedido 7: 2 unidades de Procesador AMD Ryzen 5
+    (8, 11, 1),     -- Pedido 8: 1 unidad de Tablet Samsung
+    (8, 13, 1);     -- Pedido 8: 1 unidad de Cámara Nikon DSLR

@@ -17,6 +17,27 @@ CREATE DATABASE almacenes
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
 
+
+
+-- En clase me pide la de
+
+-- 'Galician_Spain.1252'
+-- LC_CTYPE = 'Galician_Spain.1252'
+
+-- En casa me pide esta
+    -- Crear la base de datos
+ --    CREATE DATABASE almacenes
+ --        WITH
+ --        OWNER = postgres
+ --        ENCODING = 'UTF8'
+ --        LC_COLLATE = 'Spanish_Spain.1252'
+ --        LC_CTYPE = 'Spanish_Spain.1252'
+ --        LOCALE_PROVIDER = 'libc'
+ --        TABLESPACE = pg_default
+ --        CONNECTION LIMIT = -1
+ --        IS_TEMPLATE = False;
+
+
 -- Crear tablas y tipo compuesto
 CREATE TABLE almacenes (
     id_almacen       SERIAL PRIMARY KEY,  
@@ -131,8 +152,8 @@ VALUES
     (4, 7, 80),     -- Almacén Ourense: 80 unidades de Canon Impresora
     (4, 8, 110),    -- Almacén Ourense: 110 unidades de Samsung Monitor 24"
     (1, 9, 30),     -- Almacén A Coruña: 30 unidades de Lenovo Teclado mecánico
-    (5, 11, 40),  -- Almacén Lugo: 40 unidades de Tablet Samsung
-    (5, 12, 80),  -- Almacén Lugo: 80 unidades de Auriculares Bose
-    (5, 13, 20),  -- Almacén Lugo: 20 unidades de Cámara Nikon DSLR
-    (5, 14, 15),  -- Almacén Lugo: 15 unidades de Tarjeta gráfica NVIDIA GTX 3060
-    (5, 15, 25);  -- Almacén Lugo: 25 unidades de Procesador AMD Ryzen 5
+    (5, 11, 40),    -- Almacén Lugo: 40 unidades de Tablet Samsung
+    (5, 12, 80),    -- Almacén Lugo: 80 unidades de Auriculares Bose
+    (5, 13, 20),    -- Almacén Lugo: 20 unidades de Cámara Nikon DSLR
+    (5, 14, 15),    -- Almacén Lugo: 15 unidades de Tarjeta gráfica NVIDIA GTX 3060
+    (5, 15, 25);    -- Almacén Lugo: 25 unidades de Procesador AMD Ryzen 5
