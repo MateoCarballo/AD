@@ -16,8 +16,8 @@ public class Main {
             e.printStackTrace();
         }finally{
             try {
-                app.getM().getModeloConnectionMySQL().close();
-                app.getM().getModeloConnectionPostgre().close();
+                app.getM().modeloConnectionMySQL().close();
+                app.getM().modeloConnectionPostgre().close();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar alguna de las conexiones");
                 e.printStackTrace();
