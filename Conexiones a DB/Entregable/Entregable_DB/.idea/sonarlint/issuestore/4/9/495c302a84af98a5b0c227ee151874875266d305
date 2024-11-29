@@ -3,8 +3,8 @@
 java:S1192œ"pDefine a constant instead of duplicating this literal "Error al recoger el id del proveedor a eliminar" 3 times.(‡ˆô¶
 l	java:S116"WRename this field "MENU_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­µùÖ
 k	java:S116"VRename this field "NIF_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹ß’ñ
-n	java:S116"YRename this field "NOMBRE_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ÛÑƒ
-|	java:S116	"bRename this field "NOMBRE_PRODUCTO_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(—»·øÿÿÿÿ
+u	java:S116"YRename this field "NOMBRE_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Œçıª8±ôŞº·2
+ƒ	java:S116	"bRename this field "NOMBRE_PRODUCTO_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(—»·øÿÿÿÿ8Û‡ßº·2
 u	java:S116
 "[Rename this field "TELEFONO_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©¾£ûıÿÿÿÿ
 o	java:S116"URename this field "ID_PATTERN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´ÍÒ¿ÿÿÿÿÿ
@@ -15,10 +15,10 @@ m	java:S116"XRename this field "STOCK_PATTERN" to match the regular expressio
 java:S1170"!Make this final field static too.(­µùÖ
 7
 java:S1170"!Make this final field static too.(‹ß’ñ
-7
-java:S1170"!Make this final field static too.(™ÛÑƒ
-<
-java:S1170	"!Make this final field static too.(—»·øÿÿÿÿ
+>
+java:S1170"!Make this final field static too.(Œçıª8´ôŞº·2
+C
+java:S1170	"!Make this final field static too.(—»·øÿÿÿÿ8è‡ßº·2
 <
 java:S1170
 "!Make this final field static too.(©¾£ûıÿÿÿÿ
@@ -31,44 +31,44 @@ java:S1170"!Make this final field static too.(Ü²¨
 7
 java:S1170"!Make this final field static too.(±§“ù
 @	java:S106"+Replace this use of System.out by a logger.(õô™œ
-E	java:S106 "+Replace this use of System.out by a logger.(ŞÒ—üÿÿÿÿ
-@	java:S106!"+Replace this use of System.out by a logger.(Îñë
-@	java:S1062"+Replace this use of System.out by a logger.(õô™œ
-E	java:S1064"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ
-E	java:S1069"+Replace this use of System.out by a logger.(„‘ó´ÿÿÿÿÿ
-<	java:S131>""Add a default case to this switch.(¹Í‚€ÿÿÿÿÿ
-@	java:S106V"+Replace this use of System.out by a logger.(ÍƒÈ¤
-@	java:S106["+Replace this use of System.out by a logger.(®ÿÊƒ
-?	java:S106i"+Replace this use of System.out by a logger.(­ÄŠg
-@	java:S106m"+Replace this use of System.out by a logger.(Û„¨‰
-E	java:S106r"+Replace this use of System.out by a logger.(äôŠİıÿÿÿÿ
-E	java:S106v"+Replace this use of System.out by a logger.(ŒÏ¤İşÿÿÿÿ
-@	java:S106{"+Replace this use of System.out by a logger.(’Ñ…¢
-F	java:S106€"+Replace this use of System.out by a logger.(Àà‰ğÿÿÿÿÿ
-F	java:S106…"+Replace this use of System.out by a logger.(Û¬°ıÿÿÿÿ
-A	java:S106‰"+Replace this use of System.out by a logger.(á¼™å
-A	java:S106—"+Replace this use of System.out by a logger.(Õ¤×Ø
-A	java:S106œ"+Replace this use of System.out by a logger.(‡ˆô¶
-Z
-java:S1659¢"CDeclare "correo" and all following declarations on a separate line.(ŞÌÄÎ
-F	java:S106¦"+Replace this use of System.out by a logger.(Õ±¼Òıÿÿÿÿ
-F	java:S106«"+Replace this use of System.out by a logger.(êñŞşÿÿÿÿ
-A	java:S106°"+Replace this use of System.out by a logger.(êª«ê
-A	java:S106¶"+Replace this use of System.out by a logger.(‡ˆô¶
-@	java:S106¿"+Replace this use of System.out by a logger.(›“»2
-A	java:S106Å"+Replace this use of System.out by a logger.(‡ˆô¶
-h
-java:S1659Ë"LDeclare "nombreCategoria" and all following declarations on a separate line.(½±óíúÿÿÿÿ
-A	java:S106Ï"+Replace this use of System.out by a logger.(ù›•À
-A	java:S106Ó"+Replace this use of System.out by a logger.(åş°
-F	java:S106×"+Replace this use of System.out by a logger.(©ŸÛ÷ùÿÿÿÿ
-F	java:S106Û"+Replace this use of System.out by a logger.(ÊÇø¨ÿÿÿÿÿ
-A	java:S106ß"+Replace this use of System.out by a logger.(±‚ş½
-F	java:S106ä"+Replace this use of System.out by a logger.(‘úá·üÿÿÿÿ
-F	java:S106î"+Replace this use of System.out by a logger.(°ßßËúÿÿÿÿ
-F	java:S106ô"+Replace this use of System.out by a logger.(Ø‡§šùÿÿÿÿ
-F	java:S106ı"+Replace this use of System.out by a logger.(µºéêøÿÿÿÿ
-F	java:S106ƒ"+Replace this use of System.out by a logger.(Ø‡§šùÿÿÿÿ
-F	java:S106›"+Replace this use of System.out by a logger.(Á™ï×ıÿÿÿÿ
-F	java:S106¡"+Replace this use of System.out by a logger.(Ãò¿—üÿÿÿÿ
-A	java:S106¬"+Replace this use of System.out by a logger.(Îñë
+L	java:S106 "+Replace this use of System.out by a logger.(ŞÒ—üÿÿÿÿ8ø‡ßº·2
+G	java:S106!"+Replace this use of System.out by a logger.(Îñë8ù‡ßº·2
+G	java:S1062"+Replace this use of System.out by a logger.(õô™œ8û‡ßº·2
+L	java:S1064"+Replace this use of System.out by a logger.(ªÓ¼áşÿÿÿÿ8ı‡ßº·2
+L	java:S1069"+Replace this use of System.out by a logger.(„‘ó´ÿÿÿÿÿ8€ˆßº·2
+C	java:S131>""Add a default case to this switch.(¹Í‚€ÿÿÿÿÿ8ƒˆßº·2
+G	java:S106V"+Replace this use of System.out by a logger.(ÍƒÈ¤8ˆˆßº·2
+G	java:S106["+Replace this use of System.out by a logger.(®ÿÊƒ8‹ˆßº·2
+F	java:S106i"+Replace this use of System.out by a logger.(­ÄŠg8ˆßº·2
+G	java:S106m"+Replace this use of System.out by a logger.(Û„¨‰8‘ˆßº·2
+L	java:S106r"+Replace this use of System.out by a logger.(äôŠİıÿÿÿÿ8”ˆßº·2
+L	java:S106v"+Replace this use of System.out by a logger.(ŒÏ¤İşÿÿÿÿ8—ˆßº·2
+G	java:S106{"+Replace this use of System.out by a logger.(’Ñ…¢8˜ˆßº·2
+M	java:S106€"+Replace this use of System.out by a logger.(Àà‰ğÿÿÿÿÿ8›ˆßº·2
+M	java:S106…"+Replace this use of System.out by a logger.(Û¬°ıÿÿÿÿ8ˆßº·2
+H	java:S106‰"+Replace this use of System.out by a logger.(á¼™å8¡ˆßº·2
+H	java:S106—"+Replace this use of System.out by a logger.(Õ¤×Ø8£ˆßº·2
+H	java:S106œ"+Replace this use of System.out by a logger.(‡ˆô¶8¦ˆßº·2
+a
+java:S1659¢"CDeclare "correo" and all following declarations on a separate line.(ŞÌÄÎ8¨ˆßº·2
+M	java:S106¦"+Replace this use of System.out by a logger.(Õ±¼Òıÿÿÿÿ8©ˆßº·2
+M	java:S106«"+Replace this use of System.out by a logger.(êñŞşÿÿÿÿ8ªˆßº·2
+H	java:S106°"+Replace this use of System.out by a logger.(êª«ê8«ˆßº·2
+H	java:S106¶"+Replace this use of System.out by a logger.(‡ˆô¶8®ˆßº·2
+G	java:S106¿"+Replace this use of System.out by a logger.(›“»28±ˆßº·2
+H	java:S106Å"+Replace this use of System.out by a logger.(‡ˆô¶8´ˆßº·2
+o
+java:S1659Ë"LDeclare "nombreCategoria" and all following declarations on a separate line.(½±óíúÿÿÿÿ8»ˆßº·2
+H	java:S106Ï"+Replace this use of System.out by a logger.(ù›•À8¼ˆßº·2
+H	java:S106Ó"+Replace this use of System.out by a logger.(åş°8½ˆßº·2
+M	java:S106×"+Replace this use of System.out by a logger.(©ŸÛ÷ùÿÿÿÿ8Àˆßº·2
+M	java:S106Û"+Replace this use of System.out by a logger.(ÊÇø¨ÿÿÿÿÿ8Âˆßº·2
+H	java:S106ß"+Replace this use of System.out by a logger.(±‚ş½8Äˆßº·2
+M	java:S106ä"+Replace this use of System.out by a logger.(‘úá·üÿÿÿÿ8Çˆßº·2
+M	java:S106î"+Replace this use of System.out by a logger.(°ßßËúÿÿÿÿ8Éˆßº·2
+M	java:S106ô"+Replace this use of System.out by a logger.(Ø‡§šùÿÿÿÿ8Ëˆßº·2
+M	java:S106ı"+Replace this use of System.out by a logger.(µºéêøÿÿÿÿ8Ìˆßº·2
+M	java:S106ƒ"+Replace this use of System.out by a logger.(Ø‡§šùÿÿÿÿ8Íˆßº·2
+M	java:S106›"+Replace this use of System.out by a logger.(Á™ï×ıÿÿÿÿ8Ğˆßº·2
+M	java:S106¡"+Replace this use of System.out by a logger.(Ãò¿—üÿÿÿÿ8Òˆßº·2
+H	java:S106¬"+Replace this use of System.out by a logger.(Îñë8Ôˆßº·2

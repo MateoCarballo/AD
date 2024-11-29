@@ -28,7 +28,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             if (idGenerado != -1)
                 out.println("Categoría creada con exito! El nuevo id para la categoría es -> " + idGenerado);
         } catch (SQLException e) {
-            out.println("Error en la creacion de la categoría");
+            out.println("Error en la creacion de la categoría " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -62,7 +62,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                 out.println("Proveedor creado con exito! El nuevo id para el proveedor es -> " + idGenerado);
 
         } catch (SQLException e) {
-            out.println("Error durante la creacion del proveedor");
+            out.println("Error durante la creacion del proveedor " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -82,14 +82,15 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                         WHERE id_proveedor = ?""")) {
 
             preparedStatement.setInt(1, id);
-            if (preparedStatement.executeUpdate() == 1) {
-                out.println("La referencia al proveedor con id " + id + " en la tabla 'productos' ha sido eliminada.");
+            int filasAfectadas = preparedStatement.executeUpdate();
+            if ( filasAfectadas > 0) {
+                out.println("La referencia al proveedor con id " + id + " en la tabla 'productos' ha sido eliminada en " + filasAfectadas + "tuplas");
             } else {
                 out.println("El proveedor no se ha eliminado como clave foranea de la tabla productos");
             }
 
         } catch (SQLException e) {
-            out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos)");
+            out.println("Error durante la eliminacion del proveedor como clave foranea (tabla productos) " + e.getMessage());
             e.printStackTrace();
         }
         // ELIMINAR DE LA TABLA 'proveedores'
@@ -108,7 +109,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             }
 
         } catch (SQLException e) {
-            out.println("Error durante la eliminacion del proveedor");
+            out.println("Error durante la eliminacion del proveedor " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -140,7 +141,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                 out.println("Usuario creado con exito! El nuevo id para el usuario es -> " + idGenerado);
 
         } catch (SQLException e) {
-            out.println("Error durante la creacion de un nuevo usario");
+            out.println("Error durante la creacion de un nuevo usario " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -160,12 +161,12 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                             SET id_usuario = null
                             WHERE id_usuario = ?""")) {
                 preparedStatement.setInt(1, id);
-                if (preparedStatement.executeUpdate() == 1)
-                    out.println("La referencia al usuario con id " + id + " en la tabla 'pedidos' ha sido puesta a null.");
-
+                int filasAfectadas = preparedStatement.executeUpdate();
+                if (filasAfectadas > 0)
+                    out.println("La referencia al usuario con id " + id + " en la tabla 'pedidos' ha sido puesta a null en " + filasAfectadas + "tuplas");
 
             } catch (SQLException e) {
-                out.println("Error durante la eliminacion como clave foránea en la tabla pedidos");
+                out.println("Error durante la eliminacion como clave foránea en la tabla pedidos " + e.getMessage());
             }
         }
 
@@ -180,7 +181,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                 if (preparedStatement.executeUpdate() == 1) out.println("Usuario eliminado con exito!");
 
             } catch (SQLException e) {
-                out.println("Error durante la eliminacion de un nuevo usuario");
+                out.println("Error durante la eliminacion de un nuevo usuario " + e.getMessage());
             }
         }
 
@@ -203,7 +204,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             existeUsuario = resultSet.next();
 
         } catch (SQLException e) {
-            out.println("Error durante la busqueda de usuario por id");
+            out.println("Error durante la busqueda de usuario por id " + e.getMessage());
         }
         return existeUsuario;
     }
@@ -251,7 +252,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                 }
             } catch (SQLException e) {
                 error = true;
-                out.println("Error en la creacion de un producto en la DB MySQL");
+                out.println("Error en la creacion de un producto en la DB MySQL " + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -265,7 +266,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                     }
                 }
             } catch (SQLException e) {
-                out.println("Error durante la busqueda del id_producto en la tabla proveedores");
+                out.println("Error durante la busqueda del id_producto en la tabla proveedores " + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -279,7 +280,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                     }
                 }
             } catch (SQLException e) {
-                out.println("Error al obtener el id del proveedor desde el nif");
+                out.println("Error al obtener el id del proveedor desde el nif " + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -300,7 +301,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                             + "Su categorias tiene el id -> " + idCategoria + "\n");
                 }
             } catch (SQLException e) {
-                out.println("Error durante la insercion de los datos en la tabla productos de postgre");
+                out.println("Error durante la insercion de los datos en la tabla productos de postgre " + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -314,7 +315,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
                 }
 
             } catch (SQLException e) {
-                out.println("Error al intentar commitear los cambios para cerrar la transaccion");
+                out.println("Error al intentar commitear los cambios para cerrar la transaccion " + e.getMessage());
             }
 
         } catch (SQLException e) {
@@ -333,7 +334,7 @@ Se recibirá un String que será el nombreCategoria y se añadirá a la base de 
             modeloConnectionMySQL.setAutoCommit(true);
             modeloConnectionPostgre.setAutoCommit(true);
         } catch (SQLException e) {
-            out.println("Error al devolver el estado del autocommit a true");
+            out.println("Error al devolver el estado del autocommit a true " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -371,10 +372,10 @@ Se tendrá que eliminar el producto de ambas bases de datos.
                     idProducto = resultSet.getInt(1);
                 }
             } catch (SQLException e) {
-                out.println("Error al leer los resultados con resulset de la DB MySQL");
+                out.println("Error al leer los resultados con resulset de la DB MySQL " + e.getMessage());
             }
         } catch (SQLException e) {
-            out.println("Error en la busqueda del producto por nombre");
+            out.println("Error en la busqueda del producto por nombre " + e.getMessage());
         }
         return idProducto;
     }
@@ -469,18 +470,18 @@ Se tendrá que eliminar el producto de ambas bases de datos.
                 modeloConnectionMySQL.commit();
                 modeloConnectionPostgre.commit();
             } catch (SQLException e) {
-                out.println("Error al realizar el commit de la transaccion");
+                out.println("Error al realizar el commit de la transaccion " + e.getMessage());
             }
 
         } catch (SQLException e) {
-            out.println("Error al cambiar el auto commit a false");
+            out.println("Error al cambiar el auto commit a false " + e.getMessage());
         } finally {
             // CERRAMOS LA TRANSACCION
             try {
                 modeloConnectionMySQL.setAutoCommit(true);
                 modeloConnectionPostgre.setAutoCommit(true);
             } catch (SQLException e) {
-                out.println("Error al cambiar el auto commit a true");
+                out.println("Error al cambiar el auto commit a true " + e.getMessage());
             }
         }
     }
@@ -514,7 +515,7 @@ Mediante una única consulta se tendrá que obtener el conjunto de filas resulta
             }
 
         } catch (SQLException e) {
-            out.println("Error al buscar los productos por stock");
+            out.println("Error al buscar los productos por stock " + e.getMessage());
         }
     }
 
@@ -571,11 +572,11 @@ Mediante una única consulta se tendrá que obtener el conjunto de filas resulta
                             "Cantidad de productos -> " + cantidadProductos + "\n");
                 }
             } catch (SQLException e) {
-                out.println("Error al recuperar los datos de la DB Postgre");
+                out.println("Error al recuperar los datos de la DB Postgre " + e.getMessage());
             }
 
         } catch (SQLException e) {
-            out.println("Error durante la obtencion de la cantidad de productos por alamacen");
+            out.println("Error durante la obtencion de la cantidad de productos por alamacen " + e.getMessage());
             e.printStackTrace();
         }
     }

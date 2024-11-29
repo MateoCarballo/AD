@@ -5,7 +5,7 @@ public class App {
     //Patron para los menus, numeros del 1 al 12
     private final String MENU_PATTERN = "^(1[0-2]|[0-9])$";
     private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
-    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$";
+    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+){1,2}$";
     private final String NOMBRE_PRODUCTO_PATTERN = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-_.\"]{1,50}$";
     private final String TELEFONO_PATTERN = "^\\d{9}$";
     private final String ID_PATTERN = "^\\d{1,50}$";
