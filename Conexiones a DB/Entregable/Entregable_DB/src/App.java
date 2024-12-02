@@ -1,11 +1,12 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class App {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //Patron para los menus, numeros del 1 al 12
     private final String MENU_PATTERN = "^(1[0-2]|[0-9])$";
     private final String NIF_PATTERN = "^[1-9][0-9]{7}[A-Za-z]$";
-    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}$";
+    private final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+){1,2}$";
     private final String NOMBRE_PRODUCTO_PATTERN = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s\\-_.\"]{1,50}$";
     private final String TELEFONO_PATTERN = "^\\d{9}$";
     private final String ID_PATTERN = "^\\d{1,50}$";
@@ -201,7 +202,10 @@ public class App {
     //6
     private void obtieneDatosCrearNuevoProducto(){
         String nombreProducto, nombreCategoria, nif, precio, stock;
-
+        ArrayList <Categoria> listadoCategorias;
+        ArrayList <Proveedor> listadoProveedores;
+        boolean existeCategoria = false;
+        boolean existeProveedor = false;
         try {
             do {
                 System.out.println("Introduce el nombre del nuevo producto");
@@ -216,13 +220,17 @@ public class App {
                 stock = br.readLine();
             }while(!comprobarPatronRegex(stock,STOCK_PATTERN));
             do {
-                System.out.println("Introduce el nombre de la categoria del nuevo producto (debe existir en la DB almacenes)");
+                System.out.println("Selecciona una de las categorias existentes");
+                listadoCategorias = muestraCategorias();
                 nombreCategoria = br.readLine();
-            }while(!comprobarPatronRegex(nombreCategoria,NOMBRE_PATTERN));
+                existeCategoria = comrpobarExisteCategoria(nombreCategoria,listadoCategorias);
+            }while(!existeCategoria);
             do {
                 System.out.println("Introduce el nif proveedor del producto (debe existir en la DB almacenes)");
+                listadoProveedores = mostrarProveedores();
                 nif = br.readLine();
-            }while(!comprobarPatronRegex(nif,NIF_PATTERN));
+                existeProveedor = comprobarExisteProveedor(nif,listadoProveedores);
+            }while(!existeProveedor);
             m.crearProducto(nombreProducto,Double.parseDouble(precio),Integer.parseInt(stock),nombreCategoria,nif);
         } catch (IOException e) {
             System.out.println("Error al recoger el datos para crear un nuevo producto");
@@ -232,12 +240,16 @@ public class App {
 
     //7
     private void obtieneDatosEliminarProductoPorNombre(){
+        ArrayList<Producto> listadoProductos = new ArrayList<>();
+        boolean existeProducto;
         String nombreProductoParaEliminar;
         try {
             do {
                 System.out.println("Introduce el nombre del producto para eliminarlo");
+                listadoProductos = muestraProductos();
                 nombreProductoParaEliminar = br.readLine();
-            }while(!comprobarPatronRegex(nombreProductoParaEliminar,NOMBRE_PRODUCTO_PATTERN));
+                existeProducto = comprobarExisteProducto(nombreProductoParaEliminar,listadoProductos);
+            }while(!existeProducto);
 
             m.eliminarProductoPorNombre(nombreProductoParaEliminar);
         } catch (IOException e) {
@@ -289,6 +301,72 @@ public class App {
             System.out.println("Error al recoger el datos para listar usuarios que han comprado productos de una categoria dada");
         }
     }
+
+
+    // Muestra las categorias que existen en la DB
+    public ArrayList muestraCategorias(){
+        ArrayList < Categoria> categorias = new ArrayList<>();
+        categorias = m.mostrasCategorias();
+
+        for (Categoria c : categorias){
+            System.out.println(c.getNombreCategoria());
+        }
+        return categorias;
+    }
+
+    // Comprueba que el nombre introducido pertenece a una categoria
+    public boolean comrpobarExisteCategoria(String categoriaParaComprobar, ArrayList<Categoria> listadoCategorias){
+        for (Categoria c :listadoCategorias){
+            if (c.getNombreCategoria().equalsIgnoreCase(categoriaParaComprobar)){
+                return true;
+            }
+        }
+        return false;
+    }
+    // Muestra los proveedores
+    public ArrayList mostrarProveedores(){
+        ArrayList < Proveedor> proveedores = new ArrayList<>();
+        proveedores = m.mostrarProveedores();
+
+        for (Proveedor p : proveedores){
+            System.out.println("-" + p.getContacto().getNombreContacto() + "\u2550" + p.getContacto().getNif());
+        }
+        return proveedores;
+    }
+    // Comprueba que exista el dato introducido
+    public boolean comprobarExisteProveedor(String nifProovedorParaComprobar, ArrayList<Proveedor> listadoProveedores){
+      for (Proveedor p : listadoProveedores){
+          if (p.getContacto().getNif().equalsIgnoreCase(nifProovedorParaComprobar)){
+              return true;
+          }
+      }
+      return false;
+    }
+    // Muestra los productos existentes para borrar
+    public ArrayList muestraProductos(){
+        ArrayList < Producto> productos = new ArrayList<>();
+        productos = m.mostrarProductos();
+
+        for (Producto prod : productos){
+            System.out.println("-" + prod.getNombreProducto());
+        }
+        return productos;
+
+    }
+
+    public boolean comprobarExisteProducto(String productoParaComprobar,ArrayList<Producto> listadoProductos){
+        for (Producto p : listadoProductos){
+            if (p.getNombreProducto().equalsIgnoreCase(productoParaComprobar)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+
 
 
     //Comprobador de patrones regex
