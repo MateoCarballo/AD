@@ -10,8 +10,43 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         //ejemploConexionYConsultaSimpleMySQL();
         //ejemploConexionYConsultaSimplePostgre();
-        ejemploDosDBSingleton();
+        //ejemploDosDBSingleton();
+        ejemploConsultaCompleja();
          }
+
+    private static void ejemploConsultaCompleja() {
+        Connection connMySQL = SingletonMySQL.getConnection();
+        Connection connPostgre  =   SingletonPostgre.getConnection();
+
+        try (PreparedStatement preparedStatement = connMySQL.prepareStatement("""
+                SELECT nombre_producto FROM productos WHERE id_producto = ?
+                """)){
+            int valorIntroducido = 1;
+            int numeroDeParametro = 1;
+            preparedStatement.setInt(numeroDeParametro,valorIntroducido);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    String nombre = resultSet.getString(1);
+                    System.out.println("Nombre del producto -> " + nombre);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ERRROR");
+        }
+
+        try (PreparedStatement preparedStatement = connPostgre.prepareStatement("""
+                SELECT * FROM productos
+                """)){
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    int id = resultSet.getInt(1);
+                    System.out.println("Id-> " + id);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ERRROR");
+        }
+    }
 
     private static void ejemploDosDBSingleton() {
         Connection connMySQL = SingletonMySQL.getConnection();
