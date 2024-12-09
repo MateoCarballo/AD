@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Operaciones implements OperacionesInt {
+public class Operaciones  {
     final private String URL = "jdbc:mysql//localhost:3306/library";
     final private String USER = "root";
     final private String PSW = "abc123.";
@@ -38,11 +38,6 @@ public class Operaciones implements OperacionesInt {
     public boolean existsClient(String id){
         // TODO -> Pendiente de incluir el código.
         return true;
-    }
-
-    @Override
-    public boolean isBorrowed(String idBook) {
-        return false;
     }
 
 }
