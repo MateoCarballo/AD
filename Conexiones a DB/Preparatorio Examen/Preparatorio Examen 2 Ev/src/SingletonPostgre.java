@@ -3,26 +3,25 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SingletonPostgre {
-    private String url = "jdbc:postgresql://localhost:5432/almacenes";
-    private String user = "postgres";
-    private String password = "abc123.";
-    private static Connection connection ;
+    private static Connection connection;
+    private final String usuario="postgres";
+    private final String pas="abc123.";
+    private final String url="jdbc:postgresql://localhost:5432/productos";
 
     private SingletonPostgre(){
-        try{
-            connection = DriverManager.getConnection(url,user,password);
-        }catch (SQLException e){
-            System.out.println("Error al crear la conexion");
+        try {
+            connection=DriverManager.getConnection(url,usuario,pas);
+        }catch (SQLException a){
+            System.out.println(a.toString());
         }
-
     }
 
-    public static Connection getConnection(){
+    public static Connection concretarConexion(){
         if (connection == null){
             new SingletonPostgre();
         }
         return connection;
-
     }
+
 
 }
