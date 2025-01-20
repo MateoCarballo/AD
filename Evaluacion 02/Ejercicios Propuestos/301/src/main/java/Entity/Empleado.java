@@ -15,7 +15,15 @@ public class Empleado {
     @Column (name = "Puesto")
     private String puesto;
 
+    @ManyToOne
+    @JoinColumn ( name = "alumno_id")
+    private Departamento Depto;
+
     @Column (name = "Sueldo",precision = 7, scale = 2)
     private double sueldo;
+
+    public void setDepartamento (Departamento d){
+        this.setDepartamento(d);
+    }
 
 }
