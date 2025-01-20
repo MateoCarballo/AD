@@ -14,7 +14,7 @@ public class Departamento {
     private long id;
     @Column (name = "Nombre")
     private String nombreDepar;
-    @Column (name = "Localida")
+    @Column (name = "Localidad")
     private String localidadDepar;
 
     @OneToMany (mappedBy = "Depto")
