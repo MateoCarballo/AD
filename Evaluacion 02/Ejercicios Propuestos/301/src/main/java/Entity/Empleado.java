@@ -1,10 +1,17 @@
 package Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table (name = "Emp")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Empleado {
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
@@ -16,7 +23,7 @@ public class Empleado {
     private String puesto;
 
     @ManyToOne
-    @JoinColumn ( name = "alumno_id")
+    @JoinColumn ( name = "depto_id")
     private Departamento Depto;
 
     @Column (name = "Sueldo",precision = 7, scale = 2)

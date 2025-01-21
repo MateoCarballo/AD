@@ -13,7 +13,7 @@
                 <property name="hbm2ddl.auto">validate</property>
         -->
         <property name="hbm2ddl.auto">create</property>
-        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!-- <property name="dialect">org.hibernate.dialect.MySQLDialect</property> -->
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
 

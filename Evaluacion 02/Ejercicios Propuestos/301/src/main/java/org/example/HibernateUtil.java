@@ -10,7 +10,7 @@ public class HibernateUtil {
 
     static {
         try {
-            String hibernatePropsFilePath = "./src/hibernate.cfg.xml"; // Ruta al fichero
+            String hibernatePropsFilePath = "hibernate.cfg.xml"; // Ruta al fichero
 
             File hibernatePropsFile = new File(hibernatePropsFilePath);
 
