@@ -1,10 +1,20 @@
 package Repository;
 
+import Entity.Empleado;
+import org.hibernate.Session;
+
 import java.util.List;
 
-public class EmpleadoRepository implements Repository{
+public class EmpleadoRepository implements Repository <Empleado>{
+    public Session sesionDB;
+
+    public EmpleadoRepository(Session session){
+        this.sesionDB = session;
+    }
+
+
     @Override
-    public void guardar(Object o) {
+    public void guardar(Empleado empleado) {
 
     }
 
@@ -14,17 +24,18 @@ public class EmpleadoRepository implements Repository{
     }
 
     @Override
-    public Object encontrarUnoPorId(long id) {
+    public Empleado encontrarUnoPorId(long id) {
         return null;
     }
 
     @Override
-    public void actualizar(Object o) {
+    public void actualizar(Empleado empleado) {
 
     }
 
     @Override
-    public void eliminar(Object o) {
+    public void eliminar(Empleado empleado) {
 
     }
+
 }

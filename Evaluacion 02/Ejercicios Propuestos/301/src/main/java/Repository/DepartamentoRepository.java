@@ -1,30 +1,39 @@
 package Repository;
 
+import Entity.Departamento;
+import com.mysql.cj.xdevapi.Session;
+
 import java.util.List;
 
-public class DepartamentoRepository implements Repository{
+public class DepartamentoRepository implements Repository <Departamento> {
+
+    private Session session;
+
+    public DepartamentoRepository(Session session){
+        this.session = session;
+    }
     @Override
-    public void guardar(Object o) {
-        
+    public void guardar(Departamento departamento) {
+
     }
 
     @Override
-    public List encontrarTodos() {
+    public List<Departamento> encontrarTodos() {
         return List.of();
     }
 
     @Override
-    public Object encontrarUnoPorId(long id) {
+    public Departamento encontrarUnoPorId(long id) {
         return null;
     }
 
     @Override
-    public void actualizar(Object o) {
+    public void actualizar(Departamento departamento) {
 
     }
 
     @Override
-    public void eliminar(Object o) {
+    public void eliminar(Departamento departamento) {
 
     }
 }
