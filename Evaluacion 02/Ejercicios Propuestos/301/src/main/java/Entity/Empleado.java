@@ -24,13 +24,15 @@ public class Empleado {
 
     @ManyToOne
     @JoinColumn ( name = "depto_id")
-    private Departamento Depto;
+    private Departamento id_departamento;
 
-    @Column (name = "Sueldo",precision = 7, scale = 2)
+    //@Column (name = "Sueldo",precision = 2, scale =7")
+    @Column (name = "Sueldo", columnDefinition = "DECIMAL(7,2)")
+
     private double sueldo;
 
     public void setDepartamento (Departamento d){
-        this.setDepartamento(d);
+        this.id_departamento =d;
     }
 
 }

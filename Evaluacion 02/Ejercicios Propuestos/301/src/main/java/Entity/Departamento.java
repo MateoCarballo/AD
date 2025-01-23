@@ -24,7 +24,7 @@ public class Departamento {
     @Column (name = "Localidad")
     private String localidadDepar;
 
-    @OneToMany (mappedBy = "Depto")
+    @OneToMany (mappedBy = "id_departamento")
     private Set<Empleado> empleados;
 
     public void addEmployee(Empleado e){

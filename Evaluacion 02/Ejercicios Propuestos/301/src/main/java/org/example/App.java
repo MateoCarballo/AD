@@ -7,14 +7,12 @@ import org.hibernate.Session;
 
 import java.util.HashSet;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
     {
+        Session session = HibernateUtil.get().openSession();
+
         int bucle =0;
         //Crear los departamentos y empleados sin relacionarlos entre ellos
 
@@ -23,24 +21,28 @@ public class App
         //Crear los 5 departamentos
         Departamento[] departamentos = crearDepartamentos();
 
-
-        //Vincular los empleados a los departamentos
         for (Departamento departamento : departamentos) {
-            for (int j = 0; j <; j++) {
-                //Añado a la lista de empleados del departamento
-                departamento.addEmployee(empleados[j]);
-                //Añado al departamento del empleado
-                empleados[j].setDepartamento(departamento);
-            }
+
+            //Añado dos empleados a cada departamento
+            //Y despues de añadir el empleado al departamento le añado el departamento al empleado
+            departamento.addEmployee(empleados[bucle]);
+            empleados[bucle].setDepartamento(departamento);
+            bucle++;
+            departamento.addEmployee(empleados[bucle]);
+            empleados[bucle].setDepartamento(departamento);
+            bucle++;
 
         }
 
-        System.out.println("Test");
 
-        Session session = HibernateUtil.get().openSession();
 
-        EmpleadoRepository er = new EmpleadoRepository(session);
-        // Aqui todo el trabajo
+        EmpleadoRepository empleadoRepository = new EmpleadoRepository(session);
+       /*
+       AQUI
+       TODA
+       LA
+       CHICHA
+        */
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
     }
