@@ -2,71 +2,68 @@ package org.example;
 
 import Entity.Departamento;
 import Entity.Empleado;
+import Repository.DepartamentoRepository;
 import Repository.EmpleadoRepository;
 import org.hibernate.Session;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class App 
 {
     public static void main( String[] args )
     {
         Session session = HibernateUtil.get().openSession();
+        DepartamentoRepository departamentoRepository = new DepartamentoRepository(session);
 
-        int bucle =0;
-        //Crear los departamentos y empleados sin relacionarlos entre ellos
+        Departamento departamento1 = new Departamento("Departamento 1", "Localidad 1");
+        Departamento departamento2 = new Departamento("Departamento 2", "Localidad 2");
+        Departamento departamento3= new Departamento("Departamento 3", "Localidad 3");
+        Departamento departamento4 = new Departamento("Departamento 4", "Localidad 4");
+        Departamento departamento5 = new Departamento("Departamento 5", "Localidad 5");
 
-        //Crear los 10 empleados
-        Empleado[] empleados = crearEmpleados();
-        //Crear los 5 departamentos
-        Departamento[] departamentos = crearDepartamentos();
+        ArrayList<Empleado> empleados = new ArrayList<>();
 
-        for (Departamento departamento : departamentos) {
-
-            //Añado dos empleados a cada departamento
-            //Y despues de añadir el empleado al departamento le añado el departamento al empleado
-            departamento.addEmployee(empleados[bucle]);
-            empleados[bucle].setDepartamento(departamento);
-            bucle++;
-            departamento.addEmployee(empleados[bucle]);
-            empleados[bucle].setDepartamento(departamento);
-            bucle++;
-
+        for (int i = 0; i < 10; i++) {
+            String nombre = "Empleado " + i;
+            empleados.add(new Empleado(nombre,"Puesto "+ i,1000.00 * i,10 * i, i+ "23456789A",true));
         }
 
 
 
-        EmpleadoRepository empleadoRepository = new EmpleadoRepository(session);
-       /*
+
+
+        departamento1.addEmployee(empleados.get(0));
+        departamento1.addEmployee(empleados.get(1));
+
+        departamento2.addEmployee(empleados.get(2));
+        departamento2.addEmployee(empleados.get(3));
+
+        departamento3.addEmployee(empleados.get(4));
+        departamento3.addEmployee(empleados.get(5));
+
+        departamento4.addEmployee(empleados.get(6));
+        departamento4.addEmployee(empleados.get(7));
+
+        departamento5.addEmployee(empleados.get(8));
+        departamento5.addEmployee(empleados.get(9));
+
+        departamentoRepository.guardar(departamento1);
+        departamentoRepository.guardar(departamento2);
+        departamentoRepository.guardar(departamento3);
+        departamentoRepository.guardar(departamento4);
+        departamentoRepository.guardar(departamento5);
+
+
+
+        /*
        AQUI
        TODA
        LA
        CHICHA
         */
+
+
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
-    }
-
-    private static Departamento[] crearDepartamentos() {
-        Departamento[] departamentos = new Departamento[5];
-        for (int i = 0; i < departamentos.length; i++) {
-            departamentos[i] = new Departamento();
-            departamentos[i].setNombreDepar("Departamento_" + i);
-            departamentos[i].setLocalidadDepar("Localidad" + i);
-            departamentos[i].setEmpleados(new HashSet<>());
-        }
-        return departamentos;
-    }
-
-    private static Empleado[] crearEmpleados() {
-        Empleado[] empleados = new Empleado[10];
-        for (int i = 0; i < empleados.length; i++) {
-            empleados[i] = new Empleado();
-            empleados[i].setNombreEmpleado("Empleado_" + i);
-            empleados[i].setPuesto("Puesto_" + i);
-            empleados[i].setSueldo((i+1)*10000);
-
-        }
-        return empleados;
     }
 }

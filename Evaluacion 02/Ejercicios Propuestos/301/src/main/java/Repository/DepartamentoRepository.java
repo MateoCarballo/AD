@@ -1,7 +1,9 @@
 package Repository;
 
 import Entity.Departamento;
-import com.mysql.cj.xdevapi.Session;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -14,7 +16,9 @@ public class DepartamentoRepository implements Repository <Departamento> {
     }
     @Override
     public void guardar(Departamento departamento) {
-
+        Transaction transaction = session.beginTransaction();
+        session.persist(departamento);
+        transaction.commit();
     }
 
     @Override
