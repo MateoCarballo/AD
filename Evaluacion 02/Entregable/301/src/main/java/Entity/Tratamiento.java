@@ -35,6 +35,11 @@ public class Tratamiento {
         this.id = id;
     }
 
+    public void addRecibe(Recibe recibe){
+        listaRecibes.add(recibe);
+        recibe.setTratamiento(this);
+    }
+
     //TODO pendiente de descomposicon en 1-N
 
 }

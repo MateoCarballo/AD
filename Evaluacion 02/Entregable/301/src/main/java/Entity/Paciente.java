@@ -38,5 +38,12 @@ public class Paciente {
         c.setPaciente(this);
         citas.add(c);
     }
+
+    public void addRecibe(Recibe recibe){
+        listaRecibes.add(recibe);
+        recibe.setPaciente(this);
+
+    }
+
     //TODO pendiente de descomposicon en 1-N
 }
