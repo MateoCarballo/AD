@@ -1,15 +1,14 @@
 package Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +18,8 @@ public class Doctor {
     private String especialidad;
     private String telefono;
 
+    public Doctor(int id, @NonNull String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 }

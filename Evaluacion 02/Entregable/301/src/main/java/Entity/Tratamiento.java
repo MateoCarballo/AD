@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @Entity
 @AllArgsConstructor
+@RequiredArgsConstructor
 
 public class Tratamiento {
 
@@ -20,4 +22,9 @@ public class Tratamiento {
     private String tipo;
     @Column(columnDefinition = "DECIMAL(10,2)")
     private double costo;
+
+    public Tratamiento(@NonNull String tipo, int id) {
+        this.tipo = tipo;
+        this.id = id;
+    }
 }

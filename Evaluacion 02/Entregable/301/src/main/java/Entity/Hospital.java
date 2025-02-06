@@ -18,4 +18,8 @@ public class Hospital {
     private String nombre;
     private String ubicacion;
 
+    public Hospital(int id, @NonNull String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 }

@@ -24,4 +24,8 @@ public class Paciente {
     @OneToMany(mappedBy = "Cita")
     private ArrayList <Cita> citas;
 
+    public Paciente(int id, @NonNull String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 }
