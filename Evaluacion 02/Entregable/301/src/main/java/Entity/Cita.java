@@ -20,14 +20,26 @@ public class Cita {
     @NonNull
     private LocalDate fecha;
     private String estado;
+
     @Column(name = "id_tratamiento")
     @ManyToOne
     @JoinColumn(name = "id_tratamiento")
     private Paciente paciente;
+
+    @OneToOne
+    @JoinColumn(name = "id_doctor")
+    private Doctor doctor;
 
     public Cita(int id, @NonNull LocalDate fecha, Paciente paciente) {
         this.id = id;
         this.fecha = fecha;
         this.paciente = paciente;
     }
+
+    public void setDoctor(Doctor d){
+        this.doctor= d;
+        d.setCita(this);
+    }
+
+
 }
