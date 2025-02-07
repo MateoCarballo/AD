@@ -22,7 +22,6 @@ public class Cita {
     private LocalDate fecha;
     private String estado;
 
-    @Column(name = "id_paciente")
     @ManyToOne
     @JoinColumn(name = "id_paciente")
     private Paciente paciente;
