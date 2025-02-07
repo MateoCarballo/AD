@@ -21,7 +21,7 @@ public class Paciente {
     @NonNull //Esto lanza errores de nulos en Java
     @Column(nullable = false, length = 100) // Esto lanza errores de nulos en la DB
     private String nombre;
-
+    @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
     private String direccion;
 

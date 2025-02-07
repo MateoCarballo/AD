@@ -10,10 +10,12 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-
+@Builder
 public class Doctor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //Esto solo cuando quiero que la generacion de ID la lleve hibernate es decir sea autoincremental en la base de datos
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
     @NonNull
     private String nombre;
@@ -28,4 +30,10 @@ public class Doctor {
         this.nombre = nombre;
     }
 
+    public Doctor(int id, String nombre, String especialidad, String telefono) {
+        this.id = id;
+        this.nombre = nombre;
+        this.especialidad = especialidad;
+        this.telefono = telefono;
+    }
 }
