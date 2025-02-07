@@ -1,5 +1,6 @@
 package org.example;
 
+import Entity.Paciente;
 import org.hibernate.Session;
 
 /**
@@ -16,5 +17,6 @@ public class App
 
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
+
     }
 }

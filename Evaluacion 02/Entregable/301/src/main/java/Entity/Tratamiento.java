@@ -21,8 +21,15 @@ public class Tratamiento {
     private int id;
     @NonNull
     private String tipo;
+
     @Column(columnDefinition = "DECIMAL(10,2)")
     private double costo;
+
+    //TODO preguntar a Jose
+    //    @Column(precision = 10, scale = 2)
+    //    private BigDecimal costo;
+
+
     @ManyToOne
     @JoinColumn(name = "id_hospital")
     private Hospital hospital;

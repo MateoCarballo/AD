@@ -19,6 +19,7 @@ public class Doctor {
     private String nombre;
     private String especialidad;
     private String telefono;
+    //Mapea contra un objeto en la otra tabla (entidad)
     @OneToOne(mappedBy = "doctor")
     private Cita cita;
 

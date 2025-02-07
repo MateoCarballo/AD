@@ -11,5 +11,14 @@
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
+
+        //Mapeo de las entidades
+        <mapping class = "Entity.Cita"/>
+        <mapping class = "Entity.Doctor"/>
+        <mapping class = "Entity.Hospital"/>
+        <mapping class = "Entity.Paciente"/>
+        <mapping class = "Entity.Recibe"/>
+        <mapping class = "Entity.Tratamiento"/>
+
     </session-factory>
 </hibernate-configuration>

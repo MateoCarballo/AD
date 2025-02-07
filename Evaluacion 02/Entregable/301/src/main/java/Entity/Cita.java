@@ -16,17 +16,20 @@ import java.time.LocalDate;
 public class Cita {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NonNull
     private LocalDate fecha;
     private String estado;
 
-    @Column(name = "id_tratamiento")
+    @Column(name = "id_paciente")
     @ManyToOne
-    @JoinColumn(name = "id_tratamiento")
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
-    @OneToOne
+    //Este joinColumn te dice en que columna
+    //tiene la clave foranea que apunta al objeto
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // orphanRemoval = true para evitar referencias huérfanas.
     @JoinColumn(name = "id_doctor")
     private Doctor doctor;
 
@@ -38,6 +41,7 @@ public class Cita {
 
     public void setDoctor(Doctor d){
         this.doctor= d;
+        this.doctor.setCita(this);
         d.setCita(this);
     }
 

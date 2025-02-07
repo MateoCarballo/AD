@@ -2,17 +2,18 @@ package Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Embeddable
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RecibePK implements Serializable {
-/*
-id_paciente INT,
-    tratamiento_id INT,
-    fecha_inicio DATE,
- */
     @Column(name = "id_paciente")
     private int idPaciente;
 
