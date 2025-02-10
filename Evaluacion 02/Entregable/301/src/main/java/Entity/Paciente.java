@@ -13,10 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder // Permite usar el metodo factoria y es mas visible y comodo para contruirlo
+
 public class Paciente {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NonNull //Esto lanza errores de nulos en Java
     @Column(nullable = false, length = 100) // Esto lanza errores de nulos en la DB
@@ -28,10 +29,10 @@ public class Paciente {
     //TODO preguntar a Jose
     // Por qué no usar Lazy para que solo las cargue cuando las necesita
     // Es mas eficiente, por qué no?
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List <Cita> citas;
 
-    @OneToMany(mappedBy = "paciente")
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE) // Cuando remueve el objeto remueve todas las referencias a esa tupla (Objeto)
     private List<Recibe> listaRecibes;
 
     //Constructor requerido

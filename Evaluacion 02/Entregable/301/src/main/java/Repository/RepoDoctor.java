@@ -109,5 +109,28 @@ public class RepoDoctor {
       }
    }
 
+   /*
+   Busca un doctor por nombre y devulve su id
+   public int buscarDoctor(String nombreDoctor){
+      //Buscamos si existe algun doctor con ese nombre
+      Query<Integer> doctorQuery = session.createQuery("SELECT id FROM Doctor WHERE nombre = :nombre");
+      doctorQuery.setParameter("nombre",nombreDoctor);
+      int idDoctor = doctorQuery.getSingleResult();
+
+      //devolvemos el doctor
+      return idDoctor;
+   }
+    */
+
+   //Busca un doctor por nombre y devuelve el objeto asociado
+   public Doctor buscarDoctor(String nombreDoctor){
+      //Buscamos si existe algun doctor con ese nombre
+      Query<Doctor> doctorQuery = session.createQuery("FROM Doctor WHERE nombre = :nombre", Doctor.class);
+      doctorQuery.setParameter("nombre",nombreDoctor);
+      Doctor doctor = doctorQuery.uniqueResult();
+
+      //devolvemos el doctor
+      return doctor;
+   }
 
 }

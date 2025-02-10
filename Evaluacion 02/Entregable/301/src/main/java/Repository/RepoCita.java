@@ -1,28 +1,48 @@
 package Repository;
 
-import Entity.Cita;
 
-import java.util.List;
+import Entity.Cita;
+import Entity.Doctor;
+import Entity.Paciente;
+import org.hibernate.Transaction;
+import org.hibernate.Session;
+
+import java.time.LocalDate;
 
 public class RepoCita  {
+    private Transaction transaction;
+    private Session session;
 
-    public void guardar(Cita cita) {
-
+    public RepoCita(Session session) {
+        this.session = session;
     }
 
-    public List<Cita> encontrarTodos() {
-        return null;
-    }
+    public void crearCita(Paciente paciente, Doctor doctor){
+        LocalDate fechaCita = LocalDate.now();
+        //Crear una nueva cita para paciente con el doctor
+        Cita cita = Cita.builder()
+                .fecha(fechaCita)
+                .estado("Activa")
+                .build();
 
-    public Cita encontrarUnoPorId(long id) {
-        return null;
-    }
+        //Setea el doctor en la cita y le dice al doctor que su cita es ella misma
+        cita.setDoctor(doctor);
 
-    public void actualizar(Cita cita) {
+        //Añadimos la cita a la lista de citas del paciente y a la misma cita le decimos que su paciente es el que tiene la lista en la que la añado
+        //cita.setPaciente(paciente);
+        paciente.addCita(cita);
 
-    }
+        try{
+            transaction = session.beginTransaction();
+            session.persist(cita);
+            transaction.commit();
 
-    public void eliminar(Cita cita) {
+        } catch (Exception e) {
+            if (transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
 
     }
 }

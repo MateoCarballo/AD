@@ -2,35 +2,60 @@ package org.example;
 
 import Entity.Doctor;
 import Entity.Paciente;
+import Repository.RepoCita;
 import Repository.RepoDoctor;
 import Repository.RepoPaciente;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 
 public class App {
+    static Session session;
+    static RepoDoctor repoDoctor;
+    static RepoPaciente repoPaciente;
+    static RepoCita repoCita;
 
     public static void main( String[] args ) {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Test");
 
-        Session session = HibernateUtil.get().openSession();
-        RepoDoctor repoDoctor = new RepoDoctor(session);
-        RepoPaciente repoPaciente = new RepoPaciente(session);
+        session = HibernateUtil.get().openSession();
+        repoDoctor = new RepoDoctor(session);
+        repoPaciente = new RepoPaciente(session);
+        repoCita = new RepoCita(session);
 
-        //
-        //repoDoctor.crear(1000,"Nombre creado", "Especialidad creada", "123123123");
+
+
+
+        // 1. OPERACIONES SOBRE DOCTOR
+        //repoDoctor.crear(1000,"Doctor", "Especialidad", "123456789");
         //repoDoctor.modificarDoctor(2,"Cambiado","especialidad","999888777");
         //repoDoctor.borrarPorId(3);
 
-        //repoPaciente.Crear(2000,"nombre", LocalDate.of(2008,11,1),"direccion2");
-        repoPaciente.borrar("Juan Perez");
+        // 2. OPERACIONES SOBRE PACIENTE
+        //repoPaciente.Crear(1000,"Paciente", LocalDate.of(2000,1,1),"Direccion");
+        repoPaciente.borrar("Ana Lopez");
+        //repoPaciente.modificarPaciente(1,"nuevo nombre",LocalDate.of(2000,5,11), "nueva direccion");
+
+        // 3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA)
+        //int idDoc = repoDoctor.buscarDoctor("Doctor");
+        //System.out.println(idDoc);
+
+        //Paciente busquedaPaciente = repoPaciente.buscarPaciente("Paciente");
+        //System.out.println(busquedaPaciente);
+
+        // 3.     ASIGNAR UNA CITA A UN PACIENTE
+        //asignarDotorPaciente("Doctor","Paciente");
+
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
 
+    }
+
+    private static void asignarDotorPaciente(String nombreDoctor, String nombrePaciente) {
+        Doctor doctor = repoDoctor.buscarDoctor(nombreDoctor);
+        Paciente paciente = repoPaciente.buscarPaciente(nombrePaciente);
+        repoCita.crearCita(paciente, doctor);
     }
 
 

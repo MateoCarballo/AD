@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 
 public class Cita {
 
@@ -41,6 +42,4 @@ public class Cita {
         this.doctor.setCita(this);
         d.setCita(this);
     }
-
-
 }
