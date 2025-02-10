@@ -5,6 +5,7 @@ import Entity.Paciente;
 import Repository.RepoCita;
 import Repository.RepoDoctor;
 import Repository.RepoPaciente;
+import Repository.RepoRecibe;
 import org.hibernate.Session;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ public class App {
     static RepoDoctor repoDoctor;
     static RepoPaciente repoPaciente;
     static RepoCita repoCita;
+    static RepoRecibe repoRecibe;
 
     public static void main( String[] args ) {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,9 +25,7 @@ public class App {
         repoDoctor = new RepoDoctor(session);
         repoPaciente = new RepoPaciente(session);
         repoCita = new RepoCita(session);
-
-
-
+        repoRecibe = new RepoRecibe(session);
 
         // 1. OPERACIONES SOBRE DOCTOR
         //repoDoctor.crear(1000,"Doctor", "Especialidad", "123456789");
@@ -34,7 +34,7 @@ public class App {
 
         // 2. OPERACIONES SOBRE PACIENTE
         //repoPaciente.Crear(1000,"Paciente", LocalDate.of(2000,1,1),"Direccion");
-        repoPaciente.borrar("Ana Lopez");
+        //repoPaciente.borrar("Ana Lopez");
         //repoPaciente.modificarPaciente(1,"nuevo nombre",LocalDate.of(2000,5,11), "nueva direccion");
 
         // 3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA)
@@ -44,8 +44,11 @@ public class App {
         //Paciente busquedaPaciente = repoPaciente.buscarPaciente("Paciente");
         //System.out.println(busquedaPaciente);
 
-        // 3.     ASIGNAR UNA CITA A UN PACIENTE
+        // 3. ASIGNAR UNA CITA A UN PACIENTE
         //asignarDotorPaciente("Doctor","Paciente");
+
+        //4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE
+        repoRecibe.indicarFechaFinTratamiento();
 
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
