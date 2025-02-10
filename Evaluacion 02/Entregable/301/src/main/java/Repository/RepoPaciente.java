@@ -119,16 +119,19 @@ public class RepoPaciente {
     }
 
     private void borrarRecibeAsociado(Paciente p) {
+        // TODO cambiado a lista para ver si arregalba pero nada
         Query<Recibe> buscarRecibe = session.createQuery("FROM Recibe WHERE paciente.id = :idPaciente", Recibe.class);
         buscarRecibe.setParameter("idPaciente", p.getId());
-        Recibe recibe = buscarRecibe.uniqueResult();
-        session.remove(recibe);
+        ArrayList <Recibe> recibes= new ArrayList<>();
+        recibes = (ArrayList<Recibe>) buscarRecibe.getResultList();
+        if (recibes.size() != 0) session.remove(recibes.get(0));
     }
 
     private void borrarCitaAsociada(Paciente p) {
         Query<Cita> buscarCita = session.createQuery("FROM Cita WHERE paciente.id = :idPaciente", Cita.class);
         buscarCita.setParameter("idPaciente", p.getId());
-        Cita cita = buscarCita.uniqueResult();
-        session.remove(cita);
+        ArrayList <Cita> citas= new ArrayList<>();
+        citas = (ArrayList<Cita>) buscarCita.getResultList();
+        if (citas.size() != 0) session.remove(citas.get(0));
     }
 }
