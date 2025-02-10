@@ -1,15 +1,13 @@
 package Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Data
 @Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 

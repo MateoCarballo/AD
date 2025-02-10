@@ -16,7 +16,7 @@ import java.util.List;
 public class Paciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NonNull //Esto lanza errores de nulos en Java
     @Column(nullable = false, length = 100) // Esto lanza errores de nulos en la DB

@@ -3,8 +3,6 @@ package Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-
 @Data
 @Entity
 @NoArgsConstructor
@@ -36,4 +34,5 @@ public class Doctor {
         this.especialidad = especialidad;
         this.telefono = telefono;
     }
+
 }
