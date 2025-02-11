@@ -1,13 +1,14 @@
 package org.example;
 
 import Entity.Doctor;
+import Entity.Hospital;
 import Entity.Paciente;
 import Repository.*;
 import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
+import java.util.List;
 
 public class App {
     static Session session;
@@ -15,8 +16,8 @@ public class App {
     static RepoPaciente repoPaciente;
     static RepoCita repoCita;
     static RepoRecibe repoRecibe;
-
     static RepoTratamiento repoTratamiento;
+    static RepoHospital repoHospital;
 
     public static void main( String[] args ) {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,11 +28,14 @@ public class App {
         repoCita = new RepoCita(session);
         repoRecibe = new RepoRecibe(session);
         repoTratamiento = new RepoTratamiento(session);
+        repoHospital = new RepoHospital(session);
 
-        // 1. OPERACIONES SOBRE DOCTOR
-        //repoDoctor.crear(1000,"Doctor", "Especialidad", "123456789");
-        //repoDoctor.modificarDoctor(2,"Cambiado","especialidad","999888777");
-        //repoDoctor.borrarPorId(3);
+        /**
+         * 1. OPERACIONES SOBRE DOCTOR >--< COMPLETADO
+         *         repoDoctor.crear(2000,"Doctor2", "Especialidad2", "222555888");
+         *         repoDoctor.modificarDoctor(2000,"Cambiado","Cambiado","Cambiado");
+         *         repoDoctor.borrarPorId(3);
+         */
 
         // 2. OPERACIONES SOBRE PACIENTE
         //repoPaciente.Crear(1000,"Paciente", LocalDate.of(2000,1,1),"Direccion");
@@ -55,12 +59,21 @@ public class App {
         //repoTratamiento.modificarHospital(1,"Hospital Central");
 
         // 6. MOSTRAR DATOS PACIENTE (Introduciendo nombre)
-        System.out.println(repoPaciente.mostrarTodosDatos("Carlos Martínez"));;
+        //System.out.println(repoPaciente.mostrarTodosDatos("Carlos Martínez"));;
+
+        //7. MOSTRAR LOS TRATAMIENTOS Y LOS DATOS DE LOS HOSPITALES EN LOS QUE SE REALIZAN -- BUSCAR EL HOSPITAL Y LOS TRATAMIENTOS
+        //Hospital hospital = (repoHospital.mostrarTratamientos("Hospital Universitario"));
+        //System.out.println(hospital.escribirHospitalCompleto());
+
+        //8. MOSTRAR EL NUMERO TOTAL DE TRATAMIENTOS QUE TIENE CADA HOSPITAL (ENTRADA NOMBRE HOSPITAL)
+//        List<Hospital> listadoImprimir = repoHospital.mostratTodosTratamientosTodosHospitales();
+//        for (Hospital h : listadoImprimir){
+//            System.out.println(h.escribirHospitalCompleto());;
+//        }
 
 
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
-
     }
 
     private static void asignarDotorPaciente(String nombreDoctor, String nombrePaciente) {

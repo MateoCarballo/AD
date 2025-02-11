@@ -47,4 +47,17 @@ public class Tratamiento {
 
     //TODO pendiente de descomposicon en 1-N
 
+    @Override
+    public String toString() {
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("--------------------\n")
+                .append("--- Tratamiento----\n")
+                .append("- Tipo -> " + tipo+"\n")
+                .append("- Id -> " + id + "\n")
+                .append("- Coste -> " + costo + "\n")
+                .append("--------------------\n");
+
+        return toStringMejorado.toString();
+    }
 }

@@ -13,11 +13,6 @@ public class RepoRecibe  {
         this.session = session;
     }
 
-    public void indicarFechaFinTratamiento(String nombrePaciente, String tipoTratamiento, LocalDate fechaInicio, LocalDate fechaFinTratamiento) {
-        int idPaciente = obtenerIdPaciente(nombrePaciente);
-        int idTratamiento = obtenerIdTratamiento(tipoTratamiento);
-    }
-
     private int obtenerIdPaciente(String nombrePaciente) {
         Transaction transaction = null;
         int idPaciente = -1;

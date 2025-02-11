@@ -16,23 +16,18 @@ public class RepoDoctor {
 
    public void crear(int id,String nombreDoctor, String especialidad, String telefono){
       Transaction  transaction = null;
-
       try {
+         //Creamos un objeto doctor y lo guardamos en al DB
          transaction = session.beginTransaction();
-         //TODO
-         //metodo para comrpobar el ultimo id y añadir 1
-
          Doctor nuevoDoctor = Doctor.builder()
                  .id(id)
                  .nombre(nombreDoctor)
                  .especialidad(especialidad)
                  .telefono(telefono)
                  .build();
-
          session.save(nuevoDoctor);
-
          transaction.commit();
-         System.out.println("Doctor creado correctamente");
+
       } catch (Exception e) {
          if (transaction != null){
             transaction.rollback();
@@ -43,26 +38,22 @@ public class RepoDoctor {
 
    public void borrarPorId(int id){
       Transaction  transaction = null;
+      int referenciasEliminadas = 0;
+      int doctoresEliminados = 0;
 
       try {
-
+         //Para borrar el doctor necesitamos eliminar las referencias que existen en otras tablas
          transaction = session.beginTransaction();
 
-         Query query1 = session.createQuery("DELETE FROM Cita Where doctor.id = :idParaBorrar");
-         query1.setParameter("idParaBorrar",id);
-         query1.executeUpdate();
+         Query queryEliminarReferenciaEnCita = session.createQuery("DELETE FROM Cita Where doctor.id = :idParaBorrar");
+         queryEliminarReferenciaEnCita.setParameter("idParaBorrar",id);
+         referenciasEliminadas = queryEliminarReferenciaEnCita.executeUpdate();
 
-         Query query2 = session.createQuery("DELETE FROM Doctor Where id = :id");
-         query2.setParameter("id",id);
-         int comprobacion = query2.executeUpdate();
-
-         if (comprobacion > 0){
-            System.out.println("Borrados " + comprobacion + " elementos");
-         }
-
+         Query queryEliminarDoctor = session.createQuery("DELETE FROM Doctor Where id = :id");
+         queryEliminarDoctor.setParameter("id",id);
+         doctoresEliminados = queryEliminarDoctor.executeUpdate();
 
          transaction.commit();
-         System.out.println("Doctor creado correctamente");
       } catch (Exception e) {
          if (transaction != null){
             transaction.rollback();
@@ -73,22 +64,34 @@ public class RepoDoctor {
 
    public void modificarDoctor(int id,String nombre, String especialidad, String telefono){
       Transaction  transaction = null;
-      Doctor traidoDB = null ;
+      Doctor doctor = null ;
       try {
+         //Traemos el objeto doctor asociado al id
          transaction = session.beginTransaction();
-
-         Query existeDoctor = session.createQuery("SELECT d FROM Doctor d WHERE d.id = :id");
+         Query<Doctor> existeDoctor = session.createQuery("FROM Doctor WHERE id = :id", Doctor.class);
          existeDoctor.setParameter("id",id);
-         traidoDB = (Doctor) existeDoctor.uniqueResult();
+         doctor = existeDoctor.uniqueResult();
 
-         System.out.println(traidoDB.getCita().toString());
-         if (traidoDB.getId() > 0){ //esot implica que existe una tupla con esta id
-            Query updateDoctor = session.createQuery("UPDATE Doctor SET nombre = :nombre, especialidad = :especialidad, telefono = :telefono WHERE id = :id");
+         if (doctor != null){
+
+            //Seteamos los campos que queremos modificar
+            doctor.setNombre(nombre);
+            doctor.setEspecialidad(especialidad);
+            doctor.setTelefono(telefono);
+
+            //Actualizamos los nuevos valores en la tabla
+            session.update(doctor);
+            transaction.commit();
+
+            /*       REALIZANDO UNA CONSULTA CON SET
+            Query updateDoctor = session.createQuery(
+                    "UPDATE Doctor SET nombre = :nombre, especialidad = :especialidad, telefono = :telefono WHERE id = :id");
             updateDoctor.setParameter("nombre",nombre);
             updateDoctor.setParameter("especialidad",especialidad);
             updateDoctor.setParameter("telefono",telefono);
             updateDoctor.setParameter("id",id);
             updateDoctor.executeUpdate();
+             */
 
             /*
             Si quiero usar el objeto modificarlo
@@ -96,11 +99,7 @@ public class RepoDoctor {
 
             session.update(traidoDB);
              */
-            transaction.commit();
          }
-
-
-         System.out.println("Doctor creado correctamente");
       } catch (Exception e) {
          if (transaction != null){
             transaction.rollback();

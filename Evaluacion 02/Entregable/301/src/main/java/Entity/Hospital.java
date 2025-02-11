@@ -28,16 +28,39 @@ public class Hospital {
     //Todo preguntar a Jose
     // Donde tengo que inicilizar la lista o el arrayList
     @OneToMany(mappedBy = "hospital")
-    private Set<Tratamiento> tratamientos ;
+    private List<Tratamiento> tratamientos ;
 
     public Hospital(int id, @NonNull String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.tratamientos = new HashSet<>();
+        this.tratamientos = new ArrayList();
     }
 
     public void addTratamiento(Tratamiento t){
         tratamientos.add(t);
         t.setHospital(this);
+    }
+
+    public String escribirHospitalCompleto(){
+        StringBuilder resultadoCompleto = new StringBuilder();
+        resultadoCompleto.append(this);
+        for(Tratamiento t : tratamientos){
+            resultadoCompleto.append(t.toString());
+        }
+        return resultadoCompleto.toString();
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Hospital " + this.nombre + " ---\n")
+                .append("Id -> " + this.id + "\n")
+                .append("Ubicacion -> " + this.ubicacion + "\n")
+                .append("---------------------------------------\n");
+
+
+        return toStringMejorado.toString();
     }
 }
