@@ -1,14 +1,13 @@
 package org.example;
 
 import Entity.Doctor;
-import Entity.Hospital;
 import Entity.Paciente;
 import Repository.*;
 import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.time.LocalDate;
 
 public class App {
     static Session session;
@@ -37,19 +36,18 @@ public class App {
          *         repoDoctor.borrarPorId(3);
          */
 
-        // 2. OPERACIONES SOBRE PACIENTE
-        //repoPaciente.Crear(1000,"Paciente", LocalDate.of(2000,1,1),"Direccion");
-        //repoPaciente.borrar("Ana Lopez");
-        //repoPaciente.modificarPaciente(1,"nuevo nombre",LocalDate.of(2000,5,11), "nueva direccion");
+        /**
+         * 2. OPERACIONES SOBRE PACIENTE >--< COMPLETADO
+         *         repoPaciente.crear(2000,"Creado", LocalDate.of(2000,1,1),"Creada");
+         *         repoPaciente.borrar("Ana Lopez");
+         *         repoPaciente.modificarPaciente(1,"nuevo nombre",LocalDate.of(2000,5,11), "nueva direccion");
+         */
+
 
         // 3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA)
-        //int idDoc = repoDoctor.buscarDoctor("Doctor");
-        //System.out.println(idDoc);
 
-        //Paciente busquedaPaciente = repoPaciente.buscarPaciente("Paciente");
-        //System.out.println(busquedaPaciente);
-
-        // 3. ASIGNAR UNA CITA A UN PACIENTE
+        // Buscamos el id del doctor asociado al nombre
+        // TODO pendiente de comprobar que exista o crearlo si no existe
         //asignarDotorPaciente("Doctor","Paciente");
 
         // 4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE

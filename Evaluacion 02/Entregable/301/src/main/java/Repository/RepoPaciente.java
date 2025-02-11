@@ -7,8 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,8 @@ public class RepoPaciente {
         this.listaPacientes = new ArrayList();
     }
 
-    public void Crear(int id, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
+    public void crear(int id, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
+        //Creo un nuevo objeto Paciente y lo guardamos en la DB
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
@@ -49,20 +48,19 @@ public class RepoPaciente {
 
     public void borrar(String nombrePaciente){
         Transaction transaction = null;
+        Paciente pacienteUnico;
+
         try{
             transaction = session.beginTransaction();
-                // TODO PROVISIONAL PENDIENTE DE GESTIONAR QUE HAYA DOS ENTRADAS CON MISMO NOMBRE Y DISTINTO id
 
                 Query<Paciente> queryPaciente = session.createQuery("FROM Paciente WHERE nombre = :nombrePaciente", Paciente.class);
                 queryPaciente.setParameter("nombrePaciente",nombrePaciente);
 
                 //Traemos la lista desde la DB mediante la consulta
-                Paciente pacienteUnico = queryPaciente.uniqueResult();
+                pacienteUnico= queryPaciente.uniqueResult();
 
-                //borrarCitaAsociada(pacienteUnico);
-                borrarRecibeAsociado(pacienteUnico);
-
-                //Si coincide la mostrada comenzamos el proceso de borrado
+                //Borramos el paciente (suponiendo que solo existe uno)
+                //La configuracion de la entidad con cascade = CascadeType.REMOVE asegura que borre las referencias en otras tablas
                 session.remove(pacienteUnico);
                 transaction.commit();
 
