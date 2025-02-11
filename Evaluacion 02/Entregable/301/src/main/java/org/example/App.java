@@ -2,14 +2,12 @@ package org.example;
 
 import Entity.Doctor;
 import Entity.Paciente;
-import Repository.RepoCita;
-import Repository.RepoDoctor;
-import Repository.RepoPaciente;
-import Repository.RepoRecibe;
+import Repository.*;
 import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 
 public class App {
     static Session session;
@@ -17,6 +15,8 @@ public class App {
     static RepoPaciente repoPaciente;
     static RepoCita repoCita;
     static RepoRecibe repoRecibe;
+
+    static RepoTratamiento repoTratamiento;
 
     public static void main( String[] args ) {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,6 +26,7 @@ public class App {
         repoPaciente = new RepoPaciente(session);
         repoCita = new RepoCita(session);
         repoRecibe = new RepoRecibe(session);
+        repoTratamiento = new RepoTratamiento(session);
 
         // 1. OPERACIONES SOBRE DOCTOR
         //repoDoctor.crear(1000,"Doctor", "Especialidad", "123456789");
@@ -47,8 +48,15 @@ public class App {
         // 3. ASIGNAR UNA CITA A UN PACIENTE
         //asignarDotorPaciente("Doctor","Paciente");
 
-        //4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE
-        repoRecibe.indicarFechaFinTratamiento();
+        // 4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE
+        // repoTratamiento.asignarFechaTratamiento("Rehabilitación Física","Carlos Martínez", LocalDate.of(2025,1,10),LocalDate.of(2025,02,10));
+
+        // 5. CAMBIAR EL HOSPITAL DE UN TRATAMIENTO
+        //repoTratamiento.modificarHospital(1,"Hospital Central");
+
+        // 6. MOSTRAR DATOS PACIENTE (Introduciendo nombre)
+        System.out.println(repoPaciente.mostrarTodosDatos("Carlos Martínez"));;
+
 
         session.close();
         System.out.println("Finalizando la conexion a MySQL");

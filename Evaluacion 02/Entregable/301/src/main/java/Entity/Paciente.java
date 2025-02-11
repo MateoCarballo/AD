@@ -59,5 +59,64 @@ public class Paciente {
 
     }
 
-    //TODO pendiente de descomposicon en 1-N
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("--------------------\n")
+                .append("---Paciente Info---\n")
+                .append("--------------------\n")
+                .append(String.format("ID: %d\n", id))
+                .append(String.format("Nombre: %s\n", nombre))
+                .append(String.format("Fecha de Nacimiento: %s\n",
+                        fechaNacimiento != null ? fechaNacimiento.toString() : "No registrada"))
+                .append(String.format("Dirección: %s\n",
+                        direccion != null ? direccion : "No registrada"));
+
+        // Mostrar número total de citas
+        int numCitas = (citas != null) ? citas.size() : 0;
+        sb.append(String.format("Total de Citas: %d\n", numCitas));
+
+        // Si hay citas, listarlas
+        if (numCitas > 0) {
+            sb.append("--------------------\n")
+                .append("*** Detalles de Citas:***\n")
+                    .append("--------------------\n")
+                    .append("--------------------\n");
+            for (Cita cita : citas) {
+                sb.append("--------------------\n")
+                        .append("--------------------\n")
+                        .append(String.format("   🏥 Fecha: %s | Doctor: %s | Especialidad: %s\n",
+                        cita.getId() != 0 ? cita.getId() : "Sin fecha",
+                        cita.getFecha() != null ? cita.getFecha().toString() : "Sin fecha",
+                        cita.getDoctor() != null ? cita.getDoctor().getNombre() : "Desconocido",
+                        cita.getEstado() != null ? cita.getEstado().toString() : "Sin fecha"
+
+                ));
+            }
+        }
+
+        // Mostrar número total de recibes
+        int numRecibes = (listaRecibes != null) ? listaRecibes.size() : 0;
+        sb.append(String.format("📝 Total de Recibes: %d\n", numRecibes));
+
+        // Si hay recibes, listarlas
+        if (numRecibes > 0) {
+            sb.append("--------------------\n")
+                    .append("*** Detalles del Tratamiento:***\n")
+                    .append("--------------------\n")
+                    .append("--------------------\n");
+            for (Recibe recibe : listaRecibes) {
+                sb.append(String.format("   🏥 Tipo de tratamiento: %s | Centro: %s | Costo: %s | Fecha inicio: %s| Fecha fin: %s\n",
+                        recibe.getTratamiento() != null ? recibe.getTratamiento().getTipo() : "Sin Tipo de tratamiento",
+                        recibe.getTratamiento().getHospital() != null ? recibe.getTratamiento().getHospital().getNombre() : "Sin Lugar de Tratamiento",
+                        recibe.getTratamiento() != null ? recibe.getTratamiento().getCosto() : "Sin costo de tratamiento",
+                        recibe.getTratamiento() != null ? recibe.getIdRecibe().getFechaInicio() : "Sin fecha Inicio",
+                        recibe.getTratamiento() != null ? recibe.getFechaFin() : "Sin fecha Fin"
+
+                ));
+            }
+        }
+
+        return sb.toString();
+    }
 }

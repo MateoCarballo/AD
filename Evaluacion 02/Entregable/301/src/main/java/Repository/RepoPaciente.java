@@ -16,17 +16,16 @@ import java.util.List;
 
 public class RepoPaciente {
     private Session session;
-    private Transaction transaction;
 
     private ArrayList<Paciente> listaPacientes;
 
     public RepoPaciente (Session session) {
         this.session = session;
-        this.transaction = null;
         this.listaPacientes = new ArrayList();
     }
 
     public void Crear(int id, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
+        Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
 
@@ -49,6 +48,7 @@ public class RepoPaciente {
     }
 
     public void borrar(String nombrePaciente){
+        Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
                 // TODO PROVISIONAL PENDIENTE DE GESTIONAR QUE HAYA DOS ENTRADAS CON MISMO NOMBRE Y DISTINTO id
@@ -75,8 +75,9 @@ public class RepoPaciente {
     }
 
     public void modificarPaciente(int idPaciente, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
-        transaction = session.beginTransaction();
+        Transaction transaction = null;
         try{
+            transaction = session.beginTransaction();
             Query <Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE id = : idPaciente",Paciente.class);
             pacienteQuery.setParameter("idPaciente", idPaciente);
             Paciente pacienteModificado = pacienteQuery.uniqueResult();
@@ -98,24 +99,36 @@ public class RepoPaciente {
     }
 
     private void borrarRecibeAsociado(Paciente p) {
-        // TODO cambiado a lista para ver si arregalba pero nada
-        Query<Recibe> buscarRecibe = session.createQuery("FROM Recibe WHERE paciente.id = :idPaciente", Recibe.class);
-        buscarRecibe.setParameter("idPaciente", p.getId());
-        ArrayList <Recibe> recibes= (ArrayList<Recibe>) buscarRecibe.getResultList();
-        for (Recibe r:recibes){
-            session.remove(r);
-        }
+        Transaction transaction = null;
+        try{
+            // TODO cambiado a lista para ver si arregalba pero nada
+            Query<Recibe> buscarRecibe = session.createQuery("FROM Recibe WHERE paciente.id = :idPaciente", Recibe.class);
+            buscarRecibe.setParameter("idPaciente", p.getId());
+            ArrayList <Recibe> recibes= (ArrayList<Recibe>) buscarRecibe.getResultList();
+            for (Recibe r:recibes){
+                session.remove(r);
 
+            }
+        }catch(Exception e){
+            if (transaction != null) transaction.rollback();
+
+        }
 
     }
 
     private void borrarCitaAsociada(Paciente paciente) {
-        Query<Cita> buscarCita = session.createQuery("FROM Cita WHERE paciente.id = :idPaciente", Cita.class);
-        buscarCita.setParameter("idPaciente", paciente.getId());
-        ArrayList <Cita> citas = (ArrayList<Cita>) buscarCita.getResultList();
-        for (Cita c:citas){
-            session.remove(c);
+        Transaction transaction = null;
+        try{
+            Query<Cita> buscarCita = session.createQuery("FROM Cita WHERE paciente.id = :idPaciente", Cita.class);
+            buscarCita.setParameter("idPaciente", paciente.getId());
+            ArrayList <Cita> citas = (ArrayList<Cita>) buscarCita.getResultList();
+            for (Cita c:citas){
+                session.remove(c);
+            }
+        }catch(Exception e){
+            if (transaction != null) transaction.rollback();
         }
+
 
     }
 
@@ -132,12 +145,39 @@ public class RepoPaciente {
      */
 
     public Paciente buscarPaciente(String nombrePaciente){
-        //Buscamos si existe algun paciente con ese nombre
-        Query<Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE nombre = :nombre", Paciente.class);
-        pacienteQuery.setParameter("nombre",nombrePaciente);
-        Paciente paciente = pacienteQuery.getSingleResult();
+        Transaction transaction = null;
+        Paciente paciente = null;
+        try{
+            transaction = session.beginTransaction();
+            //Buscamos si existe algun paciente con ese nombre
+            Query<Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE nombre = :nombre", Paciente.class);
+            pacienteQuery.setParameter("nombre",nombrePaciente);
+            paciente= pacienteQuery.getSingleResult();
+            //devolvemos el paciente
 
-        //devolvemos el paciente
+        }catch (Exception e){
+
+        }
         return paciente;
     }
+
+    public Paciente mostrarTodosDatos(String nombrePaciente) {
+        Paciente paciente = null;
+        try{
+            Query<Paciente> queryPaciente = session.createQuery(
+                    "FROM Paciente WHERE nombre = :nombrePaciente", Paciente.class);
+            queryPaciente.setParameter("nombrePaciente", nombrePaciente);
+
+            // Usamos getResultList() para evitar excepciones si no se encuentra
+            List<Paciente> resultados = queryPaciente.getResultList();
+
+            // Si hay al menos un paciente, devolvemos el primero; si no, retornamos null
+            return resultados.isEmpty() ? null : resultados.get(0);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
