@@ -1,7 +1,6 @@
 package org.example;
 
 import Entity.Doctor;
-import Entity.Hospital;
 import Entity.Paciente;
 import Repository.*;
 import org.hibernate.Session;
@@ -9,8 +8,8 @@ import org.hibernate.Session;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.util.List;
+import java.sql.SQLOutput;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class App {
@@ -21,9 +20,11 @@ public class App {
     static RepoRecibe repoRecibe;
     static RepoTratamiento repoTratamiento;
     static RepoHospital repoHospital;
+    static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main( String[] args ) {
-        final String PATRON_MENU = "^\\d{1}$";
-        final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+
         boolean continuar = true;
 
         session = HibernateUtil.get().openSession();
@@ -38,7 +39,7 @@ public class App {
             // Creamos el StringBuilder para el menú
             StringBuilder menu = new StringBuilder();
             menu.append("-------------------------------------------------\n")
-                    .append("1. Opción 1\n")
+                    .append("1. Gestionar Doctor\n")
                     .append("2. Opción 2\n")
                     .append("3. Opción 3\n")
                     .append("4. Opción 4\n")
@@ -55,16 +56,16 @@ public class App {
             System.out.print(menu);
 
             try {
-                String input="";
+                String eleccion="";
                 do {
                     try{
-                         input = br.readLine();
+                         eleccion = br.readLine();
                     }catch(IOException ioe){
                         System.out.println("Error al leer los datos por teclado");
                     }
-                }while(!comprobarPatronRegex(PATRON_MENU,input));
+                }while(!PatronesRegex.DIGITOS_9.matches(eleccion));
 
-                int opcion = Integer.parseInt(input);
+                int opcion = Integer.parseInt(eleccion);
 
                 // TODO No me deja usar el switch mejorado
                 switch (opcion) {
@@ -73,7 +74,20 @@ public class App {
                         continuar = false;
                         break;
                     case 1:
-                        System.out.println("Has seleccionado la Opción 1.");
+                        // Buscamos que quiere hacer sobre el doctor
+                        // Crear (1), Borrar(2) o Modificar(3)
+                        switch (menuOpcionesCrearBorrarModificar()){
+                            case 0:
+                                System.out.println("Operacion cancelada por el usuario");
+                                break;
+                            case 1:
+                                pedirDatosDoctor();
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                        }
                         break;
                     case 2:
                         System.out.println("Has seleccionado la Opción 2.");
@@ -171,6 +185,49 @@ public class App {
         mostrarBarraDeCarga(10);
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
+    }
+
+    private static int menuOpcionesCrearBorrarModificar() {
+        String eleccion = "";
+        StringBuilder menu = new StringBuilder();
+        menu.append("-------------------------------------------------\n")
+                .append("1. Crear\n")
+                .append("2. Borrar\n")
+                .append("3. Modifcar\n")
+                .append("0. Anular operación\n")
+                .append("Seleccione una opción: ");
+        System.out.print(menu);
+        do {
+            try{
+                eleccion = br.readLine();
+            }catch(IOException ioe){
+                System.out.println("Error al leer los datos por teclado");
+            }
+        }while(!PatronesRegex.DIGITOS_0_3.matches(eleccion));
+        return Integer.parseInt(eleccion);
+    }
+
+
+
+    private static void pedirDatosDoctor() {
+        String nombreDoctor = "";
+        String especialidad = "";
+        String telefonoDoctor ="";
+
+        try {
+            // El doctor se puede llamar como quiera como si se llama %^&@
+            System.out.println("Introduce el nombre del doctor");
+            nombreDoctor= br.readLine();
+            //TODO comprobar que exista esta especialidad
+            System.out.println("Introduce la especialidad del doctor");
+            especialidad = br.readLine();
+            // El número como si es de Japon. MESSIRVE
+            System.out.println("Introduce la especialidad del doctor");
+            telefonoDoctor = br.readLine();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void asignarDotorPaciente(String nombreDoctor, String nombrePaciente) {
