@@ -17,7 +17,8 @@ public class RepoCita  {
         this.session = session;
     }
 
-    public void crearCita(Paciente paciente, Doctor doctor){
+    public String crearCita(Paciente paciente, Doctor doctor){
+        String retorno = "No se ha completado la operacion revisar datos";
         LocalDate fechaCita = LocalDate.now().plusDays(7);
         //Crear una nueva cita para paciente con el doctor
         Cita cita = Cita.builder()
@@ -37,12 +38,13 @@ public class RepoCita  {
             transaction = session.beginTransaction();
             session.persist(cita);
             transaction.commit();
+            retorno = "Operacion completada";
         } catch (Exception e) {
             if (transaction != null){
                 transaction.rollback();
             }
             e.printStackTrace();
         }
-
+        return retorno;
     }
 }

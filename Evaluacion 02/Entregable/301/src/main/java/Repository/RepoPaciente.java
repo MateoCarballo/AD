@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,47 +21,44 @@ public class RepoPaciente {
         this.listaPacientes = new ArrayList();
     }
 
-    public void crear(int id, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
-        //Creo un nuevo objeto Paciente y lo guardamos en la DB
+    public String crearPaciente(Paciente paciente){
+        String retorno = "No se ha completado la operacion revisar datos";
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
-
-            Paciente paciente = Paciente.builder()
-                    .id(id)
-                    .nombre(nombrePaciente)
-                    .fechaNacimiento(fechaNacimiento)
-                    .direccion(direccion)
-                    .build();
-
             session.persist(paciente);
             transaction.commit();
-
+            retorno = "Operacion completada";
         } catch (Exception e) {
             if (transaction != null){
                 transaction.rollback();
             }
             e.printStackTrace();
         }
+        return retorno;
     }
 
-    public void borrar(String nombrePaciente){
+    public String borrarPaciente(String nombrePaciente){
         Transaction transaction = null;
         Paciente pacienteUnico;
-
+        String retorno = "No se ha completado la operacion revisar datos";
         try{
             transaction = session.beginTransaction();
 
-                Query<Paciente> queryPaciente = session.createQuery("FROM Paciente WHERE nombre = :nombrePaciente", Paciente.class);
-                queryPaciente.setParameter("nombrePaciente",nombrePaciente);
+            Query<Paciente> queryPaciente = session.createQuery("FROM Paciente WHERE nombre = :nombrePaciente", Paciente.class);
+            queryPaciente.setParameter("nombrePaciente",nombrePaciente);
 
-                //Traemos la lista desde la DB mediante la consulta
-                pacienteUnico= queryPaciente.uniqueResult();
+            //Traemos la lista desde la DB mediante la consulta
+            pacienteUnico= queryPaciente.uniqueResult();
 
-                //Borramos el paciente (suponiendo que solo existe uno)
-                //La configuracion de la entidad con cascade = CascadeType.REMOVE asegura que borre las referencias en otras tablas
+            //Borramos el paciente (suponiendo que solo existe uno)
+            //La configuracion de la entidad con cascade = CascadeType.REMOVE asegura que borre las referencias en otras tablas
+            if (pacienteUnico != null) {
                 session.remove(pacienteUnico);
-                transaction.commit();
+                retorno = "Operacion completada";
+            }
+
+            transaction.commit();
 
         } catch (Exception e) {
             if (transaction != null){
@@ -70,22 +66,20 @@ public class RepoPaciente {
             }
             e.printStackTrace();
         }
+        return retorno;
     }
 
-    public void modificarPaciente(int idPaciente, String nombrePaciente, LocalDate fechaNacimiento, String direccion){
+    public String modificarPaciente(Paciente paciente){
         Transaction transaction = null;
+        String retorno = "No se ha completado la operacion revisar datos";
         try{
             transaction = session.beginTransaction();
-            Query <Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE id = : idPaciente",Paciente.class);
-            pacienteQuery.setParameter("idPaciente", idPaciente);
-            Paciente pacienteModificado = pacienteQuery.uniqueResult();
-            pacienteModificado.setNombre(nombrePaciente);
-            pacienteModificado.setFechaNacimiento(fechaNacimiento);
-            pacienteModificado.setDireccion(direccion);
+            Query <Paciente> pacienteQuery = session.createQuery(
+                    "FROM Paciente WHERE id = : idPaciente",Paciente.class);
 
-            //session.persist(pacienteModificado);
-            session.save(pacienteModificado);
+            session.update(paciente);
             transaction.commit();
+            retorno = "Operacion completada";
 
         }catch (Exception e){
             if(transaction != null){
@@ -93,7 +87,7 @@ public class RepoPaciente {
             }
             e.printStackTrace();
         }
-
+        return retorno;
     }
 
     private void borrarRecibeAsociado(Paciente p) {
@@ -146,12 +140,9 @@ public class RepoPaciente {
         Transaction transaction = null;
         Paciente paciente = null;
         try{
-            transaction = session.beginTransaction();
-            //Buscamos si existe algun paciente con ese nombre
             Query<Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE nombre = :nombre", Paciente.class);
             pacienteQuery.setParameter("nombre",nombrePaciente);
-            paciente= pacienteQuery.getSingleResult();
-            //devolvemos el paciente
+            paciente= pacienteQuery.uniqueResult();
 
         }catch (Exception e){
 
@@ -178,4 +169,32 @@ public class RepoPaciente {
         }
     }
 
+    public int obtenerPrimerIdDisponible() {
+        Transaction transaction = null;
+        int nuevoId = 1; // Empezamos desde el ID mínimo permitido
+
+        try {
+            transaction = session.beginTransaction();
+
+            // Consulta para obtener todos los IDs en orden ascendente
+            Query<Integer> query = session.createQuery("SELECT id FROM Paciente ORDER BY id ASC", Integer.class);
+            List<Integer> ids = query.getResultList();
+
+            // Buscar la primera brecha en los IDs
+            for (int id : ids) {
+                if (id == nuevoId) {
+                    nuevoId++; // Si el ID actual ya existe, avanzar al siguiente
+                } else {
+                    break; // Encontramos un hueco
+                }
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+
+        return nuevoId;
+    }
 }

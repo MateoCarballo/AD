@@ -17,7 +17,7 @@ public class RepoTratamiento   {
         this.session = s;
     }
 
-    public String asignarFechaTratamiento(String nombreTratamiento, String nombrePaciente, LocalDate fechaInicio, LocalDate fechaFin){
+    public String asignarFechaTratamiento(int idTratamiento, String nombrePaciente, LocalDate fechaInicio, LocalDate fechaFin){
         Paciente paciente;
         Tratamiento tratamiento;
         RecibePK claveCompuesta = null;
@@ -39,8 +39,8 @@ public class RepoTratamiento   {
 
             // 2. Obtener id tratamiento
             Query<Tratamiento> queryIdTratamiento = session.createQuery(
-                    "FROM Tratamiento WHERE tipo = :tipo", Tratamiento.class);
-            queryIdTratamiento.setParameter("tipo",nombreTratamiento);
+                    "FROM Tratamiento WHERE id = :id", Tratamiento.class);
+            queryIdTratamiento.setParameter("id",idTratamiento);
             tratamiento = queryIdTratamiento.uniqueResult();
 
             if (tratamiento == null){
