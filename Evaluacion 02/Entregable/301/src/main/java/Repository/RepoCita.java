@@ -37,7 +37,6 @@ public class RepoCita  {
             transaction = session.beginTransaction();
             session.persist(cita);
             transaction.commit();
-
         } catch (Exception e) {
             if (transaction != null){
                 transaction.rollback();

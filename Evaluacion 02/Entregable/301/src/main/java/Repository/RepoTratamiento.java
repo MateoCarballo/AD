@@ -1,6 +1,8 @@
 package Repository;
 
 import Entity.*;
+import jakarta.persistence.NoResultException;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -15,75 +17,61 @@ public class RepoTratamiento   {
         this.session = s;
     }
 
-    public void asignarFechaTratamiento(String nombreTratamiento, String nombrePaciente, LocalDate fechaInicio, LocalDate fechaFin){
-        Paciente paciente = null;
-        Tratamiento tratamiento = null;
+    public String asignarFechaTratamiento(String nombreTratamiento, String nombrePaciente, LocalDate fechaInicio, LocalDate fechaFin){
+        Paciente paciente;
+        Tratamiento tratamiento;
         RecibePK claveCompuesta = null;
-
         Transaction transaction = null;
+        String resultadoOperacion = "";
+
         try {
 
             transaction = session.beginTransaction();
             // 1. Obtener id paciente
             Query<Paciente> queryIdPaciente = session.createQuery("FROM Paciente WHERE nombre = :nombre", Paciente.class);
             queryIdPaciente.setParameter("nombre",nombrePaciente);
-            paciente = queryIdPaciente.getSingleResult();
+            paciente = queryIdPaciente.uniqueResult();
 
-            // 2. Obtener id tratamiento
-            Query<Tratamiento> queryIdTratamiento = session.createQuery("FROM Tratamiento WHERE tipo = :tipo", Tratamiento.class);
-            queryIdTratamiento.setParameter("tipo",nombreTratamiento);
-            tratamiento = queryIdTratamiento.getSingleResult();
-
-            // 3. Crear clave compuesta
-            if ((paciente != null) && (tratamiento != null) && (claveCompuesta == null)){
-                 claveCompuesta = new RecibePK(paciente.getId(),tratamiento.getId(),fechaInicio);
+            if (paciente == null){
+                return "El paciente no existe en la base de datos. Cree el paciente y repita la operación";
             }
 
-            // 4. Crear el objeto recibe
-            Recibe recibe = new Recibe(claveCompuesta,paciente,tratamiento,fechaFin);
 
-            // 5. Escribir cambios y hacer commit
-            session.save(recibe);
-            transaction.commit();
+            // 2. Obtener id tratamiento
+            Query<Tratamiento> queryIdTratamiento = session.createQuery(
+                    "FROM Tratamiento WHERE tipo = :tipo", Tratamiento.class);
+            queryIdTratamiento.setParameter("tipo",nombreTratamiento);
+            tratamiento = queryIdTratamiento.uniqueResult();
+
+            if (tratamiento == null){
+                return "El tratamiento no existe en la base de datos. Cree el tratamiento y repita la operación";
+            }
+
+            // 3. Crear clave compuesta y comprobar que no exista en la DB
+            claveCompuesta = new RecibePK(paciente.getId(),tratamiento.getId(),fechaInicio);
+            Query<Recibe> queryComprobarDuplicados = session.createQuery(
+                        "FROM Recibe where idRecibe = :recibePk",Recibe.class);
+            queryComprobarDuplicados.setParameter("recibePk",claveCompuesta);
+            Recibe recibeComprobarDuplicados = queryComprobarDuplicados.uniqueResult();
+
+            if(recibeComprobarDuplicados == null){
+                // 4. Crear el objeto recibe y guardarlo
+                Recibe recibe = new Recibe(claveCompuesta,paciente,tratamiento,fechaFin);
+
+                // 5. Escribir cambios y hacer commit
+                session.save(recibe);
+                transaction.commit();
+                resultadoOperacion = "Operacion realizada con exito";
+            }else{
+                resultadoOperacion = "Este tratamiento ya ha sido asignado anteriormente al paciente en las fechas indicadas";
+                transaction.rollback();
+            }
 
         }catch (Exception e){
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
+            resultadoOperacion = "Ha ocurrido una excepcion no controlada noob";
         }
-
-    }
-
-
-
-    public void modificarHospital(int idTratamiento, String nombreNuevoHospital){
-        Transaction transaction = null;
-        Hospital nuevoHospital = null;
-        Tratamiento tratamiento = null;
-        try{
-            transaction = session.beginTransaction();
-
-            //Obtengo el objeto hospital asociado al nombre que recibo
-            Query<Hospital> queryHospital = session.createQuery("FROM Hospital WHERE nombre = :nombreHospital", Hospital.class);
-            queryHospital.setParameter("nombreHospital",nombreNuevoHospital);
-            nuevoHospital = queryHospital.getSingleResult();
-
-            //Traigo el objeto asociado al idTratamiento
-            Query<Tratamiento> queryTratamiento = session.createQuery("FROM Tratamiento WHERE id = :idTratamiento", Tratamiento.class);
-            queryTratamiento.setParameter("idTratamiento",idTratamiento);
-            tratamiento = queryTratamiento.getSingleResult();
-
-            //Cargo el nuevo hospital del tratamiento
-            tratamiento.setHospital(nuevoHospital);
-
-            //Inserto el tratamiento actualizado y comiteo
-            transaction.commit();
-
-        }catch(Exception e){
-            if (transaction != null){
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-
+        return resultadoOperacion;
     }
 }

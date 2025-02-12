@@ -50,6 +50,14 @@ public class Hospital {
         return resultadoCompleto.toString();
     }
 
+    public void borrarTratamiento(int idTratamiento){
+        for (int i = 0; i < tratamientos.size(); i++) {
+            if (tratamientos.get(i).getId() == idTratamiento){
+                tratamientos.remove(i);
+            }
+        }
+    }
+
     @Override
     public String toString(){
         StringBuilder toStringMejorado = new StringBuilder();

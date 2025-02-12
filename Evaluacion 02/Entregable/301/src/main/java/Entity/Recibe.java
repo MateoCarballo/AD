@@ -27,14 +27,34 @@ public class Recibe {
     @JoinColumn(name = "tratamiento_id")
     private Tratamiento tratamiento;
 
-//    TODO preguntar a Jose
-//    @ManyToOne
-//    @MapsId("fechaInicio")
-//    @Column(name = "fecha_inicio")
-//    private LocalDate fechaInicio;
-
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
+
+    @Override
+    public String toString() {
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Recibe ID " + this.idRecibe + " ---\n")
+                .append("Paciente -> " + (paciente != null ? paciente.getNombre() : "No asignado") + "\n")
+                .append("Tratamiento -> " + (tratamiento != null ? tratamiento.getTipo() : "No asignado") + "\n")
+                .append("Fecha Fin -> " + this.fechaFin + "\n")
+                .append("---------------------------------------\n");
+        return toStringMejorado.toString();
+    }
+
+
+    public String toStringParaPaciente() {
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Recibe ID " + this.idRecibe + " ---\n")
+                .append("Tratamiento -> " + (tratamiento != null ? tratamiento.getTipo() : "No asignado") + "\n")
+                .append("Fecha Inicio -> " + this.idRecibe.getFechaInicio() + "\n")
+                .append("Fecha Fin -> " + this.fechaFin + "\n")
+                .append("---------------------------------------\n");
+        return toStringMejorado.toString();
+    }
 
 }
 

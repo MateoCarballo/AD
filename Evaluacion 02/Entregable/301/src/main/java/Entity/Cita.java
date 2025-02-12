@@ -42,4 +42,31 @@ public class Cita {
         this.doctor.setCita(this);
         d.setCita(this);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Cita ID " + this.id + " ---\n")
+                .append("Fecha -> " + this.fecha + "\n")
+                .append("Estado -> " + this.estado + "\n")
+                .append("Paciente -> " + (paciente != null ? paciente.getNombre() : "No asignado") + "\n")
+                .append("Doctor -> " + (doctor != null ? doctor.getNombre() : "No asignado") + "\n")
+                .append("---------------------------------------\n");
+        return toStringMejorado.toString();
+    }
+
+    public String toStringParaPaciente() {
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Cita ID " + this.id + " ---\n")
+                .append("Fecha -> " + this.fecha + "\n")
+                .append("Estado -> " + this.estado + "\n")
+                .append("Paciente -> " + (paciente != null ? paciente.getNombre() : "No asignado") + "\n")
+                .append("Doctor -> " + (doctor != null ? doctor.getNombre() : "No asignado") + "\n")
+                .append("---------------------------------------\n");
+        return toStringMejorado.toString();
+    }
 }
