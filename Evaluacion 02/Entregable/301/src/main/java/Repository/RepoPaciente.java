@@ -3,6 +3,7 @@ package Repository;
 import Entity.Cita;
 import Entity.Paciente;
 import Entity.Recibe;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -74,13 +75,18 @@ public class RepoPaciente {
         String retorno = "No se ha completado la operacion revisar datos";
         try{
             transaction = session.beginTransaction();
-            Query <Paciente> pacienteQuery = session.createQuery(
-                    "FROM Paciente WHERE id = : idPaciente",Paciente.class);
-
-            session.update(paciente);
+            if(paciente!=null){
+                Query <Integer> pacienteQuery = session.createQuery(
+                        "SELECT id FROM Paciente WHERE nombre = : nombre",Integer.class);
+                pacienteQuery.setParameter("nombre",paciente.getNombre());
+                Integer idPaciente = pacienteQuery.uniqueResult();
+                if (idPaciente != null){
+                    paciente.setId(idPaciente);
+                    session.update(paciente);
+                    retorno = "Operacion compeltada con exito";
+                }
+            }
             transaction.commit();
-            retorno = "Operacion completada";
-
         }catch (Exception e){
             if(transaction != null){
                 transaction.rollback();

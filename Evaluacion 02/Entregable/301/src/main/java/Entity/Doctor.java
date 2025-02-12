@@ -13,7 +13,6 @@ public class Doctor {
     @Id
     //Esto solo cuando quiero que la generacion de ID la lleve hibernate es decir sea autoincremental en la base de datos
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
     @NonNull
     private String nombre;

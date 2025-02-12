@@ -24,11 +24,10 @@ public class App {
     static RepoTratamiento repoTratamiento;
     static RepoHospital repoHospital;
     static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
     static final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static String entradaTeclado;
 
-    public static void main( String[] args ) {
+    public void main( String[] args ) {
 
 
         boolean continuar = true;
@@ -42,100 +41,14 @@ public class App {
         repoHospital = new RepoHospital(session);
 
         while (continuar) {
-            // Creamos el StringBuilder para el menú
-            StringBuilder menu = new StringBuilder();
-            menu.append("-------------------------------------------------\n")
-                    .append("1. OPERACIONES SOBRE DOCTOR\n")
-                    .append("2. OPERACIONES SOBRE PACIENTE\n")
-                    .append("3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA)\n")
-                    .append("4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE\n")
-                    .append("5. CAMBIAR EL HOSPITAL DE UN TRATAMIENTO\n")
-                    .append("6. MOSTRAR DATOS PACIENTE (Introduciendo nombre)\n")
-                    .append("7. MOSTRAR LOS TRATAMIENTOS Y LOS DATOS DE LOS HOSPITALES EN LOS QUE SE REALIZAN \n")
-                    .append("8.  MOSTRAR EL NUMERO TOTAL DE TRATAMIENTOS QUE TIENE CADA HOSPITAL (ENTRADA NOMBRE HOSPITAL)\n")
-                    .append("0. Cerrar aplicación\n")
-                    .append("-------------------------------------------------\n")
-                    .append("Seleccione una opción: ");
 
             // Imprimimos el menú en consola
-            System.out.print(menu);
-            /**
-             * 1. OPERACIONES SOBRE DOCTOR >--< COMPLETADO
-             *         repoDoctor.crear(2000,"Doctor2", "Especialidad2", "222555888");
-             *         repoDoctor.modificarDoctor(2000,"Cambiado","Cambiado","Cambiado");
-             *         repoDoctor.borrarPorId(3);
-             */
+            System.out.print(generarMenu());
 
-            /**
-             * 2. OPERACIONES SOBRE PACIENTE >--< COMPLETADO
-             *         repoPaciente.crear(2000,"Creado", LocalDate.of(2000,1,1),"Creada");
-             *         repoPaciente.borrar("Ana Lopez");
-             *         repoPaciente.modificarPaciente(1,"nuevo nombre",LocalDate.of(2000,5,11), "nueva direccion");
-             */
-
-            /**
-             * 3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA) >--< COMPLETADO
-             *         Buscamos el id del doctor asociado al nombre
-             *         asignarDotorPaciente("Doctor","Paciente");
-             */
-
-            /**
-             * 4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE >--< COMPLETADO
-             *         LocalDate fechaComienzo = LocalDate.of(2025,1,10);
-             *         LocalDate fechaFin  = LocalDate.of(2025,02,10);
-             *         System.out.println(repoTratamiento.asignarFechaTratamiento(
-             *                 "Terapia Neurológica",
-             *                 "María Gómez",
-             *                 fechaComienzo,
-             *                 fechaFin));
-             */
-            /**
-             * 5. CAMBIAR EL HOSPITAL DE UN TRATAMIENTO >--< COMPLETADO
-             *         repoTratamiento.modificarHospital(1,"Hospital Central");
-             *         System.out.println(repoHospital.anhadirNuevoTratamiento(
-             *                 1,
-             *                 "Hospital del Norte",
-             *                 "Hospital Central"));
-             */
-
-
-            /**
-             * 6. MOSTRAR DATOS PACIENTE (Introduciendo nombre) >--< COMPLETADO
-             *         System.out.println(repoPaciente.mostrarTodosDatos("Carlos Martínez"));
-             *
-             */
-
-
-            /**
-             * 7. MOSTRAR LOS TRATAMIENTOS Y LOS DATOS DE LOS HOSPITALES EN LOS QUE SE REALIZAN -- BUSCAR EL HOSPITAL Y LOS TRATAMIENTOS >--< COMPLETADO
-             *         Hospital hospital = (repoHospital.mostrarTratamientos("Hospital Universitario"));
-             *         System.out.println(hospital.escribirHospitalCompleto());
-             */
-
-
-            /**
-             * 8. MOSTRAR EL NUMERO TOTAL DE TRATAMIENTOS QUE TIENE CADA HOSPITAL (ENTRADA NOMBRE HOSPITAL)
-             *         List<Hospital> listadoImprimir = repoHospital.mostratTodosTratamientosTodosHospitales();
-             *         for (Hospital h : listadoImprimir){
-             *             System.out.println(h.escribirHospitalCompleto());;
-             *         }
-             */
             try {
-                String eleccion="";
-                do {
-                    try{
-                         eleccion = br.readLine();
-                    }catch(IOException ioe){
-                        System.out.println("Error al leer los datos por teclado");
-                    }
-                }while(!PatronesRegex.TODOS_NUMEROS.matches(eleccion));
-
-                int opcion = Integer.parseInt(eleccion);
-
                 // TODO No me deja usar el switch mejorado
-                switch (opcion) {
+                switch (seleccionarOpcionMenu()) {
                     case 0:
-                        System.out.println("Cerrando aplicación...");
                         continuar = false;
                         break;
                     /**
@@ -148,6 +61,7 @@ public class App {
                                 System.out.println("Operacion cancelada por el usuario");
                                 break;
                             case 1:
+                                //crearDoctor();
                                 System.out.println(repoDoctor.crearDoctor(pedirDatosNuevoDoctor()));;
                                 break;
                             case 2:
@@ -185,17 +99,7 @@ public class App {
                         }
                         break;
                     case 3:
-                        String doctorNombre = "";
-                        String pacienteNombre = "";
-                        try{
-                            doctorNombre = br.readLine();
-                            pacienteNombre = br.readLine();
-                        }catch(IOException e){
-                            System.out.println("Error en la lectura de datos por teclado");
-                        }
-                        if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
-                            asignarDotorPaciente(doctorNombre,pacienteNombre);
-                        }
+                        System.out.println(asignarDoctorPaciente());
                         break;
                     case 4:
                         try{
@@ -254,9 +158,61 @@ public class App {
                 System.out.println("Error en la entrada. Por favor, ingrese un número válido.");
             }
         }
-        mostrarBarraDeCarga(2);
+        mostrarBarraDeCarga(1);
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
+    }
+
+    public void crearDoctor(){
+
+    }
+
+    private static String asignarDoctorPaciente() {
+        String doctorNombre = "";
+        String pacienteNombre = "";
+        String retorno = "Alguno de los campos está vacío";
+        try{
+            doctorNombre = br.readLine();
+            pacienteNombre = br.readLine();
+        }catch(IOException e){
+            System.out.println("Error en la lectura de datos por teclado");
+        }
+        // TODO Java 8 no tiene el metodo "isBlank()",
+        //  Entiendo que debo comprobar que no metan espacios en blanco,
+        //  Pero no puedo con esta version de Java
+        if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
+            retorno = asignarDotorPaciente(doctorNombre,pacienteNombre);
+        }
+        return retorno;
+    }
+
+    private static int seleccionarOpcionMenu() {
+        String eleccion="";
+        do {
+            try{
+                eleccion = br.readLine();
+            }catch(IOException ioe){
+                System.out.println("Error al leer los datos por teclado");
+            }
+        }while(!PatronesRegex.DIGITOS_0_9.matches(eleccion));
+        return Integer.parseInt(eleccion);
+    }
+
+    private static String generarMenu() {
+        StringBuilder menu = new StringBuilder();
+        menu.append("-------------------------------------------------\n")
+                .append("1. OPERACIONES SOBRE DOCTOR\n")
+                .append("2. OPERACIONES SOBRE PACIENTE\n")
+                .append("3. ASIGNAR A UN DOCTOR UN PACIENTE (DAR CITA)\n")
+                .append("4. INDICAR LA FECHA FIN DEL TRATAMIENTO DE UN PACIENTE\n")
+                .append("5. CAMBIAR EL HOSPITAL DE UN TRATAMIENTO\n")
+                .append("6. MOSTRAR DATOS PACIENTE (Introduciendo nombre)\n")
+                .append("7. MOSTRAR LOS TRATAMIENTOS Y LOS DATOS DE LOS HOSPITALES EN LOS QUE SE REALIZAN \n")
+                .append("8.  MOSTRAR EL NUMERO TOTAL DE TRATAMIENTOS QUE TIENE CADA HOSPITAL (ENTRADA NOMBRE HOSPITAL)\n")
+                .append("0. Cerrar aplicación\n")
+                .append("-------------------------------------------------\n")
+                .append("Seleccione una opción: ");
+        return menu.toString();
     }
 
     private static String pedirDatosMostrarPaciente() {
@@ -424,13 +380,13 @@ public class App {
 
 
     private static Paciente pedirDatosModificarPaciente() {
-        Paciente paciente = null;
+        Paciente paciente = new Paciente();
         String nombrePaciente = "";
         String fechaNacimiento = "";
         String direccion ="";
 
         try {
-            System.out.println("Que doctor deseas modificar ? (Escribe su nombre)");
+            System.out.println("Que paciente deseas modificar ? (Escribe su nombre)");
             nombrePaciente = br.readLine();
             paciente = repoPaciente.buscarPaciente(nombrePaciente);
             if ( paciente != null){
@@ -487,6 +443,8 @@ public class App {
 
     // Método que simula la barra de carga de 5 segundos
     private static void mostrarBarraDeCarga(int segundos) {
+
+        System.out.println("Cerrando aplicación...");
         int totalTiempo = segundos * 1000; // Convertir a milisegundos
         int tiempoRestante = totalTiempo;
         int intervalo = 100; // Intervalo de actualización de la barra

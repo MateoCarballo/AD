@@ -27,7 +27,9 @@ public class Cita {
 
     //Este joinColumn te dice en que columna
     //tiene la clave foranea que apunta al objeto
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // orphanRemoval = true para evitar referencias huérfanas.
+    //orphanRemoval = true para evitar referencias huérfanas.
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_doctor")
     private Doctor doctor;
 
@@ -39,7 +41,6 @@ public class Cita {
 
     public void setDoctor(Doctor d){
         this.doctor= d;
-        this.doctor.setCita(this);
         d.setCita(this);
     }
 
