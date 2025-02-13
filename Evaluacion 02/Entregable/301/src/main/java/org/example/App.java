@@ -6,8 +6,6 @@ import Entity.Paciente;
 import Entity.Tratamiento;
 import Repository.*;
 import org.hibernate.Session;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -186,9 +184,9 @@ public class App {
     private static Doctor pedirDatosModificarDoctor() {
 
         Doctor doctor = null;
-        String nombreDoctor = "";
-        String especialidad = "";
-        String telefonoDoctor ="";
+        String nombreDoctor;
+        String especialidad;
+        String telefonoDoctor;
 
         try {
             System.out.println("Que doctor deseas modificar ? (Escribe su nombre)");
@@ -217,7 +215,7 @@ public class App {
                     System.out.println("Deseas modificar la especialidad ? (si no desea modificarlo solo pulsa enter)");
                     especialidad = br.readLine();
                     if (especialidad.trim().isEmpty()) break;
-                    if (!PatronesRegex.SOLO_LETRAS.matches(especialidad)) System.out.println("La especialidad introducida no es valida -> " + especialidad);;
+                    if (!PatronesRegex.SOLO_LETRAS.matches(especialidad)) System.out.println("La especialidad introducida no es valida -> " + especialidad);
                 }while(!PatronesRegex.SOLO_LETRAS.matches(especialidad));
 
                 do{
@@ -621,7 +619,7 @@ public class App {
             }
         }while(!PatronesRegex.DIGITOS_0_3.matches(eleccion));
         return Integer.parseInt(eleccion);
-    }GIT
+    }
 
     // PRINTS DE LISTA DE OBJETOS
 
