@@ -6,6 +6,7 @@ import Entity.Paciente;
 import Entity.Tratamiento;
 import Repository.*;
 import org.hibernate.Session;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,10 +51,6 @@ public class App {
                     case 0:
                         continuar = false;
                         break;
-                    /**
-                     * OPERACIONES SOBRE DOCTOR
-                     * Crear (1), Borrar(2) o Modificar(3)
-                     */
                     case 1:
                         switch (menuOpcionesCrearBorrarModificar()){
                             case 0:
@@ -70,10 +67,6 @@ public class App {
                                 break;
                         }
                         break;
-                    /**
-                     * OPERACIONES SOBRE PACIENTE
-                     * Crear (1), Borrar(2) o Modificar(3)
-                     */
                     case 2:
                         switch (menuOpcionesCrearBorrarModificar()){
                             case 0:
@@ -91,7 +84,7 @@ public class App {
                         }
                         break;
                     case 3:
-                        System.out.println(asignarDoctorPaciente());
+                        asignarDoctorPaciente();
                         break;
                     case 4:
                         indicarFechaFinTratamiento();
@@ -106,10 +99,7 @@ public class App {
                         mostrarTodosTratamientosHospital();
                         break;
                     case 8:
-                        List<Hospital> listadoImprimir = repoHospital.mostratTodosTratamientosTodosHospitales();
-                        for (Hospital h : listadoImprimir){
-                          System.out.println(h.escribirHospitalCompleto());;
-                        }
+                        mostratTodosHospitalesYNumeroTratamientos();
                         break;
                     default:
                         System.out.println("Opción no válida, por favor seleccione una opción del 0 al 8.");
@@ -125,6 +115,8 @@ public class App {
         session.close();
         System.out.println("Finalizando la conexion a MySQL");
     }
+
+    //OPCION 1.1
 
     private static void crearDoctor(){
         /**
@@ -178,6 +170,8 @@ public class App {
                 .telefono(telefonoDoctor)
                 .build();
     }
+
+    // OPCION 1.2
 
     private static void modificarDoctor(){
         /**
@@ -251,6 +245,8 @@ public class App {
         return doctor;
     }
 
+    // OPCION 1.3
+
     private static void borrarDoctor(){
         int idDoctor = pedirDatosBorrarPorId();
         if (repoDoctor.existeDoctor(idDoctor)) System.out.println(repoDoctor.borrarPorId(idDoctor));
@@ -269,6 +265,8 @@ public class App {
         }
         return Integer.parseInt(idMedico);
     }
+
+    //OPCION 2.1
 
     private static void crearPaciente(){
         String resultadoOperacion = repoPaciente.crearPaciente(pedirDatosNuevoPaciente());
@@ -321,6 +319,8 @@ public class App {
                 .direccion(direccion)
                 .build();
     }
+
+    //OPCION 2.2
 
     private static void modificarPaciente(){
         String resultadoOperacion = repoPaciente.modificarPaciente(pedirDatosModificarPaciente());
@@ -381,6 +381,7 @@ public class App {
         return paciente;
     }
 
+    //OPCION 2.3
 
     public static void borrarPaciente(){
         printearPacientes();
@@ -402,6 +403,35 @@ public class App {
         }
         return nombrePaciente;
     }
+
+    // OPCION 3
+
+    private static void asignarDoctorPaciente() {
+        String doctorNombre = "";
+        String pacienteNombre = "";
+        String retorno = "Alguno de los campos está vacío";
+        try{
+            System.out.println("Escribe el nombre del doctor");
+            doctorNombre = br.readLine();
+            System.out.println("Escribe el nombre del paciente");
+            pacienteNombre = br.readLine();
+        }catch(IOException e){
+            System.out.println("Error en la lectura de datos por teclado");
+        }
+        // TODO Java 8 no tiene el metodo "isBlank()",
+        //  Entiendo que debo comprobar que no metan espacios en blanco,
+        //  Pero no puedo con esta version de Java
+        if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
+            Doctor doctor = repoDoctor.buscarDoctor(doctorNombre);
+            Paciente paciente = repoPaciente.buscarPaciente(pacienteNombre);
+            if (doctor != null && paciente != null) {
+                retorno = repoCita.crearCita(paciente, doctor);
+            }
+        }
+        System.out.println(retorno);;
+    }
+
+    // OPCION 4
 
     private static void indicarFechaFinTratamiento(){
         LocalDate fechaComienzo = null;
@@ -456,6 +486,8 @@ public class App {
         return posibleFecha;
     }
 
+    // OPCION 5
+
     public static void cambiarHospitalParaTratamiento(){
         /**
         Posicion 0 => id Tratamiento
@@ -485,6 +517,8 @@ public class App {
         return datosConsulta;
     }
 
+    //OPCION 6
+
     private static void mostrarDatosPacientePorNombre(){
         String nombrePaciente = pedirDatosMostrarPaciente();
         if (!nombrePaciente.isEmpty()){
@@ -511,6 +545,8 @@ public class App {
         return entradaTeclado;
     }
 
+    //OPCION 7
+
     public static void mostrarTodosTratamientosHospital(){
         String nombreHospital ="";
         try{
@@ -527,36 +563,16 @@ public class App {
         }
     }
 
-    private static String asignarDoctorPaciente() {
-        String doctorNombre = "";
-        String pacienteNombre = "";
-        String retorno = "Alguno de los campos está vacío";
-        try{
-            System.out.println("Escribe el nombre del doctor");
-            doctorNombre = br.readLine();
-            System.out.println("Escribe el nombre del paciente");
-            pacienteNombre = br.readLine();
-        }catch(IOException e){
-            System.out.println("Error en la lectura de datos por teclado");
+    // OPCION 8
+
+    public static void mostratTodosHospitalesYNumeroTratamientos(){
+        List<Hospital> listadoImprimir = repoHospital.mostratTodosTratamientosTodosHospitales();
+        for (Hospital h : listadoImprimir){
+            System.out.println(h.escribirHospitalCompleto());;
         }
-        // TODO Java 8 no tiene el metodo "isBlank()",
-        //  Entiendo que debo comprobar que no metan espacios en blanco,
-        //  Pero no puedo con esta version de Java
-        if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
-            retorno = asignarDotorPaciente(doctorNombre,pacienteNombre);
-        }
-        return retorno;
     }
 
-    private static String asignarDotorPaciente(String nombreDoctor, String nombrePaciente) {
-        String retorno = "Alguno de los nombres no existe en la base de datos";
-        Doctor doctor = repoDoctor.buscarDoctor(nombreDoctor);
-        Paciente paciente = repoPaciente.buscarPaciente(nombrePaciente);
-        if (doctor != null && paciente != null) {
-            retorno = repoCita.crearCita(paciente, doctor);
-        }
-        return retorno;
-    }
+    // MENUS
 
     private static int seleccionarOpcionMenu() {
         String eleccion="";
@@ -587,6 +603,28 @@ public class App {
         return menu.toString();
     }
 
+    private static int menuOpcionesCrearBorrarModificar() {
+        String eleccion = "";
+        StringBuilder menu = new StringBuilder();
+        menu.append("-------------------------------------------------\n")
+                .append("1. Crear\n")
+                .append("2. Modifcar\n")
+                .append("3. Borrar\n")
+                .append("0. Anular operación\n")
+                .append("Seleccione una opción: ");
+        System.out.print(menu);
+        do {
+            try{
+                eleccion = br.readLine();
+            }catch(IOException ioe){
+                System.out.println("Error al leer los datos por teclado");
+            }
+        }while(!PatronesRegex.DIGITOS_0_3.matches(eleccion));
+        return Integer.parseInt(eleccion);
+    }GIT
+
+    // PRINTS DE LISTA DE OBJETOS
+
     private static void printearDoctores(){
         List<Doctor> doctores = repoDoctor.obtenerDoctores();
         if (!doctores.isEmpty()){
@@ -612,26 +650,6 @@ public class App {
                 System.out.println(p);
             }
         }
-    }
-
-    private static int menuOpcionesCrearBorrarModificar() {
-        String eleccion = "";
-        StringBuilder menu = new StringBuilder();
-        menu.append("-------------------------------------------------\n")
-                .append("1. Crear\n")
-                .append("2. Modifcar\n")
-                .append("3. Borrar\n")
-                .append("0. Anular operación\n")
-                .append("Seleccione una opción: ");
-        System.out.print(menu);
-        do {
-            try{
-                eleccion = br.readLine();
-            }catch(IOException ioe){
-                System.out.println("Error al leer los datos por teclado");
-            }
-        }while(!PatronesRegex.DIGITOS_0_3.matches(eleccion));
-        return Integer.parseInt(eleccion);
     }
 
     // Método que simula la barra de carga de x segundos
