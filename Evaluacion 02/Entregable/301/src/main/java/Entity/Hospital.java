@@ -43,10 +43,14 @@ public class Hospital {
 
     public String escribirHospitalCompleto(){
         StringBuilder resultadoCompleto = new StringBuilder();
-        resultadoCompleto.append(this);
+        resultadoCompleto.append(this)
+                .append("Tratamientos -> " + tratamientos.size() + "\n")
+                .append("---------------------------------------\n");
+        /*
         for(Tratamiento t : tratamientos){
             resultadoCompleto.append(t.toString());
         }
+         */
         return resultadoCompleto.toString();
     }
 

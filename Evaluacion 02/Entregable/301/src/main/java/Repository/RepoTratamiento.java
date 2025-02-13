@@ -1,13 +1,12 @@
 package Repository;
 
 import Entity.*;
-import jakarta.persistence.NoResultException;
-import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class RepoTratamiento   {
 
@@ -33,6 +32,7 @@ public class RepoTratamiento   {
             paciente = queryIdPaciente.uniqueResult();
 
             if (paciente == null){
+                transaction.commit();
                 return "El paciente no existe en la base de datos. Cree el paciente y repita la operación";
             }
 
@@ -44,6 +44,7 @@ public class RepoTratamiento   {
             tratamiento = queryIdTratamiento.uniqueResult();
 
             if (tratamiento == null){
+                transaction.commit();
                 return "El tratamiento no existe en la base de datos. Cree el tratamiento y repita la operación";
             }
 
@@ -73,5 +74,18 @@ public class RepoTratamiento   {
             resultadoOperacion = "Ha ocurrido una excepcion no controlada noob";
         }
         return resultadoOperacion;
+    }
+
+    public List<Tratamiento> obtenerTratamientos() {
+        Transaction transaction = null;
+        List<Tratamiento> listaTratamientos = null;
+        try{
+            listaTratamientos =  session.createQuery("FROM Tratamiento", Tratamiento.class)
+                    .getResultList();
+        }catch (Exception e){
+            if (transaction != null) transaction.rollback();
+        }
+
+        return listaTratamientos;
     }
 }

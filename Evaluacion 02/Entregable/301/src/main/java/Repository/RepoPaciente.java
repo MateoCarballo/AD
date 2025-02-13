@@ -1,6 +1,7 @@
 package Repository;
 
 import Entity.Cita;
+import Entity.Doctor;
 import Entity.Paciente;
 import Entity.Recibe;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -203,5 +204,18 @@ public class RepoPaciente {
         }
 
         return nuevoId;
+    }
+
+    public List<Paciente> obtenerPacientes() {
+        Transaction transaction = null;
+        List<Paciente> listaPacientes = null;
+        try{
+            listaPacientes =  session.createQuery("FROM Paciente", Paciente.class)
+                    .getResultList();
+        }catch (Exception e){
+            if (transaction != null) transaction.rollback();
+        }
+
+        return listaPacientes;
     }
 }

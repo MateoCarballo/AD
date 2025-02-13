@@ -25,7 +25,7 @@ public class Tratamiento {
 
     //TODO preguntar a Jose
     //    @Column(precision = 10, scale = 2)
-    //    private BigDecimal costo;
+    //private BigDecimal costeo;
 
 
     @ManyToOne

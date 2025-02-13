@@ -23,9 +23,9 @@ public class RepoHospital {
             transaction = session.beginTransaction();
             Query queryHospital = session.createQuery("FROM Hospital WHERE nombre = :nombreHospital", Hospital.class);
             queryHospital.setParameter("nombreHospital",nombreHospital);
-            hospital = (Hospital) queryHospital.getSingleResult();
+            hospital = (Hospital) queryHospital.uniqueResult();
             hospital.getTratamientos();
-
+            transaction.commit();
         }catch (Exception e){
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
@@ -40,6 +40,7 @@ public class RepoHospital {
             transaction = session.beginTransaction();
             Query<Hospital> listaHospitales = session.createQuery("FROM Hospital" ,Hospital.class);
             listadoHospitales = listaHospitales.getResultList();
+            transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
         }
@@ -61,6 +62,7 @@ public class RepoHospital {
             tratamiento = queryTratamiento.uniqueResult();
 
             if (tratamiento == null){
+                transaction.commit();
                 return "El tratamiento no existe, insertelo en la base de datos y repita la operación.";
             }
 
@@ -70,6 +72,7 @@ public class RepoHospital {
             antiguoHospital= queryHospitalAntiguo.uniqueResult();
 
             if (antiguoHospital == null){
+                transaction.commit();
                 return "El hospital actual para el tratamiento no existe, insertelo en la base de datos y repita la operación.";
             }
 
@@ -79,11 +82,13 @@ public class RepoHospital {
             nuevoHospital = queryHospitalNuevo.uniqueResult();
 
             if (nuevoHospital == null){
+                transaction.commit();
                 return "El nuevo hospital para el tratamiento no existe, insertelo en la base de datos y repita la operación.";
             }
 
             //Si el tratamiento ya se realiza en ese hospital no volvemos a meterle el mismo hospital
             if (tratamiento.getHospital().getId() == nuevoHospital.getId()){
+                transaction.commit();
                 return "Este tratamiento ya se realiza en el hospital por el que es intenta cambiar. Revise los datos.";
             }
 
@@ -98,7 +103,6 @@ public class RepoHospital {
                 Esta linea entiendo que no es necesaria antiguoHospital.getTratamientos().remove(tratamiento);
              */
             nuevoHospital.addTratamiento(tratamiento);
-
             //Añado el tratamiento al hospital y dejo que hibernate haga su magia
             transaction.commit();
             resultadoOperacion = "Operacion realizada con exito";
