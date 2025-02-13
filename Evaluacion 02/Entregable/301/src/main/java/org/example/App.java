@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class App {
     static Session session;
@@ -27,9 +26,7 @@ public class App {
     static final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static String entradaTeclado;
 
-    public void main( String[] args ) {
-
-
+    public static void main( String[] args ) {
         boolean continuar = true;
 
         session = HibernateUtil.get().openSession();
@@ -61,15 +58,13 @@ public class App {
                                 System.out.println("Operacion cancelada por el usuario");
                                 break;
                             case 1:
-                                //crearDoctor();
-                                System.out.println(repoDoctor.crearDoctor(pedirDatosNuevoDoctor()));;
+                                crearDoctor();
                                 break;
                             case 2:
-                                System.out.println(repoDoctor.modificarDoctor(pedirDatosModificarDoctor()));;
+                                modificarDoctor();
                                 break;
                             case 3:
-                                int idDoctor = pedirDatosBorrarPorId();
-                                if (repoDoctor.existeDoctor(idDoctor)) System.out.println(repoDoctor.borrarPorId(idDoctor));
+                                borrarDoctor();
                                 break;
                         }
                         break;
@@ -163,8 +158,170 @@ public class App {
         System.out.println("Finalizando la conexion a MySQL");
     }
 
-    public void crearDoctor(){
+    private static void crearDoctor(){
+        /**
+         * Según que ocurra durante la operación recibiremos un mensaje u otro.
+         * 1    =>  "No se ha completado la operación revisar datos": Indica que la operación no se ha llevado a cabo
+         * 2    =>  "Operación completada" : La modificación se ha realizado con éxito.
+         */
+        String mensajeResultadoOperacion = repoDoctor.crearDoctor(pedirDatosNuevoDoctor());
+        System.out.println(mensajeResultadoOperacion);
+    }
 
+    private static Doctor pedirDatosNuevoDoctor() {
+        /**
+         * Recopilo todos los datos para crear un nuevo
+         * objeto doctor que guardaremos en la base de datos
+         */
+
+        int id = 0 ;
+        String nombreDoctor = "";
+        String especialidadDoctor = "";
+        String telefonoDoctor ="";
+
+        try {
+            id = repoDoctor.obtenerPrimerIdDisponible();
+            do{
+                System.out.println("Introduce el nombre del doctor");
+                nombreDoctor= br.readLine();
+                if (!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor)) System.out.println("El nombre introducido no es valido -> " + nombreDoctor);
+            }while(!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor));
+
+            do{
+                System.out.println("Introduce la especialidad del doctor");
+                especialidadDoctor = br.readLine();
+                if (!PatronesRegex.SOLO_LETRAS.matches(especialidadDoctor)) System.out.println("La especialidad introducida no es valida -> " + especialidadDoctor);;
+            }while(!PatronesRegex.SOLO_LETRAS.matches(especialidadDoctor));
+
+            do{
+                System.out.println("Introduce el telefono del doctor");
+                telefonoDoctor = br.readLine();
+                if (!PatronesRegex.PATRON_TELEFONO.matches(telefonoDoctor)) System.out.println("El numero de telefono no es valido -> " + telefonoDoctor);;
+            }while(!PatronesRegex.PATRON_TELEFONO.matches(telefonoDoctor));
+
+        } catch (IOException e) {
+            System.out.println("Error en lectura datos");
+        }
+
+        return Doctor.builder()
+                .id(id)
+                .nombre(nombreDoctor)
+                .especialidad(especialidadDoctor)
+                .telefono(telefonoDoctor)
+                .build();
+    }
+
+    private static void modificarDoctor(){
+        /**
+         * Según que ocurra durante la operación recibiremos un mensaje u otro.
+         * 1    =>  "No se ha completado la operación revisar datos": Indica que la operación no se ha llevado a cabo
+         * 2    =>  "Operación completada" : La modificación se ha realizado con éxito.
+         */
+        String mensajeResultado = repoDoctor.modificarDoctor(pedirDatosModificarDoctor());
+        System.out.println(mensajeResultado);
+    }
+
+    private static Doctor pedirDatosModificarDoctor() {
+
+        Doctor doctor = null;
+        String nombreDoctor = "";
+        String especialidad = "";
+        String telefonoDoctor ="";
+
+        try {
+            System.out.println("Que doctor deseas modificar ? (Escribe su nombre)");
+
+            do{
+                System.out.println("Introduce el nombre del doctor");
+                nombreDoctor= br.readLine();
+                if (!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor)) System.out.println("El nombre introducido no es valido -> " + nombreDoctor);
+            }while(!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor));
+
+            doctor = repoDoctor.buscarDoctor(nombreDoctor);
+            if ( doctor != null){
+                /**
+                 * Si el doctor no es nulo significa que existe en la DB
+                 * Entonces preguntamos que campos queremos modificar
+                 * y seteamos esos campos en el nuevo objeto para poder actualizarlo
+                 */
+                do{
+                    System.out.println("Deseas modificar el nombre ? (si no desea modificarlo solo pulsa enter)");
+                    nombreDoctor= br.readLine();
+                    if (nombreDoctor.trim().isEmpty()) break;
+                    if (!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor)) System.out.println("El nombre introducido no es valido -> " + nombreDoctor);
+                }while(!PatronesRegex.NOMBRE_PATTERN.matches(nombreDoctor));
+
+                do{
+                    System.out.println("Deseas modificar la especialidad ? (si no desea modificarlo solo pulsa enter)");
+                    especialidad = br.readLine();
+                    if (especialidad.trim().isEmpty()) break;
+                    if (!PatronesRegex.SOLO_LETRAS.matches(especialidad)) System.out.println("La especialidad introducida no es valida -> " + especialidad);;
+                }while(!PatronesRegex.SOLO_LETRAS.matches(especialidad));
+
+                if (!nombreDoctor.trim().isEmpty()){
+                    doctor.setNombre(nombreDoctor);
+                }
+
+                if (!especialidad.trim().isEmpty()){
+                    doctor.setEspecialidad(especialidad);
+                }
+
+                if (!telefonoDoctor.trim().isEmpty()){
+                    doctor.setTelefono(telefonoDoctor);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error en lectura datos");
+        }
+        return doctor;
+    }
+
+    private static void borrarDoctor(){
+        int idDoctor = pedirDatosBorrarPorId();
+        if (repoDoctor.existeDoctor(idDoctor)) System.out.println(repoDoctor.borrarPorId(idDoctor));
+    }
+
+    private static Paciente pedirDatosNuevoPaciente() {
+        int id = 0 ;
+        String nombrePaciente = "";
+        LocalDate fechaNacimiento = LocalDate.of(1900,01,01);
+        String direccion = "";
+
+        try {
+            id = repoPaciente.obtenerPrimerIdDisponible();
+            // El doctor se puede llamar como quiera como si se llama %^&@
+            System.out.println("Introduce el nombre del paciente");
+            nombrePaciente= br.readLine();
+
+
+            System.out.println("Fecha de nacimiento (Formato AAAA-MM-DD)");
+
+            boolean continuar;
+            do{
+                continuar = true;
+                try {
+                    fechaNacimiento = LocalDate.parse(br.readLine(),formatoFecha);
+                } catch (DateTimeParseException e) {
+                    System.out.println("Fecha inválida. Asegúrate de que sea una fecha real.");
+                    continuar = false;
+                }
+            }while (!continuar);
+
+
+            //
+            System.out.println("Introduce la direccion del paciente");
+            direccion = br.readLine();
+
+        } catch (IOException e) {
+            System.out.println("Error en lectura datos");
+        }
+
+        return Paciente.builder()
+                .id(id)
+                .nombre(nombrePaciente)
+                .fechaNacimiento(fechaNacimiento)
+                .direccion(direccion)
+                .build();
     }
 
     private static String asignarDoctorPaciente() {
@@ -226,8 +383,9 @@ public class App {
     }
 
     private static int pedirDatosBorrarPorId() {
+        printearDoctores();
         String idMedico = "";
-        System.out.println("Introduce el Id del medico que quieres eliminar");
+        System.out.println("Introduce el Id del medico que quieres eliminar\n");
         try {
              do{
                  idMedico = br.readLine();
@@ -236,6 +394,15 @@ public class App {
             System.out.println();
         }
         return Integer.parseInt(idMedico);
+    }
+
+    private void printearDoctores(){
+        List<Doctor> doctores = repoDoctor.obtenerDoctores();
+        if (!doctores.isEmpty()){
+            for (Doctor d :doctores){
+                System.out.println(d.toString());
+            }
+        }
     }
 
     private static String pedirDatosBorrarPaciente() {
@@ -268,116 +435,6 @@ public class App {
         }while(!PatronesRegex.DIGITOS_0_3.matches(eleccion));
         return Integer.parseInt(eleccion);
     }
-
-
-
-    private static Doctor pedirDatosNuevoDoctor() {
-        int id = 0 ;
-        String nombreDoctor = "";
-        String especialidad = "";
-        String telefonoDoctor ="";
-
-        try {
-            id = repoDoctor.obtenerPrimerIdDisponible();
-            // El doctor se puede llamar como quiera como si se llama %^&@
-            System.out.println("Introduce el nombre del doctor");
-            nombreDoctor= br.readLine();
-            //TODO comprobar que exista esta especialidad
-            System.out.println("Introduce la especialidad del doctor");
-            especialidad = br.readLine();
-            // El número como si es de Japon. MESSIRVE
-            System.out.println("Introduce el telefono del doctor");
-            telefonoDoctor = br.readLine();
-
-        } catch (IOException e) {
-            System.out.println("Error en lectura datos");
-        }
-
-        return Doctor.builder()
-                .id(id)
-                .nombre(nombreDoctor)
-                .especialidad(especialidad)
-                .telefono(telefonoDoctor)
-                .build();
-    }
-
-    private static Paciente pedirDatosNuevoPaciente() {
-        int id = 0 ;
-        String nombrePaciente = "";
-        LocalDate fechaNacimiento = LocalDate.of(1900,01,01);
-        String direccion = "";
-
-        try {
-            id = repoPaciente.obtenerPrimerIdDisponible();
-            // El doctor se puede llamar como quiera como si se llama %^&@
-            System.out.println("Introduce el nombre del paciente");
-            nombrePaciente= br.readLine();
-
-
-            System.out.println("Fecha de nacimiento (Formato AAAA-MM-DD)");
-
-            boolean continuar;
-            do{
-                continuar = true;
-                try {
-                    fechaNacimiento = LocalDate.parse(br.readLine(),formatoFecha);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Fecha inválida. Asegúrate de que sea una fecha real.");
-                    continuar = false;
-                }
-            }while (!continuar);
-
-
-            //
-            System.out.println("Introduce la direccion del paciente");
-            direccion = br.readLine();
-
-        } catch (IOException e) {
-            System.out.println("Error en lectura datos");
-        }
-
-        return Paciente.builder()
-                .id(id)
-                .nombre(nombrePaciente)
-                .fechaNacimiento(fechaNacimiento)
-                .direccion(direccion)
-                .build();
-    }
-
-    private static Doctor pedirDatosModificarDoctor() {
-        Doctor doctor = null;
-        String nombreDoctor = "";
-        String especialidad = "";
-        String telefonoDoctor ="";
-
-        try {
-            System.out.println("Que doctor deseas modificar ? (Escribe su nombre)");
-            nombreDoctor = br.readLine();
-            doctor = repoDoctor.buscarDoctor(nombreDoctor);
-            if ( doctor != null){
-                System.out.println("Deseas modificar el nombre ? (si no desea modificarlo solo pulsa enter)");
-                nombreDoctor = br.readLine();
-                System.out.println("Deseas modificar la especialidad ? (si no desea modificarlo solo pulsa enter)");
-                especialidad = br.readLine();
-                System.out.println("Deseas modificar la telefono ? (si no desea modificarlo solo pulsa enter)");
-                telefonoDoctor = br.readLine();
-                if (!nombreDoctor.trim().isEmpty()){
-                    doctor.setNombre(nombreDoctor);
-                }
-                if (!especialidad.trim().isEmpty()){
-                    doctor.setEspecialidad(especialidad);
-                }
-                if (!telefonoDoctor.trim().isEmpty()){
-                    doctor.setTelefono(telefonoDoctor);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error en lectura datos");
-        }
-        return doctor;
-    }
-
-
 
     private static Paciente pedirDatosModificarPaciente() {
         Paciente paciente = new Paciente();
@@ -439,6 +496,10 @@ public class App {
             System.out.println("Error en la lectura de datos");
         }
         return datosConsulta;
+    }
+
+    private void printearTodosLosDoctores(){
+
     }
 
     // Método que simula la barra de carga de 5 segundos

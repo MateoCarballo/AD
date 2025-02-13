@@ -34,4 +34,17 @@ public class Doctor {
         this.telefono = telefono;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder toStringMejorado = new StringBuilder();
+        toStringMejorado
+                .append("---------------------------------------\n")
+                .append("--- Doctor " + nombre + " ---\n")
+                .append("Id -> " + id + "\n")
+                .append("Especialidad -> " + especialidad + "\n")
+                .append("Telefono -> " + telefono + "\n")
+                .append("---------------------------------------\n");
+        return toStringMejorado.toString();
+    }
+
 }

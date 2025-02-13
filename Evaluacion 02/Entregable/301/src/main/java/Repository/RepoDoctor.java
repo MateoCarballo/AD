@@ -1,7 +1,6 @@
 package Repository;
 
 import Entity.Doctor;
-import Entity.Tratamiento;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -9,6 +8,8 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class RepoDoctor {
+
+   private final String MENSAJE_ERROR = "No se ha completado la operacion revisar datos";
    private Session session;
 
    public RepoDoctor(Session session) {
@@ -17,7 +18,8 @@ public class RepoDoctor {
 
    public String crearDoctor(Doctor nuevoDoctor){
       Transaction  transaction = null;
-      String retorno = "No se ha completado la operacion revisar datos";
+      //TODO Crear una clase para los mensajes comunes y no tener que modificarlos en todos los p sitios
+      String retorno = MENSAJE_ERROR;
       try {
          transaction = session.beginTransaction();
          session.save(nuevoDoctor);
@@ -33,7 +35,7 @@ public class RepoDoctor {
    }
    public String modificarDoctor(Doctor doctor){
       Transaction  transaction = null;
-      String retorno = "No se ha completado la operacion revisar datos";
+      String retorno = MENSAJE_ERROR;
       try {
          if (doctor != null){
             transaction = session.beginTransaction();
@@ -54,7 +56,7 @@ public class RepoDoctor {
       Transaction  transaction = null;
       int referenciasEliminadas = 0;
       int doctoresEliminados = 0;
-      String retorno = "No se ha completado la operacion revisar datos";
+      String retorno = MENSAJE_ERROR;
 
       try {
          //Para borrar el doctor necesitamos eliminar las referencias que existen en otras tablas
@@ -103,24 +105,21 @@ public class RepoDoctor {
 
    public int obtenerPrimerIdDisponible() {
       Transaction transaction = null;
-      int nuevoId = 1; // Empezamos desde el ID mínimo permitido
+      int nuevoId = 1;
 
       try {
          transaction = session.beginTransaction();
 
-         // Consulta para obtener todos los IDs en orden ascendente
          Query<Integer> query = session.createQuery("SELECT id FROM Doctor ORDER BY id ASC", Integer.class);
          List<Integer> ids = query.getResultList();
 
-         // Buscar la primera brecha en los IDs
          for (int id : ids) {
             if (id == nuevoId) {
-               nuevoId++; // Si el ID actual ya existe, avanzar al siguiente
+               nuevoId++;
             } else {
-               break; // Encontramos un hueco
+               break;
             }
          }
-
          transaction.commit();
       } catch (Exception e) {
          if (transaction != null) transaction.rollback();
@@ -128,5 +127,19 @@ public class RepoDoctor {
       }
 
       return nuevoId;
+   }
+
+
+   public List<Doctor> obtenerDoctores(){
+      Transaction transaction = null;
+      List<Doctor> listaDoctores = null;
+      try{
+         listaDoctores =  session.createQuery("FROM Doctor", Doctor.class)
+                 .getResultList();
+      }catch (Exception e){
+         if (transaction != null) transaction.rollback();
+      }
+
+       return listaDoctores;
    }
 }
