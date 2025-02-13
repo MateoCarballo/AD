@@ -15,6 +15,7 @@ import java.util.List;
 public class RepoPaciente {
     private Session session;
 
+    private final String MENSAJE_ERROR = "No se ha completado la operacion revisar datos";
     private ArrayList<Paciente> listaPacientes;
 
     public RepoPaciente (Session session) {
@@ -23,7 +24,7 @@ public class RepoPaciente {
     }
 
     public String crearPaciente(Paciente paciente){
-        String retorno = "No se ha completado la operacion revisar datos";
+        String retorno = MENSAJE_ERROR;
         Transaction transaction = null;
         try{
             transaction = session.beginTransaction();
@@ -42,7 +43,7 @@ public class RepoPaciente {
     public String borrarPaciente(String nombrePaciente){
         Transaction transaction = null;
         Paciente pacienteUnico;
-        String retorno = "No se ha completado la operacion revisar datos";
+        String retorno = MENSAJE_ERROR;
         try{
             transaction = session.beginTransaction();
 
@@ -72,7 +73,7 @@ public class RepoPaciente {
 
     public String modificarPaciente(Paciente paciente){
         Transaction transaction = null;
-        String retorno = "No se ha completado la operacion revisar datos";
+        String retorno = MENSAJE_ERROR;
         try{
             transaction = session.beginTransaction();
             if(paciente!=null){

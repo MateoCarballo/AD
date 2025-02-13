@@ -49,14 +49,15 @@ public class Paciente {
     }
 
     public void addCita(Cita c){
-        c.setPaciente(this);
+        //Añado la cita a la lista de citas del paciente
         citas.add(c);
+        //Le digo a la cita que el paciente soy yo mismo
+        c.setPaciente(this);
     }
 
     public void addRecibe(Recibe recibe){
         listaRecibes.add(recibe);
         recibe.setPaciente(this);
-
     }
 
     @Override

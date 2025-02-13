@@ -40,7 +40,7 @@ public class Cita {
     }
 
     public void setDoctor(Doctor d){
-        this.doctor= d;
+        doctor= d;
         d.setCita(this);
     }
 

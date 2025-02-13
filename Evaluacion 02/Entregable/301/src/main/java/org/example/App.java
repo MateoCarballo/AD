@@ -28,7 +28,7 @@ public class App {
 
     public static void main( String[] args ) {
         boolean continuar = true;
-
+        final String MENSAJE_CANCELAR_OPERACION = "Operacion cancelada por el usuario";
         session = HibernateUtil.get().openSession();
         repoDoctor = new RepoDoctor(session);
         repoPaciente = new RepoPaciente(session);
@@ -55,7 +55,7 @@ public class App {
                     case 1:
                         switch (menuOpcionesCrearBorrarModificar()){
                             case 0:
-                                System.out.println("Operacion cancelada por el usuario");
+                                System.out.println(MENSAJE_CANCELAR_OPERACION);
                                 break;
                             case 1:
                                 crearDoctor();
@@ -75,13 +75,13 @@ public class App {
                     case 2:
                         switch (menuOpcionesCrearBorrarModificar()){
                             case 0:
-                                System.out.println("Operacion cancelada por el usuario");
+                                System.out.println(MENSAJE_CANCELAR_OPERACION);
                                 break;
                             case 1:
-                                System.out.println(repoPaciente.crearPaciente(pedirDatosNuevoPaciente()));
+                                crearPaciente();
                                 break;
                             case 2:
-                                System.out.println(repoPaciente.modificarPaciente(pedirDatosModificarPaciente()));;
+                                modificarPaciente();
                                 break;
                             case 3:
                                 String nombrePacienteEliminar = pedirDatosBorrarPaciente();
@@ -281,6 +281,11 @@ public class App {
         if (repoDoctor.existeDoctor(idDoctor)) System.out.println(repoDoctor.borrarPorId(idDoctor));
     }
 
+    private static void crearPaciente(){
+        String resultadoOperacion = repoPaciente.crearPaciente(pedirDatosNuevoPaciente());
+        System.out.println(resultadoOperacion);
+    }
+
     private static Paciente pedirDatosNuevoPaciente() {
         int id = 0 ;
         String nombrePaciente = "";
@@ -289,10 +294,13 @@ public class App {
 
         try {
             id = repoPaciente.obtenerPrimerIdDisponible();
-            // El doctor se puede llamar como quiera como si se llama %^&@
-            System.out.println("Introduce el nombre del paciente");
-            nombrePaciente= br.readLine();
+            // El paciente se puede llamar como quiera como si se llama %^&@
 
+            do{
+                System.out.println("Introduce el nombre del paciente");
+                nombrePaciente= br.readLine();
+                if (!PatronesRegex.NOMBRE_PATTERN.matches(nombrePaciente)) System.out.println("El nombre introducido no es valido -> " + nombrePaciente);
+            }while(!PatronesRegex.NOMBRE_PATTERN.matches(nombrePaciente));
 
             System.out.println("Fecha de nacimiento (Formato AAAA-MM-DD)");
 
@@ -307,10 +315,11 @@ public class App {
                 }
             }while (!continuar);
 
-
-            //
-            System.out.println("Introduce la direccion del paciente");
-            direccion = br.readLine();
+            do{
+                System.out.println("Introduce la dirección");
+                direccion= br.readLine();
+                if (direccion == null) ? direccion : "Direccion no asignada";
+            }while(!PatronesRegex.NOMBRE_PATTERN.matches(nombrePaciente));
 
         } catch (IOException e) {
             System.out.println("Error en lectura datos");
@@ -322,6 +331,11 @@ public class App {
                 .fechaNacimiento(fechaNacimiento)
                 .direccion(direccion)
                 .build();
+    }
+
+    private static void modificarPaciente(){
+        String resultadoOperacion = repoPaciente.modificarPaciente(pedirDatosModificarPaciente());
+        System.out.println(resultadoOperacion);
     }
 
     private static String asignarDoctorPaciente() {
