@@ -30,7 +30,7 @@
 - **Entregable combinado**:
   - Integración de **PostgreSQL** y **MySQL** en un mismo proyecto.
   - Demostración de interoperabilidad entre ambas tecnologías.
-
+  - [Enlace repositorio especifico de la tarea](https://github.com/MateoCarballo/Entregable-AD-2-)
 ---
 
 ### 5️⃣ **Evaluaciones**
