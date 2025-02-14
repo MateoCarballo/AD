@@ -33,6 +33,17 @@
   - [Enlace repositorio especifico de la tarea](https://github.com/MateoCarballo/Entregable-AD-2-)
 ---
 
+### Gestión de Hospital con Hibernate  
+
+- **Entregable combinado**:  
+  - Desarrollo de una aplicación para validar y gestionar la estructura de un hospital.  
+  - Implementación con Hibernate para la manipulación de datos.  
+  - Uso de notaciones de Lombok para reducir código repetitivo.  
+  - Maven como gestor de dependencias.  
+  - La base de datos es proporcionada mediante un script.  
+  - Validación de las clases Java contra la base de datos ya creada.  
+  - [Enlace al repositorio específico de la tarea](https://github.com/MateoCarballo/Entregable-AD-3-)  
+---
 ### 5️⃣ **Evaluaciones**
 #### 📌 **Examen de Control**
 - Evaluación intermedia para medir el progreso y consolidar conceptos clave.
