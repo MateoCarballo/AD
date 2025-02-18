@@ -1,32 +1,61 @@
-## Descripción del proyecto
+# 🏥 Proyecto: Gestión de Hospital
 
-En este proyecto vamos a desarrollar una aplicación que permita validar y gestionar la estructura de un hospital.
+## 📌 Descripción del Proyecto
 
-El diagrama conceptual de la base de datos es el siguiente:
+Este proyecto consiste en el desarrollo de una aplicación que permita validar y gestionar la estructura de un hospital. Se utilizará **Hibernate** para la gestión de la base de datos.
 
-![Diagrama de la base de datos](./Proyecto2.png)
+## 📊 Diagrama Conceptual de la Base de Datos
 
-## Tareas a realizar
+[Diagrama conceptural](./Proyecto2.png)_
 
-Se debe desarrollar una aplicación utilizando Hibernate que tenga las siguientes funcionalidades:
+## 📜 Script de la Base de Datos
 
-- Crear, borrar (por id) y modificar los datos de un doctor.
-- Crear, borrar (por nombre) y modificar los datos de un paciente.
-- Asignar un doctor a un paciente.
-  - La asignación se hará a partir del nombre del doctor y del paciente.
-  - Se pedirá por teclado introducir el nombre del doctor y del paciente.
-- Indicar la fecha de fin del tratamiento de un paciente.
-  - El método recibirá el nombre del paciente, la fecha de inicio, el tipo y la fecha de fin del tratamiento.
-- Cambiar el hospital de un tratamiento.
-  - El método recibirá el id del tratamiento, el nombre del hospital en donde está ahora el tratamiento y el nombre del hospital en dónde se va a realizar el tratamiento a partir de ahora.
-- Mostrar los datos de un Paciente (id, nombre, fecha de nacimiento, dirección, tratamientos que recibe y citas que tiene).
-  - La consulta se hará a partir del nombre del paciente que introduzca el usuario.
-- Mostrar los datos de los tratamientos y el hospital en el que se realiza.
-  - La consulta se hará a partir del nombre del hospital que introduzca el usuario.
-- Mostrar el número total de tratamientos que tiene cada hospital.
-  - La consulta se hará a partir del nombre del hospital que introduzca el usuario.
+El script correspondiente de la base de datos se encuentra en el archivo [`bd-hospital.sql`](./Scripts SQL/bd-hospital.sql).
 
-> ⚠ **NOTA**  
-> - Todas las relaciones tendrán que ser bidireccionales.  
-> - Todos los datos se pedirán por teclado.  
-> - Habrá que crear un menú que permita probar cada una de las funcionalidades anteriores.
+## 🎯 Tareas a Realizar
+
+La aplicación desarrollada con **Hibernate** deberá contar con las siguientes funcionalidades:
+
+### 🩺 Gestión de Doctores
+- Crear un doctor.
+- Borrar un doctor por su **ID**.
+- Modificar los datos de un doctor.
+
+### 👨‍⚕️ Gestión de Pacientes
+- Crear un paciente.
+- Borrar un paciente por su **nombre**.
+- Modificar los datos de un paciente.
+
+### 🔗 Asignación de Doctores a Pacientes
+- Asignar un **doctor** a un **paciente**.
+- La asignación se hará a partir del **nombre** del doctor y el paciente.
+- Se pedirá por teclado introducir ambos nombres.
+
+### 📆 Gestión de Tratamientos
+- Indicar la **fecha de fin del tratamiento** de un paciente.
+  - Se ingresará el **nombre del paciente**, la **fecha de inicio**, el **tipo** y la **fecha de fin** del tratamiento.
+- Cambiar el **hospital** donde se realiza un tratamiento.
+  - Se ingresará el **ID del tratamiento**, el **nombre del hospital actual** y el **nuevo hospital**.
+
+### 📋 Consultas de Datos
+- **Mostrar los datos de un paciente**:
+  - **ID**, **nombre**, **fecha de nacimiento**, **dirección**, **tratamientos** y **citas**.
+  - La consulta se realizará ingresando el **nombre del paciente**.
+- **Mostrar los tratamientos y el hospital donde se realizan**.
+  - La consulta se realizará ingresando el **nombre del hospital**.
+- **Mostrar el número total de tratamientos por hospital**.
+  - La consulta se realizará ingresando el **nombre del hospital**.
+
+## 📌 Notas Importantes
+✅ Todas las relaciones deben ser **bidireccionales**.<br>
+✅ Todos los datos se pedirán **por teclado**.<br>
+✅ Se implementará un **menú** para probar cada una de las funcionalidades anteriores.
+
+```
+
+## 🛠️ Tecnologías Utilizadas
+
+- Java
+- Hibernate
+- MySQL
+- Maven
