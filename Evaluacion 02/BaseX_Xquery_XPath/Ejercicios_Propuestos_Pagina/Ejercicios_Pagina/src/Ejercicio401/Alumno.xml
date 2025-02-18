@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alumno>
+    <nombre>nombre</nombre>
+    <apellidos>apellido1 apellido2</apellidos>
+    <edad>25</edad>
+    <correo>correo@Correo.es</correo>
+</alumno>
