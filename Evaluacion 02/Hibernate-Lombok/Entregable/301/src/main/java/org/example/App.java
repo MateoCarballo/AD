@@ -422,6 +422,10 @@ public class App {
         if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
             Doctor doctor = repoDoctor.buscarDoctor(doctorNombre);
             Paciente paciente = repoPaciente.buscarPaciente(pacienteNombre);
+            /*
+            Cuando encuentro un pacente y lo traigo hacia este
+            objeto paciente puedo no tener el arraylist de citas inicializado
+             */
             if (doctor != null && paciente != null) {
                 retorno = repoCita.crearCita(paciente, doctor);
             }

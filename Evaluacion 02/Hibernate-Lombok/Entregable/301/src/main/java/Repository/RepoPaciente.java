@@ -151,7 +151,6 @@ public class RepoPaciente {
             Query<Paciente> pacienteQuery = session.createQuery("FROM Paciente WHERE nombre = :nombre", Paciente.class);
             pacienteQuery.setParameter("nombre",nombrePaciente);
             paciente= pacienteQuery.uniqueResult();
-
         }catch (Exception e){
 
         }

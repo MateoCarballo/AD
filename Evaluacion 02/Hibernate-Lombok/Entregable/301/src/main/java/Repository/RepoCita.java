@@ -43,6 +43,8 @@ public class RepoCita  {
                 //Añadimos la cita a la lista de citas del paciente y a la misma cita
                 //le decimos que su paciente es el que tiene la lista en la que la añado
                 //cita.setPaciente(paciente);
+
+                //TODO añadido despues de entrega
                 paciente.addCita(cita);
 
                 session.persist(cita);
