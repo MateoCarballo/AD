@@ -3,7 +3,6 @@ package org.example.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +48,13 @@ public class Pelicula {
                 inverseJoinColumns = @JoinColumn(name = "id_actor"))
     private List<Actor> listadoActores;
 
-    @ManyToOne
-    @JoinTable(name = "pelicula_id")
-    private List<Proyecta> proyeccionesPelicula;
+    //TODO error insertada notacion,
+    // @JoinTable en lugar de JoinColumn,
+    // cambiado nombre a listadoProyecta,
+    //Error en orden notaciones 1-N y N-1 al reves
+
+    @OneToMany(mappedBy = "pelicula")
+    private List<Proyecta> listadoProyecta;
 
     public Pelicula(int id, @NonNull String titulo, @NonNull int anhoEstreno, @NonNull String genero, Premio premio) {
         this.id = id;
@@ -60,7 +63,7 @@ public class Pelicula {
         this.genero = genero;
         this.premio = premio;
         this.listadoActores = new ArrayList<>();
-        this.proyeccionesPelicula = new ArrayList<>();
+        this.listadoProyecta = new ArrayList<>();
     }
 
     public void setPremio(Premio p){

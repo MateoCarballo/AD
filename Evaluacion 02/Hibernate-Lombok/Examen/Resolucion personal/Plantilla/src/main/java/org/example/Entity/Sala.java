@@ -32,8 +32,7 @@ public class Sala {
     @NonNull
     private int capacidad;
 
-    @ManyToOne
-    @JoinTable(name = "sala_id")
+    @OneToMany (mappedBy = "sala")
     private List<Proyecta> proyeccionesSala;
 
     public Sala(int id, @NonNull String nombre, @NonNull int capacidad) {

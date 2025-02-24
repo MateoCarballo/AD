@@ -407,6 +407,7 @@ public class App {
     private static void asignarDoctorPaciente() {
         String doctorNombre = "";
         String pacienteNombre = "";
+
         String retorno = "Alguno de los campos está vacío";
         try{
             System.out.println("Escribe el nombre del doctor");
@@ -419,7 +420,7 @@ public class App {
         // TODO Java 8 no tiene el metodo "isBlank()",
         //  Entiendo que debo comprobar que no metan espacios en blanco,
         //  Pero no puedo con esta version de Java
-        if (!doctorNombre.isEmpty() && !pacienteNombre.isEmpty()){
+        if (!doctorNombre.isBlank() && !pacienteNombre.isEmpty()){
             Doctor doctor = repoDoctor.buscarDoctor(doctorNombre);
             Paciente paciente = repoPaciente.buscarPaciente(pacienteNombre);
             /*

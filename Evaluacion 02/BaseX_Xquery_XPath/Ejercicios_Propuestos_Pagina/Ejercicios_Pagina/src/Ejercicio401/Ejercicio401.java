@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Ejercicio401 {
     final static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static int ultimoIndice;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         StringBuilder sbuilder = new StringBuilder();
@@ -28,13 +29,29 @@ public class Ejercicio401 {
         String prueba = sbuilder.toString();
         //Crear la db Ejercicio 401
         //Iterar sobre objetos para insertarlos
-        /*
+
+        /**
+        Se pide desarrollar una aplicación Java que permita:
+
+        Conectarse a una base de datos XML gestionada por BaseX denominada ejercicio401
+        El usuario introducirá datos en el sistema de forma que complete un XML con la siguiente estructura:
+
         <alumno>
-            <nombre></nombre>
-            <apellidos></apellidos>
-            <edad></edad>
-            <correo></correo>
-         </alumno>
+          <nombre></nombre>
+          <apellidos></apellidos>
+          <edad></edad>
+          <correo></correo>
+        </alumno>
+
+        El sistema pedirá valores de forma indefinida hasta que el usuario indique lo contrario.
+        Cada vez que se cree un fichero XML se añadirá a la base de datos.
+        Una vez finalizada la introducción de datos el sistema mostrará un menú con las siguientes opciones:
+
+        Número total de documentos en el sistema
+        Media de edad de los alumnos.
+        Mostrar un XML con la edad del alumno mayor y del alumno menor (todo en el mismo documento XML).
+        Mostrar el nombre de los alumnos ordenado por edad de mayor a menor.
+        Mostrar el nombre de un alumno de forma aleatoria.
          */
 
         //Crear base de datos si lo necesita
@@ -44,6 +61,7 @@ public class Ejercicio401 {
         //eliminarBaseX();
 
         do{
+            ultimoIndice = contarNumeroAlumnos();
             crearAlumnoParaInsertar();
             //hardcodeado para poder probar
             //insertarFichero("Ejercicio401",prueba);
@@ -53,10 +71,10 @@ public class Ejercicio401 {
         System.out.println("""
                 Una vez finalizada la introducción de datos el sistema mostrará un menú con las siguientes opciones:
                 1 -> Número total de documentos en el sistema
-                2 ->Media de edad de los alumnos.
-                3 ->Mostrar un XML con la edad del alumno mayor y del alumno menor (todo en el mismo documento XML).
-                4 ->Mostrar el nombre de los alumnos ordenado por edad de mayor a menor.
-                5 ->Mostrar el nombre de un alumno de forma aleatoria.
+                2 -> Media de edad de los alumnos.
+                3 -> Mostrar un XML con la edad del alumno mayor y del alumno menor (todo en el mismo documento XML).
+                4 -> Mostrar el nombre de los alumnos ordenado por edad de mayor a menor.
+                5 -> Mostrar el nombre de un alumno de forma aleatoria.
           
                 """);
         int eleccion = 0;
@@ -66,13 +84,66 @@ public class Ejercicio401 {
             System.out.println("Error al elegir en el menu");
         }
         switch (eleccion){
-            case 1 -> {numeroTotalDocumentos()}
-            case 2 -> {mediaEdadAlumnos()}
-            case 3 -> {mostrarXMLEdadAlumnoMayor()}
-            case 4 ->{mostrarAlumnosEdadMayorMenor()}
-            case 5 ->{mostrarAlumnoAleatorio()}
-            default -> {}
+            case 1 -> {numeroTotalDocumentos();}
+            case 2 -> {mediaEdadAlumnos();}
+            case 3 -> {mostrarXMLEdadAlumnoMayor();}
+            case 4 ->{mostrarAlumnosEdadMayorMenor();}
+            case 5 ->{mostrarAlumnoAleatorio();}
+            default -> {System.out.println("La opcion seleccionada no es valida");}
         }
+    }
+
+    private static int contarNumeroAlumnos() {
+        int numeroAlumnos = -1;
+        try(BaseXClient session = new BaseXClient(
+                "localhost",
+                1984,
+                "admin",
+                "abc123")
+
+        ){
+            //Apertura base de datos
+            numeroAlumnos = Integer.parseInt(session.execute("count(Ejercicio401/alumno)"));
+
+        } catch (IOException e) {
+            System.out.println("Error al añadir fichero");
+            e.printStackTrace();
+        }
+        return numeroAlumnos;
+    }
+
+    private static void numeroTotalDocumentos() {
+        try(BaseXClient session = new BaseXClient(
+                "localhost",
+                1984,
+                "admin",
+                "abc123")
+
+        ){
+            //Apertura base de datos
+            session.execute("""
+                    for $x in doc("libros.xml")/biblioteca/libros/libro
+                      where $x/editorial = "O'Reilly"
+                      order by $x/titulo
+                      return <li>{data($x/titulo)}</li>
+                    """);
+
+        } catch (IOException e) {
+            System.out.println("Error al añadir fichero");
+            e.printStackTrace();
+        }
+    }
+
+    private static void mediaEdadAlumnos() {
+    }
+
+    private static void mostrarXMLEdadAlumnoMayor() {
+    }
+
+    private static void mostrarAlumnosEdadMayorMenor() {
+    }
+
+    private static void mostrarAlumnoAleatorio() {
     }
 
     private static void crearAlumnoParaInsertar() {
@@ -104,7 +175,7 @@ public class Ejercicio401 {
             System.out.println("Error al leer");
         }
 
-        insertarFichero("Fichero401",sb.toString());
+        insertarFichero("Fichero401",sb.toString(),(ultimoIndice+1));
 
     }
 
@@ -139,7 +210,7 @@ public class Ejercicio401 {
         }
     }
 
-    private static void insertarFichero(String nombreDB, String Alumno){
+    private static void insertarFichero(String nombreDB, String Alumno, int indice){
         try(BaseXClient session = new BaseXClient(
                 "localhost",
                 1984,
@@ -152,7 +223,7 @@ public class Ejercicio401 {
             final InputStream bais = new ByteArrayInputStream(Alumno.getBytes());
 
             //Insertar un archivo .xml
-            session.add(nombreDB + "/Alumno.xml",bais);
+            session.add(nombreDB + "/Alumno" + indice +".xml",bais);
         } catch (IOException e) {
             System.out.println("Error al añadir fichero");
             e.printStackTrace();

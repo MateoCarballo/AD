@@ -37,7 +37,7 @@ public class Actor {
     @NonNull
     private String nacionalidad;
 
-    @ToString.Exclude
+//    @ToString.Exclude
     @ManyToMany(mappedBy = "listadoActores")
     private List<Pelicula> listadoPeliculas;
 

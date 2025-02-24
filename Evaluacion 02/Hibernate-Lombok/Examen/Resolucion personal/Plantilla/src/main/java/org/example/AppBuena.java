@@ -55,7 +55,7 @@ public class AppBuena {
                     consulta2("Inception");
                 }
                 case 11:{
-                    consulta3("Inception");
+                    //consulta3(LocalDate.of(2020,10, 1));
                 }
 
             }
@@ -66,6 +66,7 @@ public class AppBuena {
         }
     }
 
+    /*
     private void consulta3(LocalDate fechaProyeccion) {
         //TODO
         Transaction transaction = null;
@@ -85,6 +86,7 @@ public class AppBuena {
             }
         }
     }
+     */
 
     private void consulta2(String nombrePelicula) {
         Transaction transaction = null;
