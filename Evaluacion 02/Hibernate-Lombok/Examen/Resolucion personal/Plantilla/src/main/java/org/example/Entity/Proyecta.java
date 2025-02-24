@@ -8,22 +8,20 @@ import lombok.*;
 @Table(name = "proyecciones")
 @Builder
 
+
+
 public class Proyecta {
 
     @EmbeddedId
     private ProyectaPK idCompuesta;
 
     @MapsId
-    @Column(name = "pelicula_id")
-    @OneToMany(mappedBy = "proyeccionesPelicula")
+    @ManyToOne
+    @JoinColumn(name = "pelicula_id")
     private Pelicula pelicula;
 
     @MapsId
-    @Column(name = "sala_id")
-    @OneToMany(mappedBy = "proyeccionesSala")
+    @ManyToOne
+    @JoinColumn(name = "sala_id")
     private Sala sala;
-
-    public Proyecta(ProyectaPK idCompuesta) {
-        this.idCompuesta = idCompuesta;
-    }
 }

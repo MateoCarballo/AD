@@ -29,8 +29,9 @@ public class Paciente {
     //TODO preguntar a Jose
     // Por qué no usar Lazy para que solo las cargue cuando las necesita
     // Es mas eficiente, por qué no?
-    @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE)
-    private List <Cita> citas;
+    @OneToMany(mappedBy = "paciente",
+            cascade = CascadeType.REMOVE)
+    private List <Cita> citas = new ArrayList<>();
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.REMOVE) // Cuando remueve el objeto remueve todas las referencias a esa tupla (Objeto)
     private List<Recibe> listaRecibes;
@@ -82,6 +83,7 @@ public class Paciente {
                 toStringMejorado.append("---------------------------------------\n");
         return toStringMejorado.toString();
     }
+
 
 
 }

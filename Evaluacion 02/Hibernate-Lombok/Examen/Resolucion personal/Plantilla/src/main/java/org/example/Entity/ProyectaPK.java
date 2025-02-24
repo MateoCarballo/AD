@@ -12,7 +12,8 @@ import java.time.LocalTime;
 @Embeddable
 @Data
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProyectaPK implements Serializable {
 
     @Column(name = "pelicula_id")
@@ -24,10 +25,4 @@ public class ProyectaPK implements Serializable {
     @Column(name = "horario")
     private LocalTime horario;
 
-    public ProyectaPK(int idPelicula, int idSala, LocalDate fecha, LocalTime horario) {
-        this.idPelicula = idPelicula;
-        this.idSala = idSala;
-        this.fecha = fecha;
-        this.horario = horario;
-    }
 }
