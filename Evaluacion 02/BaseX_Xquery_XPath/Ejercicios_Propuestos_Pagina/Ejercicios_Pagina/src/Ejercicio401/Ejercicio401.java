@@ -49,7 +49,7 @@ public class Ejercicio401 {
 
         Número total de documentos en el sistema
         Media de edad de los alumnos.
-        Mostrar un XML con la edad del alumno mayor y del alumno menor (todo en el mismo documento XML).
+        Mostrar un XML con la edad del alumno mayor y del alumno menor (toodo en el mismo documento XML).
         Mostrar el nombre de los alumnos ordenado por edad de mayor a menor.
         Mostrar el nombre de un alumno de forma aleatoria.
          */
