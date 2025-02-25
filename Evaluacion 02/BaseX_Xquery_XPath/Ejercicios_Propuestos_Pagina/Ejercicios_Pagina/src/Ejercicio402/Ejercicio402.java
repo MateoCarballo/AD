@@ -18,6 +18,7 @@ public class Ejercicio402 {
         generar1000Libros();
         crearFicheroGrande();
         crearFicherosPequeños();
+        numeroTotalDeDocumentos();
     }
 
     private void  generar1000Libros(){
@@ -83,4 +84,9 @@ public class Ejercicio402 {
                 .append("</libro>");
         return sb.toString();
     }
+
+    private void numeroTotalDeDocumentos(){
+
+    }
+
 }
