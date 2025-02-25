@@ -1,6 +1,7 @@
 package Ejercicio402;
 
-public class Libro {
+public class
+Libro {
 
     private int publicacion;
     private int edidicion;
@@ -28,5 +29,37 @@ public class Libro {
         this.editorial = editorial;
         this.paginas = paginas;
         this.edicionElectronica = edicionElectronica;
+    }
+
+    public int getPublicacion() {
+        return publicacion;
+    }
+
+    public int getEdidicion() {
+        return edidicion;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getNombreAutor() {
+        return nombreAutor;
+    }
+
+    public String getApellidoAutor() {
+        return apellidoAutor;
+    }
+
+    public String getEditorial() {
+        return editorial;
+    }
+
+    public int getPaginas() {
+        return paginas;
+    }
+
+    public boolean isEdicionElectronica() {
+        return edicionElectronica;
     }
 }
