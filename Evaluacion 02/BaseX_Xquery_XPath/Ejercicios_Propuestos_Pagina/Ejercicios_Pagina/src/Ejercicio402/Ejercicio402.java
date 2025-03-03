@@ -7,6 +7,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+/*
+1. **Número total de documentos.**
+2. **Número de libros publicados antes de 2009.**
+3. **Número de libros que escribió un determinado autor.**
+4. **Número medio de palabras de todos los libros.**
+5. **Número medio de palabras de los libros publicados después de 2008 y escritos por un determinado autor.**
+ */
+
 public class Ejercicio402 {
 
     private ArrayList<Libro> libros;
@@ -15,10 +23,29 @@ public class Ejercicio402 {
         this.libros = new ArrayList<>();
     }
     public void realizarEjercicio(){
+        //crearDatabases();
+        primerApartado(); //Numero Total de Documentos
+    }
+
+    private void primerApartado() { //Numero Total de Documentos
+        try (BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+
+            // Cambia "miBase" por el nombre de tu base de datos
+            BaseXClient.Query query = session.query("count(db:open('BaseFicherosPeq.xml')//libro)");
+
+            while (query.more()) {
+                System.out.println("Número total de documentos: " + query.next());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void crearDatabases(){
         generar1000Libros();
         crearFicheroGrande();
         crearFicherosPequeños();
-        numeroTotalDeDocumentos();
     }
 
     private void  generar1000Libros(){
@@ -37,10 +64,7 @@ public class Ejercicio402 {
 
     private void crearFicherosPequeños() {
         //Crear la base de datos
-        try(BaseXClient session = new BaseXClient("localhost",
-                1984,
-                "admin",
-                "abc123")){
+        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
             InputStream bais = new ByteArrayInputStream(toStringFicheroPequeño(libros.getFirst()).getBytes());
             session.create("BaseFicherosPeq.xml",bais);
             for (int i = 1; i < libros.size(); i++) {
@@ -101,9 +125,4 @@ public class Ejercicio402 {
                 .append("</libro>\n");
         return sb.toString();
     }
-
-    private void numeroTotalDeDocumentos(){
-
-    }
-
 }
