@@ -1,65 +1,58 @@
 package Ejercicio402;
 
-public class
-Libro {
+
+import java.util.Scanner;
+
+public class Libro {
 
     private int publicacion;
-    private int edidicion;
+    private int edicion;
     private String titulo;
-    private String nombreAutor;
-    private String apellidoAutor;
+    private Autor autor;
     private String editorial;
     private int paginas;
     private boolean edicionElectronica;
 
-    public Libro(int publicacion,
-                 int edidicion,
-                 String titulo,
-                 String nombreAutor,
-                 String apellidoAutor,
-                 String editorial,
-                 int paginas,
-                 boolean edicionElectronica) {
-
-        this.publicacion = publicacion;
-        this.edidicion = edidicion;
-        this.titulo = titulo;
-        this.nombreAutor = nombreAutor;
-        this.apellidoAutor = apellidoAutor;
-        this.editorial = editorial;
-        this.paginas = paginas;
-        this.edicionElectronica = edicionElectronica;
+    @Override
+    public String toString() {
+        return "<libro publicacion='" + publicacion + "' edicion='" + edicion +
+                "'><titulo>" + titulo + "</titulo>" + autor.toString() + "<editorial>" +
+                editorial + "</editorial><paginas>" + paginas + "</paginas><edicionElectronica>" +
+                edicionElectronica + "</edicionElectronica></libro>";
     }
 
-    public int getPublicacion() {
-        return publicacion;
+    public Libro generarDatosAleatorios() {
+        this.publicacion = (int) (Math.random() * 15) + 2000;
+        this.edicion = (int) (Math.random() * 20) + 1;
+        this.titulo = "Título " + (int) (Math.random() * 20000);
+        this.autor = new Autor().generarAleatorio();
+        this.editorial = "Editorial " + (int) (Math.random() * 100);
+        this.paginas = (int) (Math.random() * 701) + 150;
+        this.edicionElectronica = Math.random() > 0.5;
+
+        return this;
+    }
+}
+
+class Autor{
+    private String nombre;
+    private String apellidos;
+
+    public Autor() {
     }
 
-    public int getEdidicion() {
-        return edidicion;
+    @Override
+    public String toString() {
+        return "<autor>" +
+                "<nombre>" + nombre + "</nombre>"+
+                "<apellidos>" + apellidos + "</apellidos>" +
+                "</autor>";
     }
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public String getNombreAutor() {
-        return nombreAutor;
-    }
-
-    public String getApellidoAutor() {
-        return apellidoAutor;
-    }
-
-    public String getEditorial() {
-        return editorial;
-    }
-
-    public int getPaginas() {
-        return paginas;
-    }
-
-    public boolean isEdicionElectronica() {
-        return edicionElectronica;
+    public Autor generarAleatorio() {
+        this.nombre = "Nombre" + (int) (Math.random() * 20);
+        this.apellidos = "Apellido" + (int) (Math.random() * 20) +
+                " Apellido" + (int) (Math.random() * 20);
+        return this;
     }
 }

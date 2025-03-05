@@ -3,126 +3,207 @@ package Ejercicio402;
 import org.basex.examples.api.BaseXClient;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-/*
-1. **Número total de documentos.**
-2. **Número de libros publicados antes de 2009.**
-3. **Número de libros que escribió un determinado autor.**
-4. **Número medio de palabras de todos los libros.**
-5. **Número medio de palabras de los libros publicados después de 2008 y escritos por un determinado autor.**
- */
+import java.util.Scanner;
 
 public class Ejercicio402 {
+    static Scanner sc;
+    static ArrayList<Libro> biblioteca = new ArrayList<>();
+    final static String nombreDatasetGrande = "ejercicio402FicheroGrande";
+    final static String nombreDatasetPequeno = "ejercicio402FicherosPequenhos";
 
-    private ArrayList<Libro> libros;
-
-    public Ejercicio402() {
-        this.libros = new ArrayList<>();
-    }
-    public void realizarEjercicio(){
-        //crearDatabases();
-        primerApartado(); //Numero Total de Documentos
-    }
-
-    private void primerApartado() { //Numero Total de Documentos
-        try (BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
-
-            // Cambia "miBase" por el nombre de tu base de datos
-            BaseXClient.Query query = session.query("count(db:open('BaseFicherosPeq.xml')//libro)");
-
-            while (query.more()) {
-                System.out.println("Número total de documentos: " + query.next());
+    public static void main(String[] args) {
+        sc = new Scanner(System.in);
+        int opcion;
+        do{
+            opcion = pedirInt("1. Crear datasets\n2. Realizar consultas\n3. Salir");
+            switch (opcion){
+                case 1:
+                    crearDatasets();
+                    break;
+                case 2:
+                    realizarConsultas();
+                    break;
             }
+        }while(opcion != 3);
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+    private static void realizarConsultas() {
+        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+            int opcion;
+            do{
+                opcion = pedirInt("1. Número total de documentos\n" +
+                        "2. Número de libros publicados antes de cierto año\n" +
+                        "3. Número de libros que escribió un determinado autor\n" +
+                        "4. Número medio de palabras de todos los libros\n" +
+                        "5. Número medio de palabras de los libros publicados antes de un determinado año y por un determinado autor\n" +
+                        "6. Salir");
+                int opcion2;
+                do{
+                    opcion2 = pedirInt("1. Dataset grande\n2. Dataset pequeño");
+                }while(opcion2 > 2 || opcion2 < 1);
+
+                switch (opcion) {
+                    case 1:
+                        totalDocumentos(session, opcion2);
+                        break;
+                    case 2:
+                        librosPorAnho(session, opcion2);
+                        break;
+                    case 3:
+                        librosPorAutor(session, opcion2);
+                        break;
+                    case 4:
+                        numMedioPalabras(session, opcion2);
+                        break;
+                    case 5:
+                        numMedioPalabrasLibroAnhoAutor(session, opcion2);
+                        break;
+                }
+            }while(opcion != 6);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void crearDatabases(){
-        generar1000Libros();
-        crearFicheroGrande();
-        crearFicherosPequeños();
-    }
-
-    private void  generar1000Libros(){
-        for (int i = 0; i < 1000; i++) {
-            libros.add(new Libro(generarAleatorio(2000,2014),
-                    generarAleatorio(1,20),
-                    "titulo" + i,
-                    "nombre" + i,
-                    "Apellido1 - " + generarAleatorio(0,19)
-                            + " Apellido2 - " + generarAleatorio(0,19),
-                    "Editorial " + generarAleatorio(0,100),
-                    generarAleatorio(150,850),
-                    generarAleatorioBoolean()));
+    private static void numMedioPalabrasLibroAnhoAutor(BaseXClient sesion, int bd) {
+        int anho = pedirInt("Introduzca un año");
+        int autor = pedirInt("Introduzca el número del autor");
+        int primerApellido = pedirInt("Introduzca el número del primer apellido");
+        String sql;
+        if (bd == 1){
+            sql = "avg(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro " +
+                    "where $i/@publicacion < " + anho + " and $i/autor/nombre = 'Nombre" + autor +
+                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i/paginas)";
+        }else{
+            sql = "avg(for $i in db:get('" + nombreDatasetPequeno + "')/libro " +
+                    "where $i/@publicacion < " + anho + " and $i/autor/nombre = 'Nombre" + autor +
+                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i/paginas)";
         }
-    }
+        try (BaseXClient.Query query = sesion.query(sql)) {
 
-    private void crearFicherosPequeños() {
-        //Crear la base de datos
-        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
-            InputStream bais = new ByteArrayInputStream(toStringFicheroPequeño(libros.getFirst()).getBytes());
-            session.create("BaseFicherosPeq.xml",bais);
-            for (int i = 1; i < libros.size(); i++) {
-                bais = new ByteArrayInputStream(toStringFicheroPequeño(libros.get(i)).getBytes());
-                session.add("BaseFicherosPequeños/libro_" + i + ".xml",bais);
-                System.out.println("Fichero pequeño " +session.info());
+            // Comprobación e iteración de los resultados
+            if (query.more()) {
+                System.out.println("Total de documentos: " + query.next() + query.info());
             }
+        } catch (Exception ignored) { }
+    }
 
-        }catch (IOException e) {
-         e.printStackTrace();
+    private static void numMedioPalabras(BaseXClient sesion, int bd) {
+        String sql;
+        if (bd == 1){
+            sql = "avg(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro return $i/paginas)";
+        }else{
+            sql = "avg(for $i in db:get('" + nombreDatasetPequeno + "')/libro return $i/paginas)";
+        }
+        try (BaseXClient.Query query = sesion.query(sql)) {
+
+            // Comprobación e iteración de los resultados
+            if (query.more()) {
+                System.out.println("Total de documentos: " + query.next() + query.info());
+            }
+        } catch (Exception ignored) { }
+    }
+
+    private static void librosPorAutor(BaseXClient sesion, int bd) {
+        int autor = pedirInt("Introduzca el número del autor");
+        int primerApellido = pedirInt("Introduzca el número del primer apellido");
+        String sql;
+        if (bd == 1){
+            sql = "count(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro where $i/autor/nombre='Nombre" + autor +
+                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i)";
+        }else{
+            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "')/libro where $i/autor/nombre='Nombre" + autor +
+                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i)";
+        }
+        try (BaseXClient.Query query = sesion.query(sql)) {
+
+            // Comprobación e iteración de los resultados
+            if (query.more()) {
+                System.out.println("Total de documentos: " + query.next() + query.info());
+            }
+        } catch (Exception ignored) { }
+    }
+
+    private static void librosPorAnho(BaseXClient sesion, int bd) {
+        int anho = pedirInt("Introduzca un año");
+        String sql;
+        if (bd == 1) {
+            sql = "count(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro where $i/@publicacion < " + anho + " return $i)";
+        }else{
+            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "')/libro where $i/@publicacion < " + anho + " return $i)";
+        }
+        try (BaseXClient.Query query = sesion.query(sql)) {
+
+            // Comprobación e iteración de los resultados
+            if (query.more()) {
+                System.out.println("Total de documentos: " + query.next() + query.info());
+            }
+        } catch (Exception ignored) { }
+    }
+
+    private static void totalDocumentos(BaseXClient sesion, int bd) {
+        String sql;
+        if(bd == 1){
+            sql = "count(for $i in db:get('" + nombreDatasetGrande + "') return $i)";
+        }else{
+            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "') return $i)";
+        }
+        try (BaseXClient.Query query = sesion.query(sql)) {
+
+            // Comprobación e iteración de los resultados
+            if (query.more()) {
+                System.out.println("Total de documentos: " + query.next() + query.info());
+            }
+        } catch (Exception ignored) { }
+    }
+
+    private static void crearDatasets() {
+        while(biblioteca.size() < 10000)
+            biblioteca.add(new Libro().generarDatosAleatorios());
+
+        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+
+            InputStream bais = new ByteArrayInputStream(biblioteca.get(0).toString().getBytes());
+
+            session.create(nombreDatasetPequeno, bais);
+
+            for (int i = 1; i < biblioteca.size(); i++) {
+                bais = new ByteArrayInputStream(biblioteca.get(i).toString().getBytes());
+                session.add(nombreDatasetPequeno + "/libro" + i + ".xml", bais);
+            }
+        }catch (Exception ignored){}
+
+        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<biblioteca>");
+            for (Libro libro: biblioteca) {
+                sb.append(libro.toString());
+            }
+            sb.append("</biblioteca>");
+
+            InputStream bais = new ByteArrayInputStream(sb.toString().getBytes());
+
+            session.create(nombreDatasetGrande, bais);
+        }catch (Exception ignored){}
+    }
+
+    private static String pedirString(String mensaje) {
+        while(true){
+            try{
+                System.out.println(mensaje);
+                return sc.next();
+            }catch (Exception ignored){}
         }
     }
 
-    private void crearFicheroGrande() {
-        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
-            InputStream bais = new ByteArrayInputStream(toStringFicheroGrande(libros).getBytes());
-            session.create("BaseFicheroGrande.xml",bais);
-            System.out.println("Fichero grande " + session.info());
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static int pedirInt(String mensaje) {
+        while(true){
+            try{
+                System.out.println(mensaje);
+                return sc.nextInt();
+            }catch (Exception ignored){}
         }
-    }
-
-    private int generarAleatorio(int min, int max){
-        return (int) (Math.floor(Math.random()*(max-min+1)+min));
-    }
-
-    private boolean generarAleatorioBoolean(){
-        int result = generarAleatorio(0,1);
-        if(result == 0) {
-            return true;
-        } else{
-           return false;
-        }
-    }
-
-    private String toStringFicheroGrande(ArrayList<Libro> libros){
-        StringBuilder resultado = new StringBuilder();
-        resultado.append("<libros>\n");
-        for (Libro l: libros){
-            resultado.append(toStringFicheroPequeño(l));
-        }
-        resultado.append("</libros>");
-        return resultado.toString();
-    }
-
-    private String toStringFicheroPequeño(Libro libro){
-        StringBuilder sb = new StringBuilder();
-        sb.append("<libro publicacion =\"" + libro.getPublicacion() + "\" edicion = \"" + libro.getEdidicion() + "\"> \n" )
-                .append("    <titulo>" + libro.getTitulo() + "</titulo>\n")
-                .append("    <autor>\n")
-                .append("        <nombre>" + libro.getNombreAutor() + "</nombre>\n")
-                .append("        <apellido>" + libro.getApellidoAutor() + "</apellido>\n")
-                .append("    </autor>\n")
-                .append("    <editorial>" + libro.getEditorial() + "</editorial>\n")
-                .append("    <paginas>" + libro.getPaginas() + "</paginas>\n")
-                .append("    <edicionElectronica>" + libro.isEdicionElectronica() + "</edicionElectronica>\n")
-                .append("</libro>\n");
-        return sb.toString();
     }
 }
