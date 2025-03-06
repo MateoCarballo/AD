@@ -28,7 +28,16 @@ import java.io.IOException;
 
 public class Ejercicio404 {
     public static void main(String[] args) {
-        tituloYEditorial();
+        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
+            //tituloYEditorial();
+            //librosMenos400paginas();
+            //numeroDeLibrosDeMasDe400Paginas();
+            //listaHTMLEditorialOReillyMedia();
+            //tituloYEditorialLibro18_19(session);
+            tituloAnhoPublicacionLibrosConVersionElectronica(session);
+        }catch (IOException e){
+            System.out.println("Error al conectar con BaseX");
+        }
     }
 
     private static void tituloYEditorial() {
@@ -51,4 +60,88 @@ public class Ejercicio404 {
             e.printStackTrace();
         }
     }
+
+    private static void librosMenos400paginas() {
+        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
+        BaseXClient.Query queryPaginas = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro\n" +
+                                                          "where $libro/paginas < 400\n"  +
+                                                        "return $libro/titulo/text()");
+        /*
+        BaseXClient.Query queryPaginas = session.query("for $titulo in db:get('Fichero')/biblioteca/libros/libro[paginas<400]/titulo/text()\n" +
+                                                        "return $titulo");
+         */
+        while(queryPaginas.more()){
+            System.out.println(queryPaginas.next());
+        }
+
+        } catch (IOException e) {
+            System.out.println(" Error al conectar con basex");
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void numeroDeLibrosDeMasDe400Paginas() {
+        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
+            BaseXClient.Query queryPaginas = session.query("count(db:get('Fichero')/biblioteca/libros/libro[paginas<400])");
+
+            while(queryPaginas.more()){
+                System.out.println(queryPaginas.next());
+            }
+
+        } catch (IOException e) {
+            System.out.println(" Error al conectar con basex");
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private static void listaHTMLEditorialOReillyMedia() {
+
+        try(BaseXClient session = new BaseXClient("localhost",1984,"admin","abc123")){
+        BaseXClient.Query query = session.query("<html>\n" +
+                                                "<ul>\n" +
+                                                "{for $elemento in db:get('Fichero')/biblioteca/libros/libro[editorial= \"O'Reilly Media\"]/titulo order by $elemento\n" +
+                                                "return <li>{$elemento}</li>}\n" +
+                                                "</ul>\n" +
+                                                "</html>");
+
+            while(query.more()){
+                System.out.println(query.next());
+            }
+        }catch (IOException e){
+            System.out.println("Error basex");
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void tituloYEditorialLibro18_19(BaseXClient session) {
+        try{
+            BaseXClient.Query query = session.query("for $libro in db:get('Fichero')//libro[@publicacion = 2018 or @publicacion = 2019]\n"+
+                    "return <libro>{$libro/titulo}{$libro/editorial}</libro>");
+            while(query.more()){
+                System.out.println(query.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Error en el metodo titulo editorial 2019 2019");
+            e.printStackTrace();
+        }
+    }
+
+    private static void tituloAnhoPublicacionLibrosConVersionElectronica(BaseXClient session) {
+        try{
+            BaseXClient.Query query = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro[edicionElectronica='true']\n" +
+                                                    "return <libro publicacion = '{$libro/@publicacion}'>{$libro/titulo}</libro>");
+            while(query.more()){
+                System.out.println(query.next());
+            }
+        }catch (IOException e){
+            System.out.println("Error al filtar por edicion digital");
+            e.printStackTrace();
+        }
+    }
+
+
 }
