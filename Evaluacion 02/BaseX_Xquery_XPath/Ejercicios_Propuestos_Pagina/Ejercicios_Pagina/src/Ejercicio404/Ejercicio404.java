@@ -34,7 +34,8 @@ public class Ejercicio404 {
             //numeroDeLibrosDeMasDe400Paginas();
             //listaHTMLEditorialOReillyMedia();
             //tituloYEditorialLibro18_19(session);
-            tituloAnhoPublicacionLibrosConVersionElectronica(session);
+            //tituloAnhoPublicacionLibrosConVersionElectronica(session);
+            tituloLibrosNoVersionElectronica(session);
         }catch (IOException e){
             System.out.println("Error al conectar con BaseX");
         }
@@ -133,7 +134,14 @@ public class Ejercicio404 {
     private static void tituloAnhoPublicacionLibrosConVersionElectronica(BaseXClient session) {
         try{
             BaseXClient.Query query = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro[edicionElectronica='true']\n" +
+                                                    "return <libro>" +
+                                                    "<titulo>{$libro/titulo/text()}</titulo>" +
+                                                    "<fecha-publicacion>{$libro/@publicacion/string()}</fecha-publicacion>" +
+                                                    "</libro>");
+            /*
+             BaseXClient.Query query = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro[edicionElectronica='true']\n" +
                                                     "return <libro publicacion = '{$libro/@publicacion}'>{$libro/titulo}</libro>");
+             */
             while(query.more()){
                 System.out.println(query.next());
             }
@@ -143,5 +151,17 @@ public class Ejercicio404 {
         }
     }
 
+
+    private static void tituloLibrosNoVersionElectronica(BaseXClient session) {
+        try{
+            BaseXClient.Query query = session.query("for $resultado in db:get('Fichero')/biblioteca/libros/libro[exists(edicionElectronica)]\n" +
+                                                    "return $resultado/titulo/text()");
+            while(query.more()){
+                System.out.println(query.next());
+            }
+        } catch (IOException e) {
+            System.out.println("Error en la consulta libros sin version electronica");
+        }
+    }
 
 }
