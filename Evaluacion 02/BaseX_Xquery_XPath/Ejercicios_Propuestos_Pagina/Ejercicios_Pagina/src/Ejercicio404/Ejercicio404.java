@@ -34,8 +34,8 @@ public class Ejercicio404 {
             //numeroDeLibrosDeMasDe400Paginas();
             //listaHTMLEditorialOReillyMedia();
             //tituloYEditorialLibro18_19(session);
-            //tituloAnhoPublicacionLibrosConVersionElectronica(session);
-            tituloLibrosNoVersionElectronica(session);
+            tituloAnhoPublicacionLibrosConVersionElectronica(session);
+            //tituloLibrosNoVersionElectronica(session);
         }catch (IOException e){
             System.out.println("Error al conectar con BaseX");
         }
@@ -136,7 +136,7 @@ public class Ejercicio404 {
             BaseXClient.Query query = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro[edicionElectronica='true']\n" +
                                                     "return <libro>" +
                                                     "<titulo>{$libro/titulo/text()}</titulo>" +
-                                                    "<fecha-publicacion>{$libro/@publicacion/string()}</fecha-publicacion>" +
+                                                    "<fecha-publicacion>{$libro/@publicacion/data()}</fecha-publicacion>" +
                                                     "</libro>");
             /*
              BaseXClient.Query query = session.query("for $libro in db:get('Fichero')/biblioteca/libros/libro[edicionElectronica='true']\n" +
