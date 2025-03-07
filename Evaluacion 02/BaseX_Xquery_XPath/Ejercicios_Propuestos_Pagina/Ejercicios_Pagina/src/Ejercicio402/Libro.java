@@ -29,7 +29,7 @@ public class Libro {
         this.editorial = "Editorial " + (int) (Math.random() * 100);
         this.paginas = (int) (Math.random() * 701) + 150;
         this.edicionElectronica = Math.random() > 0.5;
-
+//libro[autor/nombre = 'Nombre18']
         return this;
     }
 }

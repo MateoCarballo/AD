@@ -3,6 +3,7 @@ package Ejercicio402;
 import org.basex.examples.api.BaseXClient;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -67,126 +68,68 @@ public class Ejercicio402 {
         }
     }
 
-    private static void numMedioPalabrasLibroAnhoAutor(BaseXClient sesion, int bd) {
-        int anho = pedirInt("Introduzca un año");
-        int autor = pedirInt("Introduzca el número del autor");
-        int primerApellido = pedirInt("Introduzca el número del primer apellido");
-        String sql;
-        if (bd == 1){
-            sql = "avg(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro " +
-                    "where $i/@publicacion < " + anho + " and $i/autor/nombre = 'Nombre" + autor +
-                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i/paginas)";
-        }else{
-            sql = "avg(for $i in db:get('" + nombreDatasetPequeno + "')/libro " +
-                    "where $i/@publicacion < " + anho + " and $i/autor/nombre = 'Nombre" + autor +
-                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i/paginas)";
-        }
-        try (BaseXClient.Query query = sesion.query(sql)) {
-
-            // Comprobación e iteración de los resultados
-            if (query.more()) {
-                System.out.println("Total de documentos: " + query.next() + query.info());
+    private static void numMedioPalabrasLibroAnhoAutor(BaseXClient session, int opcion) {
+        try{
+            if(opcion == 1){
+                BaseXClient.Query query = session.query("avg(db:get('ejercicio402FicheroGrande')//libro[autor/nombre/text() = 'Nombre1' and @publicacion > 2010]/paginas)");
+                while(query.more()){
+                    System.out.println(query.next());
+                }
             }
-        } catch (Exception ignored) { }
+            if (opcion ==2){
+
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-    private static void numMedioPalabras(BaseXClient sesion, int bd) {
-        String sql;
-        if (bd == 1){
-            sql = "avg(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro return $i/paginas)";
-        }else{
-            sql = "avg(for $i in db:get('" + nombreDatasetPequeno + "')/libro return $i/paginas)";
-        }
-        try (BaseXClient.Query query = sesion.query(sql)) {
-
-            // Comprobación e iteración de los resultados
-            if (query.more()) {
-                System.out.println("Total de documentos: " + query.next() + query.info());
+    private static void numMedioPalabras(BaseXClient session, int opcion) {
+        try{
+            if(opcion == 1){
+                BaseXClient.Query query = session.query("avg(db:get('ejercicio402FicheroGrande')//libro/paginas)");
+                while(query.more()){
+                    System.out.println(query.next());
+                }
             }
-        } catch (Exception ignored) { }
+            if (opcion ==2){
+
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-    private static void librosPorAutor(BaseXClient sesion, int bd) {
-        int autor = pedirInt("Introduzca el número del autor");
-        int primerApellido = pedirInt("Introduzca el número del primer apellido");
-        String sql;
-        if (bd == 1){
-            sql = "count(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro where $i/autor/nombre='Nombre" + autor +
-                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i)";
-        }else{
-            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "')/libro where $i/autor/nombre='Nombre" + autor +
-                    "' and contains($i/autor/apellidos, 'Apellido" + primerApellido + "') return $i)";
-        }
-        try (BaseXClient.Query query = sesion.query(sql)) {
-
-            // Comprobación e iteración de los resultados
-            if (query.more()) {
-                System.out.println("Total de documentos: " + query.next() + query.info());
+    private static void librosPorAutor(BaseXClient session, int opcion) {
+        try{
+            if(opcion == 1){
+                BaseXClient.Query query = session.query("count(db:get('ejercicio402FicheroGrande')//libro[autor/nombre/text() = 'Nombre1'])");
+                while(query.more()){
+                    System.out.println(query.next());
+                }
             }
-        } catch (Exception ignored) { }
+            if (opcion ==2){
+
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-    private static void librosPorAnho(BaseXClient sesion, int bd) {
-        int anho = pedirInt("Introduzca un año");
-        String sql;
-        if (bd == 1) {
-            sql = "count(for $i in db:get('" + nombreDatasetGrande + "')/biblioteca/libro where $i/@publicacion < " + anho + " return $i)";
-        }else{
-            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "')/libro where $i/@publicacion < " + anho + " return $i)";
-        }
-        try (BaseXClient.Query query = sesion.query(sql)) {
+    public static void totalDocumentos(BaseXClient session, int opcion){
 
-            // Comprobación e iteración de los resultados
-            if (query.more()) {
-                System.out.println("Total de documentos: " + query.next() + query.info());
-            }
-        } catch (Exception ignored) { }
     }
 
-    private static void totalDocumentos(BaseXClient sesion, int bd) {
-        String sql;
-        if(bd == 1){
-            sql = "count(for $i in db:get('" + nombreDatasetGrande + "') return $i)";
-        }else{
-            sql = "count(for $i in db:get('" + nombreDatasetPequeno + "') return $i)";
+    public static void librosPorAnho(BaseXClient session, int opcion) throws IOException {
+        if(opcion == 1){
+            BaseXClient.Query query = session.query("count(db:get('ejercicio402FicheroGrande')/biblioteca/libro[@publicacion<2009])");
+            while(query.more()){
+                System.out.println(query.next());
+            }
         }
-        try (BaseXClient.Query query = sesion.query(sql)) {
+        if (opcion ==2){
 
-            // Comprobación e iteración de los resultados
-            if (query.more()) {
-                System.out.println("Total de documentos: " + query.next() + query.info());
-            }
-        } catch (Exception ignored) { }
-    }
-
-    private static void crearDatasets() {
-        while(biblioteca.size() < 10000)
-            biblioteca.add(new Libro().generarDatosAleatorios());
-
-        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
-
-            InputStream bais = new ByteArrayInputStream(biblioteca.get(0).toString().getBytes());
-
-            session.create(nombreDatasetPequeno, bais);
-
-            for (int i = 1; i < biblioteca.size(); i++) {
-                bais = new ByteArrayInputStream(biblioteca.get(i).toString().getBytes());
-                session.add(nombreDatasetPequeno + "/libro" + i + ".xml", bais);
-            }
-        }catch (Exception ignored){}
-
-        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("<biblioteca>");
-            for (Libro libro: biblioteca) {
-                sb.append(libro.toString());
-            }
-            sb.append("</biblioteca>");
-
-            InputStream bais = new ByteArrayInputStream(sb.toString().getBytes());
-
-            session.create(nombreDatasetGrande, bais);
-        }catch (Exception ignored){}
+        }
     }
 
     private static String pedirString(String mensaje) {
@@ -204,6 +147,42 @@ public class Ejercicio402 {
                 System.out.println(mensaje);
                 return sc.nextInt();
             }catch (Exception ignored){}
+        }
+    }
+
+    private static void crearDatasets() {
+        while(biblioteca.size() < 1000)
+            biblioteca.add(new Libro().generarDatosAleatorios());
+
+        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+
+            InputStream bais = new ByteArrayInputStream(biblioteca.get(0).toString().getBytes());
+
+            session.create(nombreDatasetPequeno, bais);
+
+            for (int i = 1; i < biblioteca.size(); i++) {
+                bais = new ByteArrayInputStream(biblioteca.get(i).toString().getBytes());
+                session.add(nombreDatasetPequeno + "/libro" + i + ".xml", bais);
+            }
+        }catch (Exception ignored){
+            System.out.println();
+            ignored.printStackTrace();
+        }
+
+        try(BaseXClient session = new BaseXClient("localhost", 1984, "admin", "abc123")) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<biblioteca>");
+            for (Libro libro: biblioteca) {
+                sb.append(libro.toString());
+            }
+            sb.append("</biblioteca>");
+
+            InputStream bais = new ByteArrayInputStream(sb.toString().getBytes());
+
+            session.create(nombreDatasetGrande, bais);
+        }catch (Exception ignored){
+            System.out.println();
+            ignored.printStackTrace();
         }
     }
 }
