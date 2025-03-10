@@ -121,12 +121,12 @@ public class Main {
             switch (opcion){
                 case 1 -> modificarElementoXmlPorId(session);
                 case 2-> eliminarPorId(session);
-                case 3-> ejecutarConsultaBaseX(session,);
-                case 4-> ejecutarConsultaBaseX(session,);
-                case 5-> ejecutarConsultaBaseX(session,);
-                case 6-> ejecutarConsultaBaseX(session,);
-                case 7-> ejecutarConsultaBaseX(session,);
-                case 8-> ejecutarConsultaBaseX(session,);
+                case 3-> ejecutarConsultaBaseX(session,QUERY_1);
+                case 4-> ejecutarConsultaBaseX(session,QUERY_2);
+                case 5-> ejecutarConsultaBaseX(session,QUERY_3);
+                case 6-> ejecutarConsultaBaseX(session,QUERY_4);
+                case 7-> ejecutarConsultaBaseX(session,QUERY_5);
+                case 8-> ejecutarConsultaBaseX(session,QUERY_6);
                 default -> System.out.println("Opcion fuera de rango");
             }
         }catch (Exception e){
