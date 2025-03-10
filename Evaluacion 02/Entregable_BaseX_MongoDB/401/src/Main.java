@@ -14,7 +14,7 @@ public class Main {
     private static BaseXClient session;
 
     private static final String QUERY_1 = """
-            
+            aqui
             """;
     private static final String QUERY_2 = """
             """;
