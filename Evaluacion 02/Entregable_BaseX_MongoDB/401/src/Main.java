@@ -33,7 +33,12 @@ public class Main {
             let $titulo := /videojuegos/videojuego[precio = $precio]/titulo
             return concat("Plataforma: ",$plataforma," Titulo: ",$titulo," Precio: ",$precio)
             """;
+    // Esta QUERY_4 seria un ejemplo como la pido por teclado la personalizo en el metodo desde el eque ejecuto la consilta con la entrada de teclado
+
     private static final String QUERY_4 = """
+            for $videojuego in /videojuegos/videojuego
+            where contains($videojuego/descripcion,"Aventura épi")
+            return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
             """;
     private static final String QUERY_5 = """
             """;
@@ -138,9 +143,9 @@ public class Main {
                 case 1 -> modificarElementoXmlPorId(session);
                 case 2-> eliminarPorId(session);
                 case 3-> ejecutarConsultaBaseX(session,QUERY_1);
-                case 4-> pregunarFiltroParaConsulta();
+                case 4-> pregunarFiltroParaConsultaQuery2();
                 case 5-> ejecutarConsultaBaseX(session,QUERY_3);
-                case 6-> ejecutarConsultaBaseX(session,QUERY_4);
+                case 6-> preguntarFiltroParaConsultaQuery4();
                 case 7-> ejecutarConsultaBaseX(session,QUERY_5);
                 case 8-> ejecutarConsultaBaseX(session,QUERY_6);
                 default -> System.out.println("Opcion fuera de rango");
@@ -153,7 +158,24 @@ public class Main {
 
     }
 
-    private static void pregunarFiltroParaConsulta() {
+    private static void preguntarFiltroParaConsultaQuery4() {
+        System.out.println("Buscar en la descripcion que contenga la string que introduzcas");
+        /*
+        for $videojuego in /videojuegos/videojuego
+where contains($videojuego/descripcion,"Aventura épi")
+return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
+         */
+        String filtroConsulta = sc.next();
+        StringBuilder query2 = new StringBuilder();
+        query2.append(" \n")
+                .append("" + filtroConsulta + "\n")
+                .append("")
+                .append("\n")
+                .append("");
+        ejecutarConsultaBaseX(session, query2.toString());
+    }
+
+    private static void pregunarFiltroParaConsultaQuery2() {
         System.out.println("Edad minima sobre la que filtraremos la DB");
         String filtroConsulta = sc.next();
         StringBuilder query2 = new StringBuilder();
