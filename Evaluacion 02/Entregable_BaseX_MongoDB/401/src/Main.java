@@ -8,17 +8,30 @@ public class Main {
     private static final String HOST = "localhost";
     private static final int PORT = 1984;
     private static final String USER = "admin";
-    private static final String PWD = "123abc";
+    private static final String PWD = "abc123";
 
     private static final String BASEX_DATABASE_NAME = "videojuegos";
     private static BaseXClient session;
 
     private static final String QUERY_1 = """
-            aqui
+            for $videojuego in /videojuegos/videojuego
+            order by $videojuego/plataforma, $videojuego/titulo
+            return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}
+            </videojuego>
             """;
-    private static final String QUERY_2 = """
+    // Esta QUERY_2 seria la version generica como la pido por teclado la personalizo en el metodo desde el eque ejecuto la consilta con la entrada de teclado
+    private static String QUERY_2 = """
+            for $videojuego in /videojuegos/videojuego
+            where $videojuego/edad_minima_recomendada < 12
+            order by $videojuego/edad_minima_recomendada
+            return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}
+            </videojuego>
             """;
     private static final String QUERY_3 = """
+            for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
+            let $precio :=  min(/videojuegos/videojuego[plataforma = $plataforma]/precio)
+            let $titulo := /videojuegos/videojuego[precio = $precio]/titulo
+            return concat("Plataforma: ",$plataforma," Titulo: ",$titulo," Precio: ",$precio)
             """;
     private static final String QUERY_4 = """
             """;
@@ -33,7 +46,6 @@ public class Main {
         try{
             session = new BaseXClient(HOST,PORT,USER,PWD);
             System.out.println("Conexion creada con BaseX");
-            System.out.println(session.info());
         } catch (IOException e) {
             System.out.println("Error al crear la conexion con la base de datos en BaseX");
             e.printStackTrace();
@@ -71,7 +83,7 @@ public class Main {
                 System.out.println("Error al seleccionar la opcion");
                 e.printStackTrace();
             }
-        }while((opcion != 1) ||(opcion != 2));
+        }while((opcion != 1) && (opcion != 2));
         return opcion;
     }
 
@@ -84,6 +96,10 @@ public class Main {
             System.out.println("Error al abrir la base de datos");
         }
         System.out.println("""
+                                       ######### OPERACIONES SOBRE BASEX ##########
+                                       
+                                       ######### OPERACIONES DE MODIFICACION Y ELIMINACION ##########
+                
                 1. Modificar elemento por 'id'.
                 
                 2. Eliminar un videojuego según su ID.
@@ -122,7 +138,7 @@ public class Main {
                 case 1 -> modificarElementoXmlPorId(session);
                 case 2-> eliminarPorId(session);
                 case 3-> ejecutarConsultaBaseX(session,QUERY_1);
-                case 4-> ejecutarConsultaBaseX(session,QUERY_2);
+                case 4-> pregunarFiltroParaConsulta();
                 case 5-> ejecutarConsultaBaseX(session,QUERY_3);
                 case 6-> ejecutarConsultaBaseX(session,QUERY_4);
                 case 7-> ejecutarConsultaBaseX(session,QUERY_5);
@@ -137,29 +153,33 @@ public class Main {
 
     }
 
+    private static void pregunarFiltroParaConsulta() {
+        System.out.println("Edad minima sobre la que filtraremos la DB");
+        String filtroConsulta = sc.next();
+        StringBuilder query2 = new StringBuilder();
+        query2.append("for $videojuego in /videojuegos/videojuego \n")
+                .append("where $videojuego/edad_minima_recomendada < " + filtroConsulta + "\n")
+                .append("order by $videojuego/edad_minima_recomendada")
+                .append("return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}\n")
+                .append("</videojuego>");
+        ejecutarConsultaBaseX(session, query2.toString());
+    }
+
     private static void modificarElementoXmlPorId(BaseXClient session) {
     }
 
     private static void eliminarPorId(BaseXClient session) {
     }
 
-    private static void consulta1(BaseXClient session) {
-        /*
-        Consulta 1: Obtener todos los videojuegos ordenados por plataforma y
-                   en segundo lugar por título (se mostrarán los siguientes campos:
-                   id, titulo, precio, disponibilidad, edad_minima_recomendada y plataforma).
-         */
+    private static void ejecutarConsultaBaseX(BaseXClient session, String queryAsString) {
         try {
-            //TODO estoy aquí.
-            BaseXClient.Query query = session.query("");
+            BaseXClient.Query query = session.query(queryAsString);
+            while (query.more()){
+                System.out.println(query.next());
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    private static void ejecutarConsultaBaseX(BaseXClient session, String query) {
-
     }
 
 
