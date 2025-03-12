@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
     private static final String HOST = "localhost";
     private static final int PORT = 1984;
     private static final String USER = "admin";
@@ -40,7 +40,20 @@ public class Main {
             where contains($videojuego/descripcion,"Aventura épi")
             return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
             """;
+
+    /*
+    Consulta 5: Mostrar la cantidad total de videojuegos para
+    cada plataforma (teniendo en cuenta el elemento disponibilidad) y
+    calcular el porcentaje que representa respecto al total de videojuegos.
+    Se deberá mostrar la información ordenada de forma descendente por la cantidad de videojuegos.
+     */
     private static final String QUERY_5 = """
+            let $total_videojuegos := sum(//disponibilidad)
+            for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
+            for $suma_videojuego in sum(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad)
+            let $porcent := round(($suma_videojuego div $total_videojuegos) * 100,2)
+            order by count(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad) descending
+            return  concat("Suma plataforma: ",$plataforma," es igual a ",$suma_videojuego," lo que representa un porcentaje del ",$porcent," %")
             """;
     private static final String QUERY_6 = """
             """;
@@ -158,6 +171,16 @@ public class Main {
 
     }
 
+    private static void eliminarPorId(BaseXClient session) {
+        System.out.println("Introduce el id del videojuego que quieres eliminar");
+        int idVideojuego = sc.nextInt();
+        String query = """
+                for $videojuego in /videojuegos/videojuego[id = %d]
+                return delete node $videojuego
+                """.formatted(idVideojuego);
+        ejecutarConsultaBaseX(session,query);
+    }
+
     private static void preguntarFiltroParaConsultaQuery4() {
         System.out.println("Buscar en la descripcion que contenga la string que introduzcas");
         /*
@@ -188,9 +211,67 @@ return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
     }
 
     private static void modificarElementoXmlPorId(BaseXClient session) {
-    }
+        boolean datovalido = true;
+        int idVideojuego = -1;
+        do {
 
-    private static void eliminarPorId(BaseXClient session) {
+            try{
+                System.out.println("Introduce el id del producto que quieres modificar");
+                idVideojuego = sc.nextInt();
+                datovalido = true;
+            } catch (Exception e) {
+                datovalido = false;
+                System.out.println("Ha ocurrido un error revisa los datos");
+            }
+        }while(!datovalido);
+        int numeroEtiqueta = -1;
+        do {
+            datovalido = true;
+            try{
+                //TODO Preguntar a jose si especificaciones tienen que ser cambiadas tambien
+                System.out.println("""
+                Que quieres modificar del videojuego:
+                1. Titulo.
+                2. Descripcion.
+                3. Precio.
+                4. Disponibilidad.
+                5. Genero.
+                6. Desarrollador.
+                7. Edad minima recomendada.
+                8. Plataforma.
+                """);
+                numeroEtiqueta = sc.nextInt();
+                if(numeroEtiqueta > 10 ||numeroEtiqueta < 0){
+                    datovalido = false;
+                }
+            } catch (Exception e) {
+                datovalido = false;
+                System.out.println("Ha ocurrido un error revisa los datos");
+            }
+        }while(!datovalido);
+
+        String nodeToChange = "";
+
+        switch (numeroEtiqueta){
+            case 1 -> nodeToChange = "titulo";
+            case 2 -> nodeToChange = "descripcion";
+            case 3 -> nodeToChange = "precio";
+            case 4 -> nodeToChange = "disponibilidad";
+            case 5 -> nodeToChange = "genero";
+            case 6 -> nodeToChange = "desarrollador";
+            case 7 -> nodeToChange = "edad_minima_recomendada";
+            case 8 -> nodeToChange = "plataforma";
+        }
+
+        System.out.println("Indica el nuevo valor para el nodo seleccionado (" + nodeToChange + ")" );
+        String newValue = sc.next();
+
+        String queryToMake = """
+                for $videojuego in /videojuegos/videojuego[id = %d]
+                return replace value of node $videojuego/%s with "%s"
+                """.formatted(idVideojuego,nodeToChange,newValue);
+
+        ejecutarConsultaBaseX(session,queryToMake);
     }
 
     private static void ejecutarConsultaBaseX(BaseXClient session, String queryAsString) {
@@ -198,6 +279,7 @@ return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
             BaseXClient.Query query = session.query(queryAsString);
             while (query.more()){
                 System.out.println(query.next());
+                System.out.println(session.info());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
