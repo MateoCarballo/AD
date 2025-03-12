@@ -55,7 +55,9 @@ public class Main {
             order by count(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad) descending
             return  concat("Suma plataforma: ",$plataforma," es igual a ",$suma_videojuego," lo que representa un porcentaje del ",$porcent," %")
             """;
+    //TODO estoy en la consulta 6 pto 8
     private static final String QUERY_6 = """
+            
             """;
     private static final String QUERY_7 = """
             """;
