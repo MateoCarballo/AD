@@ -244,7 +244,6 @@ public class Main {
         int idVideojuego = -1;
         //Preguntar qué ids existen en la database
         try {
-
             BaseXClient.Query ids = session.query("distinct-values(/videojuegos/videojuego/id)");
             while (ids.more()) {
                 listadoIds.add(Integer.parseInt(ids.next()));

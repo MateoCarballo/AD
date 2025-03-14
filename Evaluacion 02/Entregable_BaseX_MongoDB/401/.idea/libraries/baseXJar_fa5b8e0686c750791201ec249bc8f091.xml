@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="baseXJar-fa5b8e0686c750791201ec249bc8f091">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Librerias_usadas/baseXJar-fa5b8e0686c750791201ec249bc8f091.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Librerias_usadas/mongo-java-driver-3.12.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/Librerias_usadas/baseXJar-fa5b8e0686c750791201ec249bc8f091.jar!/" />
+    </SOURCES>
+  </library>
+</component>
