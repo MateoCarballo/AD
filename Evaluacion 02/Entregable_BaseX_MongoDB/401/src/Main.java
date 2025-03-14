@@ -1,7 +1,8 @@
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import org.basex.examples.api.BaseXClient;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -10,10 +11,14 @@ public class Main {
     private static final Scanner sc = new Scanner(System.in);
     private static BaseXClient session;
 
-    private static final String HOST = "localhost";
+    private static final String BASE_X_HOST = "localhost";
     private static final int PORT = 1984;
     private static final String USER = "admin";
     private static final String PWD = "abc123";
+
+    private static MongoClient mongoClient;
+    private static String MONGO_DB_HOST = "mongodb://localhost:27017";
+
 
     private static final String MENU_ELIGIR_TECNOLOGIA = """
             Seleccione una opción:
@@ -59,17 +64,47 @@ public class Main {
                (teniendo en cuenta el precio de cada videojuego y la disponibilidad de cada uno).
             """;
 
+    private static final String MENU_OPCIONES_MONGO = """
+                1. Crear un nuevo usuario (no podrá haber email repetidos).
+            
+                2. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
+                   de forma que las siguientes consultas se harán sobre ese usuario. Para cambiar de 
+                   usuario se tendrá que volver a seleccionar esta opción.
+            
+                3. Borrar un usuario.
+            
+                4. Modificar el valor de un campo de la información del usuario.
+            
+                5. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
+                   cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
+                   id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
+            
+                6. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
+            
+                7. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
+                   de confirmación. Si la orden es positiva se pasarán todos los videojuegos a formar parte de 
+                   una nueva compra y desaparecerán del carrito.
+            
+                8. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
+            
+                9. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
+                   listar los resultados ordenados por el total de forma descendente.
+            
+                10.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
+                 en todas sus compras y listar los resultados ordenados por el total de forma ascendente.
+            """;
+
     private static final String MENU_ETIQUETAS_MODIFICABLES = """
-                        Que quieres modificar del videojuego:
-                        1. Titulo.
-                        2. Descripcion.
-                        3. Precio.
-                        4. Disponibilidad.
-                        5. Genero.
-                        6. Desarrollador.
-                        7. Edad minima recomendada.
-                        8. Plataforma.
-                        """;
+            Que quieres modificar del videojuego:
+            1. Titulo.
+            2. Descripcion.
+            3. Precio.
+            4. Disponibilidad.
+            5. Genero.
+            6. Desarrollador.
+            7. Edad minima recomendada.
+            8. Plataforma.
+            """;
     private static final String BASEX_DATABASE_NAME = "videojuegos";
 
     private static final String QUERY_MODIFICAR_NODO_STRING_POR_ID = """
@@ -141,14 +176,27 @@ public class Main {
             """;
 
     public static void main(String[] args) {
-        try (BaseXClient session = new BaseXClient(HOST, PORT, USER, PWD)) {
-            System.out.println("Conexión establecida con BaseX.");
+        try (BaseXClient session = new BaseXClient(BASE_X_HOST, PORT, USER, PWD)) {
             Main.session = session;
-            ejecutarMenuPrincipal();
+            if (Main.session != null) {
+                System.out.println("Conexión establecida con BaseX.");
+            }
         } catch (IOException e) {
-            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+            System.out.println("Error al conectar con BaseX: " + e.getMessage());
             System.exit(1);
         }
+
+        try (MongoClient mongoClient = MongoClients.create(MONGO_DB_HOST)) {
+            Main.mongoClient = mongoClient;
+            if (Main.mongoClient != null) {
+                System.out.println("Conexión establecida con BaseX.");
+            }
+        } catch (Exception e) {
+            System.out.println("Error al conectar con Mongo: " + e.getMessage());
+            System.exit(1);
+        }
+        ejecutarMenuPrincipal();
+
     }
 
     private static void ejecutarMenuPrincipal() {
@@ -195,7 +243,7 @@ public class Main {
         switch (opcion) {
             case 1 -> ejecutarConsultaBaseX(preguntarFiltroParaModificarPorId());
             case 2 -> ejecutarConsultaBaseX(preguntarFiltroParaEliminarPorId());
-            case 3 -> ejecutarConsultaBaseX( QUERY_1);
+            case 3 -> ejecutarConsultaBaseX(QUERY_1);
             case 4 -> ejecutarConsultaBaseX(pregunarFiltroParaConsultaQuery2());
             case 5 -> ejecutarConsultaBaseX(QUERY_3);
             case 6 -> ejecutarConsultaBaseX(preguntarFiltroParaConsultaQuery4());
@@ -212,7 +260,7 @@ public class Main {
 
         int idVideojuego = preguntarId();
 
-        numeroEtiqueta = elegirOpcion(MENU_ETIQUETAS_MODIFICABLES,1,8);
+        numeroEtiqueta = elegirOpcion(MENU_ETIQUETAS_MODIFICABLES, 1, 8);
 
         switch (numeroEtiqueta) {
             case 1 -> nodeToChange = "titulo";
@@ -227,13 +275,13 @@ public class Main {
 
         System.out.println("Indica el nuevo valor para el nodo seleccionado (" + nodeToChange + ")");
         String newValue = sc.nextLine();
-        if (numeroEtiqueta == 3){
-            newValue = newValue.replace(",",".");
+        if (numeroEtiqueta == 3) {
+            newValue = newValue.replace(",", ".");
             double newValueDouble = Double.parseDouble(newValue);
-            String newValueDotStyle = String.format(Locale.US,"%.2f",newValueDouble);
-            return QUERY_MODIFICAR_NODO_DOUBLE_POR_ID.formatted(idVideojuego, nodeToChange,newValueDotStyle);
+            String newValueDotStyle = String.format(Locale.US, "%.2f", newValueDouble);
+            return QUERY_MODIFICAR_NODO_DOUBLE_POR_ID.formatted(idVideojuego, nodeToChange, newValueDotStyle);
         }
-        if (numeroEtiqueta == 4 || numeroEtiqueta == 7 ){
+        if (numeroEtiqueta == 4 || numeroEtiqueta == 7) {
             return QUERY_MODIFICAR_NODO_INT_POR_ID.formatted(idVideojuego, nodeToChange, Integer.parseInt(newValue));
         }
         return QUERY_MODIFICAR_NODO_STRING_POR_ID.formatted(idVideojuego, nodeToChange, newValue);
@@ -321,36 +369,20 @@ public class Main {
 
 
     private static void menuOperacionesMongoDB() {
-        System.out.println("""
-                1. Crear un nuevo usuario (no podrá haber email repetidos).
-                
-                2. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
-                   de forma que las siguientes consultas se harán sobre ese usuario. Para cambiar de 
-                   usuario se tendrá que volver a seleccionar esta opción.
-                
-                3. Borrar un usuario.
-                
-                4. Modificar el valor de un campo de la información del usuario.
-                
-                5. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
-                   cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
-                   id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
-                
-                6. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
-                
-                7. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
-                   de confirmación. Si la orden es positiva se pasarán todos los videojuegos a formar parte de 
-                   una nueva compra y desaparecerán del carrito.
-                
-                8. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
-                
-                9. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
-                   listar los resultados ordenados por el total de forma descendente.
-                
-                10.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
-                 en todas sus compras y listar los resultados ordenados por el total de forma ascendente.
-                """);
+        int opcion = elegirOpcion(MENU_OPCIONES_MONGO, 1, 10);
 
+        switch (opcion) {
+            case 1 ->
+            case 2 ->
+            case 3 ->
+            case 4 ->
+            case 5 ->
+            case 6 ->
+            case 7 ->
+            case 8 ->
+            case 9 ->
+            case 10 ->
+        }
     }
 
 }
