@@ -1,5 +1,6 @@
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import org.basex.examples.api.BaseXClient;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Main {
 
     private static MongoClient mongoClient;
     private static String MONGO_DB_HOST = "mongodb://localhost:27017";
-
+    private static MongoDatabase mongoDatabase;
 
     private static final String MENU_ELIGIR_TECNOLOGIA = """
             Seleccione una opción:
@@ -229,7 +230,6 @@ public class Main {
     }
 
     private static void menuOperacionesBaseX() {
-
         try {
             session.execute("open " + BASEX_DATABASE_NAME);
             System.out.println("Conectado con la base de datos " + BASEX_DATABASE_NAME);
@@ -369,20 +369,38 @@ public class Main {
 
 
     private static void menuOperacionesMongoDB() {
-        int opcion = elegirOpcion(MENU_OPCIONES_MONGO, 1, 10);
+        try {
+            Main.mongoDatabase = mongoClient.getDatabase(ConexionMongo.DATABASE_NAME);
+            System.out.println("Obtenida la conexion con la database en Mongo: " + ConexionMongo.DATABASE_NAME);
+        } catch (Exception e) {
+            System.out.println("Error al abrir la base de datos" + ConexionMongo.DATABASE_NAME + "\n" + e.getMessage());
+            return;
+        }
+
+        int opcion = elegirOpcion(MENU_OPCIONES_MONGO, 9, 18);
 
         switch (opcion) {
-            case 1 ->
-            case 2 ->
-            case 3 ->
-            case 4 ->
-            case 5 ->
-            case 6 ->
-            case 7 ->
-            case 8 ->
             case 9 ->
             case 10 ->
+            case 11 ->
+            case 12 ->
+            case 13 ->
+            case 14 ->
+            case 15 ->
+            case 16 ->
+            case 17 ->consultaMongo1();
+            case 18 ->
         }
+    }
+
+    private static void consultaMongo1() {
+        /*
+        Consulta 1: Teniendo en cuenta todos los usuarios,
+        calcular el coste de cada carrito y listar los resultados
+        ordenados por el total de forma descendente.
+         */
+
+
     }
 
 }
