@@ -189,7 +189,7 @@ public class Main {
         try (MongoClient mongoClient = MongoClients.create(MONGO_DB_HOST)) {
             Main.mongoClient = mongoClient;
             if (Main.mongoClient != null) {
-                System.out.println("Conexión establecida con BaseX.");
+                System.out.println("Conexión establecida con Mongo.");
             }
         } catch (Exception e) {
             System.out.println("Error al conectar con Mongo: " + e.getMessage());
