@@ -37,7 +37,9 @@ public class Main {
                 case 3 -> continuar = false;
             }
         }
-        System.out.println("¡Hasta pronto!");
+        System.out.println("""
+                Cerrando APP ... 
+                """);
     }
 
     // ############################################ OPERACIONES SOBRE BASE X ############################################
