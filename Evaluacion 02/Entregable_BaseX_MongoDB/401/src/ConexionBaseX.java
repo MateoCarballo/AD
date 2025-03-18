@@ -5,10 +5,11 @@ import java.io.IOException;
 
 public class ConexionBaseX {
     private static BaseXClient session;
-    private static final String BASE_X_HOST = "localhost";
-    private static final int PORT = 1984;
-    private static final String USER = "admin";
-    private static final String PWD = "abc123";
+    public static final String BASE_X_HOST = "localhost";
+    public static final int PORT = 1984;
+    public static final String USER = "admin";
+    public static final String PWD = "abc123";
+    public static final String BASEX_DATABASE_NAME = "videojuegos";
 
     private ConexionBaseX() {
         try {
@@ -21,6 +22,11 @@ public class ConexionBaseX {
     public static BaseXClient getSession() {
         if (session == null){
             new ConexionBaseX();
+        }
+        try {
+            session.execute("open " + BASEX_DATABASE_NAME);
+        } catch (IOException e) {
+            System.out.println("Error al abrir la base de datos \n" + e.getMessage());
         }
         return session;
     }

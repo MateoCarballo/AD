@@ -3,8 +3,8 @@ import com.mongodb.client.*;
 
 public class ConexionMongo {
     private static MongoClient mongoClient = null;
-    private static DBCollection databaseCollections;
     private static MongoDatabase database = null;
+    private static DBCollection databaseCollections;
 
     public static final String URL = "mongodb://localhost:27017";
     public static final String DATABASE_NAME = "comercio";
@@ -21,12 +21,7 @@ public class ConexionMongo {
         }
     }
 
-    public static MongoClient getConnection() {
-
-        return mongoClient;
-    }
-
-    public static MongoDatabase getDataBase(){
+    public static MongoDatabase getDataBase(String databaseName){
         try{
             if (mongoClient == null){
                 new ConexionMongo();
@@ -37,8 +32,8 @@ public class ConexionMongo {
         }
 
         if (database == null){
-            database = mongoClient.getDatabase(DATABASE_NAME);
-            System.out.println("Accecido a base \"" + DATABASE_NAME + "\"");
+            database = mongoClient.getDatabase(databaseName);
+            System.out.println("Accecido a base \"" + databaseName + "\"");
         }
 
         return database;

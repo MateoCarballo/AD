@@ -1,0 +1,158 @@
+public class StringResources {
+    public static final String MENU_ELIGIR_TECNOLOGIA = """
+            Seleccione una opción:
+            1. Operaciones BaseX
+            2. Operaciones MongoDB
+            3. Salir""";
+
+    public static final String MENU_OPCIONES_BASEX = """
+                                   ######### OPERACIONES SOBRE BASEX ##########
+            
+                                   ######### OPERACIONES DE MODIFICACION Y ELIMINACION ##########
+            
+            1. Modificar elemento por 'id'.
+            
+            2. Eliminar un videojuego según su ID.
+            
+                                   ######### CONSULTAS ##########
+            
+            3. Consulta 1: Obtener todos los videojuegos ordenados por plataforma y 
+               en segundo lugar por título (se mostrarán los siguientes campos: 
+               id, titulo, precio, disponibilidad, edad_minima_recomendada y plataforma).
+            
+            4. Consulta 2: Listar videojuegos con una edad_minima_recomendada menor o 
+               igual a X años (se mostrarán los siguientes campos: id, titulo, precio, 
+               disponibilidad, edad_minima_recomendada y plataforma). Se deberá mostrar 
+               la información ordenada según la edad_minima_recomendada.
+            
+            5. Consulta 3: Mostrar la plataforma, el titulo y el precio del videojuego
+               más barato para cada plataforma. En el caso de haber varios se devolverá 
+               el de la primera posición.
+            
+            6. Consulta 4: Mostrar el titulo y el genero de aquellos videojuegos cuya
+               descripcion incluya una subcadena, independientemente del uso de mayúsculas
+               o minúsculas. Se deberá mostrar la información ordenada alfabéticamente
+               según el genero.
+            
+            7. Consulta 5: Mostrar la cantidad total de videojuegos para cada plataforma
+               (teniendo en cuenta el elemento disponibilidad) y calcular el porcentaje que
+               representa respecto al total de videojuegos. Se deberá mostrar la información
+               ordenada de forma descendente por la cantidad de videojuegos.
+            
+            8. Consulta 6: Mostrar el precio que costaría comprar todos los videojuegos disponibles 
+               (teniendo en cuenta el precio de cada videojuego y la disponibilidad de cada uno).
+            """;
+
+    public static final String MENU_OPCIONES_MONGO = """
+                1. Crear un nuevo usuario (no podrá haber email repetidos).
+            
+                2. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
+                   de forma que las siguientes consultas se harán sobre ese usuario. Para cambiar de 
+                   usuario se tendrá que volver a seleccionar esta opción.
+            
+                3. Borrar un usuario.
+            
+                4. Modificar el valor de un campo de la información del usuario.
+            
+                5. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
+                   cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
+                   id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
+            
+                6. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
+            
+                7. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
+                   de confirmación. Si la orden es positiva se pasarán todos los videojuegos a formar parte de 
+                   una nueva compra y desaparecerán del carrito.
+            
+                8. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
+            
+                9. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
+                   listar los resultados ordenados por el total de forma descendente.
+            
+                10.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
+                 en todas sus compras y listar los resultados ordenados por el total de forma ascendente.
+            """;
+
+    public static final String MENU_ETIQUETAS_MODIFICABLES = """
+            Que quieres modificar del videojuego:
+            1. Titulo.
+            2. Descripcion.
+            3. Precio.
+            4. Disponibilidad.
+            5. Genero.
+            6. Desarrollador.
+            7. Edad minima recomendada.
+            8. Plataforma.
+            """;
+
+    public static final String QUERY_MODIFICAR_NODO_STRING_POR_ID = """
+            for $videojuego in /videojuegos/videojuego[id = %d]
+            return replace value of node $videojuego/%s with "%s"
+            """;
+    public static final String QUERY_MODIFICAR_NODO_INT_POR_ID = """
+            for $videojuego in /videojuegos/videojuego[id = %d]
+            return replace value of node $videojuego/%s with "%d"
+            """;
+    public static final String QUERY_MODIFICAR_NODO_DOUBLE_POR_ID = """
+            for $videojuego in /videojuegos/videojuego[id = %d]
+            return replace value of node $videojuego/%s with '%s'
+            """;
+
+    public static final String QUERY_ELIMINAR_POR_ID = """
+            for $videojuego in /videojuegos/videojuego[id = %d]
+            return delete node $videojuego
+            """;
+
+    public static final String QUERY_1 = """
+            for $videojuego in /videojuegos/videojuego
+            order by $videojuego/plataforma, $videojuego/titulo
+            return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}
+            </videojuego>
+            """;
+
+    public static String QUERY_2 = """
+            for $videojuego in /videojuegos/videojuego
+            where $videojuego/edad_minima_recomendada < %d
+            order by $videojuego/edad_minima_recomendada
+            return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}</videojuego>
+            """;
+    public static final String QUERY_3 = """
+            for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
+            let $precio :=  min(/videojuegos/videojuego[plataforma = $plataforma]/precio)
+            let $titulo := /videojuegos/videojuego[precio = $precio]/titulo
+            return concat("Plataforma: ",$plataforma," Titulo: ",$titulo[1]," Precio: ",$precio[1])
+            """;
+    /*
+    OTRA forma de realizar la consulta 3
+   for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
+            let $precio :=  min(/videojuegos/videojuego[plataforma = $plataforma]/precio)
+            let $titulo := head(/videojuegos/videojuego[precio = $precio]/titulo)
+            return concat("Plataforma: ",$plataforma," Titulo: ",$titulo," Precio: ",$precio)
+     */
+    public static final String QUERY_4 = """
+            for $videojuego in /videojuegos/videojuego
+            where contains($videojuego/descripcion,"%s")
+            return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
+            """;
+
+    public static final String QUERY_5 = """
+            let $total_videojuegos := sum(//disponibilidad)
+            for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
+            for $suma_videojuego in sum(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad)
+            let $porcent := round(($suma_videojuego div $total_videojuegos) * 100,2)
+            order by count(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad) descending
+            return  concat("Suma plataforma: ",$plataforma," es igual a ",$suma_videojuego," lo que representa un porcentaje del ",$porcent," %")
+            """;
+
+    public static final String QUERY_6 = """
+            let $precioTodosVideojuegos := sum(
+              for $videojuego in /videojuegos/videojuego
+              let $precioUnidad := $videojuego/precio
+              let $unidades := $videojuego/disponibilidad
+              return $precioUnidad * $unidades)
+            return concat("El precio total de comprar todos los videojuegos es ",format-number($precioTodosVideojuegos, '#0.00'))
+            """;
+
+    private StringResources() {
+    }
+}
