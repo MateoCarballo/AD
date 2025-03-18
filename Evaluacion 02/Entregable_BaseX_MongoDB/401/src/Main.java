@@ -17,11 +17,6 @@ public class Main {
     private static final Scanner sc = new Scanner(System.in);
     private static BaseXClient session;
 
-    private static final String BASE_X_HOST = "localhost";
-    private static final int PORT = 1984;
-    private static final String USER = "admin";
-    private static final String PWD = "abc123";
-
     private static MongoClient mongoClient;
     private static String MONGO_DB_HOST = "mongodb://localhost:27017";
     private static MongoDatabase mongoDatabase;
@@ -182,15 +177,9 @@ public class Main {
             """;
 
     public static void main(String[] args) {
-        try (BaseXClient session = new BaseXClient(BASE_X_HOST, PORT, USER, PWD)) {
-            Main.session = session;
-            if (Main.session != null) {
-                System.out.println("Conexión establecida con BaseX.");
-            }
-        } catch (IOException e) {
-            System.out.println("Error al conectar con BaseX: " + e.getMessage());
-            System.exit(1);
-        }
+        //Creamos la conexiones con BaseX y MongoDB
+
+        Main.session = ConexionBaseX.getSession();
 
         try (MongoClient mongoClient = MongoClients.create(MONGO_DB_HOST)) {
             Main.mongoClient = mongoClient;
