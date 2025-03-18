@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -19,14 +20,12 @@ public class Main {
 
     public static void main(String[] args) {
         //Creamos la conexiones con BaseX y MongoDB
-
         session = ConexionBaseX.getSession();
-
         mongoDatabase = ConexionMongo.getDataBase(ConexionMongo.DATABASE_NAME);
-
         ejecutarMenuPrincipal();
 
     }
+
     // Menu principal para elegir la tecnologia
     private static void ejecutarMenuPrincipal() {
         boolean continuar = true;
@@ -40,6 +39,7 @@ public class Main {
         }
         System.out.println("¡Hasta pronto!");
     }
+
     // ############################################ OPERACIONES SOBRE BASE X ############################################
     private static void menuOperacionesBaseX() {
 
@@ -204,42 +204,20 @@ public class Main {
         ordenados por el total de forma descendente.
          */
         User userToInsert = preguntarFiltroParaCrearUsuario();
+        if (userToInsert == null) {
+            System.out.println("Los datos recopilados no han podido crear un usuario, revisa los datos y repite la operacion");
+            return;
+        }
+
         MongoCollection<Document> usersColection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
-        obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME);
-        Document newUser = new Document("user_Id", obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME))
+        int newId = obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME);
+        Document newUser = new Document("user_Id", newId)
                 .append("name", userToInsert.getName())
                 .append("email", userToInsert.getEmail())
                 .append("age", userToInsert.getAge())
                 .append("direction", userToInsert.getDirection());
         usersColection.insertOne(newUser);
-    }
-
-    private static int obtenerMayorUserId(String collectionName) {
-        int maxUserId = 0;
-        MongoCollection<Document> usersColection = mongoDatabase.getCollection(collectionName);
-        Document highestUser = usersColection.find()
-                .sort(descending("user_Id"))
-                .first();
-        if (highestUser != null) {
-            maxUserId = highestUser.getInteger("user_Id");
-            System.out.println("El user_Id más alto es: " + maxUserId);
-        } else {
-            System.out.println("No se encontraron usuarios.");
-        }
-        return maxUserId + 1;
-    }
-
-    private static boolean comprobarCampoRepetido(String collectionName, String campo, String valor) {
-        boolean repetido = true;
-        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
-        Document foundUser = collection.find(Filters.eq(campo, valor)).first();
-        if (foundUser != null) {
-            repetido = false;
-            System.out.println("Ya existe un usuario registrado con este email");
-        } else {
-            System.out.println("No se encontraron usuarios.");
-        }
-        return repetido;
+        System.out.println("Usuario \"" + userToInsert.getName() + "\"  añadido con exito!");
     }
 
     private static User preguntarFiltroParaCrearUsuario() {
@@ -266,18 +244,14 @@ public class Main {
 
         boolean datoValido = true;
 
-        do {
-            System.out.println("Nombre del nuevo usuario");
-            name = sc.nextLine();
-        } while (!datoValido);
+        System.out.println("Nombre del nuevo usuario");
+        name = sc.nextLine();
 
         do {
             System.out.println("E-mail del nuevo usuario (correoEjemplo@dominio.es)");
             email = sc.nextLine();
             //Si existe un usuario que tenga el email que introducimos por teclado devuelve true
         } while (comprobarCampoRepetido(ConexionMongo.COLLECTION_USERS_NAME, "email", email));
-
-        datoValido = true;
 
         do {
             try {
@@ -296,6 +270,31 @@ public class Main {
         return new User(name, email, age, direction);
 
     }
+
+    private static int obtenerMayorUserId(String collectionName) {
+        int maxUserId = 0;
+        MongoCollection<Document> usersColection = mongoDatabase.getCollection(collectionName);
+        Document highestUser = usersColection.find()
+                .sort(descending("user_Id"))
+                .first();
+        if (highestUser != null) {
+            maxUserId = highestUser.getInteger("user_Id");
+        } else {
+            System.out.println("No se encontraron usuarios.");
+        }
+        return maxUserId + 1;
+    }
+
+    private static boolean comprobarCampoRepetido(String collectionName, String campo, String valor) {
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+        Document foundUser = collection.find(Filters.eq(campo, valor)).first();
+        if (foundUser != null) {
+            System.out.println("Este correo ya está registrado");
+            return true;
+        }
+        return false;
+    }
+
 
     // ############################################ OPERACIONES GLOBALES ############################################
 

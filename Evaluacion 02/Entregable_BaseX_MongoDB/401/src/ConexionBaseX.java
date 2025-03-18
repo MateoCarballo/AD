@@ -14,25 +14,27 @@ public class ConexionBaseX {
     private ConexionBaseX() {
         try {
             session = new BaseXClient(BASE_X_HOST, PORT, USER, PWD);
+            System.out.println("Creada nueva session en BaseX");
         } catch (IOException e) {
             System.out.println("ERROR al crear la conexion con BaseX");
         }
     }
 
     public static BaseXClient getSession() {
-        if (session == null){
+        if (session == null) {
             new ConexionBaseX();
         }
         try {
             session.execute("open " + BASEX_DATABASE_NAME);
+            System.out.println("Abierta database en BaseX con nombre " + " ' " + BASEX_DATABASE_NAME + "' ");
         } catch (IOException e) {
             System.out.println("Error al abrir la base de datos \n" + e.getMessage());
         }
         return session;
     }
 
-    public static void closeSession(){
-        if (session != null){
+    public static void closeSession() {
+        if (session != null) {
             try {
                 session.close();
             } catch (IOException e) {
