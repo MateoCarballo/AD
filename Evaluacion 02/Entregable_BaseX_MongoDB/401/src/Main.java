@@ -1,15 +1,12 @@
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
+import com.mongodb.client.*;
+import com.mongodb.client.model.*;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
+import org.bson.json.JsonMode;
+import org.bson.json.JsonWriterSettings;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 import static com.mongodb.client.model.Sorts.descending;
 
@@ -17,6 +14,20 @@ public class Main {
     private static final Scanner sc = new Scanner(System.in);
     private static BaseXClient session;
     private static MongoDatabase mongoDatabase;
+    private static User userSelected = new User();
+    /*
+    Esto hace que los resutlados se muestren de una mejor forma
+
+    private static JsonWriterSettings prettyPrintSettings = JsonWriterSettings.builder()
+            .outputMode(JsonMode.STRICT)
+            .indent(true)
+            .build();
+
+     Ejemplo de uso para printear de una forma mas bonita los resutlados
+     System.out.println(document.toJson(prettyPrintSettings));
+
+     */
+
 
     public static void main(String[] args) {
         //Creamos la conexiones con BaseX y MongoDB
@@ -187,14 +198,14 @@ public class Main {
 
         switch (opcion) {
             case 9 -> insertarNuevoUsuario();
-//            case 10 ->
+            case 10 -> seleccionarUsuarioPorEmail();
 //            case 11 ->
 //            case 12 ->
 //            case 13 ->
 //            case 14 ->
 //            case 15 ->
 //            case 16 ->
-//            case 17 ->
+            case 17 -> consulta17();
 //            case 18 ->
         }
     }
@@ -297,6 +308,89 @@ public class Main {
         return false;
     }
 
+    private static void consulta17() {
+        /*
+        Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito
+        y listar los resultados ordenados por el total de forma descendente.
+         */
+        AggregateIterable<Document> iterDoc = mongoDatabase
+                .getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME)
+                .aggregate(
+                        Arrays.asList(
+                                Aggregates.unwind("$items"),
+                                Aggregates.addFields(
+                                        new Field<>("totalItemCost",
+                                                new Document("$multiply", Arrays.asList(
+                                                        "$items.quantity", "$items.price"
+                                                ))
+                                        )
+                                ),
+                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
+                                Aggregates.group("$user_Id",
+                                        Accumulators.sum("totalCost", "$totalItemCost")
+                                ),
+                                Aggregates.sort(Sorts.descending("totalCost")))
+                );
+        for (Document document : iterDoc) {
+            System.out.println(document);
+        }
+    }
+
+    public static void seleccionarUsuarioPorEmail() {
+        MongoCollection<Document> colectionUsuarios = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        String email = preguntarFiltroParaObtenerUsuario();
+        Document usuario = colectionUsuarios.find(Filters.eq("email", email)).first();
+        if (usuario != null) {
+            int userId = usuario.getInteger("user_Id");
+            String name = usuario.getString("name");
+            email = usuario.getString("email");
+            int age = usuario.getInteger("age");
+            String direction = usuario.getString("direction");
+            userSelected.setUserId(userId);
+            userSelected.setName(name);
+            userSelected.setEmail(email);
+            userSelected.setAge(age);
+            userSelected.setDirection(direction);
+        }
+        System.out.println("Has selecccionado al usuario \n" + userSelected);
+    }
+
+    private static String preguntarFiltroParaObtenerUsuario() {
+        boolean retornarId = true;
+        HashMap<Integer, String> paresEmail = new HashMap<>();
+
+        FindIterable<Document> usersColection = mongoDatabase
+                .getCollection(ConexionMongo.COLLECTION_USERS_NAME)
+                .find()
+                .projection(new Document("user_Id", 1).append("email",1))
+                .sort(Sorts.ascending("user_Id"));
+
+        System.out.println("Opciones disponibles");
+        for (Document document : usersColection) {
+            int userId = document.getInteger("user_Id");
+            String email =document.getString("email");
+            paresEmail.put(userId,email);
+            System.out.println(document.getInteger("user_Id") + " - " + document.getString("email"));
+        }
+        while(true){
+            System.out.println("Elige una opcion, puedes indicar el id o el email");
+            String entradaTeclado = sc.nextLine();
+            try{
+                int id = Integer.parseInt(entradaTeclado);
+                if (paresEmail.containsKey(id)){
+                    return paresEmail.get(id);
+                }
+            } catch (NumberFormatException e) {
+                if (paresEmail.containsValue(entradaTeclado)){
+                    for (Map.Entry<Integer,String> parClaveValor : paresEmail.entrySet()){
+                        if (parClaveValor.getValue().equals(entradaTeclado)) {
+                            return parClaveValor.getValue();
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // ############################################ OPERACIONES GLOBALES ############################################
 

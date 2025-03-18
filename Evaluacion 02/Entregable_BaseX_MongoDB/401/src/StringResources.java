@@ -44,32 +44,32 @@ public class StringResources {
             """;
 
     public static final String MENU_OPCIONES_MONGO = """
-                1. Crear un nuevo usuario (no podrá haber email repetidos).
+                9. Crear un nuevo usuario (no podrá haber email repetidos).
             
-                2. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
+                10. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
                    de forma que las siguientes consultas se harán sobre ese usuario. Para cambiar de 
                    usuario se tendrá que volver a seleccionar esta opción.
             
-                3. Borrar un usuario.
+                11. Borrar un usuario.
             
-                4. Modificar el valor de un campo de la información del usuario.
+                12. Modificar el valor de un campo de la información del usuario.
             
-                5. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
+                13. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
                    cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
                    id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
             
-                6. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
+                14. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
             
-                7. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
+                15. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
                    de confirmación. Si la orden es positiva se pasarán todos los videojuegos a formar parte de 
                    una nueva compra y desaparecerán del carrito.
             
-                8. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
+                16. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
             
-                9. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
+                17. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
                    listar los resultados ordenados por el total de forma descendente.
             
-                10.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
+                18.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
                  en todas sus compras y listar los resultados ordenados por el total de forma ascendente.
             """;
 
