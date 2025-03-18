@@ -1,7 +1,7 @@
 use comercio
-db.createCollection("Users")
-db.createCollection("ShoppingCarts")
-db.createCollection("Purchases")
+db.createCollection("Usuario")
+db.createCollection("Carrito")
+db.createCollection("Compras")
 
 /*
 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -13,7 +13,7 @@ COPIAR DESDE AQUI ABAJO DE UNA SOLA VEZ.
 */
 
 
-db.Users.insertMany([
+db.Usuario.insertMany([
   {
     "user_Id": 1,
     "name": "José López",
@@ -58,7 +58,7 @@ db.Users.insertMany([
   }
 ]);
 
-db.ShoppingCarts.insertMany([
+db.Carrito.insertMany([
   {
     "user_Id": 1,
     "items": [
@@ -145,7 +145,7 @@ db.ShoppingCarts.insertMany([
   }
 ]);
 
-db.Purchases.insertMany([
+db.Compras.insertMany([
   {
     "purchase_id": 1,
     "user_Id": 1,

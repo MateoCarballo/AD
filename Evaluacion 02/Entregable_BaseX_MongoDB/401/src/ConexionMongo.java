@@ -1,4 +1,3 @@
-import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.client.*;
 
@@ -23,18 +22,25 @@ public class ConexionMongo {
     }
 
     public static MongoClient getConnection() {
-        if (mongoClient == null){
-            new ConexionMongo();
-        }
-        System.out.println("Conexion establecida con Mongo y la DB \"comercio\" ");
+
         return mongoClient;
     }
 
     public static MongoDatabase getDataBase(){
+        try{
+            if (mongoClient == null){
+                new ConexionMongo();
+                System.out.println("Conexion establecida con Mongo y la DB \"comercio\" ");
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR al conectar con el servidor");
+        }
+
         if (database == null){
             database = mongoClient.getDatabase(DATABASE_NAME);
+            System.out.println("Accecido a base \"" + DATABASE_NAME + "\"");
         }
-        System.out.println("Accecido a base \"" + DATABASE_NAME + "\"");
+
         return database;
     }
 

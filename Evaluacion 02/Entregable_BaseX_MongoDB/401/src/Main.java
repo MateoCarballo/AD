@@ -1,12 +1,17 @@
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.basex.examples.api.BaseXClient;
+import org.bson.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+
+import static com.mongodb.client.model.Sorts.descending;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
@@ -380,27 +385,120 @@ public class Main {
         int opcion = elegirOpcion(MENU_OPCIONES_MONGO, 9, 18);
 
         switch (opcion) {
-            case 9 ->
-            case 10 ->
-            case 11 ->
-            case 12 ->
-            case 13 ->
-            case 14 ->
-            case 15 ->
-            case 16 ->
-            case 17 ->consultaMongo1();
-            case 18 ->
+            case 9 -> insertarNuevoUsuario();
+//            case 10 ->
+//            case 11 ->
+//            case 12 ->
+//            case 13 ->
+//            case 14 ->
+//            case 15 ->
+//            case 16 ->
+//            case 17 ->
+//            case 18 ->
         }
     }
 
-    private static void consultaMongo1() {
+    private static void insertarNuevoUsuario() {
         /*
         Consulta 1: Teniendo en cuenta todos los usuarios,
         calcular el coste de cada carrito y listar los resultados
         ordenados por el total de forma descendente.
          */
+        User userToInsert = preguntarFiltroParaCrearUsuario();
+        MongoCollection<Document> usersColection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME);
+        Document newUser = new Document("user_Id",obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME))
+                .append("name",userToInsert.getName())
+                .append("email",userToInsert.getEmail())
+                .append("age",userToInsert.getAge())
+                .append("direction",userToInsert.getDirection());
+        usersColection.insertOne(newUser);
+    }
 
+    private static int obtenerMayorUserId(String collectionName) {
+        int maxUserId = 0;
+        MongoCollection<Document> usersColection = mongoDatabase.getCollection(collectionName);
+        Document highestUser = usersColection.find()
+                .sort(descending("user_Id"))
+                .first();
+        if (highestUser != null) {
+            maxUserId= highestUser.getInteger("user_Id");
+            System.out.println("El user_Id más alto es: " + maxUserId);
+        } else {
+            System.out.println("No se encontraron usuarios.");
+        }
+        return maxUserId +1;
+    }
+
+    private static boolean comprobarCampoRepetido(String collectionName, String campo, String valor) {
+        boolean repetido = true;
+        MongoCollection<Document> collection = mongoDatabase.getCollection(collectionName);
+        Document foundUser = collection.find(Filters.eq(campo, valor)).first();
+        if (foundUser != null) {
+            repetido = false;
+            System.out.println("Ya existe un usuario registrado con este email");
+        } else {
+            System.out.println("No se encontraron usuarios.");
+        }
+        return repetido;
+    }
+
+    private static User preguntarFiltroParaCrearUsuario() {
+        /*
+        {
+        "user_Id": 1,
+        "name": "José López",
+        "email": "joselopez@example.com",
+        "age": 28,
+        "direction": "Calle Príncipe, 36202 Vigo, Pontevedra, España"
+        },
+         */
+
+        /*  1. Consultar cual es el id mas alto y sumarle 1.
+            2. Preguntar nombre.
+            3. Preguntar email.
+            4. Edad.
+            5. Direccion.
+        */
+        String name = "";
+        String email = "";
+        int age = -1;
+        String direction = "";
+
+        boolean datoValido = true;
+
+        do {
+            System.out.println("Nombre del nuevo usuario");
+            name = sc.nextLine();
+        } while (!datoValido);
+
+        do {
+            System.out.println("E-mail del nuevo usuario (correoEjemplo@dominio.es)");
+            email = sc.nextLine();
+            //Si existe un usuario que tenga el email que introducimos por teclado devuelve true
+        } while (comprobarCampoRepetido(ConexionMongo.COLLECTION_USERS_NAME,"email",email) == true);
+
+        datoValido = true;
+
+        do {
+            try {
+                System.out.println("Edad del nuevo usuario");
+                age = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debes introducir un numero " + e.getMessage());
+                datoValido = false;
+                sc.nextLine();
+            }
+        } while (!datoValido);
+
+        do {
+            System.out.println("Direccion del nuevo usuario");
+            direction = sc.nextLine();
+        } while (!datoValido);
+
+        return new User(name,email,age,direction);
 
     }
+
 
 }
