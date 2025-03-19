@@ -19,6 +19,10 @@ public class User {
         this.direction = direction;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public String getName() {
         return name;
     }

@@ -103,18 +103,33 @@ public class StringResources {
             return delete node $videojuego
             """;
 
+    /* DEVUELVE EN FORMATO XML
     public static final String QUERY_1 = """
             for $videojuego in /videojuegos/videojuego
             order by $videojuego/plataforma, $videojuego/titulo
             return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}
             </videojuego>
             """;
+     */
 
+    public static final String QUERY_1 = """
+            for $videojuego in /videojuegos/videojuego
+            order by $videojuego/plataforma, $videojuego/titulo
+            return concat("ID: ",$videojuego/id," Titulo: ", $videojuego/titulo," Precio: ", $videojuego/precio, " Disponibilidad: ", $videojuego/disponibilidad, " Edad minima: ", $videojuego/edad_minima_recomendada, " Plataforma: ",$videojuego/plataforma)
+            """;
+    /* DEVUELVE EN FORMATO XML
+     public static String QUERY_2 = """
+                for $videojuego in /videojuegos/videojuego
+                where $videojuego/edad_minima_recomendada < %d
+                order by $videojuego/edad_minima_recomendada
+                return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}</videojuego>
+                """;
+     */
     public static String QUERY_2 = """
             for $videojuego in /videojuegos/videojuego
             where $videojuego/edad_minima_recomendada < %d
             order by $videojuego/edad_minima_recomendada
-            return <videojuego>{$videojuego/id}{$videojuego/titulo}{$videojuego/precio}{$videojuego/disponibilidad}{$videojuego/edad_minima_recomendada}{$videojuego/plataforma}</videojuego>
+            return concat("ID: ",$videojuego/id," Titulo: ",$videojuego/titulo," Precio: ",$videojuego/precio," Disponibilidad: ",$videojuego/disponibilidad," Edad mínima recomendada: ",$videojuego/edad_minima_recomendada," Plataforma: ",$videojuego/plataforma)
             """;
     public static final String QUERY_3 = """
             for $plataforma in distinct-values(/videojuegos/videojuego/plataforma)
@@ -130,8 +145,10 @@ public class StringResources {
             return concat("Plataforma: ",$plataforma," Titulo: ",$titulo," Precio: ",$precio)
      */
     public static final String QUERY_4 = """
+            let $subcadena := "%s"
             for $videojuego in /videojuegos/videojuego
-            where contains($videojuego/descripcion,"%s")
+            where matches($videojuego/descripcion, $subcadena, "i")
+            order by $videojuego/genero
             return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
             """;
 
@@ -141,7 +158,7 @@ public class StringResources {
             for $suma_videojuego in sum(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad)
             let $porcent := round(($suma_videojuego div $total_videojuegos) * 100,2)
             order by count(/videojuegos/videojuego[plataforma = $plataforma]/disponibilidad) descending
-            return  concat("Suma plataforma: ",$plataforma," es igual a ",$suma_videojuego," lo que representa un porcentaje del ",$porcent," %")
+            return  concat("La plataforma ",$plataforma," tiene un total de  ",$suma_videojuego," lo que representa un porcentaje del ",$porcent," % del total")
             """;
 
     public static final String QUERY_6 = """
@@ -161,6 +178,9 @@ public class StringResources {
             4. Direccion.
             0. Salir
             """;
+
+    public static final String CORREO_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$";
+    public static final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+){1,2}$";
 
     private StringResources() {
     }

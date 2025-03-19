@@ -4,7 +4,6 @@ import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -233,54 +232,39 @@ public class Main {
     }
 
     private static User preguntarFiltroParaCrearUsuario() {
-        /*
-        {
-        "user_Id": 1,
-        "name": "José López",
-        "email": "joselopez@example.com",
-        "age": 28,
-        "direction": "Calle Príncipe, 36202 Vigo, Pontevedra, España"
-        },
-         */
-
-        /*  1. Consultar cual es el id mas alto y sumarle 1.
-            2. Preguntar nombre.
-            3. Preguntar email.
-            4. Edad.
-            5. Direccion.
-        */
         String name = "";
         String email = "";
         int age = -1;
         String direction = "";
 
-        boolean datoValido = true;
-
-        System.out.println("Nombre del nuevo usuario");
-        name = sc.nextLine();
+        do {
+            System.out.println("Nombre del nuevo usuario(Debe contener dos partes  con solo letras)");
+            name = sc.nextLine();
+        } while (!name.matches(StringResources.NOMBRE_PATTERN));
 
         do {
-            System.out.println("E-mail del nuevo usuario (correoEjemplo@dominio.es)");
-            email = sc.nextLine();
+            do {
+                System.out.println("E-mail del nuevo usuario (correoEjemplo@dominio.es)");
+                email = sc.nextLine();
+            } while (!email.matches(StringResources.CORREO_PATTERN));
             //Si existe un usuario que tenga el email que introducimos por teclado devuelve true
         } while (comprobarCampoRepetido(ConexionMongo.COLLECTION_USERS_NAME, "email", email));
-
-        do {
-            try {
-                System.out.println("Edad del nuevo usuario");
-                age = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Debes introducir un numero " + e.getMessage());
-                datoValido = false;
-                sc.nextLine();
+        boolean datoOK = false;
+        while (!datoOK) {
+            System.out.println("Edad del nuevo usuario (La edad debe estar enter 1 y 99 incluidos)");
+            String edadIntroducida = sc.nextLine();
+            if (edadIntroducida.matches("\\d+")) {
+                age = Integer.parseInt(edadIntroducida);
+                if (age < 99 && age > 0) {
+                    datoOK = true;
+                }
             }
-        } while (!datoValido);
+        }
 
         System.out.println("Direccion del nuevo usuario");
         direction = sc.nextLine();
 
         return new User(name, email, age, direction);
-
     }
 
     private static int obtenerMayorUserId(String collectionName) {
@@ -337,60 +321,66 @@ public class Main {
 
     public static void seleccionarUsuarioPorEmail() {
         MongoCollection<Document> colectionUsuarios = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
-        String email = preguntarFiltroParaObtenerUsuario();
-        Document usuario = colectionUsuarios.find(Filters.eq("email", email)).first();
-        if (usuario != null) {
-            int userId = usuario.getInteger("user_Id");
-            String name = usuario.getString("name");
-            email = usuario.getString("email");
-            int age = usuario.getInteger("age");
-            String direction = usuario.getString("direction");
-            userSelected.setUserId(userId);
+        String email = obtenerEmail();
+        Document documentUsuario = colectionUsuarios.find(Filters.eq("email", email)).first();
+        if (documentUsuario != null) {
+            userSelected.setUserId(documentUsuario.getInteger("user_Id"));
+            userSelected.setName(documentUsuario.getString("name"));
+            userSelected.setEmail(documentUsuario.getString("email"));
+            userSelected.setAge(documentUsuario.getInteger("age"));
+            userSelected.setDirection(documentUsuario.getString("direction"));
+            System.out.println("Has selecccionado al usuario \n" + userSelected);
+        }
+    }
+
+    public static void actualizarUsuarioJava(){
+        MongoCollection<Document> colectionUsuarios = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        Document documentUsuario = colectionUsuarios.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+        if (documentUsuario != null) {
+            String name = documentUsuario.getString("name");
+            String email = documentUsuario.getString("email");
+            int age = documentUsuario.getInteger("age");
+            String direction = documentUsuario.getString("direction");
             userSelected.setName(name);
             userSelected.setEmail(email);
             userSelected.setAge(age);
             userSelected.setDirection(direction);
+            System.out.println("Has selecccionado al usuario \n" + userSelected);
         }
-        System.out.println("Has selecccionado al usuario \n" + userSelected);
     }
 
-    public static HashMap<Integer, String> obtenerUsuarios(){
+    public static HashMap<Integer, String> obtenerUsuarios() {
         HashMap<Integer, String> paresEmail = new HashMap<>();
         FindIterable<Document> usersColection = mongoDatabase
                 .getCollection(ConexionMongo.COLLECTION_USERS_NAME)
                 .find()
-                .projection(new Document("user_Id", 1).append("email",1))
+                .projection(new Document("user_Id", 1).append("email", 1))
                 .sort(Sorts.ascending("user_Id"));
 
         System.out.println("Opciones disponibles");
         for (Document document : usersColection) {
             int userId = document.getInteger("user_Id");
-            String email =document.getString("email");
-            paresEmail.put(userId,email);
+            String email = document.getString("email");
+            paresEmail.put(userId, email);
             System.out.println(document.getInteger("user_Id") + " - " + document.getString("email"));
         }
         return paresEmail;
     }
 
-    public static void mostrarUsuarios(HashMap<Integer,String> users){
-        System.out.println("Usuarios disponibles");
-        obtenerUsuarios().forEach((id,email) -> System.out.println(id + " " + email));
-    }
-
-    private static String preguntarFiltroParaObtenerUsuario() {
+    private static String obtenerEmail() {
         HashMap<Integer, String> paresEmail = obtenerUsuarios();
 
-        while(true){
+        while (true) {
             System.out.println("Elige una opcion, puedes indicar el id o el email");
             String entradaTeclado = sc.nextLine();
-            try{
+            try {
                 int id = Integer.parseInt(entradaTeclado);
-                if (paresEmail.containsKey(id)){
+                if (paresEmail.containsKey(id)) {
                     return paresEmail.get(id);
                 }
             } catch (NumberFormatException e) {
-                if (paresEmail.containsValue(entradaTeclado)){
-                    for (Map.Entry<Integer,String> parClaveValor : paresEmail.entrySet()){
+                if (paresEmail.containsValue(entradaTeclado)) {
+                    for (Map.Entry<Integer, String> parClaveValor : paresEmail.entrySet()) {
                         if (parClaveValor.getValue().equals(entradaTeclado)) {
                             return parClaveValor.getValue();
                         }
@@ -400,82 +390,127 @@ public class Main {
         }
     }
 
-    public static void eliminarUsuarioPorId(){
+    public static void eliminarUsuarioPorId() {
         HashMap<Integer, String> paresEmail = obtenerUsuarios();
         MongoCollection usersCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         MongoCollection cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         MongoCollection purchasesCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
-        System.out.println("Escribe el correo que deseas eliminar");
-        String entradaTeclado = sc.nextLine();
-        try{
-            int id = Integer.parseInt(entradaTeclado);
-            if (paresEmail.containsKey(id)){
-                usersCollection.deleteOne(Filters.eq("user_Id",id));
-                cartCollection.deleteOne(Filters.eq("user_Id",id));
-                purchasesCollection.deleteMany(Filters.eq("user_Id",id));
-            }
-        } catch (NumberFormatException e) {
-            if (paresEmail.containsValue(entradaTeclado)){
-                for (Map.Entry<Integer,String> parClaveValor : paresEmail.entrySet()){
-                    if (parClaveValor.getValue().equals(entradaTeclado)) {
-                        usersCollection.deleteOne(Filters.eq("user_Id",parClaveValor.getKey()));
-                        cartCollection.deleteOne(Filters.eq("user_Id",parClaveValor.getKey()));
-                        purchasesCollection.deleteMany(Filters.eq("user_Id",parClaveValor.getKey()));
+
+        while (true) {
+            System.out.println("Escribe el correo que deseas eliminar");
+            String entradaTeclado = sc.nextLine();
+            try {
+                int id = Integer.parseInt(entradaTeclado);
+                if (paresEmail.containsKey(id)) {
+                    System.out.println("Estas seguro que deseas eliminar el usuario ?(pulsa 'y'para eliminar o cualquier otra para canecelar");
+                    if (sc.nextLine().equalsIgnoreCase("y")) {
+                        usersCollection.deleteOne(Filters.eq("user_Id", id));
+                        cartCollection.deleteOne(Filters.eq("user_Id", id));
+                        purchasesCollection.deleteMany(Filters.eq("user_Id", id));
+                        if (userSelected.getUserId() == id){
+                            System.out.println("Has eliminado de la base de datos Mongo el usuario que habias seleccionado en el punto 10");
+                            userSelected = new User();
+                        }
+                    }
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                if (paresEmail.containsValue(entradaTeclado)) {
+                    for (Map.Entry<Integer, String> parClaveValor : paresEmail.entrySet()) {
+                        if (parClaveValor.getValue().equals(entradaTeclado)) {
+                            System.out.println("Estas seguro que deseas eliminar el usuario ?(pulsa 'y'para eliminar o cualquier otra para canecelar");
+                            if (sc.nextLine().equalsIgnoreCase("y")) {
+                                usersCollection.deleteOne(Filters.eq("user_Id", parClaveValor.getKey()));
+                                cartCollection.deleteOne(Filters.eq("user_Id", parClaveValor.getKey()));
+                                purchasesCollection.deleteMany(Filters.eq("user_Id", parClaveValor.getKey()));
+                                System.out.println("Usuario eliminado con exito !");
+                                if (userSelected.getUserId() == parClaveValor.getKey()) {
+                                    System.out.println("Has eliminado de la base de datos Mongo el usuario que habias seleccionado en el punto 10");
+                                    userSelected = new User();
+                                }
+                            }
+                            return;
+                        }
                     }
                 }
             }
         }
     }
 
-    public static void modificarCampoUsuarioSeleccionado(){
-        if (userSelected.getName() == null){
+    public static void modificarCampoUsuarioSeleccionado() {
+        if (userSelected.getName() == null) {
             System.out.println("Debes seleccionar un usuario en el punto 10 para poder modificar sus campos");
             return;
         }
-        System.out.println(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS.formatted(userSelected.getName()));
         int entradaTeclado = -1;
         String name = "";
         int age = 0;
         String email = "";
         String direction = "";
 
-        do{
-            entradaTeclado = elegirOpcion(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS.formatted(userSelected.getName()),1,4);
-            switch (entradaTeclado){
-                case 1 ->{
-                    name = sc.nextLine();
-                    actualizarCampoString(ConexionMongo.FIELD_NAME,name);
+        do {
+            entradaTeclado = elegirOpcion(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS.formatted(userSelected.getName()), 0, 4);
+            switch (entradaTeclado) {
+                case 1 -> {
+                    do {
+                        System.out.println("Introduce el nuevo nombre del usuario(Al menos dos partes 'Ejemplo: Mateo Carballo')");
+                        name = sc.nextLine();
+                        if (name.matches(StringResources.NOMBRE_PATTERN)) {
+                            actualizarCampoString(ConexionMongo.FIELD_NAME, name);
+                            userSelected.setName(name);
+                        }
+                    } while (!name.matches(StringResources.NOMBRE_PATTERN));
                 }
-                case 2 ->{
-                    email = sc.nextLine();
-                    actualizarCampoString(ConexionMongo.FIELD_EMAIL,email);
+                case 2 -> {
+                    do {
+                        System.out.println("Introduce el nuevo email del usuario (Al menos dos partes 'Ejemplo1: ejemplo@dominio.ext)'");
+                        email = sc.nextLine();
+                        if (name.matches(StringResources.CORREO_PATTERN)) {
+                            actualizarCampoString(ConexionMongo.FIELD_EMAIL, email);
+                            userSelected.setEmail(email);
+                        }
+                    } while (!email.matches(StringResources.CORREO_PATTERN));
                 }
-                case 3 ->{
-                    age = sc.nextLine();
-                    actualizarCampoInt(ConexionMongo.FIELD_AGE,age);
+                case 3 -> {
+                    System.out.println("Introduce la nueva edad del usuario");
+                    boolean datoOK = false;
+                    while (!datoOK) {
+                        System.out.println("Escribe la nueva edad del usuario ( La edad debe estar enter 1 y 99 incluidos)");
+                        String edadIntroducida = sc.nextLine();
+                        if (edadIntroducida.matches("\\d+")) {
+                            age = Integer.parseInt(edadIntroducida);
+                            if (age < 99 && age > 0) {
+                                datoOK = true;
+                            }
+                        }
+                    }
+                    actualizarCampoInt(ConexionMongo.FIELD_AGE, age);
+                    userSelected.setAge(age);
                 }
-                case 4 ->{
+                case 4 -> {
+                    System.out.println("Escribe la nueva direccion del usuario");
                     direction = sc.nextLine();
-                    actualizarCampoString(ConexionMongo.FIELD_DIRECTION,direction);
+                    actualizarCampoString(ConexionMongo.FIELD_DIRECTION, direction);
+                    userSelected.setDirection(direction);
                 }
             }
-        }while(entradaTeclado != 0);
+        } while (entradaTeclado != 0);
 
     }
 
-    public static void actualizarCampoString(String fieldName, String value){
+    public static void actualizarCampoString(String fieldName, String value) {
         MongoCollection<Document> userCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         userCollection.updateOne(
-                Filters.eq(ConexionMongo.FIELD_NAME,userSelected.getName()),
-                Updates.set(fieldName,value)
+                Filters.eq(ConexionMongo.FIELD_NAME, userSelected.getName()),
+                Updates.set(fieldName, value)
         );
     }
 
-    public static void actualizarCampoInt(String fieldName, int value){
+    public static void actualizarCampoInt(String fieldName, int value) {
         MongoCollection<Document> userCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         userCollection.updateOne(
-                Filters.eq(ConexionMongo.FIELD_NAME,userSelected.getName()),
-                Updates.set(fieldName,value)
+                Filters.eq(ConexionMongo.FIELD_NAME, userSelected.getName()),
+                Updates.set(fieldName, value)
         );
 
     }
