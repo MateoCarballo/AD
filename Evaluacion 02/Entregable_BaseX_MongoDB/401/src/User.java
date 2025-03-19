@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 public class User {
     private int userId;
     private String name;
     private String email;
     private int age;
     private String direction;
+    private ArrayList<Videojuego> videojuegos = new ArrayList<>();
 
     public User(){
 

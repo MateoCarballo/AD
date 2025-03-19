@@ -153,6 +153,15 @@ public class StringResources {
             return concat("El precio total de comprar todos los videojuegos es ",format-number($precioTodosVideojuegos, '#0.00'))
             """;
 
+    public static final String MENU_CLAVE_MODIFICABLES_USUARIOS = """
+            Que quieres modificar del videojuego:
+            1. Nombre.
+            2. Email.
+            3. Age.
+            4. Direccion.
+            0. Salir
+            """;
+
     private StringResources() {
     }
 }

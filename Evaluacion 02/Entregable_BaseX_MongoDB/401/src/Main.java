@@ -4,6 +4,7 @@ import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -198,7 +199,7 @@ public class Main {
             case 9 -> insertarNuevoUsuario();
             case 10 -> seleccionarUsuarioPorEmail();
             case 11 -> eliminarUsuarioPorId();
-//            case 12 ->
+            case 12 -> modificarCampoUsuarioSeleccionado();
 //            case 13 ->
 //            case 14 ->
 //            case 15 ->
@@ -424,6 +425,32 @@ public class Main {
                 }
             }
         }
+    }
+
+    public static void modificarCampoUsuarioSeleccionado(){
+        System.out.println(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS);
+        int entradaTeclado = -1;
+        String name = "";
+        int age = 0;
+        String email = "";
+        String direction = "";
+
+        do{
+            try{
+                entradaTeclado = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Debes introducir un numero!");
+            }
+            switch (entradaTeclado){
+                case 1 ->{
+                    System.out.println("Introduce el nuevo valor para el nombre");
+                    if (!(sc.nextLine().matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$"))){
+
+                    }
+                }
+            }
+        }while(!(entradaTeclado > 0 && entradaTeclado <= 4));
+
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
