@@ -2,8 +2,6 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.*;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
-import org.bson.json.JsonMode;
-import org.bson.json.JsonWriterSettings;
 
 import java.io.IOException;
 import java.util.*;
@@ -199,7 +197,7 @@ public class Main {
         switch (opcion) {
             case 9 -> insertarNuevoUsuario();
             case 10 -> seleccionarUsuarioPorEmail();
-//            case 11 ->
+            case 11 -> eliminarUsuarioPorId();
 //            case 12 ->
 //            case 13 ->
 //            case 14 ->
@@ -355,10 +353,8 @@ public class Main {
         System.out.println("Has selecccionado al usuario \n" + userSelected);
     }
 
-    private static String preguntarFiltroParaObtenerUsuario() {
-        boolean retornarId = true;
+    public static HashMap<Integer, String> obtenerUsuarios(){
         HashMap<Integer, String> paresEmail = new HashMap<>();
-
         FindIterable<Document> usersColection = mongoDatabase
                 .getCollection(ConexionMongo.COLLECTION_USERS_NAME)
                 .find()
@@ -372,6 +368,17 @@ public class Main {
             paresEmail.put(userId,email);
             System.out.println(document.getInteger("user_Id") + " - " + document.getString("email"));
         }
+        return paresEmail;
+    }
+
+    public static void mostrarUsuarios(HashMap<Integer,String> users){
+        System.out.println("Usuarios disponibles");
+        obtenerUsuarios().forEach((id,email) -> System.out.println(id + " " + email));
+    }
+
+    private static String preguntarFiltroParaObtenerUsuario() {
+        HashMap<Integer, String> paresEmail = obtenerUsuarios();
+
         while(true){
             System.out.println("Elige una opcion, puedes indicar el id o el email");
             String entradaTeclado = sc.nextLine();
@@ -386,6 +393,33 @@ public class Main {
                         if (parClaveValor.getValue().equals(entradaTeclado)) {
                             return parClaveValor.getValue();
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void eliminarUsuarioPorId(){
+        HashMap<Integer, String> paresEmail = obtenerUsuarios();
+        MongoCollection usersCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        MongoCollection cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        MongoCollection purchasesCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
+        System.out.println("Escribe el correo que deseas eliminar");
+        String entradaTeclado = sc.nextLine();
+        try{
+            int id = Integer.parseInt(entradaTeclado);
+            if (paresEmail.containsKey(id)){
+                usersCollection.deleteOne(Filters.eq("user_Id",id));
+                cartCollection.deleteOne(Filters.eq("user_Id",id));
+                purchasesCollection.deleteMany(Filters.eq("user_Id",id));
+            }
+        } catch (NumberFormatException e) {
+            if (paresEmail.containsValue(entradaTeclado)){
+                for (Map.Entry<Integer,String> parClaveValor : paresEmail.entrySet()){
+                    if (parClaveValor.getValue().equals(entradaTeclado)) {
+                        usersCollection.deleteOne(Filters.eq("user_Id",parClaveValor.getKey()));
+                        cartCollection.deleteOne(Filters.eq("user_Id",parClaveValor.getKey()));
+                        purchasesCollection.deleteMany(Filters.eq("user_Id",parClaveValor.getKey()));
                     }
                 }
             }

@@ -293,4 +293,4 @@ db.Compras.insertMany([
     "total": 74.98,
     "purchase_date": ISODate()
   }
-])
+]);
