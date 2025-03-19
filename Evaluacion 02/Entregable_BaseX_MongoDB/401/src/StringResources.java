@@ -127,8 +127,8 @@ public class StringResources {
      */
     public static String QUERY_2 = """
             for $videojuego in /videojuegos/videojuego
-            where $videojuego/edad_minima_recomendada < %d
-            order by $videojuego/edad_minima_recomendada
+            where xs:integer($videojuego/edad_minima_recomendada) < %d
+            order by xs:integer($videojuego/edad_minima_recomendada)
             return concat("ID: ",$videojuego/id," Titulo: ",$videojuego/titulo," Precio: ",$videojuego/precio," Disponibilidad: ",$videojuego/disponibilidad," Edad mínima recomendada: ",$videojuego/edad_minima_recomendada," Plataforma: ",$videojuego/plataforma)
             """;
     public static final String QUERY_3 = """
@@ -168,6 +168,13 @@ public class StringResources {
               let $unidades := $videojuego/disponibilidad
               return $precioUnidad * $unidades)
             return concat("El precio total de comprar todos los videojuegos es ",format-number($precioTodosVideojuegos, '#0.00'))
+            """;
+
+    public static String QUERY_13 = """
+            for $videojuego in /videojuegos/videojuego
+            where $videojuego/edad_minima_recomendada < %d
+            order by $videojuego/edad_minima_recomendada
+            return string-join(($videojuego/id/text(),$videojuego/titulo/text(),$videojuego/precio/text()),",")
             """;
 
     public static final String MENU_CLAVE_MODIFICABLES_USUARIOS = """

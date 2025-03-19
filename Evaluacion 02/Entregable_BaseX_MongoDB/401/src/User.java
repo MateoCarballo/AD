@@ -6,7 +6,7 @@ public class User {
     private String email;
     private int age;
     private String direction;
-    private ArrayList<Videojuego> videojuegos = new ArrayList<>();
+    public ArrayList<Videojuego> videojuegos = new ArrayList<>();
 
     public User(){
 

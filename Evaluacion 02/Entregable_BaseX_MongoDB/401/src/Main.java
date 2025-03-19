@@ -199,7 +199,7 @@ public class Main {
             case 10 -> seleccionarUsuarioPorEmail();
             case 11 -> eliminarUsuarioPorId();
             case 12 -> modificarCampoUsuarioSeleccionado();
-//            case 13 ->
+            case 13 -> anhadirVideojuegos();
 //            case 14 ->
 //            case 15 ->
 //            case 16 ->
@@ -333,7 +333,7 @@ public class Main {
         }
     }
 
-    public static void actualizarUsuarioJava(){
+    public static void actualizarUsuarioJava() {
         MongoCollection<Document> colectionUsuarios = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         Document documentUsuario = colectionUsuarios.find(Filters.eq("user_Id", userSelected.getUserId())).first();
         if (documentUsuario != null) {
@@ -392,9 +392,9 @@ public class Main {
 
     public static void eliminarUsuarioPorId() {
         HashMap<Integer, String> paresEmail = obtenerUsuarios();
-        MongoCollection usersCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
-        MongoCollection cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
-        MongoCollection purchasesCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
+        MongoCollection<Document> usersCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        MongoCollection<Document> purchasesCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
 
         while (true) {
             System.out.println("Escribe el correo que deseas eliminar");
@@ -407,7 +407,7 @@ public class Main {
                         usersCollection.deleteOne(Filters.eq("user_Id", id));
                         cartCollection.deleteOne(Filters.eq("user_Id", id));
                         purchasesCollection.deleteMany(Filters.eq("user_Id", id));
-                        if (userSelected.getUserId() == id){
+                        if (userSelected.getUserId() == id) {
                             System.out.println("Has eliminado de la base de datos Mongo el usuario que habias seleccionado en el punto 10");
                             userSelected = new User();
                         }
@@ -442,7 +442,7 @@ public class Main {
             System.out.println("Debes seleccionar un usuario en el punto 10 para poder modificar sus campos");
             return;
         }
-        int entradaTeclado = -1;
+        int entradaTeclado;
         String name = "";
         int age = 0;
         String email = "";
@@ -465,7 +465,7 @@ public class Main {
                     do {
                         System.out.println("Introduce el nuevo email del usuario (Al menos dos partes 'Ejemplo1: ejemplo@dominio.ext)'");
                         email = sc.nextLine();
-                        if (name.matches(StringResources.CORREO_PATTERN)) {
+                        if (email.matches(StringResources.CORREO_PATTERN)) {
                             actualizarCampoString(ConexionMongo.FIELD_EMAIL, email);
                             userSelected.setEmail(email);
                         }
@@ -513,6 +513,100 @@ public class Main {
                 Updates.set(fieldName, value)
         );
 
+    }
+
+    public static void anhadirVideojuegos() {
+        /*
+        13. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos
+        cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
+        id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
+         */
+        ArrayList<Videojuego> videojuegosDisponibles = new ArrayList<>();
+        boolean continuar = true;
+        do {
+            Videojuego gameToInsert = null;
+            try {
+                if (userSelected.getName() == null) {
+                    System.out.println("Selecciona un usuario para agregar items al carrito");
+                    return;
+                }
+
+                BaseXClient.Query query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
+                System.out.println("Videojuegos disponibles en BaseX:");
+                while (query.more()) {
+                    System.out.println(query.next());
+                }
+
+                query = session.query(StringResources.QUERY_13.formatted(userSelected.getAge()));
+                while (query.more()) {
+                    String cadenaResultado = query.next();
+                    String[] spliteada = cadenaResultado.split(",");
+                    videojuegosDisponibles.add(new Videojuego(Integer.parseInt(spliteada[0]), spliteada[1], 0, Double.parseDouble(spliteada[2])));
+                }
+                try {
+                    int opcion = -1;
+                    boolean opcionValida = false;
+                    do {
+                        boolean juegoAñadido = false;
+                        System.out.println("Elige un videojuego de la lista por Id");
+                        opcion = Integer.parseInt(sc.nextLine());
+                        for (Videojuego v : videojuegosDisponibles) {
+                            if (v.getGame_Id() == opcion) {
+                                opcionValida = true;
+                                gameToInsert = v;
+                                break;
+                            }
+                        }
+                    } while (!opcionValida);
+
+                    if (gameToInsert == null){
+                        userSelected.videojuegos.add(gameToInsert);
+                    }else{
+                        for (Videojuego v: userSelected.videojuegos){
+                            if (v.getGame_Id() == gameToInsert.getGame_Id()){
+                                v.addQuantity();
+                            }
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("ERROR: Entrada inválida, ingrese un número.");
+                }
+
+                System.out.println("Deseas añadir mas juegos al carrito?(y/n)");
+                if (!sc.nextLine().equalsIgnoreCase("y")) continuar = false;
+
+            } catch (IOException e) {
+                System.out.println("Error al printear los videojuegos de BaseX que tengan una edad menor a la del usuario");
+            }
+        } while (continuar);
+
+        /*
+        TODO añadir todos los elementos del arrayList de videojuegos al carrito del usuario, aqui queda tela que cortar
+         */
+
+        MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        List<Document> nuevosItems = new ArrayList<>();
+        for (Videojuego v : userSelected.videojuegos) {
+            nuevosItems.add(new Document("game_Id", v.getGame_Id())
+                    .append("title", v.getTitle())
+                    .append("quantity", v.getQuantity())
+                    .append("price", v.getPrice()));
+        }
+        Document existeCarrito = cartCollection.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+        if (existeCarrito != null) {
+            for (Document nuevoItem : nuevosItems) {
+                cartCollection.updateOne(
+                        Filters.eq("user_Id", userSelected.getUserId()),
+                        new Document("$push", new Document("items", nuevoItem))
+                );
+            }
+        } else {
+            // Si el carrito no existe, creamos un carrito nuevo con los nuevos items
+            Document nuevoCarrito = new Document("user_Id", userSelected.getUserId())
+                    .append("items", nuevosItems);
+            cartCollection.insertOne(nuevoCarrito);
+            System.out.println("Se ha creado un nuevo carrito y se han añadido los videojuegos.");
+        }
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
