@@ -9,6 +9,10 @@ public class ConexionMongo {
     public static final String URL = "mongodb://localhost:27017";
     public static final String DATABASE_NAME = "comercio";
     public static final String COLLECTION_USERS_NAME = "Usuario";
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_EMAIL = "email";
+    public static final String FIELD_AGE = "age";
+    public static final String FIELD_DIRECTION = "direction";
     public static final String COLLECTION_PURCHASES_NAME = "Compras";
     public static final String COLLECTION_SHOPPING_CARTS_NAME = "Carrito";
 

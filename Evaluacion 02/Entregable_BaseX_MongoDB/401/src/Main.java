@@ -428,7 +428,11 @@ public class Main {
     }
 
     public static void modificarCampoUsuarioSeleccionado(){
-        System.out.println(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS);
+        if (userSelected.getName() == null){
+            System.out.println("Debes seleccionar un usuario en el punto 10 para poder modificar sus campos");
+            return;
+        }
+        System.out.println(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS.formatted(userSelected.getName()));
         int entradaTeclado = -1;
         String name = "";
         int age = 0;
@@ -436,20 +440,43 @@ public class Main {
         String direction = "";
 
         do{
-            try{
-                entradaTeclado = Integer.parseInt(sc.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Debes introducir un numero!");
-            }
+            entradaTeclado = elegirOpcion(StringResources.MENU_CLAVE_MODIFICABLES_USUARIOS.formatted(userSelected.getName()),1,4);
             switch (entradaTeclado){
                 case 1 ->{
-                    System.out.println("Introduce el nuevo valor para el nombre");
-                    if (!(sc.nextLine().matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$"))){
-
-                    }
+                    name = sc.nextLine();
+                    actualizarCampoString(ConexionMongo.FIELD_NAME,name);
+                }
+                case 2 ->{
+                    email = sc.nextLine();
+                    actualizarCampoString(ConexionMongo.FIELD_EMAIL,email);
+                }
+                case 3 ->{
+                    age = sc.nextLine();
+                    actualizarCampoInt(ConexionMongo.FIELD_AGE,age);
+                }
+                case 4 ->{
+                    direction = sc.nextLine();
+                    actualizarCampoString(ConexionMongo.FIELD_DIRECTION,direction);
                 }
             }
-        }while(!(entradaTeclado > 0 && entradaTeclado <= 4));
+        }while(entradaTeclado != 0);
+
+    }
+
+    public static void actualizarCampoString(String fieldName, String value){
+        MongoCollection<Document> userCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        userCollection.updateOne(
+                Filters.eq(ConexionMongo.FIELD_NAME,userSelected.getName()),
+                Updates.set(fieldName,value)
+        );
+    }
+
+    public static void actualizarCampoInt(String fieldName, int value){
+        MongoCollection<Document> userCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
+        userCollection.updateOne(
+                Filters.eq(ConexionMongo.FIELD_NAME,userSelected.getName()),
+                Updates.set(fieldName,value)
+        );
 
     }
 

@@ -154,7 +154,7 @@ public class StringResources {
             """;
 
     public static final String MENU_CLAVE_MODIFICABLES_USUARIOS = """
-            Que quieres modificar del videojuego:
+            Que quieres modificar de %s:
             1. Nombre.
             2. Email.
             3. Age.
