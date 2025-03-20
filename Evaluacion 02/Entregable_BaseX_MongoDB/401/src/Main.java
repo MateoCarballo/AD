@@ -1,5 +1,6 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
+import com.mongodb.client.result.UpdateResult;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
@@ -330,16 +331,18 @@ public class Main {
                 userSelected.setDirection(documentUsuario.getString("direction"));
                 MongoCollection<Document> collectionCarts = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
                 Document documentoCarrito = collectionCarts.find(Filters.eq("user_Id", userSelected.getUserId())).first();
-                userSelected.videojuegos = new ArrayList<>();
+                if (documentoCarrito != null){
+                    userSelected.videojuegos = new ArrayList<>();
 
-                List<Document> items = (List<Document>) documentoCarrito.get("items");
+                    List<Document> items = (List<Document>) documentoCarrito.get("items");
 
-                for (Document item : items) {
-                    Videojuego videojuego = new Videojuego(item.getInteger("game_Id"),
-                            item.getString("title"),
-                            item.getInteger("quantity"),
-                            item.getDouble("price"));
-                    userSelected.videojuegos.add(videojuego);
+                    for (Document item : items) {
+                        Videojuego videojuego = new Videojuego(item.getInteger("game_Id"),
+                                item.getString("title"),
+                                item.getInteger("quantity"),
+                                item.getDouble("price"));
+                        userSelected.videojuegos.add(videojuego);
+                    }
                 }
                 System.out.println("Has selecccionado al usuario \n" + userSelected);
             }
@@ -648,7 +651,7 @@ public class Main {
     }
 
     public static void insertarDatosEnMongo(){
-        //TODO AQUI ESTOY 
+        //TODO AQUI ESTOY
         MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         List<Document> nuevosItems = new ArrayList<>();
         for (Videojuego v : userSelected.videojuegos) {
@@ -659,23 +662,25 @@ public class Main {
         }
         Document existeCarrito = cartCollection.find(Filters.eq("user_Id", userSelected.getUserId())).first();
         if (existeCarrito != null) {
+
             /*
             Si existe el carrito
             Casos:
+
                 El juego ya estaba, se modifica cantidad => tengo que hacer upadate de la cantidad
                 El juego no estaba, se inserta el juego => tengo que hacer un insert de cada juego en items
-             */
-            for (Document nuevoItem : nuevosItems) {
+
+                Mi intento fallido
+
+                for (Document nuevoItem : nuevosItems) {
                 cartCollection.updateOne(
                         Filters.eq("user_Id", userSelected.getUserId()),
                         new Document("$addToSet", new Document("items", nuevoItem))
                 );
             }
-        } else {
-            /*
-            Si no existe el carrito
-            Se crea el carrito con los juegos y cantidades introducidas
              */
+
+        } else {
             Document nuevoCarrito = new Document("user_Id", userSelected.getUserId())
                     .append("items", nuevosItems);
             cartCollection.insertOne(nuevoCarrito);
