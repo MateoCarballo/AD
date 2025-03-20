@@ -1,9 +1,11 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
+import com.mongodb.client.result.UpdateResult;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.*;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -202,7 +204,7 @@ public class Main {
             case 12 -> modificarCampoUsuarioSeleccionado();
             case 13 -> anhadirVideojuegos();
             case 14 -> mostrarCarritoDelUsuario();
-//            case 15 ->
+            case 15 -> comprarCarrito();
 //            case 16 ->
 //            case 17 -> consulta17();
 //            case 18 ->
@@ -700,27 +702,100 @@ public class Main {
     }
 
     public static void mostrarCarritoDelUsuario(){
-        MongoCollection<Document> carrito = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
-        //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
-        // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
-        //TODO JOSE QUE ESTA PASASNDO !
-       AggregateIterable<Document> resultados = carrito.aggregate(
-               Arrays.asList(
+        /*
+        CONSULTA NIVEL JESUCRISTO DE JOSE
+        Arrays.asList(new Document("$addFields",
+    new Document("total",
+    new Document("$sum",
+    new Document("$map",
+    new Document("input", "$items")
+                        .append("as", "item")
+                        .append("in",
+    new Document("$multiply", Arrays.asList("$$item.quantity", "$$item.price"))))))),
+    new Document("$project",
+    new Document("_id", 0L)
+            .append("items", 1L)
+            .append("total", 1L)))
+
+             Arrays.asList(
                        Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
                        Aggregates.unwind("$items"),
                        Aggregates.group(
-                               new Document("user_Id","$user_Id"),
+                               "$user_Id",
                                Accumulators.sum("Total_carrito",
                                        new Document("$multiply",Arrays.asList(
                                                "$items.quantity","$items.price")))
                        )
                )
-       );
 
+
+
+         */
+        MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
+        // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
+       AggregateIterable<Document> resultados = carritos.aggregate(
+               Arrays.asList(
+                       Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
+                       Aggregates.unwind("$items"),
+                       Aggregates.group(
+                               "$user_Id",
+                               Accumulators.sum("total_carrito",
+                                       new Document("$multiply",Arrays.asList(
+                                               "$items.quantity","$items.price")))
+                       ),
+                       Aggregates.project(new Document("total_carrito",1)
+                                        .append("_id",0))
+               )
+       );
+        Document carrito = carritos.find(new Document("$eq",new Document("user_Id",userSelected.getUserId()))).first();
+        int id = carrito.getInteger("user_Id");
+        //TODO aqui pendiente de encontrar como printear la lista
+        List items = (List) carrito.get("items");
        for (Document res : resultados){
            System.out.println("El resultado en crudo es \n" + res);
-
        }
+    }
+
+    public static void comprarCarrito(){
+        if (userSelected == null){
+            return;
+        }
+        int user_id = -1;
+        double valorCarrito = 0.0;
+        MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        AggregateIterable<Document> resultados = carritos.aggregate(
+                Arrays.asList(
+                        Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
+                        Aggregates.unwind("$items"),
+                        Aggregates.group("$user_Id",
+                                Accumulators.sum(
+                                        "Total_carrito",
+                                        new Document("$multiply",Arrays.asList("$items.quantity","$items.price")
+                                        )
+                                )
+                        )
+                )
+        );
+        for (Document parIdTotal: resultados){
+            user_id = parIdTotal.getInteger("_id");
+            valorCarrito = parIdTotal.getDouble("Total_carrito");
+        }
+
+        Document results = carritos.find(Filters.eq("user_Id",userSelected.getUserId()))
+                .projection(new Document("items",1)
+                        .append("_id",0))
+                .first();
+        Document nuevaCompra = new Document("purchase_Id",obtenerMayorUserId(ConexionMongo.COLLECTION_PURCHASES_NAME))
+                .append("user_Id",user_id)
+                .append("items",results)
+                .append("total",valorCarrito)
+                .append("purchase_date",new Date());
+
+        MongoCollection compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
+        compras.insertOne(nuevaCompra);
+        carritos.deleteOne(Filters.eq("user_Id",user_id));
+        userSelected.videojuegos = new ArrayList<>();
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
