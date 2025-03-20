@@ -530,9 +530,8 @@ public class Main {
                     System.out.println("Selecciona un usuario para agregar items al carrito");
                     return;
                 }
-
-                BaseXClient.Query query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
                 System.out.println("Videojuegos disponibles en BaseX:");
+                BaseXClient.Query query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
                 while (query.more()) {
                     System.out.println(query.next());
                 }
@@ -543,9 +542,11 @@ public class Main {
                     String[] spliteada = cadenaResultado.split(",");
                     videojuegosDisponibles.add(new Videojuego(Integer.parseInt(spliteada[0]), spliteada[1], 0, Double.parseDouble(spliteada[2])));
                 }
+
                 try {
                     int opcion = -1;
                     boolean opcionValida = false;
+
                     do {
                         boolean juegoAñadido = false;
                         System.out.println("Elige un videojuego de la lista por Id");
@@ -554,19 +555,22 @@ public class Main {
                             if (v.getGame_Id() == opcion) {
                                 opcionValida = true;
                                 gameToInsert = v;
-                                break;
                             }
+                            if (opcionValida) break;
                         }
                     } while (!opcionValida);
 
-                    if (gameToInsert == null){
-                        userSelected.videojuegos.add(gameToInsert);
-                    }else{
-                        for (Videojuego v: userSelected.videojuegos){
-                            if (v.getGame_Id() == gameToInsert.getGame_Id()){
-                                v.addQuantity();
-                            }
+                    boolean juegoYaSeleccionado = false;
+                    //Comprobar que el id seleccionado no se ha seleccionado antes
+                    for (Videojuego game: userSelected.videojuegos){
+                        if ((gameToInsert.getGame_Id() == game.getGame_Id()) && (juegoYaSeleccionado == false)) {
+                            juegoYaSeleccionado = true;
+                            game.addQuantity();
                         }
+                    }
+
+                    if (!juegoYaSeleccionado){
+                        userSelected.videojuegos.add(gameToInsert);
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("ERROR: Entrada inválida, ingrese un número.");
