@@ -8,7 +8,7 @@ public class User {
     private String direction;
     public ArrayList<Videojuego> videojuegos = new ArrayList<>();
 
-    public User(){
+    public User() {
 
     }
 
@@ -66,6 +66,19 @@ public class User {
                 "name: " + name + "\n" +
                 "email: " + email + "\n" +
                 "age: " + age + "\n" +
-                "direction: " + direction + "\n";
+                "direction: " + direction + "\n" +
+                "Listado de videojuegos en carrito: "+ "\n" +
+                printearListadoVideojuegos();
+    }
+
+    public String printearListadoVideojuegos() {
+        StringBuilder sb = new StringBuilder();
+        for (Videojuego v : this.videojuegos) {
+            sb.append("ID " + v.getGame_Id() + "\n")
+                    .append("Title " + v.getTitle() + "\n")
+                    .append("Quantity " + v.getQuantity() + "\n")
+                    .append("Price " + v.getPrice() + "\n");
+        }
+        return sb.toString();
     }
 }

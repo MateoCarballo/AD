@@ -31,8 +31,10 @@ public class Main {
         //Creamos la conexiones con BaseX y MongoDB
         session = ConexionBaseX.getSession();
         mongoDatabase = ConexionMongo.getDataBase(ConexionMongo.DATABASE_NAME);
+        if (session == null || mongoDatabase == null) System.exit(100);
         ejecutarMenuPrincipal();
-
+        ConexionBaseX.closeSession();
+        ConexionMongo.closeConexion();
     }
 
     // Menu principal para elegir la tecnologia
@@ -209,11 +211,6 @@ public class Main {
     }
 
     private static void insertarNuevoUsuario() {
-        /*
-        Consulta 1: Teniendo en cuenta todos los usuarios,
-        calcular el coste de cada carrito y listar los resultados
-        ordenados por el total de forma descendente.
-         */
         User userToInsert = preguntarFiltroParaCrearUsuario();
         if (userToInsert == null) {
             System.out.println("Los datos recopilados no han podido crear un usuario, revisa los datos y repite la operacion");
@@ -322,14 +319,32 @@ public class Main {
     public static void seleccionarUsuarioPorEmail() {
         MongoCollection<Document> colectionUsuarios = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         String email = obtenerEmail();
-        Document documentUsuario = colectionUsuarios.find(Filters.eq("email", email)).first();
-        if (documentUsuario != null) {
-            userSelected.setUserId(documentUsuario.getInteger("user_Id"));
-            userSelected.setName(documentUsuario.getString("name"));
-            userSelected.setEmail(documentUsuario.getString("email"));
-            userSelected.setAge(documentUsuario.getInteger("age"));
-            userSelected.setDirection(documentUsuario.getString("direction"));
-            System.out.println("Has selecccionado al usuario \n" + userSelected);
+        if (email != null) {
+            Document documentUsuario = colectionUsuarios.find(Filters.eq("email", email)).first();
+            if (documentUsuario != null) {
+                //TODO no seria mas comodo que los videojuegos esten dentro de aqui
+                userSelected.setUserId(documentUsuario.getInteger("user_Id"));
+                userSelected.setName(documentUsuario.getString("name"));
+                userSelected.setEmail(documentUsuario.getString("email"));
+                userSelected.setAge(documentUsuario.getInteger("age"));
+                userSelected.setDirection(documentUsuario.getString("direction"));
+                MongoCollection<Document> collectionCarts = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+                Document documentoCarrito = collectionCarts.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+                userSelected.videojuegos = new ArrayList<>();
+
+                List<Document> items = (List<Document>) documentoCarrito.get("items");
+
+                for (Document item : items) {
+                    Videojuego videojuego = new Videojuego(item.getInteger("game_Id"),
+                            item.getString("title"),
+                            item.getInteger("quantity"),
+                            item.getDouble("price"));
+                    userSelected.videojuegos.add(videojuego);
+                }
+                System.out.println("Has selecccionado al usuario \n" + userSelected);
+            }
+        } else {
+            System.out.println("La colecion esta vacia!");
         }
     }
 
@@ -357,37 +372,54 @@ public class Main {
                 .projection(new Document("user_Id", 1).append("email", 1))
                 .sort(Sorts.ascending("user_Id"));
 
-        System.out.println("Opciones disponibles");
-        for (Document document : usersColection) {
-            int userId = document.getInteger("user_Id");
-            String email = document.getString("email");
-            paresEmail.put(userId, email);
-            System.out.println(document.getInteger("user_Id") + " - " + document.getString("email"));
+        if (usersColection != null) {
+            System.out.println("Opciones disponibles");
+            for (Document document : usersColection) {
+                int userId = document.getInteger("user_Id");
+                String email = document.getString("email");
+                paresEmail.put(userId, email);
+            }
+            return paresEmail;
+        } else {
+            return null;
         }
-        return paresEmail;
     }
 
-    private static String obtenerEmail() {
-        HashMap<Integer, String> paresEmail = obtenerUsuarios();
+    public static void printearListadosUsuariosRegistrados(HashMap<Integer, String> pares) {
+        for (Map.Entry<Integer, String> hm : pares.entrySet()) {
+            System.out.println(hm.getKey() + "-" + hm.getValue());
+        }
+    }
 
-        while (true) {
-            System.out.println("Elige una opcion, puedes indicar el id o el email");
-            String entradaTeclado = sc.nextLine();
-            try {
-                int id = Integer.parseInt(entradaTeclado);
-                if (paresEmail.containsKey(id)) {
-                    return paresEmail.get(id);
-                }
-            } catch (NumberFormatException e) {
-                if (paresEmail.containsValue(entradaTeclado)) {
+    public static String obtenerEmail() {
+        HashMap<Integer, String> paresEmail = obtenerUsuarios();
+        if (paresEmail != null) {
+            printearListadosUsuariosRegistrados(paresEmail);
+            while (true) {
+                System.out.println("Elige una opcion, puedes indicar el id o el email");
+                String entradaTeclado = sc.nextLine();
+                try {
+                    int id = Integer.parseInt(entradaTeclado);
+                    if (paresEmail.containsKey(id)) {
+                        return paresEmail.get(id);
+                    }
+                } catch (NumberFormatException e) {
+                    if (paresEmail.containsValue(entradaTeclado)) {
+                        return entradaTeclado;
+                    }
+                    /*
+                    Esto es innecesario ?
                     for (Map.Entry<Integer, String> parClaveValor : paresEmail.entrySet()) {
                         if (parClaveValor.getValue().equals(entradaTeclado)) {
                             return parClaveValor.getValue();
                         }
                     }
+                     */
+
                 }
             }
         }
+        return null;
     }
 
     public static void eliminarUsuarioPorId() {
@@ -521,73 +553,102 @@ public class Main {
         cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
         id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
          */
-        ArrayList<Videojuego> videojuegosDisponibles = new ArrayList<>();
+        if (userSelected.getName() == null) {
+            System.out.println("Selecciona un usuario para agregar items al carrito");
+            return;
+        }
+
+        ArrayList<Videojuego> videojuegosDisponibles;
         boolean continuar = true;
         do {
-            Videojuego gameToInsert = null;
-            try {
-                if (userSelected.getName() == null) {
-                    System.out.println("Selecciona un usuario para agregar items al carrito");
-                    return;
-                }
-                System.out.println("Videojuegos disponibles en BaseX:");
-                BaseXClient.Query query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
-                while (query.more()) {
-                    System.out.println(query.next());
-                }
-
-                query = session.query(StringResources.QUERY_13.formatted(userSelected.getAge()));
-                while (query.more()) {
-                    String cadenaResultado = query.next();
-                    String[] spliteada = cadenaResultado.split(",");
-                    videojuegosDisponibles.add(new Videojuego(Integer.parseInt(spliteada[0]), spliteada[1], 0, Double.parseDouble(spliteada[2])));
-                }
-
-                try {
-                    int opcion = -1;
-                    boolean opcionValida = false;
-
-                    do {
-                        boolean juegoAñadido = false;
-                        System.out.println("Elige un videojuego de la lista por Id");
-                        opcion = Integer.parseInt(sc.nextLine());
-                        for (Videojuego v : videojuegosDisponibles) {
-                            if (v.getGame_Id() == opcion) {
-                                opcionValida = true;
-                                gameToInsert = v;
-                            }
-                            if (opcionValida) break;
-                        }
-                    } while (!opcionValida);
-
-                    boolean juegoYaSeleccionado = false;
-                    //Comprobar que el id seleccionado no se ha seleccionado antes
-                    for (Videojuego game: userSelected.videojuegos){
-                        if ((gameToInsert.getGame_Id() == game.getGame_Id()) && (juegoYaSeleccionado == false)) {
-                            juegoYaSeleccionado = true;
-                            game.addQuantity();
-                        }
-                    }
-
-                    if (!juegoYaSeleccionado){
-                        userSelected.videojuegos.add(gameToInsert);
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("ERROR: Entrada inválida, ingrese un número.");
-                }
-
-                System.out.println("Deseas añadir mas juegos al carrito?(y/n)");
-                if (!sc.nextLine().equalsIgnoreCase("y")) continuar = false;
-
-            } catch (IOException e) {
-                System.out.println("Error al printear los videojuegos de BaseX que tengan una edad menor a la del usuario");
+            printearListadoVideojuegosDisponibles();
+            videojuegosDisponibles = obtenerListadoJuegosComoArrayList();
+            if (videojuegosDisponibles.isEmpty()) {
+                System.out.println("Imposible cargar los datos en la arrayList, comprueba los datos en BaseX o al edad del usuario");
+                return;
             }
+
+            try {
+                boolean existeJuegoEnCarrito = false;
+                int idSeleccionado = elegirIdVideojuego(videojuegosDisponibles);
+                for (Videojuego juegoEnCarrito : userSelected.videojuegos) {
+                    if ((idSeleccionado == juegoEnCarrito.getGame_Id())) {
+                        existeJuegoEnCarrito = true;
+                    }
+                }
+
+                if (!existeJuegoEnCarrito) {
+                    for (Videojuego v : videojuegosDisponibles) {
+                        if (v.getGame_Id() == idSeleccionado) {
+                            userSelected.videojuegos.add(v);
+                            System.out.println("Has añadido el videojuego " + v.getTitle() + " al carrito de " + userSelected.getName());
+                        }
+                    }
+                } else {
+                    for (Videojuego v : userSelected.videojuegos) {
+                        if (idSeleccionado == v.getGame_Id()) {
+                            v.addQuantity();
+                        }
+                    }
+                }
+                System.out.println(userSelected);
+            } catch (NumberFormatException e) {
+                System.out.println("ERROR: Entrada inválida, ingrese un número.");
+            }
+            System.out.println("Deseas añadir mas juegos al carrito?(y/n)");
+            if (!sc.nextLine().equalsIgnoreCase("y")) continuar = false;
         } while (continuar);
+        insertarDatosEnMongo();
+    }
 
-        /*
-        TODO añadir todos los elementos del arrayList de videojuegos al carrito del usuario, aqui queda tela que cortar
-         */
+    public static void printearListadoVideojuegosDisponibles() {
+        System.out.println("Videojuegos disponibles en BaseX:");
+        BaseXClient.Query query = null;
+        try {
+            query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
+            while (query.more()) {
+                System.out.println(query.next());
+            }
+        } catch (IOException e) {
+            System.out.println("Error al printear los videojuegos seleccionables");
+        }
+    }
 
+    public static ArrayList<Videojuego> obtenerListadoJuegosComoArrayList() {
+        ArrayList<Videojuego> games = new ArrayList();
+        BaseXClient.Query query;
+        try {
+            query = session.query(StringResources.QUERY_13.formatted(userSelected.getAge()));
+            while (query.more()) {
+                String cadenaResultado = query.next();
+                String[] spliteada = cadenaResultado.split(",");
+                games.add(new Videojuego(Integer.parseInt(spliteada[0]), spliteada[1], 1, Double.parseDouble(spliteada[2])));
+            }
+        } catch (IOException e) {
+            System.out.println("Error al obtener los videojuegos como arrayList");
+        }
+        return games;
+    }
+
+    public static int elegirIdVideojuego(ArrayList<Videojuego> videojuegosDisponibles) {
+        int opcion ;
+        while (true) {
+            System.out.println("Elige un videojuego de la lista por Id");
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+                for (Videojuego v : videojuegosDisponibles) {
+                    if (v.getGame_Id() == opcion) {
+                        return opcion;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Debes elegir un numero");
+            }
+        }
+    }
+
+    public static void insertarDatosEnMongo(){
+        //TODO AQUI ESTOY 
         MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         List<Document> nuevosItems = new ArrayList<>();
         for (Videojuego v : userSelected.videojuegos) {
@@ -598,14 +659,23 @@ public class Main {
         }
         Document existeCarrito = cartCollection.find(Filters.eq("user_Id", userSelected.getUserId())).first();
         if (existeCarrito != null) {
+            /*
+            Si existe el carrito
+            Casos:
+                El juego ya estaba, se modifica cantidad => tengo que hacer upadate de la cantidad
+                El juego no estaba, se inserta el juego => tengo que hacer un insert de cada juego en items
+             */
             for (Document nuevoItem : nuevosItems) {
                 cartCollection.updateOne(
                         Filters.eq("user_Id", userSelected.getUserId()),
-                        new Document("$push", new Document("items", nuevoItem))
+                        new Document("$addToSet", new Document("items", nuevoItem))
                 );
             }
         } else {
-            // Si el carrito no existe, creamos un carrito nuevo con los nuevos items
+            /*
+            Si no existe el carrito
+            Se crea el carrito con los juegos y cantidades introducidas
+             */
             Document nuevoCarrito = new Document("user_Id", userSelected.getUserId())
                     .append("items", nuevosItems);
             cartCollection.insertOne(nuevoCarrito);
