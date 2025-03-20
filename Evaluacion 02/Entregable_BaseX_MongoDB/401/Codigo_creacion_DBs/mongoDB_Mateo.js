@@ -41,6 +41,7 @@ db.Usuario.insertMany([
     "email": "lauramartinez@example.com",
     "age": 29,
     "direction": "Calle Rosalía de Castro, 36203 Vigo, Pontevedra, España"
+
   },
   {
     "user_Id": 5,
