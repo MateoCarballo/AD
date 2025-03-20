@@ -1,6 +1,5 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
-import com.mongodb.client.result.UpdateResult;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
@@ -203,7 +202,7 @@ public class Main {
             case 11 -> eliminarUsuarioPorId();
             case 12 -> modificarCampoUsuarioSeleccionado();
             case 13 -> anhadirVideojuegos();
-//            case 14 ->
+            case 14 -> mostrarCarritoDelUsuario();
 //            case 15 ->
 //            case 16 ->
             case 17 -> consulta17();
@@ -662,6 +661,12 @@ public class Main {
         }
         Document existeCarrito = cartCollection.find(Filters.eq("user_Id", userSelected.getUserId())).first();
         if (existeCarrito != null) {
+            //Si ya tenia el juego en el carrito le cargo el nuevo valor
+            for (Videojuego v :userSelected.videojuegos){
+                Document filtro = new Document("items.game_Id",v.getGame_Id());
+                Document nuevaCantidad = new Document("$set",new Document("items.quantity",v.getQuantity()));
+                cartCollection.updateOne(filtro,nuevaCantidad);
+            }
 
             /*
             Si existe el carrito
@@ -688,6 +693,18 @@ public class Main {
         }
     }
 
+    public static void mostrarCarritoDelUsuario(){
+        MongoCollection<Document> carrito = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
+        // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
+        FindIterable<Document> resultados = carrito
+                .find(Filters.eq("user_Id",userSelected.getUserId()))
+                .projection(Projections.fields());
+        for (Document d : resultados){
+            System.out.println(d);
+        }
+    }
+
     // ############################################ OPERACIONES GLOBALES ############################################
 
     private static int elegirOpcion(String menu, int min, int max) {
@@ -704,5 +721,6 @@ public class Main {
             }
         } while (opcion < min || opcion > max);
         return opcion;
+
     }
 }
