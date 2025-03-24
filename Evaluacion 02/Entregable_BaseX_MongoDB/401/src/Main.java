@@ -1,11 +1,9 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
-import com.mongodb.client.result.UpdateResult;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.*;
 
 import static com.mongodb.client.model.Sorts.descending;
@@ -219,7 +217,7 @@ public class Main {
         }
 
         MongoCollection<Document> usersColection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
-        int newId = obtenerMayorUserId(ConexionMongo.COLLECTION_USERS_NAME);
+        int newId = getHigherId(ConexionMongo.COLLECTION_USERS_NAME,"user_Id");
         Document newUser = new Document("user_Id", newId)
                 .append("name", userToInsert.getName())
                 .append("email", userToInsert.getEmail())
@@ -265,16 +263,16 @@ public class Main {
         return new User(name, email, age, direction);
     }
 
-    private static int obtenerMayorUserId(String collectionName) {
+    private static int getHigherId(String collectionName, String idField) {
         int maxUserId = 0;
         MongoCollection<Document> usersColection = mongoDatabase.getCollection(collectionName);
         Document highestUser = usersColection.find()
-                .sort(descending("user_Id"))
+                .sort(descending(idField))
                 .first();
         if (highestUser != null) {
-            maxUserId = highestUser.getInteger("user_Id");
+            maxUserId = highestUser.getInteger(idField);
         } else {
-            System.out.println("No se encontraron usuarios.");
+            System.out.println("No se encontraron ningun campo en la coleccion.");
         }
         return maxUserId + 1;
     }
@@ -660,50 +658,22 @@ public class Main {
                     .append("quantity", v.getQuantity())
                     .append("price", v.getPrice()));
         }
-        FindIterable<Document> carritoUsuario = cartCollection.find();
-        if (carritoUsuario != null) {
-            //Si ya tenia el juego en el carrito le cargo el nuevo valor
-            for (Videojuego v :userSelected.videojuegos){
-                for (Document doc: carritoUsuario){
-                    /*
-                    if (doc.getString("items.$ite")==v.getGame_Id()){
-
-                    }
-                     */
-                }
-                Document filtro = new Document("items.game_Id",v.getGame_Id());
-                Document nuevaCantidad = new Document("$set",new Document("items.quantity",v.getQuantity()));
-                cartCollection.updateOne(filtro,nuevaCantidad);
-            }
-
-            /*
-            Si existe el carrito
-            Casos:
-
-                El juego ya estaba, se modifica cantidad => tengo que hacer upadate de la cantidad
-                El juego no estaba, se inserta el juego => tengo que hacer un insert de cada juego en items
-
-                Mi intento fallido
-
-                for (Document nuevoItem : nuevosItems) {
-                cartCollection.updateOne(
-                        Filters.eq("user_Id", userSelected.getUserId()),
-                        new Document("$addToSet", new Document("items", nuevoItem))
-                );
-            }
-             */
-
-        } else {
-            Document nuevoCarrito = new Document("user_Id", userSelected.getUserId())
-                    .append("items", nuevosItems);
-            cartCollection.insertOne(nuevoCarrito);
-            System.out.println("Se ha creado un nuevo carrito y se han añadido los videojuegos.");
+        Document filtroCarrito = new Document("user_Id",userSelected.getUserId());
+        Document carritoActualizado = new Document("user_Id", userSelected.getUserId())
+                .append("items", nuevosItems);
+        FindIterable<Document> existeCarrito = cartCollection.find(Filters.eq("user_Id",userSelected.getUserId()));
+        if (existeCarrito.first() == null){
+            cartCollection.insertOne(carritoActualizado);
+        }else{
+            cartCollection.updateOne(Filters.eq("user_Id",userSelected.getUserId()),new Document("$set",carritoActualizado));
         }
+
+        System.out.println("Se ha creado un nuevo carrito y se han añadido los videojuegos.");
     }
 
     public static void mostrarCarritoDelUsuario(){
         /*
-        CONSULTA NIVEL JESUCRISTO DE JOSE
+        CONSULTA NIVEL JESUCRISTO 
         Arrays.asList(new Document("$addFields",
     new Document("total",
     new Document("$sum",
@@ -727,9 +697,6 @@ public class Main {
                                                "$items.quantity","$items.price")))
                        )
                )
-
-
-
          */
         MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
@@ -748,13 +715,28 @@ public class Main {
                                         .append("_id",0))
                )
        );
-        Document carrito = carritos.find(new Document("$eq",new Document("user_Id",userSelected.getUserId()))).first();
-        int id = carrito.getInteger("user_Id");
-        //TODO aqui pendiente de encontrar como printear la lista
-        List items = (List) carrito.get("items");
-       for (Document res : resultados){
-           System.out.println("El resultado en crudo es \n" + res);
-       }
+        //Document carrito = carritos.find(new Document("user_Id",new Document("$eq",userSelected.getUserId()))).first();
+        Document carrito = carritos.find(Filters.eq("user_Id",userSelected.getUserId())).first();
+        if (carrito!= null){
+            int id = carrito.getInteger("user_Id");
+            ArrayList<Document> itemsCarrito = (ArrayList) carrito.get("items");
+            System.out.println("El usuario %s con id: %d tiene estos elementos en su carrito:".formatted(userSelected.getName(),userSelected.getUserId()));
+            for (Document item: itemsCarrito){
+                int gameId = item.getInteger("game_Id");
+                String title= item.getString("title");
+                int quantity = item.getInteger("quantity");
+                String price = String.format("%.2f", item.getDouble("price")) ;
+                System.out.println("""
+                        VIDEOJUEGO
+                            ID: %d
+                            NOMBRE: %s
+                            CANTIDAD: %d
+                            PRECIO: %s
+                        """.formatted(gameId,title,quantity,price));
+            }
+        }else{
+            System.out.println("El carrito del usuario está vacio");
+        }
     }
 
     public static void comprarCarrito(){
@@ -786,20 +768,36 @@ public class Main {
                 .projection(new Document("items",1)
                         .append("_id",0))
                 .first();
-        Document nuevaCompra = new Document("purchase_Id",obtenerMayorUserId(ConexionMongo.COLLECTION_PURCHASES_NAME))
+        Document nuevaCompra = new Document("purchase_id", getHigherId(ConexionMongo.COLLECTION_PURCHASES_NAME,"purchase_id"))
                 .append("user_Id",user_id)
                 .append("items",results)
                 .append("total",valorCarrito)
                 .append("purchase_date",new Date());
 
         MongoCollection compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
-        compras.insertOne(nuevaCompra);
-        carritos.deleteOne(Filters.eq("user_Id",user_id));
-        userSelected.videojuegos = new ArrayList<>();
+       if (confirmarOperacion()){
+           compras.insertOne(nuevaCompra);
+           carritos.deleteOne(Filters.eq("user_Id",user_id));
+           userSelected.videojuegos = new ArrayList<>();
+       }
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
-
+    private static boolean confirmarOperacion(){
+        while(true){
+            System.out.println("Pulsa 'y' para confirmar la compra o cualquier otra tecla para cancelar la operacion");
+            try{
+                if (sc.nextLine().equalsIgnoreCase("y")){
+                    return true;
+                }else{
+                    return false;
+                }
+            }catch (Exception e){
+                System.out.println("A ocurrido alguna excepcion al recoger datos del teclado");
+                System.out.println(e.getMessage());
+            }
+        }
+    }
     private static int elegirOpcion(String menu, int min, int max) {
         int opcion = -1;
         do {
@@ -815,5 +813,9 @@ public class Main {
         } while (opcion < min || opcion > max);
         return opcion;
 
+    }
+
+    public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
+        return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
     }
 }
