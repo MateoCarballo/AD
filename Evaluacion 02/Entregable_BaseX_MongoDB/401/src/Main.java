@@ -797,6 +797,22 @@ public class Main {
 
     private static void listarTotalGastadoCompras(){
         //TODO trabajando aqui
+        /*
+        1. Sumar todos los totales de las compras
+        2 Ordenarlos Mas -> Menos
+         */
+        AggregateIterable<Document> collectionCompras = mongoDatabase
+                .getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME)
+                .aggregate(
+                        Arrays.asList(
+                                Aggregates.group("$user_Id",
+                                        Accumulators.sum("total","")
+                                ),
+                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
+
+                                Aggregates.sort(Sorts.descending("totalCost")))
+                );
+
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
