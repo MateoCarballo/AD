@@ -205,7 +205,7 @@ public class Main {
             case 15 -> comprarCarrito();
             case 16 -> mostrarComprasUsuarioSeleccionado();
             case 17 -> listarTotalCarritosMayorAMenor();
-//            case 18 ->
+            case 18 -> listarTotalGastadoCompras();
         }
     }
 
@@ -793,6 +793,10 @@ public class Main {
             System.out.println("COSTE TOTAL: " + totalCost);
             System.out.println("=====================================");
         }
+    }
+
+    private static void listarTotalGastadoCompras(){
+        //TODO trabajando aqui
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
