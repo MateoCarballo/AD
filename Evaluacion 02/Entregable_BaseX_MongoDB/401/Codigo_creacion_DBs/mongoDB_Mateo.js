@@ -1,17 +1,3 @@
-use comercio
-db.createCollection("Usuario")
-db.createCollection("Carrito")
-db.createCollection("Compras")
-
-/*
-↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-LOS COMANDOS DE ARRIBA REALIZARLOS UNO POR UNO.
-
-
-COPIAR DESDE AQUI ABAJO DE UNA SOLA VEZ.
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-*/
-
 
 db.Usuario.insertMany([
   {

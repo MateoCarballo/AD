@@ -203,7 +203,7 @@ public class Main {
             case 13 -> anhadirVideojuegos();
             case 14 -> mostrarCarritoDelUsuario();
             case 15 -> comprarCarrito();
-//            case 16 ->
+            case 16 -> mostrarComprasUsuarioSeleccionado();
 //            case 17 -> consulta17();
 //            case 18 ->
         }
@@ -217,7 +217,7 @@ public class Main {
         }
 
         MongoCollection<Document> usersColection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
-        int newId = getHigherId(ConexionMongo.COLLECTION_USERS_NAME,"user_Id");
+        int newId = getHigherId(ConexionMongo.COLLECTION_USERS_NAME, "user_Id");
         Document newUser = new Document("user_Id", newId)
                 .append("name", userToInsert.getName())
                 .append("email", userToInsert.getEmail())
@@ -329,7 +329,7 @@ public class Main {
                 userSelected.setDirection(documentUsuario.getString("direction"));
                 MongoCollection<Document> collectionCarts = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
                 Document documentoCarrito = collectionCarts.find(Filters.eq("user_Id", userSelected.getUserId())).first();
-                if (documentoCarrito != null){
+                if (documentoCarrito != null) {
                     userSelected.videojuegos = new ArrayList<>();
 
                     List<Document> items = (List<Document>) documentoCarrito.get("items");
@@ -632,7 +632,7 @@ public class Main {
     }
 
     public static int elegirIdVideojuego(ArrayList<Videojuego> videojuegosDisponibles) {
-        int opcion ;
+        int opcion;
         while (true) {
             System.out.println("Elige un videojuego de la lista por Id");
             try {
@@ -648,7 +648,7 @@ public class Main {
         }
     }
 
-    public static void insertarDatosEnMongo(){
+    public static void insertarDatosEnMongo() {
         //TODO AQUI ESTOY
         MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         List<Document> nuevosItems = new ArrayList<>();
@@ -658,20 +658,20 @@ public class Main {
                     .append("quantity", v.getQuantity())
                     .append("price", v.getPrice()));
         }
-        Document filtroCarrito = new Document("user_Id",userSelected.getUserId());
+        Document filtroCarrito = new Document("user_Id", userSelected.getUserId());
         Document carritoActualizado = new Document("user_Id", userSelected.getUserId())
                 .append("items", nuevosItems);
-        FindIterable<Document> existeCarrito = cartCollection.find(Filters.eq("user_Id",userSelected.getUserId()));
-        if (existeCarrito.first() == null){
+        FindIterable<Document> existeCarrito = cartCollection.find(Filters.eq("user_Id", userSelected.getUserId()));
+        if (existeCarrito.first() == null) {
             cartCollection.insertOne(carritoActualizado);
-        }else{
-            cartCollection.updateOne(Filters.eq("user_Id",userSelected.getUserId()),new Document("$set",carritoActualizado));
+        } else {
+            cartCollection.updateOne(Filters.eq("user_Id", userSelected.getUserId()), new Document("$set", carritoActualizado));
         }
 
         System.out.println("Se ha creado un nuevo carrito y se han añadido los videojuegos.");
     }
 
-    public static void mostrarCarritoDelUsuario(){
+    public static void mostrarCarritoDelUsuario() {
         /*
         CONSULTA NIVEL JESUCRISTO 
         Arrays.asList(new Document("$addFields",
@@ -701,46 +701,33 @@ public class Main {
         MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
         // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
-       AggregateIterable<Document> resultados = carritos.aggregate(
-               Arrays.asList(
-                       Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
-                       Aggregates.unwind("$items"),
-                       Aggregates.group(
-                               "$user_Id",
-                               Accumulators.sum("total_carrito",
-                                       new Document("$multiply",Arrays.asList(
-                                               "$items.quantity","$items.price")))
-                       ),
-                       Aggregates.project(new Document("total_carrito",1)
-                                        .append("_id",0))
-               )
-       );
+
         //Document carrito = carritos.find(new Document("user_Id",new Document("$eq",userSelected.getUserId()))).first();
-        Document carrito = carritos.find(Filters.eq("user_Id",userSelected.getUserId())).first();
-        if (carrito!= null){
+        Document carrito = carritos.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+        if (carrito != null) {
             int id = carrito.getInteger("user_Id");
             ArrayList<Document> itemsCarrito = (ArrayList) carrito.get("items");
-            System.out.println("El usuario %s con id: %d tiene estos elementos en su carrito:".formatted(userSelected.getName(),userSelected.getUserId()));
-            for (Document item: itemsCarrito){
+            System.out.println("El usuario %s con id: %d tiene estos elementos en su carrito:".formatted(userSelected.getName(), userSelected.getUserId()));
+            for (Document item : itemsCarrito) {
                 int gameId = item.getInteger("game_Id");
-                String title= item.getString("title");
+                String title = item.getString("title");
                 int quantity = item.getInteger("quantity");
-                String price = String.format("%.2f", item.getDouble("price")) ;
+                String price = String.format("%.2f", item.getDouble("price"));
                 System.out.println("""
                         VIDEOJUEGO
                             ID: %d
                             NOMBRE: %s
                             CANTIDAD: %d
                             PRECIO: %s
-                        """.formatted(gameId,title,quantity,price));
+                        """.formatted(gameId, title, quantity, price));
             }
-        }else{
+        } else {
             System.out.println("El carrito del usuario está vacio");
         }
     }
 
-    public static void comprarCarrito(){
-        if (userSelected == null){
+    public static void comprarCarrito() {
+        if (userSelected == null) {
             return;
         }
         int user_id = -1;
@@ -748,56 +735,79 @@ public class Main {
         MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         AggregateIterable<Document> resultados = carritos.aggregate(
                 Arrays.asList(
-                        Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
+                        Aggregates.match(Filters.eq("user_Id", userSelected.getUserId())),
                         Aggregates.unwind("$items"),
                         Aggregates.group("$user_Id",
                                 Accumulators.sum(
                                         "Total_carrito",
-                                        new Document("$multiply",Arrays.asList("$items.quantity","$items.price")
+                                        new Document("$multiply", Arrays.asList("$items.quantity", "$items.price")
                                         )
                                 )
                         )
                 )
         );
-        for (Document parIdTotal: resultados){
+        for (Document parIdTotal : resultados) {
             user_id = parIdTotal.getInteger("_id");
             valorCarrito = parIdTotal.getDouble("Total_carrito");
         }
 
-        Document results = carritos.find(Filters.eq("user_Id",userSelected.getUserId()))
-                .projection(new Document("items",1)
-                        .append("_id",0))
+        Document results = carritos.find(Filters.eq("user_Id", userSelected.getUserId()))
+                .projection(new Document("items", 1)
+                        .append("_id", 0))
                 .first();
-        Document nuevaCompra = new Document("purchase_id", getHigherId(ConexionMongo.COLLECTION_PURCHASES_NAME,"purchase_id"))
-                .append("user_Id",user_id)
-                .append("items",results)
-                .append("total",valorCarrito)
-                .append("purchase_date",new Date());
+        Document nuevaCompra = new Document("purchase_id", getHigherId(ConexionMongo.COLLECTION_PURCHASES_NAME, "purchase_id"))
+                .append("user_Id", user_id)
+                .append("items", results)
+                .append("total", valorCarrito)
+                .append("purchase_date", new Date());
 
         MongoCollection compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
-       if (confirmarOperacion()){
-           compras.insertOne(nuevaCompra);
-           carritos.deleteOne(Filters.eq("user_Id",user_id));
-           userSelected.videojuegos = new ArrayList<>();
-       }
+        if (confirmarOperacion()) {
+            compras.insertOne(nuevaCompra);
+            carritos.deleteOne(Filters.eq("user_Id", user_id));
+            userSelected.videojuegos = new ArrayList<>();
+        }
+    }
+
+    private static void mostrarComprasUsuarioSeleccionado() {
+        if (userSelected == null) {
+            return;
+        }
+
+        MongoCollection<Document> compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
+
+        FindIterable<Document> resultados = compras.find(Filters.eq("user_Id",userSelected.getUserId()));
+
+        System.out.println("COMPRAS REALIZADAS POR EL USUARIO ->" + userSelected.getName());
+        for (Document res : resultados) {
+            int purchaseId = res.getInteger("purchase_id");
+            Date fechaCompra = res.getDate("purchase_date");
+            Double total = res.getDouble("total");
+            System.out.println("========================");
+            System.out.println("ID COMPRA: " + purchaseId);
+            System.out.println("FECHA COMPRA: " + fechaCompra);
+            System.out.println("VALOR TOTAL: " + total);
+            System.out.println("========================");
+        }
     }
 
     // ############################################ OPERACIONES GLOBALES ############################################
-    private static boolean confirmarOperacion(){
-        while(true){
+    private static boolean confirmarOperacion() {
+        while (true) {
             System.out.println("Pulsa 'y' para confirmar la compra o cualquier otra tecla para cancelar la operacion");
-            try{
-                if (sc.nextLine().equalsIgnoreCase("y")){
+            try {
+                if (sc.nextLine().equalsIgnoreCase("y")) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("A ocurrido alguna excepcion al recoger datos del teclado");
                 System.out.println(e.getMessage());
             }
         }
     }
+
     private static int elegirOpcion(String menu, int min, int max) {
         int opcion = -1;
         do {
