@@ -204,7 +204,7 @@ public class Main {
             case 14 -> mostrarCarritoDelUsuario();
             case 15 -> comprarCarrito();
             case 16 -> mostrarComprasUsuarioSeleccionado();
-//            case 17 -> consulta17();
+            case 17 -> listarTotalCarritosMayorAMenor();
 //            case 18 ->
         }
     }
@@ -285,34 +285,6 @@ public class Main {
             return true;
         }
         return false;
-    }
-
-    private static void consulta17() {
-        /*
-        Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito
-        y listar los resultados ordenados por el total de forma descendente.
-         */
-        AggregateIterable<Document> iterDoc = mongoDatabase
-                .getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME)
-                .aggregate(
-                        Arrays.asList(
-                                Aggregates.unwind("$items"),
-                                Aggregates.addFields(
-                                        new Field<>("totalItemCost",
-                                                new Document("$multiply", Arrays.asList(
-                                                        "$items.quantity", "$items.price"
-                                                ))
-                                        )
-                                ),
-                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-                                Aggregates.group("$user_Id",
-                                        Accumulators.sum("totalCost", "$totalItemCost")
-                                ),
-                                Aggregates.sort(Sorts.descending("totalCost")))
-                );
-        for (Document document : iterDoc) {
-            System.out.println(document);
-        }
     }
 
     public static void seleccionarUsuarioPorEmail() {
@@ -788,6 +760,38 @@ public class Main {
             System.out.println("FECHA COMPRA: " + fechaCompra);
             System.out.println("VALOR TOTAL: " + total);
             System.out.println("========================");
+        }
+    }
+
+
+    private static void listarTotalCarritosMayorAMenor() {
+        AggregateIterable<Document> iterDoc = mongoDatabase
+                .getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME)
+                .aggregate(
+                        Arrays.asList(
+                                Aggregates.unwind("$items"),
+                                Aggregates.addFields(
+                                        new Field<>("totalItemCost",
+                                                new Document("$multiply", Arrays.asList(
+                                                        "$items.quantity", "$items.price"
+                                                ))
+                                        )
+                                ),
+                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
+                                Aggregates.group("$user_Id",
+                                        Accumulators.sum("totalCost", "$totalItemCost")
+                                ),
+                                Aggregates.sort(Sorts.descending("totalCost")))
+                );
+        System.out.println("CARRITOS ORDENADOR DE MAYOR A MENOR PRECIO TOTAL:");
+        for (Document document : iterDoc) {
+            System.out.println("=====================================");
+            int userId = document.getInteger("_id");
+            String totalCost = String.format( "%.2f", document.getDouble("totalCost"));
+            System.out.println("ID: " + userId);
+            //TODO redondear dos decimales obligado
+            System.out.println("COSTE TOTAL: " + totalCost);
+            System.out.println("=====================================");
         }
     }
 
