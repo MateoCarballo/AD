@@ -225,16 +225,7 @@ public class Main {
                 .append("age", userToInsert.getAge())
                 .append("direction", userToInsert.getDirection());
         usersColection.insertOne(newUser);
-        System.out.println("""
-    *******************************
-    *     Usuario añadido con     *
-    *           éxito!            *
-    *******************************
-    
-    %s
-    
-    *******************************
-    """.formatted(userToInsert.toString()));
+        System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_USUARIO.formatted("Usuario añadido con exito!",userToInsert.toString()));
     }
 
     private static User preguntarFiltroParaCrearUsuario() {
@@ -303,7 +294,6 @@ public class Main {
         if (email != null) {
             Document documentUsuario = colectionUsuarios.find(Filters.eq("email", email)).first();
             if (documentUsuario != null) {
-                //TODO no seria mas comodo que los videojuegos esten dentro de aqui
                 userSelected.setUserId(documentUsuario.getInteger("user_Id"));
                 userSelected.setName(documentUsuario.getString("name"));
                 userSelected.setEmail(documentUsuario.getString("email"));
@@ -324,7 +314,7 @@ public class Main {
                         userSelected.videojuegos.add(videojuego);
                     }
                 }
-                System.out.println("Has selecccionado al usuario \n" + userSelected);
+                System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_USUARIO.formatted("Has seleccionado al usuario",userSelected));
             }
         } else {
             System.out.println("La colecion esta vacia!");
@@ -385,20 +375,25 @@ public class Main {
                     int id = Integer.parseInt(entradaTeclado);
                     if (paresEmail.containsKey(id)) {
                         return paresEmail.get(id);
+                    }else {
+                        System.out.println("\033[31m" +  // Cambiar el color del texto a rojo
+                                "*******************************\n" +
+                                "* El email introducido no es *\n" +
+                                "* válido. Intenta nuevamente. *\n" +
+                                "*******************************\n" +
+                                "\033[0m");
                     }
                 } catch (NumberFormatException e) {
                     if (paresEmail.containsValue(entradaTeclado)) {
                         return entradaTeclado;
+                    }else {
+                        System.out.println("\033[31m" +
+                                "*******************************\n" +
+                                "* El email introducido no es *\n" +
+                                "* válido. Intenta nuevamente. *\n" +
+                                "*******************************\n" +
+                                "\033[0m");
                     }
-                    /*
-                    Esto es innecesario ?
-                    for (Map.Entry<Integer, String> parClaveValor : paresEmail.entrySet()) {
-                        if (parClaveValor.getValue().equals(entradaTeclado)) {
-                            return parClaveValor.getValue();
-                        }
-                    }
-                     */
-
                 }
             }
         }
@@ -407,6 +402,7 @@ public class Main {
 
     public static void eliminarUsuarioPorId() {
         HashMap<Integer, String> paresEmail = obtenerUsuarios();
+        printearListadosUsuariosRegistrados(paresEmail);
         MongoCollection<Document> usersCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         MongoCollection<Document> purchasesCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
@@ -417,7 +413,7 @@ public class Main {
             try {
                 int id = Integer.parseInt(entradaTeclado);
                 if (paresEmail.containsKey(id)) {
-                    System.out.println("Estas seguro que deseas eliminar el usuario ?(pulsa 'y'para eliminar o cualquier otra para canecelar");
+                    System.out.println("Estas seguro que deseas eliminar el usuario ? \n (pulsa 'y'para eliminar o cualquier otra para canecelar)");
                     if (sc.nextLine().equalsIgnoreCase("y")) {
                         usersCollection.deleteOne(Filters.eq("user_Id", id));
                         cartCollection.deleteOne(Filters.eq("user_Id", id));
@@ -433,7 +429,7 @@ public class Main {
                 if (paresEmail.containsValue(entradaTeclado)) {
                     for (Map.Entry<Integer, String> parClaveValor : paresEmail.entrySet()) {
                         if (parClaveValor.getValue().equals(entradaTeclado)) {
-                            System.out.println("Estas seguro que deseas eliminar el usuario ?(pulsa 'y'para eliminar o cualquier otra para canecelar");
+                            System.out.println("Estas seguro que deseas eliminar el usuario ? \n (pulsa 'y'para eliminar o cualquier otra para canecelar)");
                             if (sc.nextLine().equalsIgnoreCase("y")) {
                                 usersCollection.deleteOne(Filters.eq("user_Id", parClaveValor.getKey()));
                                 cartCollection.deleteOne(Filters.eq("user_Id", parClaveValor.getKey()));
@@ -468,7 +464,7 @@ public class Main {
             switch (entradaTeclado) {
                 case 1 -> {
                     do {
-                        System.out.println("Introduce el nuevo nombre del usuario(Al menos dos partes 'Ejemplo: Mateo Carballo')");
+                        System.out.println("Introduce el nuevo nombre del usuario\n(Al menos dos partes 'Ejemplo: Mateo Carballo')");
                         name = sc.nextLine();
                         if (name.matches(StringResources.NOMBRE_PATTERN)) {
                             actualizarCampoString(ConexionMongo.FIELD_NAME, name);
@@ -478,7 +474,7 @@ public class Main {
                 }
                 case 2 -> {
                     do {
-                        System.out.println("Introduce el nuevo email del usuario (Al menos dos partes 'Ejemplo1: ejemplo@dominio.ext)'");
+                        System.out.println("Introduce el nuevo email del usuario\n(Al menos dos partes 'Ejemplo1: ejemplo@dominio.ext)'");
                         email = sc.nextLine();
                         if (email.matches(StringResources.CORREO_PATTERN)) {
                             actualizarCampoString(ConexionMongo.FIELD_EMAIL, email);
@@ -487,10 +483,9 @@ public class Main {
                     } while (!email.matches(StringResources.CORREO_PATTERN));
                 }
                 case 3 -> {
-                    System.out.println("Introduce la nueva edad del usuario");
                     boolean datoOK = false;
                     while (!datoOK) {
-                        System.out.println("Escribe la nueva edad del usuario ( La edad debe estar enter 1 y 99 incluidos)");
+                        System.out.println("Escribe la nueva edad del usuario\n(La edad debe estar enter 1 y 99 incluidos)");
                         String edadIntroducida = sc.nextLine();
                         if (edadIntroducida.matches("\\d+")) {
                             age = Integer.parseInt(edadIntroducida);
@@ -503,7 +498,7 @@ public class Main {
                     userSelected.setAge(age);
                 }
                 case 4 -> {
-                    System.out.println("Escribe la nueva direccion del usuario");
+                    System.out.println("Escribe la nueva direccion del usuario\n(Esto es ciudad sin ley como si le pones que vieve en Marte)");
                     direction = sc.nextLine();
                     actualizarCampoString(ConexionMongo.FIELD_DIRECTION, direction);
                     userSelected.setDirection(direction);
