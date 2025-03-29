@@ -526,15 +526,16 @@ public class Main {
     }
 
     public static void anhadirVideojuegos() {
-        /*
-        13. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos
-        cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
-        id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
-         */
+
         if (userSelected.getName() == null) {
             System.out.println("Selecciona un usuario para agregar items al carrito");
             return;
         }
+        añadirVideojuegoJava();
+        insertarDatosEnMongo();
+    }
+
+    public static void añadirVideojuegoJava(){
 
         ArrayList<Videojuego> videojuegosDisponibles;
         boolean continuar = true;
@@ -576,7 +577,6 @@ public class Main {
             System.out.println("Deseas añadir mas juegos al carrito?(y/n)");
             if (!sc.nextLine().equalsIgnoreCase("y")) continuar = false;
         } while (continuar);
-        insertarDatosEnMongo();
     }
 
     public static void printearListadoVideojuegosDisponibles() {
