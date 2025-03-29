@@ -4,7 +4,6 @@ import com.mongodb.client.*;
 public class ConexionMongo {
     private static MongoClient mongoClient = null;
     private static MongoDatabase database = null;
-    private static DBCollection databaseCollections;
 
     public static final String URL = "mongodb://localhost:27017";
     public static final String DATABASE_NAME = "comercio";

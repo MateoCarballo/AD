@@ -6,72 +6,70 @@ public class StringResources {
             3. Salir""";
 
     public static final String MENU_OPCIONES_BASEX = """
-                                   ######### OPERACIONES SOBRE BASEX ##########
+                                   ########## OPERACIONES SOBRE BASEX ##########
             
-                                   ######### OPERACIONES DE MODIFICACION Y ELIMINACION ##########
+            ########## OPERACIONES DE MODIFICACIÓN Y ELIMINACIÓN ##########
             
-            1. Modificar elemento por 'id'.
+            1. Modificar un elemento por 'ID'.
             
-            2. Eliminar un videojuego según su ID.
+            2. Eliminar un videojuego según su 'ID'.
             
-                                   ######### CONSULTAS ##########
+            ########## CONSULTAS ##########
             
             3. Consulta 1: Obtener todos los videojuegos ordenados por plataforma y 
-               en segundo lugar por título (se mostrarán los siguientes campos: 
-               id, titulo, precio, disponibilidad, edad_minima_recomendada y plataforma).
+               en segundo lugar por título (campos: id, título, precio, disponibilidad, 
+               edad mínima recomendada y plataforma).
             
-            4. Consulta 2: Listar videojuegos con una edad_minima_recomendada menor o 
-               igual a X años (se mostrarán los siguientes campos: id, titulo, precio, 
-               disponibilidad, edad_minima_recomendada y plataforma). Se deberá mostrar 
-               la información ordenada según la edad_minima_recomendada.
+            4. Consulta 2: Listar videojuegos con una edad mínima recomendada menor o 
+               igual a X años (campos: id, título, precio, disponibilidad, edad mínima 
+               recomendada y plataforma). Ordenados por la edad mínima recomendada.
             
-            5. Consulta 3: Mostrar la plataforma, el titulo y el precio del videojuego
-               más barato para cada plataforma. En el caso de haber varios se devolverá 
-               el de la primera posición.
+            5. Consulta 3: Mostrar la plataforma, el título y el precio del videojuego 
+               más barato por plataforma. Si hay varios, se devolverá el primero.
             
-            6. Consulta 4: Mostrar el titulo y el genero de aquellos videojuegos cuya
-               descripcion incluya una subcadena, independientemente del uso de mayúsculas
-               o minúsculas. Se deberá mostrar la información ordenada alfabéticamente
-               según el genero.
+            6. Consulta 4: Mostrar el título y género de los videojuegos cuya descripción 
+               contenga una subcadena, sin importar el uso de mayúsculas o minúsculas. 
+               Ordenados alfabéticamente por género.
             
-            7. Consulta 5: Mostrar la cantidad total de videojuegos para cada plataforma
-               (teniendo en cuenta el elemento disponibilidad) y calcular el porcentaje que
-               representa respecto al total de videojuegos. Se deberá mostrar la información
-               ordenada de forma descendente por la cantidad de videojuegos.
+            7. Consulta 5: Mostrar la cantidad total de videojuegos por plataforma 
+               (considerando la disponibilidad) y calcular el porcentaje que representa 
+               respecto al total. Ordenado de forma descendente por la cantidad de videojuegos.
             
-            8. Consulta 6: Mostrar el precio que costaría comprar todos los videojuegos disponibles 
-               (teniendo en cuenta el precio de cada videojuego y la disponibilidad de cada uno).
+            8. Consulta 6: Mostrar el precio total de todos los videojuegos disponibles 
+               (considerando el precio y la disponibilidad de cada uno).
             """;
 
     public static final String MENU_OPCIONES_MONGO = """
-                9. Crear un nuevo usuario (no podrá haber email repetidos).
+                                        ########## OPERACIONES SOBRE MONGO ##########
+                                      
+            9. Crear un nuevo usuario (sin emails repetidos).
             
-                10. Identificar usuario según el email. Dado el email se obtendrá el id del usuario 
-                   de forma que las siguientes consultas se harán sobre ese usuario. Para cambiar de 
-                   usuario se tendrá que volver a seleccionar esta opción.
+            10. Identificar un usuario por su email. El ID del usuario será obtenido para 
+                realizar consultas sobre él. Para cambiar de usuario, selecciona esta opción nuevamente.
             
-                11. Borrar un usuario.
+            11. Borrar un usuario.
             
-                12. Modificar el valor de un campo de la información del usuario.
+            12. Modificar un campo en la información del usuario.
             
-                13. Añadir videojuegos al carrito del usuario. Se mostrará la lista de videojuegos 
-                   cuya edad_minima_recomendada sea inferior o igual a la del usuario actual y se pedirá:
-                   id del videojuego y cantidad, así como si se desea seguir introduciendo más videojuegos.
+            13. Añadir videojuegos al carrito del usuario. Se mostrará una lista de videojuegos 
+                cuya edad mínima recomendada sea inferior o igual a la del usuario actual. 
+                Se pedirá: ID del videojuego, cantidad y si se desea añadir más videojuegos.
             
-                14. Mostrar el carrito del usuario. Se mostrarán los datos del carrito y el coste total.
+            14. Mostrar el carrito del usuario, incluyendo los datos del carrito y el coste total.
             
-                15. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una orden 
-                   de confirmación. Si la orden es positiva se pasarán todos los videojuegos a formar parte de 
-                   una nueva compra y desaparecerán del carrito.
+            15. Comprar el carrito del usuario. Se mostrará el contenido del carrito junto con una 
+                orden de confirmación. Si la orden es positiva, los videojuegos se trasladarán a la 
+                compra y desaparecerán del carrito.
             
-                16. Mostrar las compras del usuario, incluyendo la información de la fecha de cada compra.
+            16. Mostrar las compras del usuario, incluyendo la fecha de cada compra.
             
-                17. Consulta 1: Teniendo en cuenta todos los usuarios, calcular el coste de cada carrito y 
-                   listar los resultados ordenados por el total de forma descendente.
+            17. Consulta 1: Calcular el coste de cada carrito para todos los usuarios y listar los resultados 
+                ordenados de forma descendente por el total.
             
-                18.Consulta 2: Teniendo en cuenta todos los usuarios, calcular el total gastado por cada usuario
-                 en todas sus compras y listar los resultados ordenados por el total de forma ascendente.
+            18. Consulta 2: Calcular el total gastado por cada usuario en todas sus compras y listar los resultados 
+                ordenados de forma ascendente por el total.
             """;
+
 
     public static final String MENU_ETIQUETAS_MODIFICABLES = """
             Que quieres modificar del videojuego:
@@ -149,7 +147,7 @@ public class StringResources {
             for $videojuego in /videojuegos/videojuego
             where matches($videojuego/descripcion, $subcadena, "i")
             order by $videojuego/genero
-            return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero)
+            return concat("Titulo: ",$videojuego/titulo, " Genero: ", $videojuego/genero, " Descripcion: ", $videojuego/descripcion)
             """;
 
     public static final String QUERY_5 = """
