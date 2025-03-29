@@ -1,3 +1,5 @@
+package model;
+
 public class Videojuego {
     private int game_Id;
     private String title;

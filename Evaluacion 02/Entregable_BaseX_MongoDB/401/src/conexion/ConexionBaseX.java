@@ -1,4 +1,5 @@
-import org.basex.api.client.Session;
+package conexion;
+
 import org.basex.examples.api.BaseXClient;
 
 import java.io.IOException;

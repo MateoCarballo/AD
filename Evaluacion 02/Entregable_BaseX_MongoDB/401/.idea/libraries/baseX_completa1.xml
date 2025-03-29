@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="baseX-completa1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/baseX-completa.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/BaseX-ligera.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/mongo-java-driver-3.12.14.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/baseX-completa.jar!/" />
+    </SOURCES>
+  </library>
+</component>

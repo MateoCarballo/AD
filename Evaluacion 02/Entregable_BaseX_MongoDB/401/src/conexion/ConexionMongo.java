@@ -1,4 +1,5 @@
-import com.mongodb.DBCollection;
+package conexion;
+
 import com.mongodb.client.*;
 
 public class ConexionMongo {

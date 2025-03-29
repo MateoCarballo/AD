@@ -1,7 +1,17 @@
-import com.mongodb.client.*;
+package main;
+
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.*;
+import conexion.ConexionBaseX;
+import conexion.ConexionMongo;
+import model.User;
+import model.Videojuego;
 import org.basex.examples.api.BaseXClient;
 import org.bson.Document;
+import utilities.StringResources;
 
 import java.io.IOException;
 import java.util.*;
@@ -10,7 +20,7 @@ import static com.mongodb.client.model.Sorts.descending;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
-    private static BaseXClient session;
+    private static org.basex.examples.api.BaseXClient session;
     private static MongoDatabase mongoDatabase;
     private static User userSelected = new User();
     /*
@@ -783,7 +793,7 @@ public class Main {
                                 Aggregates.group("$user_Id",
                                         Accumulators.sum("totalCost", "$totalItemCost")
                                 ),
-                                Aggregates.sort(Sorts.descending("totalCost")))
+                                Aggregates.sort(descending("totalCost")))
                 );
         System.out.println("CARRITOS ORDENADOR DE MAYOR A MENOR PRECIO TOTAL:");
         for (Document document : iterDoc) {
@@ -805,7 +815,7 @@ public class Main {
                                         Accumulators.sum("total","")
                                 ),
                                 Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-                                Aggregates.sort(Sorts.descending("totalCost")))
+                                Aggregates.sort(descending("totalCost")))
                 );
 
     }
@@ -874,7 +884,7 @@ public class Main {
          */
     /* METODO 14 MONTANDO LOS DATOS EN JAVA
 
-        MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        MongoCollection<Document> carritos = mongoDatabase.getCollection(conexion.ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
         // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
 

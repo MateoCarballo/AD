@@ -1,3 +1,5 @@
+package utilities;
+
 public class StringResources {
     public static final String MENU_ELIGIR_TECNOLOGIA = """
             Seleccione una opción:
