@@ -187,7 +187,7 @@ public class StringResources {
     public static final String CORREO_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$";
     public static final String NOMBRE_PATTERN = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+){1,2}$";
 
-    public static final String CUADRO_COLOR_AZUL_MOSTRAR_USUARIO = """
+    public static final String CUADRO_COLOR_AZUL_MOSTRAR = """
     \033[34m*******************************
      %s 
     *******************************

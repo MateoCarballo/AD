@@ -225,7 +225,7 @@ public class Main {
                 .append("age", userToInsert.getAge())
                 .append("direction", userToInsert.getDirection());
         usersColection.insertOne(newUser);
-        System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_USUARIO.formatted("Usuario añadido con exito!",userToInsert.toString()));
+        System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Usuario añadido con exito!",userToInsert.toString()));
     }
 
     private static User preguntarFiltroParaCrearUsuario() {
@@ -314,7 +314,7 @@ public class Main {
                         userSelected.videojuegos.add(videojuego);
                     }
                 }
-                System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_USUARIO.formatted("Has seleccionado al usuario",userSelected));
+                System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Has seleccionado al usuario",userSelected));
             }
         } else {
             System.out.println("La colecion esta vacia!");
@@ -580,12 +580,12 @@ public class Main {
     }
 
     public static void printearListadoVideojuegosDisponibles() {
-        System.out.println("Videojuegos disponibles en BaseX:");
+        System.out.println("\033[34m" + "Videojuegos disponibles en BaseX:" + "\033[0m");
         BaseXClient.Query query = null;
         try {
             query = session.query(StringResources.QUERY_2.formatted(userSelected.getAge()));
             while (query.more()) {
-                System.out.println(query.next());
+                System.out.println("\033[34m" + query.next() + "\033[0m");
             }
         } catch (IOException e) {
             System.out.println("Error al printear los videojuegos seleccionables");
@@ -649,57 +649,54 @@ public class Main {
     }
 
     public static void mostrarCarritoDelUsuario() {
-        /*
-        CONSULTA NIVEL JESUCRISTO 
-        Arrays.asList(new Document("$addFields",
-    new Document("total",
-    new Document("$sum",
-    new Document("$map",
-    new Document("input", "$items")
-                        .append("as", "item")
-                        .append("in",
-    new Document("$multiply", Arrays.asList("$$item.quantity", "$$item.price"))))))),
-    new Document("$project",
-    new Document("_id", 0L)
-            .append("items", 1L)
-            .append("total", 1L)))
-
-             Arrays.asList(
-                       Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
-                       Aggregates.unwind("$items"),
-                       Aggregates.group(
-                               "$user_Id",
-                               Accumulators.sum("Total_carrito",
-                                       new Document("$multiply",Arrays.asList(
-                                               "$items.quantity","$items.price")))
-                       )
-               )
-         */
         MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
-        //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
-        // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
 
-        //Document carrito = carritos.find(new Document("user_Id",new Document("$eq",userSelected.getUserId()))).first();
-        Document carrito = carritos.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+        // Realizamos la agregación
+        AggregateIterable<Document> resultado = carritos.aggregate(Arrays.asList(
+                new Document("$match", new Document("user_Id", userSelected.getUserId())), // Filtramos por user_Id
+                new Document("$addFields", new Document("PrecioTotal", // Agregamos el campo PrecioTotal
+                        new Document("$sum", new Document("$map", new Document("input", "$items") // Iteramos sobre los items
+                                .append("as", "item")
+                                .append("in", // Para cada item, multiplicamos la cantidad por el precio
+                                        new Document("$multiply", Arrays.asList("$$item.quantity", "$$item.price"))
+                                )
+                        ))
+                )),
+                new Document("$project", // Proyectamos los campos que queremos mostrar
+                        new Document("_id", 0L) // No mostramos el campo _id
+                                .append("items", 1L) // Incluimos los items
+                                .append("PrecioTotal", 1L) // Incluimos el campo PrecioTotal
+                )
+        ));
+
+        // Obtener el primer documento, ya que debería ser único para el usuario
+        Document carrito = resultado.first();
+
         if (carrito != null) {
-            int id = carrito.getInteger("user_Id");
+            // Mostramos los items y el total
             ArrayList<Document> itemsCarrito = (ArrayList) carrito.get("items");
+            double total = carrito.getDouble("PrecioTotal");
             System.out.println("El usuario %s con id: %d tiene estos elementos en su carrito:".formatted(userSelected.getName(), userSelected.getUserId()));
+
             for (Document item : itemsCarrito) {
                 int gameId = item.getInteger("game_Id");
                 String title = item.getString("title");
                 int quantity = item.getInteger("quantity");
                 String price = String.format("%.2f", item.getDouble("price"));
-                System.out.println("""
-                        VIDEOJUEGO
-                            ID: %d
-                            NOMBRE: %s
-                            CANTIDAD: %d
-                            PRECIO: %s
-                        """.formatted(gameId, title, quantity, price));
+                System.out.println(""" 
+                VIDEOJUEGO
+                    ID: %d
+                    NOMBRE: %s
+                    CANTIDAD: %d
+                    PRECIO: %s
+                """.formatted(gameId, title, quantity, price));
             }
+            String price = String.format("%.2f", total);
+            System.out.println(""" 
+                    TOTAL: %s
+                """.formatted(price));
         } else {
-            System.out.println("El carrito del usuario está vacio");
+            System.out.println("El carrito del usuario está vacío");
         }
     }
 
@@ -794,18 +791,12 @@ public class Main {
             int userId = document.getInteger("_id");
             String totalCost = String.format( "%.2f", document.getDouble("totalCost"));
             System.out.println("ID: " + userId);
-            //TODO redondear dos decimales obligado
             System.out.println("COSTE TOTAL: " + totalCost);
             System.out.println("=====================================");
         }
     }
 
     private static void listarTotalGastadoCompras(){
-        //TODO trabajando aqui
-        /*
-        1. Sumar todos los totales de las compras
-        2 Ordenarlos Mas -> Menos
-         */
         AggregateIterable<Document> collectionCompras = mongoDatabase
                 .getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME)
                 .aggregate(
@@ -814,7 +805,6 @@ public class Main {
                                         Accumulators.sum("total","")
                                 ),
                                 Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-
                                 Aggregates.sort(Sorts.descending("totalCost")))
                 );
 
@@ -857,4 +847,64 @@ public class Main {
     public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
         return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
     }
+    /*CONSULTA REALIZADA CON LA FUNCION DE TRANSFORMAR A JAVA DESDE MONGO PARA EL PUNTO 14
+        CONSULTA NIVEL JESUCRISTO
+        Arrays.asList(new Document("$addFields",
+        new Document("total",
+        new Document("$sum",
+        new Document("$map",
+        new Document("input", "$items")
+                        .append("as", "item")
+                        .append("in",
+        new Document("$multiply", Arrays.asList("$$item.quantity", "$$item.price"))))))),
+        new Document("$project",
+        new Document("_id", 0L)
+            .append("items", 1L)
+            .append("total", 1L)))
+             Arrays.asList(
+                       Aggregates.match(Filters.eq("user_Id",userSelected.getUserId())),
+                       Aggregates.unwind("$items"),
+                       Aggregates.group(
+                               "$user_Id",
+                               Accumulators.sum("Total_carrito",
+                                       new Document("$multiply",Arrays.asList(
+                                               "$items.quantity","$items.price")))
+                       )
+               )
+         */
+    /* METODO 14 MONTANDO LOS DATOS EN JAVA
+
+        MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
+        //Aqui no se como usar las agregaciones para poder filtrar solo el carro del usuario si existe y despues
+        // sobre el resultado iterar la suma de todos los campos 'quantity' dentro del array de item
+
+        Document carrito = carritos.find(Filters.eq("user_Id", userSelected.getUserId())).first();
+        if (carrito != null) {
+            double total = Double.MIN_VALUE;
+            int id = carrito.getInteger("user_Id");
+            ArrayList<Document> itemsCarrito = (ArrayList) carrito.get("items");
+            System.out.println("El usuario %s con id: %d tiene estos elementos en su carrito:".formatted(userSelected.getName(), userSelected.getUserId()));
+            for (Document item : itemsCarrito) {
+                total+= item.getDouble("price");
+                int gameId = item.getInteger("game_Id");
+                String title = item.getString("title");
+                int quantity = item.getInteger("quantity");
+                String price = String.format("%.2f", item.getDouble("price"));
+                System.out.println("""
+                        VIDEOJUEGO
+                            ID: %d
+                            NOMBRE: %s
+                            CANTIDAD: %d
+                            PRECIO: %s
+                        """.formatted(gameId, title, quantity, price));
+            }
+            String price = String.format("%.2f",total);
+            System.out.println("""
+                            TOTAL: %s
+                        """.formatted(price));
+        } else {
+            System.out.println("El carrito del usuario está vacio");
+        }
+     */
+
 }

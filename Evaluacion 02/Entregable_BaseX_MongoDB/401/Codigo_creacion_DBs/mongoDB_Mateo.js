@@ -1,4 +1,4 @@
-
+//La base de datos debe llamarse comercio. 'use comercio'
 db.Usuario.insertMany([
   {
     "user_Id": 1,
