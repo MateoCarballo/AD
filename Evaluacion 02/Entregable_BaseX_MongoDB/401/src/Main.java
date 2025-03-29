@@ -218,13 +218,23 @@ public class Main {
 
         MongoCollection<Document> usersColection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_USERS_NAME);
         int newId = getHigherId(ConexionMongo.COLLECTION_USERS_NAME, "user_Id");
-        Document newUser = new Document("user_Id", newId)
+        userToInsert.setUserId(newId);
+        Document newUser = new Document("user_Id", userToInsert.getUserId())
                 .append("name", userToInsert.getName())
                 .append("email", userToInsert.getEmail())
                 .append("age", userToInsert.getAge())
                 .append("direction", userToInsert.getDirection());
         usersColection.insertOne(newUser);
-        System.out.println("Usuario \"" + userToInsert.getName() + "\"  añadido con exito!");
+        System.out.println("""
+    *******************************
+    *     Usuario añadido con     *
+    *           éxito!            *
+    *******************************
+    
+    %s
+    
+    *******************************
+    """.formatted(userToInsert.toString()));
     }
 
     private static User preguntarFiltroParaCrearUsuario() {

@@ -61,23 +61,26 @@ public class User {
 
     @Override
     public String toString() {
+        // Si no tenemos videojuegos en el carrito printeamos el mensaje "No tiene videojuegos en el carrito" si no la lista que tenga
+        String videojuegosInfo = (videojuegos.isEmpty()) ? "No tiene videojuegos en el carrito" : printearListadoVideojuegos();
+
         return "Contenido del usuario \n" +
                 "userId: " + userId + "\n" +
                 "name: " + name + "\n" +
                 "email: " + email + "\n" +
                 "age: " + age + "\n" +
                 "direction: " + direction + "\n" +
-                "Listado de videojuegos en carrito: "+ "\n" +
-                printearListadoVideojuegos();
+                "Listado de videojuegos en carrito: \n" +
+                videojuegosInfo;
     }
 
     public String printearListadoVideojuegos() {
         StringBuilder sb = new StringBuilder();
         for (Videojuego v : this.videojuegos) {
-            sb.append("ID " + v.getGame_Id() + "\n")
-                    .append("Title " + v.getTitle() + "\n")
-                    .append("Quantity " + v.getQuantity() + "\n")
-                    .append("Price " + v.getPrice() + "\n");
+            sb.append("ID: " + v.getGame_Id() + "\n")
+                    .append("Title: " + v.getTitle() + "\n")
+                    .append("Quantity: " + v.getQuantity() + "\n")
+                    .append("Price: " + v.getPrice() + "\n");
         }
         return sb.toString();
     }
