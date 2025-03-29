@@ -19,6 +19,8 @@ El fichero a entregar será `401.zip` y contendrá los siguientes archivos:
 
   No será corregido y recibirá una puntuación de 0.
 
+---
+
 ## Descripción del Proyecto
 
 El objetivo es desarrollar una plataforma de comercio electrónico para la compra de videojuegos. Los usuarios podrán explorar videojuegos, añadirlos a su carrito, realizar compras y gestionar sus cuentas. La aplicación usará dos bases de datos:
@@ -34,9 +36,9 @@ Se ha optado por usar tres colecciones separadas para organizar los datos:
 - `Carrito`: Contiene la lista de videojuegos que el usuario ha seleccionado para comprar.
 - `Compras`: Registra los videojuegos que el usuario ha comprado.
 
-## Funcionalidades a Implementar
+---
 
-El menú permitirá realizar las siguientes operaciones sobre BaseX y MongoDB.
+## Funcionalidades a Implementar
 
 ### Operaciones en BaseX (XML)
 
@@ -62,24 +64,102 @@ El menú permitirá realizar las siguientes operaciones sobre BaseX y MongoDB.
 17. Calcular el coste total de cada carrito y listar los resultados de mayor a menor.
 18. Calcular el total gastado por cada usuario en compras y ordenarlos de menor a mayor.
 
-## Configuración y Ejecución
+---
 
-Para ejecutar la aplicación, es necesario:
+## Estructura del Proyecto
 
-1. **Crear las bases de datos**:
-    - BaseX: `videojuegos`
-    - MongoDB: `comercio`
+```plaintext
+401/
+│── src/
+│   ├── conexion/  # Clases de conexión a las bases de datos
+│   │   ├── ConexionBaseX.java
+│   │   ├── ConexionMongo.java
+│   ├── modelos/  # Clases de dominio
+│   │   ├── Usuario.java
+│   │   ├── Videojuego.java
+│   ├── utilidades/  # Recursos y configuraciones
+│   │   ├── StringResources.java
+│   ├── Main.java  # Punto de entrada principal
+│── creacion_dbs/  # Scripts de generación de bases de datos
+│   ├── mongodb.js
+│   ├── basex.xml
+│── README.md
+```
 
-2. **Clases de Conexión**:
-    - `conexion.ConexionBaseX.java`: Maneja la conexión con BaseX.
-    - `conexion.ConexionMongo.java`: Maneja la conexión con MongoDB.
+---
 
-3. **Clase `StringResource`**:
-    - Contiene menús y código repetitivo para mantener limpio el código principal.
+## Pasos para Ejecutar la Aplicación
+
+```mermaid
+graph TD;
+    A[Clonar el repositorio] --> B[Instalar MongoDB y BaseX];
+    B --> C[Configurar BaseX: importar basex.xml];
+    B --> D[Configurar MongoDB: ejecutar mongodb.js];
+    C --> E[Levantar el servidor BaseX];
+    D --> E;
+    E --> F[Ejecutar Main.java];
+```
+
+### 1. Clonar el repositorio
+```sh
+git clone 
+cd 401
+```
+
+### 2. Instalar MongoDB y BaseX
+Si no los tienes instalados, descárgalos desde:
+- [BaseX](https://basex.org/download/)
+- [MongoDB](https://www.mongodb.com/try/download/community)
+
+### 3. Configurar BaseX
+- Abrir **BaseX GUI**.
+- Seleccionar "Añadir base de datos desde archivo".
+- Elegir el archivo `basex.xml` en la carpeta `creacion_dbs/`.
+
+### 4. Configurar MongoDB
+- Abrir la terminal y ejecutar:
+```sh
+mongosh
+use comercio
+```
+- Copiar y pegar el contenido de `mongodb.js` en la terminal y ejecutarlo.
+
+### 5. Levantar el servidor BaseX
+- En la terminal, ejecutar:
+```sh
+basexserver
+```
+
+### 6. Ejecutar la aplicación
+- Ejecutar `Main.java` en un entorno Java compatible.
+
+---
 
 ## Notas Adicionales
 
 - Se recomienda revisar las estructuras de documentos en MongoDB para enlazar correctamente las colecciones.
 - El script `mongodb.js` debe contener datos suficientes para que las consultas 17 y 18 funcionen sin ejecutar otras operaciones previas.
+
+<style>
+  h1, h2, h3 {
+    color: #2c3e50;
+  }
+  code {
+    background-color: #ecf0f1;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  pre {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 10px;
+    font-style: italic;
+    color: #7f8c8d;
+  }
+</style>
 
 ---
