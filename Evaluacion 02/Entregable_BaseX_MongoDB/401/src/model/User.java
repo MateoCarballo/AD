@@ -64,7 +64,7 @@ public class User {
     @Override
     public String toString() {
         // Si no tenemos videojuegos en el carrito printeamos el mensaje "No tiene videojuegos en el carrito" si no la lista que tenga
-        String videojuegosInfo = (videojuegos.isEmpty()) ? "No tiene videojuegos en el carrito" : printearListadoVideojuegos();
+        String videojuegosInfo = (videojuegos.isEmpty()) ? "###### ###### VACIO ###### ######" : printearListadoVideojuegos();
 
         return "Contenido del usuario \n" +
                 "userId: " + userId + "\n" +

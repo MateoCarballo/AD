@@ -199,6 +199,52 @@ public class StringResources {
     \033[0m
     """;
 
+    public static final String CUADRO_COLOR_AZUL_MOSTRAR_VIDEOJUEGO = """
+    \033[34m*******************************
+        VIDEOJUEGO  
+    *******************************
+        ID %d
+        NOMBRE %s
+        CANTIDAD: %d
+        PRECIO: %s
+    \033[0m
+    """;
+
+    /*
+    System.out.println("""
+                VIDEOJUEGO
+                    ID: %d
+                    NOMBRE: %s
+                    CANTIDAD: %d
+                    PRECIO: %s
+                """.formatted(gameId, title, quantity, price));
+
+
+                ID COMPRA: " + purchaseId
+                                FECHA COMPRA: " + fechaCompra
+                                VALOR TOTAL: " + total
+     */
+
+    public static final String CUADRO_COLOR_AZUL_MOSTRAR_COMPRA = """
+    \033[34m*******************************
+     Compras realizadas por: %s 
+    *******************************
+    
+    ID COMPRA: %d
+    FECHA COMPRA: %s
+    TOTAL: %s\033[0m
+    """;
+    public static final String CUADRO_COLOR_AZUL_MOSTRAR_TOTAL_COMPRAS =
+    """
+     \033[34m***************************************
+     Total gastado por el usuario con id : %s
+     ***********************************************
+     Ha gastado un total de %s en todas sus compras 
+     ***********************************************
+            \033[0m
+     """;
+
+
     private StringResources() {
     }
 }

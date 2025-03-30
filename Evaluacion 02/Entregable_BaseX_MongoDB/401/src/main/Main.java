@@ -10,13 +10,17 @@ import conexion.ConexionMongo;
 import model.User;
 import model.Videojuego;
 import org.basex.examples.api.BaseXClient;
+import org.basex.query.func.string.StringFormat;
 import org.bson.Document;
 import utilities.StringResources;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Sorts.descending;
+import static utilities.StringResources.CUADRO_COLOR_AZUL_MOSTRAR_VIDEOJUEGO;
 
 public class Main {
     private static final Scanner sc = new Scanner(System.in);
@@ -235,7 +239,7 @@ public class Main {
                 .append("age", userToInsert.getAge())
                 .append("direction", userToInsert.getDirection());
         usersColection.insertOne(newUser);
-        System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Usuario añadido con exito!",userToInsert.toString()));
+        System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Usuario añadido con exito!", userToInsert.toString()));
     }
 
     private static User preguntarFiltroParaCrearUsuario() {
@@ -254,7 +258,6 @@ public class Main {
                 System.out.println("E-mail del nuevo usuario (correoEjemplo@dominio.es)");
                 email = sc.nextLine();
             } while (!email.matches(StringResources.CORREO_PATTERN));
-            //Si existe un usuario que tenga el email que introducimos por teclado devuelve true
         } while (comprobarCampoRepetido(ConexionMongo.COLLECTION_USERS_NAME, "email", email));
         boolean datoOK = false;
         while (!datoOK) {
@@ -324,7 +327,7 @@ public class Main {
                         userSelected.videojuegos.add(videojuego);
                     }
                 }
-                System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Has seleccionado al usuario",userSelected));
+                System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR.formatted("Has seleccionado al usuario", userSelected));
             }
         } else {
             System.out.println("La colecion esta vacia!");
@@ -385,7 +388,7 @@ public class Main {
                     int id = Integer.parseInt(entradaTeclado);
                     if (paresEmail.containsKey(id)) {
                         return paresEmail.get(id);
-                    }else {
+                    } else {
                         System.out.println("\033[31m" +  // Cambiar el color del texto a rojo
                                 "*******************************\n" +
                                 "* El email introducido no es *\n" +
@@ -396,7 +399,7 @@ public class Main {
                 } catch (NumberFormatException e) {
                     if (paresEmail.containsValue(entradaTeclado)) {
                         return entradaTeclado;
-                    }else {
+                    } else {
                         System.out.println("\033[31m" +
                                 "*******************************\n" +
                                 "* El email introducido no es *\n" +
@@ -545,7 +548,7 @@ public class Main {
         insertarDatosEnMongo();
     }
 
-    public static void añadirVideojuegoJava(){
+    public static void añadirVideojuegoJava() {
 
         ArrayList<Videojuego> videojuegosDisponibles;
         boolean continuar = true;
@@ -661,7 +664,7 @@ public class Main {
     public static void mostrarCarritoDelUsuario() {
         MongoCollection<Document> carritos = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
 
-        // Realizamos la agregación
+
         AggregateIterable<Document> resultado = carritos.aggregate(Arrays.asList(
                 new Document("$match", new Document("user_Id", userSelected.getUserId())), // Filtramos por user_Id
                 new Document("$addFields", new Document("PrecioTotal", // Agregamos el campo PrecioTotal
@@ -693,18 +696,12 @@ public class Main {
                 String title = item.getString("title");
                 int quantity = item.getInteger("quantity");
                 String price = String.format("%.2f", item.getDouble("price"));
-                System.out.println(""" 
-                VIDEOJUEGO
-                    ID: %d
-                    NOMBRE: %s
-                    CANTIDAD: %d
-                    PRECIO: %s
-                """.formatted(gameId, title, quantity, price));
+                System.out.println(CUADRO_COLOR_AZUL_MOSTRAR_VIDEOJUEGO.formatted(gameId, title, quantity, price));
             }
             String price = String.format("%.2f", total);
             System.out.println(""" 
-                    TOTAL: %s
-                """.formatted(price));
+                        \033[34mTOTAL: %s  \033[0m
+                    """.formatted(price));
         } else {
             System.out.println("El carrito del usuario está vacío");
         }
@@ -754,78 +751,66 @@ public class Main {
     }
 
     private static void mostrarComprasUsuarioSeleccionado() {
-        if (userSelected == null) {
+        if (userSelected.getName() == null) {
+            System.out.println("Debes seleccionar un usuario");
             return;
         }
 
         MongoCollection<Document> compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
 
-        FindIterable<Document> resultados = compras.find(Filters.eq("user_Id",userSelected.getUserId()));
+        FindIterable<Document> resultados = compras.find(Filters.eq("user_Id", userSelected.getUserId()));
 
-        System.out.println("COMPRAS REALIZADAS POR EL USUARIO ->" + userSelected.getName());
         for (Document res : resultados) {
             int purchaseId = res.getInteger("purchase_id");
             Date fechaCompra = res.getDate("purchase_date");
-            Double total = res.getDouble("total");
-            System.out.println("========================");
-            System.out.println("ID COMPRA: " + purchaseId);
-            System.out.println("FECHA COMPRA: " + fechaCompra);
-            System.out.println("VALOR TOTAL: " + total);
-            System.out.println("========================");
+            String total = String.format("%.2f", res.getDouble("total"));
+
+            System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_COMPRA.formatted(userSelected.getName(), purchaseId, fechaCompra.toString(), total));
         }
     }
 
 
     private static void listarTotalCarritosMayorAMenor() {
-        AggregateIterable<Document> iterDoc = mongoDatabase
-                .getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME)
-                .aggregate(
-                        Arrays.asList(
-                                Aggregates.unwind("$items"),
-                                Aggregates.addFields(
-                                        new Field<>("totalItemCost",
-                                                new Document("$multiply", Arrays.asList(
-                                                        "$items.quantity", "$items.price"
-                                                ))
-                                        )
-                                ),
-                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-                                Aggregates.group("$user_Id",
-                                        Accumulators.sum("totalCost", "$totalItemCost")
-                                ),
-                                Aggregates.sort(descending("totalCost")))
-                );
-        System.out.println("CARRITOS ORDENADOR DE MAYOR A MENOR PRECIO TOTAL:");
-        for (Document document : iterDoc) {
-            System.out.println("=====================================");
-            int userId = document.getInteger("_id");
-            String totalCost = String.format( "%.2f", document.getDouble("totalCost"));
-            System.out.println("ID: " + userId);
-            System.out.println("COSTE TOTAL: " + totalCost);
-            System.out.println("=====================================");
+
+    }
+
+    private static void listarTotalGastadoCompras() {
+        MongoCollection<Document> collectionCompras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
+
+        AggregateIterable<Document> resultado = collectionCompras.aggregate(
+                Arrays.asList(
+                // Desempaquetamos el array de items para procesarlos por separado
+                new Document("$unwind", "$items"),
+
+                // Calculamos el total por item (quantity * unit_price)
+                new Document("$addFields", new Document("itemTotal",
+                        new Document("$multiply", Arrays.asList("$items.quantity", "$items.unit_price"))
+                )),
+
+                // Agrupamos por user_Id y sumamos los totales de los items
+                new Document("$group", new Document("_id", "$user_Id")
+                        .append("totalGastado", new Document("$sum", "$itemTotal"))
+                ),
+
+                // Ordenamos por totalGastado de menor a mayor
+                new Document("$sort", new Document("totalGastado", 1))
+        ));
+
+        for (Document doc : resultado) {
+            System.out.println(StringResources.CUADRO_COLOR_AZUL_MOSTRAR_TOTAL_COMPRAS.formatted(
+                    doc.getInteger("_id"),
+                    String.format("%.2f", doc.getDouble("totalGastado"))
+            ));
         }
     }
 
-    private static void listarTotalGastadoCompras(){
-        AggregateIterable<Document> collectionCompras = mongoDatabase
-                .getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME)
-                .aggregate(
-                        Arrays.asList(
-                                Aggregates.group("$user_Id",
-                                        Accumulators.sum("total","")
-                                ),
-                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-                                Aggregates.sort(descending("totalCost")))
-                );
-
-    }
 
     // ############################################ OPERACIONES GLOBALES ############################################
     private static boolean confirmarOperacion() {
         while (true) {
             System.out.println("Pulsa 'y' para confirmar la compra o cualquier otra tecla para cancelar la operacion");
             try {
-                if (sc.nextLine().equalsIgnoreCase("y")) {
+                if (Main.sc.nextLine().equalsIgnoreCase("y")) {
                     return true;
                 } else {
                     return false;
@@ -857,6 +842,7 @@ public class Main {
     public static Double formatearDecimales(Double numero, Integer numeroDecimales) {
         return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
     }
+}
     /*CONSULTA REALIZADA CON LA FUNCION DE TRANSFORMAR A JAVA DESDE MONGO PARA EL PUNTO 14
         CONSULTA NIVEL JESUCRISTO
         Arrays.asList(new Document("$addFields",
@@ -917,4 +903,3 @@ public class Main {
         }
      */
 
-}
