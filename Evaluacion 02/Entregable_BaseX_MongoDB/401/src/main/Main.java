@@ -182,9 +182,7 @@ public class Main {
     }
 
 
-    private static void ejecutarConsultaBaseX(String queryAsString) {
-        //TODO Jose, debo gestionar que si esta abierto por otro proceso el programa te repita la preguna o se puede cerrar la ejecucion
-        try {
+    private static void ejecutarConsultaBaseX(String queryAsString) {   try {
             BaseXClient.Query query = session.query(queryAsString);
             while (query.more()) {
                 System.out.println(query.next());
@@ -639,7 +637,6 @@ public class Main {
     }
 
     public static void insertarDatosEnMongo() {
-        //TODO AQUI ESTOY
         MongoCollection<Document> cartCollection = mongoDatabase.getCollection(ConexionMongo.COLLECTION_SHOPPING_CARTS_NAME);
         List<Document> nuevosItems = new ArrayList<>();
         for (Videojuego v : userSelected.videojuegos) {

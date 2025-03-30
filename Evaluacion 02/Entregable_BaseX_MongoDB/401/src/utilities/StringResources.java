@@ -210,21 +210,6 @@ public class StringResources {
     \033[0m
     """;
 
-    /*
-    System.out.println("""
-                VIDEOJUEGO
-                    ID: %d
-                    NOMBRE: %s
-                    CANTIDAD: %d
-                    PRECIO: %s
-                """.formatted(gameId, title, quantity, price));
-
-
-                ID COMPRA: " + purchaseId
-                                FECHA COMPRA: " + fechaCompra
-                                VALOR TOTAL: " + total
-     */
-
     public static final String CUADRO_COLOR_AZUL_MOSTRAR_COMPRA = """
     \033[34m*******************************
      Compras realizadas por: %s 
