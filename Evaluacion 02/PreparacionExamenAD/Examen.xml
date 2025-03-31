@@ -1,0 +1,10 @@
+<examenes>
+    <examen fecha="2025-01-01">
+        <materia>Acceso datos</materia>
+        <horas-semanales>6</horas-semanales>
+    </examen>
+    <examen fecha="2025-01-19">
+        <materia>Programacion multimedia</materia>
+        <horas-semanales>8</horas-semanales>
+    </examen>
+</examenes>
