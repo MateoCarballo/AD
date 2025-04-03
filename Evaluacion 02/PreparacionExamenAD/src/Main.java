@@ -23,7 +23,8 @@ public class Main {
             //obx.session.execute("OPEN starWars");
             OperacionesMongo om = new OperacionesMongo();
             //om.liga6("34343434E");
-            om.andres(1,10);
+            om.apartado4();
+            //om.andres(1,10);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

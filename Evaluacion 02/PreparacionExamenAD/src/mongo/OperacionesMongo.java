@@ -1,5 +1,6 @@
 package mongo;
 
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
@@ -55,33 +56,34 @@ public class OperacionesMongo {
         }
     }
 
-    public void liga5(String nombreEquipo){
+    public void liga5(String nombreEquipo) {
         var resultado = coleccionEquipos.aggregate(
                 Arrays.asList(new Document("$match",
                         new Document("ciudad", nombreEquipo)))
         );
 
-        for (Document doc: resultado){
+        for (Document doc : resultado) {
             System.out.println(doc.toString());
         }
     }
 
-    public void liga6(String idJugador){
-        var resultado = coleccionEquipos.find(Filters.eq("jugadores.0.idPersonal",idJugador));
+    public void liga6(String idJugador) {
+        var resultado = coleccionEquipos.find(Filters.eq("jugadores.0.idPersonal", idJugador));
 
-        for (Document doc: resultado){
+        for (Document doc : resultado) {
             System.out.println(doc.toString());
         }
     }
 
-    public void andres(int idVideojuego, double  precio){
-        /*
+    public void andres(int idVideojuego, double precio) {
+
         coleccionAndresCarrito.updateOne(
-        new Document("videojuegos.videojuego_id", idVideojuego), // Filtra el documento que contiene el videojuego con idVideojuego
-        new Document("$set", new Document("videojuegos.$[elem].precio", precio)),  // Modifica el precio del videojuego dentro del array
-        new UpdateOptions().arrayFilters(Arrays.asList(new Document("elem.videojuego_id", idVideojuego)))  // Filtro para asegurar que solo el videojuego con idVideojuego sea modificado
+                new Document("videojuegos.videojuego_id", idVideojuego), // Filtra el documento que contiene el videojuego con idVideojuego
+                new Document("$set", new Document("videojuegos.$[elem].precio", precio)),  // Modifica el precio del videojuego dentro del array
+                new UpdateOptions().arrayFilters(Arrays.asList(new Document("elem.videojuego_id", idVideojuego)))  // Filtro para asegurar que solo el videojuego con idVideojuego sea modificado
         );
-         */
+
+/*
 
         coleccionAndresCarrito.aggregate(
                 Arrays.asList(new Document("$unwind",
@@ -104,11 +106,48 @@ public class OperacionesMongo {
                                         .append("whenMatched", "merge")
                                         .append("whenNotMatched", "discard")))
         );
+ */
 
         var afterConsulta = coleccionAndresCarrito.find();
 
-        for (Document doc: afterConsulta){
+        for (Document doc : afterConsulta) {
             System.out.println(doc.toString());
         }
     }
+
+    public void apartado3() {
+        MongoClient mongoClient1 = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase dbEmpresa = mongoClient1.getDatabase("empresa");
+        MongoCollection empleados = dbEmpresa.getCollection("empleados");
+
+        AggregateIterable<Document> consulta1 = empleados.aggregate(Arrays.asList(new Document("$sort",
+                new Document("salario", -1L))));
+        for (Document d: consulta1){
+            System.out.println(d.toString());
+        }
+
+    }
+
+    public void apartado4() {
+        MongoClient mongoClient1 = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase dbEmpresa = mongoClient1.getDatabase("empresa");
+        MongoCollection empleados = dbEmpresa.getCollection("empleados");
+
+        AggregateIterable<Document> consulta1 = empleados.aggregate(
+                Arrays.asList(new Document("$match",
+                                new Document("departamento",
+                                        new Document("$in", Arrays.asList(10L, 20L)))),
+                        new Document("$project",
+                                new Document("_id", 0L)
+                                        .append("nombre", 1L)
+                                        .append("departamento", 1L)))
+        );
+        for (Document d: consulta1){
+            System.out.println(d.toString());
+        }
+
+    }
+
+
 }
+
