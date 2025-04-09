@@ -1,13 +1,7 @@
 <component name="libraryTable">
   <library name="baseX-completa">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/Librerias_usadas/baseX-completa.jar!/" />
-      <root url="jar://$PROJECT_DIR$/Librerias_usadas/BaseX-ligera.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$PROJECT_DIR$/Librerias_usadas/baseX-completa.jar!/" />
-      <root url="file://$PROJECT_DIR$/src" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

@@ -1,0 +1,9 @@
+{
+  $project: {
+    input: "$items",
+    as: "item",
+    in: {
+      // Aquí puedes agregar lo que quieres hacer con cada "item"
+    }
+  }
+}
