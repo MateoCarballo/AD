@@ -1,3 +1,4 @@
+use comercio;
 
 db.Usuario.insertMany([
   {

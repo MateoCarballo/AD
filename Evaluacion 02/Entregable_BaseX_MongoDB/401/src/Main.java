@@ -748,7 +748,7 @@ public class Main {
 
         MongoCollection<Document> compras = mongoDatabase.getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME);
 
-        FindIterable<Document> resultados = compras.find(Filters.eq("user_Id",userSelected.getUserId()));
+        FindIterable<Document> resultados = compras.find(Filters.eq("user_Id", userSelected.getUserId()));
 
         System.out.println("COMPRAS REALIZADAS POR EL USUARIO ->" + userSelected.getName());
         for (Document res : resultados) {
@@ -787,7 +787,7 @@ public class Main {
         for (Document document : iterDoc) {
             System.out.println("=====================================");
             int userId = document.getInteger("_id");
-            String totalCost = String.format( "%.2f", document.getDouble("totalCost"));
+            String totalCost = String.format("%.2f", document.getDouble("totalCost"));
             System.out.println("ID: " + userId);
             //TODO redondear dos decimales obligado
             System.out.println("COSTE TOTAL: " + totalCost);
@@ -795,23 +795,33 @@ public class Main {
         }
     }
 
-    private static void listarTotalGastadoCompras(){
+    private static void listarTotalGastadoCompras() {
         //TODO trabajando aqui
         /*
         1. Sumar todos los totales de las compras
         2 Ordenarlos Mas -> Menos
          */
-        AggregateIterable<Document> collectionCompras = mongoDatabase
+        AggregateIterable<Document> carrosAgrupados = mongoDatabase
                 .getCollection(ConexionMongo.COLLECTION_PURCHASES_NAME)
                 .aggregate(
                         Arrays.asList(
                                 Aggregates.group("$user_Id",
-                                        Accumulators.sum("total","")
-                                ),
-                                Aggregates.lookup("Usuarios", "user_Id", "user_Id", "userInfo"),
-
-                                Aggregates.sort(Sorts.descending("totalCost")))
+                                        Accumulators.sum("totales",
+                                                new Document("$sum", "$total")
+                                        ))
+                                ,
+                                Aggregates.sort(Sorts.descending("total"))
                 );
+                        /*
+                        Arrays.asList(new Document("$group",
+                            new Document("_id", "$user_Id")
+                            .append("totales",
+                            new Document("$sum", "$total"))))
+                         */
+
+        for(Document purchasesTotal: carrosAgrupados){
+            System.out.println(purchasesTotal);
+        }
 
     }
 
