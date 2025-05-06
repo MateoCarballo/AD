@@ -8,6 +8,28 @@ public class SaludoService {
         return "¡Hola, " + nombre + "!";
     }
 
+    public String saludarIdioma(ObjetoIdioma oi) {
+        String respuesta = "";
+        switch(oi.getIdioma()){
+            case "español"-> {
+                respuesta = "Hola, " + oi.getNombre();
+            }
+            case "english"-> {
+                respuesta = "Hello, " + oi.getNombre();
+            }
+            case "francais" -> {
+                respuesta = "Bonjour, " + oi.getNombre();
+            }
+            case "portugues" -> {
+                respuesta = "Olá, " + oi.getNombre();
+            }
+            default -> {
+                respuesta = "Idioma no soportado";
+            }
+        }
+        return respuesta;
+    }
+
     public String saludarIdioma(String nombre, String idioma) {
         String respuesta = "";
         switch(idioma){

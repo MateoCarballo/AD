@@ -13,20 +13,22 @@ public class SaludoController {
     public SaludoController(SaludoService saludoService) {
         this.saludoService = saludoService;
     }
+    /*
     @GetMapping("/{nombre}")
     public ResponseEntity<String> saludar (@PathVariable String nombre){
         String saludo = saludoService.saludarUsuario(nombre);
         return ResponseEntity.ok(saludo);
     }
-    @GetMapping("/{nombre}-{idioma}")
+     */
+    @GetMapping("/cuerpo/{nombre}-{idioma}")
     public ResponseEntity<String> saludarIdioma1(@PathVariable String nombre, @PathVariable String idioma){
         String saludo = saludoService.saludarIdioma(nombre,idioma);
         return ResponseEntity.ok(saludo);
     }
 
-    @PostMapping("/{nombre}-{idioma}")
-    public ResponseEntity<String> saludarIdioma2(@RequestBody String nombre, @RequestBody String idioma){
-        String saludo = saludoService.saludarIdioma(nombre,idioma);
+    @PostMapping("/cuerpo")
+    public ResponseEntity<String> saludarIdioma2(@RequestBody ObjetoIdioma request){
+        String saludo = saludoService.saludarIdioma(request);
         return ResponseEntity.ok(saludo);
     }
 }
