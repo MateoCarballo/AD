@@ -20,7 +20,7 @@ public class SaludoController {
         return ResponseEntity.ok(saludo);
     }
      */
-    @GetMapping("/cuerpo/{nombre}-{idioma}")
+    @PostMapping("/{nombre}-{idioma}")
     public ResponseEntity<String> saludarIdioma1(@PathVariable String nombre, @PathVariable String idioma){
         String saludo = saludoService.saludarIdioma(nombre,idioma);
         return ResponseEntity.ok(saludo);
