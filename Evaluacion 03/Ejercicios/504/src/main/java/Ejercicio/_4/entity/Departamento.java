@@ -1,7 +1,9 @@
 package Ejercicio._4.entity;
 
 import jakarta.persistence.*;
-//TODO Trabajando aqui
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name ="depto")
 public class Departamento {
