@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UsuariosService {
-    private UsuariosRepository usuariosRepositoryImpl;
+    private final UsuariosRepository usuariosRepositoryImpl;
 
     @Autowired
     public UsuariosService(UsuariosRepository usuariosRepositoryImpl) {
