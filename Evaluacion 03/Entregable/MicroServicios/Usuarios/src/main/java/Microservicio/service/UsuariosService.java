@@ -24,6 +24,7 @@ public class UsuariosService {
 
     public String actualizarUsuario(Usuario user) {
         String cadenaResultado = "No existe el usuario que se desea modificar";
+        System.out.println(user);
         //Aqui puedes usar save porque si tiene un id que ya existe entonces ejecuta un update en lugar de insertar una nueva tupla
         if (usuariosRepositoryImpl.existsById(user.getId())) {
             usuariosRepositoryImpl.save(user);
