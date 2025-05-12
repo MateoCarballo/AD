@@ -6,7 +6,7 @@ import _1.Usuarios.Repository.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuariosService {
@@ -19,23 +19,32 @@ public class UsuariosService {
     //METODOS PARA OPERAR SOBRE LA BASE DE DATOS USUARIOS
 
     public User registrarUsuario(User u){
+        //TODO pendiente de enviar un mensaje de usuario registrado o algo por el estilo
         return usuariosRepositoryImpl.save(u);
     }
 
     public String actualizarUsuario(User user){
-        if (usuariosRepositoryImpl.existsById(user.getUsuario_id()) ) usuariosRepositoryImpl.actualizarUsuario(user.getNombre(),user.getCorreo_electronico(),user.getDireccion(),user.getContrasena());
-        return
+        String cadenaResultado = "No existe el usuario que se desea modificar";
+        //Aqui puedes usar save porque si tiene un id que ya existe entonces ejecuta un update en lugar de insertar una nueva tupla
+        if (usuariosRepositoryImpl.existsById(user.getId())) {
+            usuariosRepositoryImpl.save(user);
+            cadenaResultado = "Usuario modificado con exito";
+        }
+        return cadenaResultado;
     }
     public String eliminarUsuario(UserDTO userDto){
         return usuariosRepositoryImpl.deleteUserByUserDTO(userDto.getNombre(),userDto.getClave());
     }
-    public String obtenerUsuarioPorId(int id){
-        return usuariosRepositoryImpl.findById(id);
+    public User obtenerUsuarioPorId(int id){
+        return usuariosRepositoryImpl.findById(id).orElse(null);
     }
     public User obtenerUsuarioPorNombre(String nombre){
-        return usuariosRepositoryImpl.findByNombre(nombre);
+        return usuariosRepositoryImpl.findByNombre(nombre).orElse(null);
     }
-    public boolean comprobarId(int id){
-        return usuariosRepositoryImpl.existsById(id);
+    public User validarNombreConstrasena(String nombre, int clave){
+        return usuariosRepositoryImpl.findByNombreAndContrasena(nombre,clave).orElse(null);
+    }
+    public User comprobarId(int id){
+        return usuariosRepositoryImpl.findById(id).orElse(null);
     }
 }

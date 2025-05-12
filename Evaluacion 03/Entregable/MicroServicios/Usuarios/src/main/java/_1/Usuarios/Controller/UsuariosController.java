@@ -33,18 +33,33 @@ public class UsuariosController {
     }
     @PostMapping("/validar")
     public ResponseEntity<Boolean> validarUsuario(@RequestBody UserDTO userDto){
-        return ResponseEntity.ok(usuariosServiceImpl.comprobarId(userDto.getClave()));
+        Boolean responseOk = false;
+        User queryResult = usuariosServiceImpl.validarNombreConstrasena(userDto.getNombre(),userDto.getClave());
+        if(queryResult != null){
+            responseOk = true;
+        }
+        return ResponseEntity.ok(responseOk);
     }
     @GetMapping("/info/{id}")
     public ResponseEntity<String> obtenerInfoUsuarioPorId(@PathVariable("id") int user_id){ //TODO revisar aqui si funciona llamandole difernete a cada cosa id -> UserId
-        return ResponseEntity.ok(usuariosServiceImpl.obtenerUsuarioPorId(user_id));
+        String userName = "No se ha encontrado ningun usuario con el id proporcionado";
+        User user = usuariosServiceImpl.obtenerUsuarioPorId(user_id);
+        if (user != null){
+            userName = user.getNombre();
+        }
+        return ResponseEntity.ok(userName);
     }
     @GetMapping("/info/{nombre}")
     public ResponseEntity<User> obtenerInfoUsuarioPorNombre(@PathVariable("nombre") String user_name){ //TODO revisar aqui si funciona llamandole difernete a cada cosa id -> UserId
         return ResponseEntity.ok(usuariosServiceImpl.obtenerUsuarioPorNombre(user_name));
     }
     @GetMapping("/checkIfExist/{id}")
-    public ResponseEntity<Boolean> comprobarId(@PathVariable("id") int user_id){ //TODO revisar aqui si funciona llamandole difernete a cada cosa id -> UserId
-        return ResponseEntity.ok(usuariosServiceImpl.comprobarId(user_id));
+    public ResponseEntity<Boolean> comprobarId(@PathVariable("id") int user_id){
+        boolean exist = false;
+        User user = usuariosServiceImpl.comprobarId(user_id);
+        if (user!=null){
+            exist = true;
+        }
+        return ResponseEntity.ok(exist);
     }
 }
