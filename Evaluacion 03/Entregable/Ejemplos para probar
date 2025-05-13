@@ -27,3 +27,10 @@ Para comprobar "" que usa el metodo DELETE para eliminar una tupla que cumpla co
     "nombre": "Nombre del usuario",
     "contrasena": "contraseñaSegura123"
 }
+
+Para comprobar "/validar" que usa el metodo POST le llega un dto nombre,contraseña y devuelve un bool de si existe o no en la database
+
+{
+    "nombre": "Nombre del usuario",
+    "contrasena": "contraseñaSegura123"
+}
