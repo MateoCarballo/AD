@@ -1,7 +1,7 @@
 package Microservicio.service;
 
 import Microservicio.entity.Usuario;
-import Microservicio.entity.UserDTO;
+import Microservicio.entity.UserNombreContrasenaDTO;
 import Microservicio.repository.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,19 +22,28 @@ public class UsuariosService {
         return usuariosRepositoryImpl.save(u);
     }
 
-    public String actualizarUsuario(Usuario user) {
+    public String actualizarUsuario(int id) {
         String cadenaResultado = "No existe el usuario que se desea modificar";
-        System.out.println(user);
-        //Aqui puedes usar save porque si tiene un id que ya existe entonces ejecuta un update en lugar de insertar una nueva tupla
-        if (usuariosRepositoryImpl.existsById(user.getId())) {
-            usuariosRepositoryImpl.save(user);
+        Usuario usuario =usuariosRepositoryImpl.findById(id).orElse(null);
+        if (usuario != null) {
+            usuariosRepositoryImpl.save(usuario);
             cadenaResultado = "Usuario modificado con exito";
         }
         return cadenaResultado;
     }
 
-    public String eliminarUsuario(UserDTO userDto) {
-        return usuariosRepositoryImpl.deleteUserByUserDTO(userDto.getNombre(), userDto.getClave());
+    public String eliminarUsuario(UserNombreContrasenaDTO userNombreContrasenaDto) {
+        String response = "No se ha encontrado ningun usuario con este nombre y constrasena";
+        Usuario usuario = usuariosRepositoryImpl.findByNombreAndContrasena(
+                userNombreContrasenaDto.getNombre(),
+                userNombreContrasenaDto.getContrasena()
+                ).orElse(null);
+
+        if( usuario != null ){
+            usuariosRepositoryImpl.delete(usuario);
+            response = "Usuario eliminado con exito";
+        }
+        return response;
     }
 
     public Usuario obtenerUsuarioPorId(int id) {

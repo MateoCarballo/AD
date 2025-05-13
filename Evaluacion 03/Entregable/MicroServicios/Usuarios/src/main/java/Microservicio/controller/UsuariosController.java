@@ -1,7 +1,8 @@
 package Microservicio.controller;
 
+import Microservicio.entity.UserCompleteDTO;
 import Microservicio.entity.Usuario;
-import Microservicio.entity.UserDTO;
+import Microservicio.entity.UserNombreContrasenaDTO;
 import Microservicio.service.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,19 +29,19 @@ public class UsuariosController {
     }
 
     @PutMapping("/registrar")
-    public ResponseEntity<String> actualizarUsusario(@RequestBody Usuario u) {
-        return ResponseEntity.ok(usuariosServiceImpl.actualizarUsuario(u));
+    public ResponseEntity<String> actualizarUsusario(@RequestBody UserCompleteDTO u) {
+        return ResponseEntity.ok(usuariosServiceImpl.actualizarUsuario(u.getU_id()));
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> eliminarUsuario(@RequestBody UserDTO userDto) {
-        return ResponseEntity.ok(usuariosServiceImpl.eliminarUsuario(userDto));
+    public ResponseEntity<String> eliminarUsuario(@RequestBody UserNombreContrasenaDTO userNombreContrasenaDto) {
+        return ResponseEntity.ok(usuariosServiceImpl.eliminarUsuario(userNombreContrasenaDto));
     }
 
     @PostMapping("/validar")
-    public ResponseEntity<Boolean> validarUsuario(@RequestBody UserDTO userDto) {
-        Boolean responseOk = false;
-        Usuario queryResult = usuariosServiceImpl.validarNombreConstrasena(userDto.getNombre(), userDto.getClave());
+    public ResponseEntity<Boolean> validarUsuario(@RequestBody UserNombreContrasenaDTO userNombreContrasenaDto) {
+        boolean responseOk = false;
+        Usuario queryResult = usuariosServiceImpl.validarNombreConstrasena(userNombreContrasenaDto.getNombre(), userNombreContrasenaDto.getContrasena());
         if (queryResult != null) {
             responseOk = true;
         }
@@ -48,7 +49,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/info/{id}")
-    public ResponseEntity<String> obtenerInfoUsuarioPorId(@PathVariable("id") int user_id) { //TODO revisar aqui si funciona llamandole difernete a cada cosa id -> UserId
+    public ResponseEntity<String> obtenerInfoUsuarioPorId(@PathVariable("id") int user_id) {
         String userName = "No se ha encontrado ningun usuario con el id proporcionado";
         Usuario user = usuariosServiceImpl.obtenerUsuarioPorId(user_id);
         if (user != null) {
