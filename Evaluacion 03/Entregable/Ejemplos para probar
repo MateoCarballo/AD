@@ -1,0 +1,29 @@
+############## JSON PARA PROBAR TODOS LOS ENDPOINT ##############
+
+Para comprobar /registrar con el metodo de consulta POST (Registrar)
+Usara la entidad de "Usuario"
+
+{
+    "nombre": "Nombre del usuario",
+    "correo_electronico": "email@ejemplo.com",
+    "direccion": "Dirección del usuario",
+    "contrasena": "contraseñaSegura123"
+}
+
+Para comprobar /registrar con el metodo de consulta PUT (Actualizar)
+Usara la entidad de "UserCompleteDTO"
+Aqui es necesario saber de antemano el id del usuario que vamos a modificar
+{
+	"u_id": 12,
+    "u_nombre": "Nombre del usuario",
+    "u_correo_electronico": "email@ejemplo.com",
+    "u_direccion": "Dirección del usuario",
+    "u_contrasena": "contraseñaSegura123"
+}
+
+Para comprobar "" que usa el metodo DELETE para eliminar una tupla que cumpla con el nombre y contrasena que llegan por el cuerpo
+
+{
+    "nombre": "Nombre del usuario",
+    "contrasena": "contraseñaSegura123"
+}

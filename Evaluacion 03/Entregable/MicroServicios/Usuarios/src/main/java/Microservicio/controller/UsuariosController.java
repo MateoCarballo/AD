@@ -19,22 +19,18 @@ public class UsuariosController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<String> registrarUsusario(@RequestBody Usuario u) {
-        String cadenaRespuesta = "No se ha podido realizar la insercion";
-        Usuario nuevoUsuario = usuariosServiceImpl.registrarUsuario(u);
-        if (nuevoUsuario != null){
-            cadenaRespuesta = "El usuario " + nuevoUsuario.getNombre() + " se ha insertado con id " + nuevoUsuario.getId();
-        }
+    public ResponseEntity<?> registrarUsusario(@RequestBody Usuario usuario) {
+        String cadenaRespuesta = usuariosServiceImpl.registrarUsuario(usuario);
         return ResponseEntity.ok(cadenaRespuesta);
     }
 
     @PutMapping("/registrar")
     public ResponseEntity<String> actualizarUsusario(@RequestBody UserCompleteDTO u) {
-        return ResponseEntity.ok(usuariosServiceImpl.actualizarUsuario(u.getU_id()));
+        return ResponseEntity.ok(usuariosServiceImpl.actualizarUsuario(u));
     }
 
     @DeleteMapping("")
-    public ResponseEntity<String> eliminarUsuario(@RequestBody UserNombreContrasenaDTO userNombreContrasenaDto) {
+    public ResponseEntity<?> eliminarUsuario(@RequestBody UserNombreContrasenaDTO userNombreContrasenaDto) {
         return ResponseEntity.ok(usuariosServiceImpl.eliminarUsuario(userNombreContrasenaDto));
     }
 
@@ -48,7 +44,7 @@ public class UsuariosController {
         return ResponseEntity.ok(responseOk);
     }
 
-    @GetMapping("/info/{id}")
+    @GetMapping("/info/id/{id}")
     public ResponseEntity<String> obtenerInfoUsuarioPorId(@PathVariable("id") int user_id) {
         String userName = "No se ha encontrado ningun usuario con el id proporcionado";
         Usuario user = usuariosServiceImpl.obtenerUsuarioPorId(user_id);
@@ -58,7 +54,7 @@ public class UsuariosController {
         return ResponseEntity.ok(userName);
     }
 
-    @GetMapping("/info/{nombre}")
+    @GetMapping("/info/nombre/{nombre}")
     public ResponseEntity<Usuario> obtenerInfoUsuarioPorNombre(@PathVariable("nombre") String user_name) { //TODO revisar aqui si funciona llamandole difernete a cada cosa id -> UserId
         return ResponseEntity.ok(usuariosServiceImpl.obtenerUsuarioPorNombre(user_name));
     }

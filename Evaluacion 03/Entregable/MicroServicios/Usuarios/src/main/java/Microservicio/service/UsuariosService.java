@@ -1,5 +1,6 @@
 package Microservicio.service;
 
+import Microservicio.entity.UserCompleteDTO;
 import Microservicio.entity.Usuario;
 import Microservicio.entity.UserNombreContrasenaDTO;
 import Microservicio.repository.UsuariosRepository;
@@ -17,14 +18,14 @@ public class UsuariosService {
 
     //METODOS PARA OPERAR SOBRE LA BASE DE DATOS USUARIOS
 
-    public Usuario registrarUsuario(Usuario u) {
-        //TODO pendiente de enviar un mensaje de usuario registrado o algo por el estilo
-        return usuariosRepositoryImpl.save(u);
+    public String registrarUsuario(Usuario u) {
+        Usuario usuarioGuardado = usuariosRepositoryImpl.save(u);
+        return "Nuevo usuario guardado con id " + usuarioGuardado.getId();
     }
 
-    public String actualizarUsuario(int id) {
+    public String actualizarUsuario(UserCompleteDTO userCompleteDTO) {
         String cadenaResultado = "No existe el usuario que se desea modificar";
-        Usuario usuario =usuariosRepositoryImpl.findById(id).orElse(null);
+        Usuario usuario =usuariosRepositoryImpl.findById(userCompleteDTO.getU_id()).orElse(null);
         if (usuario != null) {
             usuariosRepositoryImpl.save(usuario);
             cadenaResultado = "Usuario modificado con exito";
