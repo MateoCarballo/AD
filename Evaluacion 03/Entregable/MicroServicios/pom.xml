@@ -2,42 +2,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Información del proyecto -->
-    <groupId>com.example</groupId>
-    <artifactId>proyectos</artifactId>
+    <groupId>com.mateocarballo</groupId>
+    <artifactId>Microservicios</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Microservicios - Proyecto Multi-módulo</name>
-    <description>Proyecto multi-módulo para microservicios Spring Boot</description>
 
-    <!-- Herencia de Spring Boot -->
+    <name>Proyecto 501 - Acceso a Datos - Microservicios</name>
+    <description>Proyecto multi-módulo para la materia Acceso a Datos - Tercer trimestre. Realizado por Mateo Carballo Alonso.</description>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version> <!-- Usa misma versión que los microservicios -->
-        <relativePath/> <!-- Necesario para resolver desde repositorio -->
+        <version>3.4.5</version>
+        <relativePath/>
     </parent>
 
-    <!-- Definición de los módulos -->
     <modules>
         <module>usuarios</module>
         <module>reservas</module>
-        <!-- Puedes añadir más microservicios aquí -->
+        <!-- aquí los demás módulos -->
     </modules>
 
-    <!-- Propiedades globales -->
     <properties>
-        <java.version>17</java.version> <!-- Recomendado: 17 para compatibilidad con Spring Boot -->
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>24</java.version>
+        <spring-cloud.version>2024.0.1</spring-cloud.version>
     </properties>
 
-    <!-- Importar dependencias Spring Cloud -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -50,11 +44,9 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Plugins comunes para compilación -->
     <build>
         <pluginManagement>
             <plugins>
-                <!-- Compilador Java -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -64,8 +56,6 @@
                         <target>${java.version}</target>
                     </configuration>
                 </plugin>
-
-                <!-- Plugin de Spring Boot -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -73,4 +63,5 @@
             </plugins>
         </pluginManagement>
     </build>
+
 </project>
