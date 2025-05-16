@@ -17,6 +17,9 @@ public class Hotel {
     @Column(name = "hotel_id")
     private int id;
 
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    private List<Habitacion> habitaciones;
+
     @Column(length = 100)
     @NonNull
     private String nombre;
@@ -25,7 +28,8 @@ public class Hotel {
     @NonNull
     private String direccion;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    private List<Habitacion> habitaciones;
+    //Revisar si esto esta bien asi
+
+
 
 }

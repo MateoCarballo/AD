@@ -27,9 +27,12 @@ public class Habitacion {
     @Column(name = "habitacion_id")
     private int id;
 
-    @NonNull
-    @Column(name = "hotel_id")
-    private int hotelId;
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
+    private List<Reserva> reservas;
+
+    @ManyToOne
+    @JoinColumn(name = "hote_id")
+    private Hotel hotel;
 
     @NonNull
     @Column(name = "numero_habitacion")
@@ -40,8 +43,7 @@ public class Habitacion {
     @Enumerated(EnumType.STRING)
     @NonNull
     @Column(length = 50, nullable = false)
-    //TODO cuidado aqui valido que en las dos partes no sea null tanto en la mydql
-    // (equivalente a definir la tabla con NOT NULL) como en tiempo de compilacion de java
+
     private TipoHabitacion tipo;
 
     @NonNull
@@ -56,12 +58,4 @@ public class Habitacion {
      *
      * Soporte nativo: JPA/JPA lo maneja perfectamente con anotaciones
      */
-
-    @ManyToOne
-    @JoinColumn(name = "hote_id")
-    private Hotel hotel;
-
-    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
-    private List<Reserva> reservas;
-
 }

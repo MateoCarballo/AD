@@ -18,6 +18,11 @@ public class UsuariosController {
         this.usuariosServiceImpl = usuariosServiceImpl;
     }
 
+    @GetMapping("/todos")
+    public ResponseEntity<?> obtenerTodosLosUsuarios() {
+        return ResponseEntity.ok(usuariosServiceImpl.obtenerTodosLosUsuarios());
+    }
+
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarUsusario(@RequestBody Usuario usuario) {
         String cadenaRespuesta = usuariosServiceImpl.registrarUsuario(usuario);

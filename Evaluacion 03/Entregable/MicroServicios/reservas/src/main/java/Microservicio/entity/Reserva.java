@@ -22,13 +22,13 @@ public class Reserva {
     @Column(name = "reserva_id")
     private int id;
 
+    @ManyToOne
+    @JoinColumn(name = "habitacion_id")
+    private Habitacion habitacion;
+
     @NonNull
     @Column(name = "usuario_id")
     private int usuarioId;
-
-    @NonNull
-    @Column(name = "habitacion_id")
-    private int habitacionId;
 
     @NonNull
     @Column(name = "fecha_inicio")
@@ -38,6 +38,7 @@ public class Reserva {
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
 
+    @Enumerated(EnumType.STRING)
     @NonNull
     @Column(name = "estado",length = 20)
     private EstadoEnum estado;
@@ -47,7 +48,4 @@ public class Reserva {
     // el nombre de la columna mysql o el de la variable de la clase que controla esta referencia
     // en este caso que pondria habiracion_id que es la tabla o habitacionId que es la variable java
 
-    @ManyToOne
-    @JoinColumn(name = "habitacion_id")
-    private Habitacion habitacion;
 }

@@ -7,16 +7,21 @@ import Microservicio.repository.UsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuariosService {
     private final UsuariosRepository usuariosRepositoryImpl;
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return usuariosRepositoryImpl.findAll();
+    }
+
 
     @Autowired
     public UsuariosService(UsuariosRepository usuariosRepositoryImpl) {
         this.usuariosRepositoryImpl = usuariosRepositoryImpl;
     }
-
-    //METODOS PARA OPERAR SOBRE LA BASE DE DATOS USUARIOS
 
     public String registrarUsuario(Usuario u) {
         Usuario usuarioGuardado = usuariosRepositoryImpl.save(u);
@@ -27,6 +32,13 @@ public class UsuariosService {
         String cadenaResultado = "No existe el usuario que se desea modificar";
         Usuario usuario =usuariosRepositoryImpl.findById(userCompleteDTO.getU_id()).orElse(null);
         if (usuario != null) {
+            //Cargamos los nuevos valoresd desde el DTO para modificar el usuario y lo guardamos nuevamente
+            usuario.setNombre(userCompleteDTO.getU_nombre());
+            usuario.setCorreo_electronico(userCompleteDTO.getU_correo_electronico());
+            usuario.setDireccion(userCompleteDTO.getU_direccion());
+            usuario.setContrasena(userCompleteDTO.getU_contrasena());
+
+            //Guardar el usuario directamente ya modificado
             usuariosRepositoryImpl.save(usuario);
             cadenaResultado = "Usuario modificado con exito";
         }
