@@ -6,42 +6,32 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "reserva")
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name = "reserva")
+
 public class Reserva {
-
-    public enum EstadoEnum{
-        PENDIENTE, CONFIRMADA, CANCELADA
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reserva_id")
-    private int id;
+    private int reservaId;
 
-    @ManyToOne
-    @JoinColumn(name = "habitacion_id")
+    @Column(name = "usuario_id", nullable = false)
+    private int usuarioId; // Enlace a usuario (solo guardamos id, por ahora)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habitacion_id", nullable = false)
     private Habitacion habitacion;
 
-    @NonNull
-    @Column(name = "usuario_id")
-    private int usuarioId;
-
-    @NonNull
-    @Column(name = "fecha_inicio")
+    @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;
 
-    @NonNull
-    @Column(name = "fecha_fin")
+    @Column(name = "fecha_fin", nullable = false)
     private LocalDate fechaFin;
 
-    @Enumerated(EnumType.STRING)
-    @NonNull
-    @Column(name = "estado",length = 20)
-    private EstadoEnum estado;
+    @Column(length = 20)
+    private String estado; // Pendiente, Confirmada, Cancelada
 
     //TODO preguntar a jose. Si las variables de mi clase java
     // tienen un nombre difernente a los de mysql aqui que debo poner en la relacion

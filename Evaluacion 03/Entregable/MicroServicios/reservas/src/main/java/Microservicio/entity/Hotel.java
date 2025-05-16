@@ -6,30 +6,23 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Data
-@AllArgsConstructor
-@RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name = "hotel")
+@Data
+@AllArgsConstructor //Genera un constructor con todos los campos de la clase como parámetros.
+@NoArgsConstructor //Genera un constructor sin parámetros, es decir, el constructor vacío.
+
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hotel_id")
     private int id;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    private List<Habitacion> habitaciones;
-
-    @Column(length = 100)
-    @NonNull
+    @Column(length = 100, nullable = false)
     private String nombre;
 
     // Por defecto ya son 255 @Column(length = 255)
-    @NonNull
     private String direccion;
 
-    //Revisar si esto esta bien asi
-
-
-
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Habitacion> habitaciones;
 }
