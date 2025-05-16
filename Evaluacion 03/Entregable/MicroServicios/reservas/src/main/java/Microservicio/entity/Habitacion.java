@@ -44,6 +44,7 @@ public class Habitacion {
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Reserva> reservas;
+    /*
     @Override
     public String toString() {
         StringBuilder reservasIds = new StringBuilder();
@@ -77,6 +78,7 @@ public class Habitacion {
                 reservas != null ? reservas.size() : 0,
                 reservasIds.toString()
         );
+     */
     }
 
     /*
@@ -101,4 +103,4 @@ public class Habitacion {
      *
      * Soporte nativo: JPA/JPA lo maneja perfectamente con anotaciones
      */
-}
+

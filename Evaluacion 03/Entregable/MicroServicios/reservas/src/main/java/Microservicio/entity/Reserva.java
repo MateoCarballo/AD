@@ -35,6 +35,7 @@ public class Reserva {
     @Column(length = 20)
     private String estado; // Pendiente, Confirmada, Cancelada
 
+   /*
     @Override
     public String toString() {
         return String.format("""
@@ -54,6 +55,7 @@ public class Reserva {
                 estado != null ? estado : "null"
         );
     }
+    */
 
     //TODO preguntar a jose. Si las variables de mi clase java
     // tienen un nombre difernente a los de mysql aqui que debo poner en la relacion

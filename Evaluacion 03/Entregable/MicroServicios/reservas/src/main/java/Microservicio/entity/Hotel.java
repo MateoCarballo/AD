@@ -29,6 +29,7 @@ public class Hotel {
     private List<Habitacion> habitaciones;
 
     //Metodo para evitar la recursividad en las llamadas a los toString de cada entidad relacionada
+    /*
     @Override
     public String toString() {
         StringBuilder habitacionesIds = new StringBuilder();
@@ -55,5 +56,6 @@ public class Hotel {
                 habitacionesIds.toString()
         );
     }
+     */
 
 }
