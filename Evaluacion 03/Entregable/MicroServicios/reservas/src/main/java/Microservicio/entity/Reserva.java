@@ -1,5 +1,6 @@
 package Microservicio.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Reserva {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitacion_id", nullable = false)
+    @JsonBackReference
     private Habitacion habitacion;
 
     @Column(name = "fecha_inicio", nullable = false)
@@ -32,6 +34,26 @@ public class Reserva {
 
     @Column(length = 20)
     private String estado; // Pendiente, Confirmada, Cancelada
+
+    @Override
+    public String toString() {
+        return String.format("""
+        Reserva:
+        reservaId   -> %d
+        usuarioId   -> %d
+        habitacionId-> %s
+        fechaInicio -> %s
+        fechaFin    -> %s
+        estado      -> %s
+        """,
+                reservaId,
+                usuarioId,
+                (habitacion != null ? habitacion.getHabitacionId() : "null"),
+                fechaInicio != null ? fechaInicio.toString() : "null",
+                fechaFin != null ? fechaFin.toString() : "null",
+                estado != null ? estado : "null"
+        );
+    }
 
     //TODO preguntar a jose. Si las variables de mi clase java
     // tienen un nombre difernente a los de mysql aqui que debo poner en la relacion

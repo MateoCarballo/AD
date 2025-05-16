@@ -5,6 +5,7 @@ import Microservicio.service.HotelService;
 import Microservicio.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,20 +25,20 @@ public class ReservasController {
         this.habitacionServiceImpl = habitacionServiceImpl;
     }
     //Endpoint para confirmar la conexion correcta desde postman
-    @PostMapping("/test")
+    @GetMapping("/test")
     public ResponseEntity<?> testController(){
         return ResponseEntity.ok("Todo ok");
     }
     // EndPoint para poder consultar todos los datos desde postman
-    @PostMapping("/habitacion/All")
+    @GetMapping("/habitacion/All")
     public ResponseEntity<?> habitaciontest(){
         return ResponseEntity.ok(habitacionServiceImpl.devolverTodos());
     }
-    @PostMapping("/hotel/All")
+    @GetMapping("/hotel/All")
     public ResponseEntity<?> hotelTest(){
         return ResponseEntity.ok(hotelServiceImpl.devolverTodos());
     }
-    @PostMapping("/reserva/All")
+    @GetMapping("/reserva/All")
     public ResponseEntity<?> reservaTest(){
         return ResponseEntity.ok(reservaServiceImpl.devolverTodos());
     }

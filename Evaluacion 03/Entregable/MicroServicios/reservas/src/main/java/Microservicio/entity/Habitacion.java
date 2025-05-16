@@ -1,5 +1,7 @@
 package Microservicio.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +27,7 @@ public class Habitacion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
+    @JsonBackReference
     private Hotel hotel;
 
     @Column(name = "numero_habitacion", nullable = false)
@@ -39,7 +42,42 @@ public class Habitacion {
     private Boolean disponible;
 
     @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Reserva> reservas;
+    @Override
+    public String toString() {
+        StringBuilder reservasIds = new StringBuilder();
+
+        if (reservas != null && !reservas.isEmpty()) {
+            for (Reserva r : reservas) {
+                reservasIds.append(r.getReservaId()).append(", ");
+            }
+            reservasIds.setLength(reservasIds.length() - 2); // quitar última coma y espacio
+        } else {
+            reservasIds.append("No hay reservas");
+        }
+
+        return String.format("""
+        Habitacion:
+        habitacionId    -> %d
+        hotelId         -> %s
+        numeroHabitacion-> %d
+        tipo            -> %s
+        precio          -> %s
+        disponible      -> %s
+        total reservas  -> %d
+        reservas IDs    -> %s
+        """,
+                habitacionId,
+                (hotel != null ? hotel.getId() : "null"),
+                numeroHabitacion,
+                tipo,
+                precio != null ? precio.toString() : "null",
+                disponible != null ? disponible.toString() : "null",
+                reservas != null ? reservas.size() : 0,
+                reservasIds.toString()
+        );
+    }
 
     /*
     BUSCABA USAR UN ENUMERADO BASANDOME EN LO QUE SE VE EN EL SCRIPT DE LA DATABASE PARA SER MAS ESTRICTO

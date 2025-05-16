@@ -1,5 +1,6 @@
 package Microservicio.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,35 @@ public class Hotel {
     private String direccion;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Habitacion> habitaciones;
+
+    //Metodo para evitar la recursividad en las llamadas a los toString de cada entidad relacionada
+    @Override
+    public String toString() {
+        StringBuilder habitacionesIds = new StringBuilder();
+        if (habitaciones != null && !habitaciones.isEmpty()) {
+            for (Habitacion h : habitaciones) {
+                habitacionesIds.append(h.getHabitacionId()).append(", ");
+            }
+        } else {
+            habitacionesIds.append("No hay habitaciones");
+        }
+
+        return String.format("""
+        Hotel:
+        id          -> %d
+        nombre      -> %s
+        direccion   -> %s
+        total habitaciones -> %d
+        habitaciones IDs   -> %s
+        """,
+                id,
+                nombre,
+                direccion,
+                (habitaciones != null ? habitaciones.size() : 0),
+                habitacionesIds.toString()
+        );
+    }
+
 }
