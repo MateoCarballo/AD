@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Cambiado al driver correcto de MySQL 9+ -->
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+
+        <!-- Asegúrate de reemplazar "databaseName" por el nombre real de tu base de datos -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/cine?createDatabaseIfNotExist=true&amp;serverTimezone=UTC&amp;useSSL=false</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">abc123.</property>
+
+        <property name="hbm2ddl.auto">validate</property>
+
+        <!-- Dialecto corregido -->
+        <!-- <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property> Hibernate es listo y ya sabe que escoger no es necesario-->
+
+        <property name="hibernate.dialect.storage_engine">innodb</property>
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- Agrega aquí tus clases mapeadas si usas anotaciones (crear un paquete entity dentro de org.example y ahi crear las entidades-->
+        <!-- <mapping class="org.example.entity.TuEntidad"/> -->
+
+    </session-factory>
+</hibernate-configuration>
