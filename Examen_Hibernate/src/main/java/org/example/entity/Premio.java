@@ -19,12 +19,13 @@ public class Premio {
     @Column(name = "id_premio")
     private int id;
 
-    @OneToOne(mappedBy = "premio")
+    @OneToOne
+    @JoinColumn(name = "pelicula_id")
     private Pelicula pelicula;
 
     @Column(name = "nombre_premio")
     private String nombre;
 
-    @Column(name = "año_premio")
+    @Column(name = "año_premio", columnDefinition = "Year")
     private int anoPremio;
 }

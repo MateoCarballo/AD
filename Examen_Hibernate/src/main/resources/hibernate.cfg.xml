@@ -24,6 +24,11 @@
 
         <!-- Agrega aquí tus clases mapeadas si usas anotaciones (crear un paquete entity dentro de org.example y ahi crear las entidades-->
         <!-- <mapping class="org.example.entity.TuEntidad"/> -->
+        <mapping class = "org.example.entity.Actor"/>
+        <mapping class = "org.example.entity.Pelicula"/>
+        <mapping class = "org.example.entity.Premio"/>
+        <mapping class = "org.example.entity.Proyeccion"/>
+        <mapping class = "org.example.entity.Sala"/>
 
     </session-factory>
 </hibernate-configuration>

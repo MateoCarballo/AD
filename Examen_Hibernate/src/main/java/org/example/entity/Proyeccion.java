@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "proyecciones")
 @Data
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class Proyeccion {
 
     @EmbeddedId
-    private ProyeccionPK id;
+    private ProyeccionPK proyeccionId;
 
     /*
         Le decimos que es una relacion n-1
@@ -27,7 +30,11 @@ public class Proyeccion {
 
     @ManyToOne
     @MapsId("peliculaId")
-    @JoinColumn(name = "id_pelicula")
+    @JoinColumn(name = "pelicula_id")
     private Pelicula pelicula;
 
+    @ManyToOne
+    @MapsId("salaId")
+    @JoinColumn(name = "sala_id")
+    private Sala sala;
 }

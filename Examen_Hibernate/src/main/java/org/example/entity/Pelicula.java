@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 @Entity
@@ -23,7 +25,7 @@ public class Pelicula {
 
     private String titulo;
 
-    @Column(name = "año_estreno")
+    @Column(name = "año_estreno", columnDefinition = "Year")
     private int anoEstreno;
 
     private String genero;
@@ -31,10 +33,9 @@ public class Pelicula {
     @ManyToMany(mappedBy = "peliculas")
     private List<Actor> actores;
 
-    @OneToOne
-    @JoinColumn(name = "pelicula_id")
-    // referencia a la columna
-    // de la otra tabla que contiene este id de la pelicula
+    @OneToOne(mappedBy = "pelicula")
     private Premio premio;
 
+    @OneToMany(mappedBy = "pelicula")
+    private List<Proyeccion> proyecciones;
 }

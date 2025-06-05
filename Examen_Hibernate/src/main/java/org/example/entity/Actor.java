@@ -1,7 +1,6 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import jdk.vm.ci.meta.Local;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -29,8 +28,8 @@ public class Actor {
     @ManyToMany
     @JoinTable(
             name = "actuan",
-            joinColumns = @JoinColumn(name = "id_actor"),
-            inverseJoinColumns = @JoinColumn(name = "id_pelicula")
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "pelicula_id")
     )
     //Si necesitamos excluir del toString para evitar recursividad infinita
     //@ToString.Exclude
