@@ -4,14 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "actores")
+@NamedQueries({
+        @NamedQuery(name = "Actor.findAll", query = "SELECT a FROM Actor a"),
+        @NamedQuery(name = "Actor.deleteById", query = "DELETE FROM Actor a WHERE a.id = :id")
+})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+
 public class Actor {
     @Id
     @Column(name = "id_actor")
@@ -26,12 +32,29 @@ public class Actor {
     private String nacionalidad;
 
     @ManyToMany
-    @JoinTable(
-            name = "actuan",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "pelicula_id")
-    )
-    //Si necesitamos excluir del toString para evitar recursividad infinita
-    //@ToString.Exclude
-    private List<Pelicula> peliculas;
+    @JoinTable(name = "actuan", joinColumns = @JoinColumn(name = "actor_id"), inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
+    private List<Pelicula> peliculas = new ArrayList<>();
+
+    //Bidireccionalidad Actor <-> Pelicula
+    public void addPelicula(Pelicula pelicula) {
+        peliculas.add(pelicula);
+        pelicula.addActor(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("📽️ Actor [ID: %d]\n" + "   • Nombre: %s\n" + "   • Nacionalidad: %s\n" + "   • Fecha de nacimiento: %s\n", id, nombre, nacionalidad, fechaNacimiento != null ? fechaNacimiento.toString() : "No especificada"));
+
+        sb.append("   • Películas:\n");
+
+        if (peliculas != null && !peliculas.isEmpty()) {
+            peliculas.forEach(pelicula -> sb.append("     - ").append(pelicula.getTitulo()).append("\n"));
+        } else {
+            sb.append("     (Sin películas registradas)\n");
+        }
+        return sb.toString();
+    }
+
+
 }

@@ -33,6 +33,10 @@ public class Pelicula {
     @ManyToMany(mappedBy = "peliculas")
     private List<Actor> actores;
 
+    public void addActor(Actor actor){
+        actores.add(actor);
+    }
+
     @OneToOne(mappedBy = "pelicula")
     private Premio premio;
 
