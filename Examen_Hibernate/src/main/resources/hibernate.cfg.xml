@@ -17,8 +17,7 @@
         <property name="hbm2ddl.auto">validate</property>
 
         <!-- Dialecto corregido -->
-        <!-- <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property> Hibernate es listo y ya sabe que escoger no es necesario-->
-
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
 

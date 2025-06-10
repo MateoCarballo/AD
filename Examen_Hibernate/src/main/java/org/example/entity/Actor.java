@@ -9,10 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "actores")
-@NamedQueries({
-        @NamedQuery(name = "Actor.findAll", query = "SELECT a FROM Actor a"),
-        @NamedQuery(name = "Actor.deleteById", query = "DELETE FROM Actor a WHERE a.id = :id")
-})
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

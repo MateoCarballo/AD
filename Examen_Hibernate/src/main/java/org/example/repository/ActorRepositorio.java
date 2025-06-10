@@ -22,10 +22,12 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
     public void guardar(Actor actor) {
         Transaction trx = null;
         try{
+            trx = session.beginTransaction();
             session.persist(actor);
             trx.commit();
         } catch (Exception e) {
             if (trx != null) trx.rollback();
+            e.printStackTrace();
             System.out.println("Error al insertar un nuevo actor");
         }
     }
@@ -36,7 +38,7 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
         Transaction trx = null;
         try{
             trx = this.session.beginTransaction();
-            Query<Actor> query = session.getNamedQuery("Actor.findAll");
+            Query<Actor> query = session.createQuery("SELECT a FROM Actor a");
             listadoActores = query.getResultList();
             trx.commit();
             System.out.println("Consulta realizada con exito");
@@ -52,10 +54,9 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
         Optional<Actor> actor = Optional.empty();
         Transaction trx = null;
         try{
-            actor = Optional.ofNullable(session.createQuery("SELECT a FROM Actor a WHERE id = :id", Actor.class)
+            actor = session.createQuery("SELECT a FROM Actor a WHERE id = :id", Actor.class)
                     .setParameter("id", id)
-                    .uniqueResultOptional()
-                    .orElse(null));
+                    .uniqueResultOptional();
             // Forma resumida para este caso concreto
             // Optional<Actor> actor1 = Optional.ofNullable(session.find(Actor.class,id));
         } catch (Exception e) {
@@ -91,6 +92,7 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
             int idActor = actor.getId();
             Optional<Actor> buscarActor = encontrarPorId(idActor);
             if (buscarActor.isPresent()){
+                //DELETE FROM Actor a WHERE a.id = :id
                 session.remove(actor);
                 trx.commit();
             }
