@@ -20,7 +20,15 @@ public class PremioRepositorio implements Repositorio<Premio,Integer>{
 
     @Override
     public void guardar(Premio premio) {
-
+        Transaction trx = null;
+        try{
+            trx = session.beginTransaction();
+            session.persist(premio);
+            trx.commit();
+        } catch (Exception e) {
+            if (trx != null) trx.rollback();
+            System.out.println("Error al guardar el premio");
+        }
     }
 
     @Override

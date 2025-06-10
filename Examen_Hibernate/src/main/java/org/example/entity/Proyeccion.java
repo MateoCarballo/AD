@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.loader.ast.spi.Loadable;
 
 import java.sql.Time;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "proyecciones")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -37,4 +37,23 @@ public class Proyeccion {
     @MapsId("salaId")
     @JoinColumn(name = "sala_id")
     private Sala sala;
+
+    /*
+    En este caso particular como toda la tupla es clave primaria
+    Tiene sentido que siempre que se contruya una nueva instacion de esta clase
+    debe tener definidos todos los campos.
+     */
+
+    public Proyeccion(Pelicula pelicula, Sala sala, LocalDate fecha, Time horario){
+        this.pelicula = pelicula;
+        this.sala = sala;
+        this.proyeccionId = ProyeccionPK.builder()
+                .peliculaId(pelicula.getId())
+                .salaId(sala.getId())
+                .fecha(fecha)
+                .horario(horario)
+                .build();
+        pelicula.addProyeccion(this);
+        sala.addProyeccion(this);
+    }
 }

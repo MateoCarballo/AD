@@ -1,10 +1,7 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "premios")
@@ -28,4 +25,17 @@ public class Premio {
 
     @Column(name = "año_premio", columnDefinition = "Year")
     private int anoPremio;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("📽️ Premio [ID: %d]\n" + "   • Nombre: %s\n" + "   • Año premio: %s\n", id, nombre, anoPremio));
+
+        if (pelicula != null) {
+            sb.append("Pelicula [ID] ").append(pelicula.getId()).append(" nombre ").append(pelicula.getTitulo());
+        } else {
+            sb.append("     (Sin películas registradas)\n");
+        }
+        return sb.toString();
+    }
 }

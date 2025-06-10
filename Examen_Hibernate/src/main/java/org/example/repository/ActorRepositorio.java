@@ -1,7 +1,5 @@
 package org.example.repository;
 
-
-import lombok.Builder;
 import org.example.entity.Actor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -27,7 +25,6 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
             trx.commit();
         } catch (Exception e) {
             if (trx != null) trx.rollback();
-            e.printStackTrace();
             System.out.println("Error al insertar un nuevo actor");
         }
     }
@@ -38,7 +35,7 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
         Transaction trx = null;
         try{
             trx = this.session.beginTransaction();
-            Query<Actor> query = session.createQuery("SELECT a FROM Actor a");
+            Query<Actor> query = session.createQuery("SELECT a FROM Actor a", Actor.class);
             listadoActores = query.getResultList();
             trx.commit();
             System.out.println("Consulta realizada con exito");

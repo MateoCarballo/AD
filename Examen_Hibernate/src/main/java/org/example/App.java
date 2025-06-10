@@ -27,25 +27,24 @@ public class App {
             do{
                 opcionSeleccionada = printearMenuOpciones();
                 switch (opcionSeleccionada) {
-                    //Agregar actor
+                    //Crear actor
                     case 1 -> {
                         actorRepositorioImpl.guardar(preguntarDatosActor());
                     }
                     //Eliminar actor
                     case 2 -> {
-                        //Obtener el id que queremos elimianr.
+                        //Obtener el id que queremos eliminar.
                         Optional<Actor> actor = actorRepositorioImpl.encontrarPorId(
                                 preguntarActorEliminar(actorRepositorioImpl)
                         );
                         //Si existe el id que queremos eliminar, es decir, tiene contenido y no está vacío.
-                        if (actor.isPresent()) {
-                            actorRepositorioImpl.eliminar(actor.get());
-                        }
+                        actor.ifPresent(actorRepositorioImpl::eliminar);
                     }
                     //Agregar pelicula
                     case 3 -> {
                         peliculaRepositorioImpl.guardar(
                                 preguntarDatosPelicula(
+                                        peliculaRepositorioImpl,
                                         actorRepositorioImpl,
                                         premioRepositorioImpl
                                 )
@@ -64,7 +63,7 @@ public class App {
         }
     }
 
-    private static Pelicula preguntarDatosPelicula(ActorRepositorio actorRepositorio, PremioRepositorio premioRepositorio) {
+    private static Pelicula preguntarDatosPelicula(PeliculaRepositorio peliculaRepositorio, ActorRepositorio actorRepositorio, PremioRepositorio premioRepositorio) {
         Pelicula nuevaPelicula = new Pelicula();
         System.out.println("Titulo de la pelicula?");
         nuevaPelicula.setTitulo(sc.nextLine());
@@ -72,18 +71,33 @@ public class App {
         nuevaPelicula.setGenero(sc.nextLine());
         System.out.println("Año de estreno?");
         nuevaPelicula.setAnoEstreno(Integer.parseInt(sc.nextLine()));
-        // Setear el premio si tiene alguno entre los existentes
-        nuevaPelicula.setPremio(obtenerPremio(premioRepositorio,nuevaPelicula.getTitulo()));
+        System.out.println("Esta pelicula tiene algun premio ? (y/n)");
+        if (sc.nextLine().equalsIgnoreCase("y")){
+            System.out.println("Nombre del premio?");
+            String nombrePremio = sc.nextLine();
+            System.out.println("Año del premio?");
+            String anoPremio = sc.nextLine();
+            Premio nuevoPremio = Premio.builder()
+                    .nombre(nombrePremio)
+                    .anoPremio(Integer.parseInt(anoPremio))
+                    // .pelicula(nuevaPelicula) esta parte no es necesaria. El crear una nueva pelicula setea el premio asociado
+                    .build();
+            premioRepositorio.guardar(nuevoPremio);
+            nuevaPelicula.setPremio(nuevoPremio);
+            peliculaRepositorio.guardar(nuevaPelicula); //Necesaria guardar en esta parte en la base de datos antes de setear los actores para que no nos de error
+        }
+
         // Setear los actores existentes
-        nuevaPelicula.setActores(obtenerReparto(actorRepositorio, nuevaPelicula.getTitulo()));
+        nuevaPelicula.setActores(obtenerReparto(actorRepositorio, nuevaPelicula));
+
         return nuevaPelicula;
     }
 
-    private static List<Actor> obtenerReparto(ActorRepositorio actorRepositorio,String titulo) {
+    private static List<Actor> obtenerReparto(ActorRepositorio actorRepositorio,Pelicula pelicula) {
         List<Actor> reparto = new ArrayList<>();
 
         System.out.println("Elige actores por id (-1 para salir)");
-        actorRepositorio.encontrarTodos();
+        actorRepositorio.encontrarTodos().forEach(System.out::println);
         String entradaTeclado = "0";
         while (!entradaTeclado.equalsIgnoreCase("-1")) {
             try {
@@ -91,32 +105,34 @@ public class App {
                 int id = Integer.parseInt(entradaTeclado);
                 if (actorRepositorio.encontrarPorId(id).isPresent())
                     reparto.add(actorRepositorio.encontrarPorId(id).get());
-                System.out.println("Agregado el actor con id " + id + " al reparto de la pelicula " + titulo);
+                //TODO comprobar que se añada el actor para poder encontrarlo en la tabla actuan
+                pelicula.setActor(actorRepositorio.encontrarPorId(id).get());
+                System.out.println("Agregado el actor con id " + id + " al reparto de la pelicula " + pelicula.getTitulo());
             } catch (NumberFormatException e) {
                 System.out.println("Introduce el id del actor");
             }
         }
         return reparto;
     }
-
-    private static Premio obtenerPremio(PremioRepositorio premioRepositorio, String tituloPelicula) {
-        Premio premio = new Premio();
-
-        System.out.println("Introduce el premio de la pelicula");
-        try {
-            List<Premio> premios = premioRepositorio.encontrarTodos();
-            premios.forEach(System.out::println);
-            String entradaTeclado = sc.nextLine();
-            int id = Integer.parseInt(entradaTeclado);
-            if (premioRepositorio.encontrarPorId(id).isPresent())
-                premio = premioRepositorio.encontrarPorId(id).get();
-            System.out.println("Agregado el premio con id " + id + " a la pelicula " + tituloPelicula);
-        } catch (NumberFormatException e) {
-            System.out.println("Introduce el id del premio");
-        }
-
-        return premio;
-    }
+//    ## Esta parte al ser una relacion 1-1 no tiene sentido cada premio debe crearse para cada pelicula, solo 1 premio por año ##
+//    private static Premio obtenerPremio(PremioRepositorio premioRepositorio, String tituloPelicula) {
+//        Premio premio = new Premio();
+//
+//        System.out.println("Introduce el premio de la pelicula");
+//        try {
+//            List<Premio> premios = premioRepositorio.encontrarTodos();
+//            premios.forEach(System.out::println);
+//            String entradaTeclado = sc.nextLine();
+//            int id = Integer.parseInt(entradaTeclado);
+//            if (premioRepositorio.encontrarPorId(id).isPresent())
+//                premio = premioRepositorio.encontrarPorId(id).get();
+//            System.out.println("Agregado el premio con id " + id + " a la pelicula " + tituloPelicula);
+//        } catch (NumberFormatException e) {
+//            System.out.println("Introduce el id del premio");
+//        }
+//
+//        return premio;
+//    }
 
     private static int printearMenuOpciones() {
         int indiceSeleccionado = 0;

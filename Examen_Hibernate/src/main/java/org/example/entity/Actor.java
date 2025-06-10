@@ -29,14 +29,11 @@ public class Actor {
     private String nacionalidad;
 
     @ManyToMany
-    @JoinTable(name = "actuan", joinColumns = @JoinColumn(name = "actor_id"), inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
+    @JoinTable(
+            name = "actuan",
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
     private List<Pelicula> peliculas = new ArrayList<>();
-
-    //Bidireccionalidad Actor <-> Pelicula
-    public void addPelicula(Pelicula pelicula) {
-        peliculas.add(pelicula);
-        pelicula.addActor(this);
-    }
 
     @Override
     public String toString() {
@@ -53,5 +50,7 @@ public class Actor {
         return sb.toString();
     }
 
-
+    public void addPelicula(Pelicula pelicula){
+        peliculas.add(pelicula);
+    }
 }
