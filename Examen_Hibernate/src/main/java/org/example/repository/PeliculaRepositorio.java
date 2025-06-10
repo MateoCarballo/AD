@@ -34,15 +34,12 @@ public class PeliculaRepositorio implements Repositorio<Pelicula, Integer> {
 
     @Override
     public List<Pelicula> encontrarTodos() {
-        Transaction trx = null;
         List<Pelicula> listadoPelis = new ArrayList<>();
         try {
-            session.beginTransaction();
             Query<Pelicula> todasPeliculas = session.createQuery("FROM Pelicula p");
             listadoPelis = todasPeliculas.getResultList();
         } catch (Exception e) {
-            if (trx != null) trx.rollback();
-            System.out.println("Error al buscar todos las peliculas");
+            System.out.println("Error al buscar todos las peliculas\n" + e .getMessage());
         }
         return listadoPelis;
     }
@@ -64,7 +61,15 @@ public class PeliculaRepositorio implements Repositorio<Pelicula, Integer> {
 
     @Override
     public void actualizar(Pelicula pelicula) {
-
+        Transaction trx = null;
+        try{
+            trx = session.beginTransaction();
+            session.merge(pelicula);
+            trx.commit();
+        } catch (Exception e) {
+            if (trx != null) trx.rollback();
+            System.out.println("Error en el metodo actualizar del repo de peliculas" + e.getMessage());
+        }
     }
 
     @Override

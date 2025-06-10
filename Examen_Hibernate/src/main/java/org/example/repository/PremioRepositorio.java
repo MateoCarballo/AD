@@ -33,14 +33,11 @@ public class PremioRepositorio implements Repositorio<Premio,Integer>{
 
     @Override
     public List<Premio> encontrarTodos() {
-        Transaction trx = null;
         List<Premio> lisadoPremios = new ArrayList<>();
         try {
-            session.beginTransaction();
-            Query<Premio> todosPremios = session.createQuery("FROM Premio p");
+            Query<Premio> todosPremios = session.createQuery("FROM Premio p", Premio.class);
             lisadoPremios = todosPremios.getResultList();
         } catch (Exception e) {
-            if (trx != null) trx.rollback();
             System.out.println("Error al buscar todos las premios");
         }
         return lisadoPremios;
@@ -48,15 +45,14 @@ public class PremioRepositorio implements Repositorio<Premio,Integer>{
 
     @Override
     public Optional<Premio> encontrarPorId(Integer integer) {
-        Transaction trx = null;
         Optional premio = Optional.empty();
         try {
-            premio = session.createQuery("SELECT p FROM Premio p WHERE id = :id",Premio.class)
+            premio = session.createQuery("SELECT p FROM Premio p WHERE id = :id")
                     .setParameter("id", integer)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            trx.rollback();
-            System.out.println("Error al buscar por Id");
+            System.out.println("Error en el metodo 'encontrarPorId' del repositorio de premios");
+            e.printStackTrace();
         }
         return premio;
     }
@@ -68,6 +64,15 @@ public class PremioRepositorio implements Repositorio<Premio,Integer>{
 
     @Override
     public void eliminar(Premio premio) {
-
+        Transaction trx = null;
+        try {
+            trx = session.beginTransaction();
+            session.remove(premio);
+            trx.commit();
+        } catch (Exception e) {
+            if (trx != null) trx.rollback();
+            e.printStackTrace();
+            System.out.println("Error en el metodo 'eliminar' del repositorio de los premios");
+        }
     }
 }

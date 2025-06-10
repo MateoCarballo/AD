@@ -29,7 +29,7 @@ public class Premio {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("📽️ Premio [ID: %d]\n" + "   • Nombre: %s\n" + "   • Año premio: %s\n", id, nombre, anoPremio));
+        sb.append(String.format("🏆 Premio [ID: %d]\n" + "   • Nombre: %s\n" + "   • Año premio: %s\n", id, nombre, anoPremio));
 
         if (pelicula != null) {
             sb.append("Pelicula [ID] ").append(pelicula.getId()).append(" nombre ").append(pelicula.getTitulo());

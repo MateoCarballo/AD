@@ -7,9 +7,9 @@ import org.example.repository.ActorRepositorio;
 import org.example.repository.PeliculaRepositorio;
 import org.example.repository.PremioRepositorio;
 import org.hibernate.Session;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -19,12 +19,12 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println("Arranco clase main de App");
-        int opcionSeleccionada = 0;
+        int opcionSeleccionada;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             ActorRepositorio actorRepositorioImpl = new ActorRepositorio(session);
             PeliculaRepositorio peliculaRepositorioImpl = new PeliculaRepositorio(session);
             PremioRepositorio premioRepositorioImpl = new PremioRepositorio(session);
-            do{
+            do {
                 opcionSeleccionada = printearMenuOpciones();
                 switch (opcionSeleccionada) {
                     //Crear actor
@@ -50,17 +50,75 @@ public class App {
                                 )
                         );
                     }
-
                     //Eliminar pelicula
                     case 4 -> {
-
+                        eliminarPelicula(peliculaRepositorioImpl);
                     }
+                    case 5 -> crearPremio(premioRepositorioImpl);
+                    case 6 -> eliminarPremio(premioRepositorioImpl);
+                    case 7 -> modificarGeneroPelicula(peliculaRepositorioImpl);
                 }
-            }while(opcionSeleccionada != 15);
+            } while (opcionSeleccionada != 15);
             System.out.println("Conexión a Hibernate exitosa.");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void modificarGeneroPelicula(PeliculaRepositorio peliculaRepositorioImpl) {
+        peliculaRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Introduce el id de la pelicula que deseas modificar");
+        int id = Integer.parseInt(sc.nextLine());
+        peliculaRepositorioImpl.encontrarPorId(id).ifPresentOrElse(
+                pelicula -> {
+                    System.out.println("Has seleccionado " + pelicula.getTitulo());
+                    String viejoGenero = pelicula.getGenero();
+                    System.out.println("Escribe el nuevo genero para la pelicula");
+                    pelicula.setGenero(sc.nextLine());
+                    peliculaRepositorioImpl.actualizar(pelicula);
+                    System.out.println("Se ha cambiado el genero de " + viejoGenero + " a " + pelicula.getGenero());
+                },
+                ()-> System.out.println("Introduce un id de los que se muestran")
+        );
+    }
+
+    private static void eliminarPremio(PremioRepositorio premioRepositorioImpl) {
+        int idIntroducido;
+        premioRepositorioImpl.encontrarTodos().forEach(System.out::println);
+//        System.out.println("Introduce el id del premio que quieres eliminar");
+//        idIntroducido = Integer.parseInt(sc.nextLine());
+//        premioRepositorioImpl.encontrarPorId(idIntroducido).ifPresent(premioRepositorioImpl::eliminar);
+
+//              VERSION PRO PARA TENER MENSAJE POR PANTALLA DE CONFIRMACION DE ELIMINACION
+        idIntroducido = Integer.parseInt(sc.nextLine());
+        premioRepositorioImpl.encontrarPorId(idIntroducido).ifPresentOrElse(
+                premio -> {
+                    premioRepositorioImpl.eliminar(premio);
+                    System.out.println("Se ha eliminado el premio con el id " + idIntroducido);
+                },
+                () -> System.out.println("No se ha encontrado ningun premio con el id introducido " + idIntroducido)
+        );
+    }
+
+    private static void crearPremio(PremioRepositorio premioRepositorio) {
+        System.out.println("Introduce el nombre del premio");
+        String nombrePremio = sc.nextLine();
+        System.out.println("Introduce el año del premio");
+        int anoPremio = Integer.parseInt(sc.nextLine());
+        Premio nuevoPremio = Premio.builder()
+                .nombre(nombrePremio)
+                .anoPremio(anoPremio)
+                .build();
+        premioRepositorio.guardar(nuevoPremio);
+    }
+
+    private static void eliminarPelicula(PeliculaRepositorio peliculaRepositorio) {
+        peliculaRepositorio.encontrarTodos().forEach(System.out::println);
+        System.out.println("Que pelicula deseas eliminar ? (Escribe el id y pulsa enter)");
+        int idPelicula = Integer.parseInt(sc.nextLine());
+        peliculaRepositorio.encontrarPorId(idPelicula).ifPresent(peliculaRepositorio::eliminar);
+        // Equivalente
+        // peliculaRepositorio.encontrarPorId(idPelicula).ifPresent(p -> peliculaRepositorio.eliminar(p));
     }
 
     private static Pelicula preguntarDatosPelicula(PeliculaRepositorio peliculaRepositorio, ActorRepositorio actorRepositorio, PremioRepositorio premioRepositorio) {
@@ -72,7 +130,7 @@ public class App {
         System.out.println("Año de estreno?");
         nuevaPelicula.setAnoEstreno(Integer.parseInt(sc.nextLine()));
         System.out.println("Esta pelicula tiene algun premio ? (y/n)");
-        if (sc.nextLine().equalsIgnoreCase("y")){
+        if (sc.nextLine().equalsIgnoreCase("y")) {
             System.out.println("Nombre del premio?");
             String nombrePremio = sc.nextLine();
             System.out.println("Año del premio?");
@@ -80,39 +138,33 @@ public class App {
             Premio nuevoPremio = Premio.builder()
                     .nombre(nombrePremio)
                     .anoPremio(Integer.parseInt(anoPremio))
-                    // .pelicula(nuevaPelicula) esta parte no es necesaria. El crear una nueva pelicula setea el premio asociado
                     .build();
             premioRepositorio.guardar(nuevoPremio);
             nuevaPelicula.setPremio(nuevoPremio);
-            peliculaRepositorio.guardar(nuevaPelicula); //Necesaria guardar en esta parte en la base de datos antes de setear los actores para que no nos de error
         }
 
+        //Necesaria guardar en esta parte en la base de datos antes de setear los actores para que no nos de error
+        peliculaRepositorio.guardar(nuevaPelicula);
         // Setear los actores existentes
-        nuevaPelicula.setActores(obtenerReparto(actorRepositorio, nuevaPelicula));
+        relacionBidireccionalActorPelicula(actorRepositorio, nuevaPelicula);
 
         return nuevaPelicula;
     }
 
-    private static List<Actor> obtenerReparto(ActorRepositorio actorRepositorio,Pelicula pelicula) {
-        List<Actor> reparto = new ArrayList<>();
-
-        System.out.println("Elige actores por id (-1 para salir)");
+    private static void relacionBidireccionalActorPelicula(ActorRepositorio actorRepositorio, Pelicula pelicula) {
         actorRepositorio.encontrarTodos().forEach(System.out::println);
+        System.out.println("Elige actores por id (-1 para salir)");
         String entradaTeclado = "0";
         while (!entradaTeclado.equalsIgnoreCase("-1")) {
             try {
                 entradaTeclado = sc.nextLine();
                 int id = Integer.parseInt(entradaTeclado);
-                if (actorRepositorio.encontrarPorId(id).isPresent())
-                    reparto.add(actorRepositorio.encontrarPorId(id).get());
-                //TODO comprobar que se añada el actor para poder encontrarlo en la tabla actuan
-                pelicula.setActor(actorRepositorio.encontrarPorId(id).get());
+                actorRepositorio.encontrarPorId(id).ifPresent(pelicula::setActor);
                 System.out.println("Agregado el actor con id " + id + " al reparto de la pelicula " + pelicula.getTitulo());
             } catch (NumberFormatException e) {
                 System.out.println("Introduce el id del actor");
             }
         }
-        return reparto;
     }
 //    ## Esta parte al ser una relacion 1-1 no tiene sentido cada premio debe crearse para cada pelicula, solo 1 premio por año ##
 //    private static Premio obtenerPremio(PremioRepositorio premioRepositorio, String tituloPelicula) {

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class Pelicula {
     private String genero;
 
     @ManyToMany(mappedBy = "peliculas")
-    private List<Actor> actores;
+    private List<Actor> actores = new ArrayList<>();
 
     @OneToOne(mappedBy = "pelicula")
     private Premio premio;
@@ -44,9 +45,9 @@ public class Pelicula {
     //Donde se va a reproducir y si tiene algun premio o no
 
     // Pelicula <-> Actor
-    public void setActor(Actor actor){
-        actores.add(actor);
-        actor.addPelicula(this);
+    public void setActor(Actor a){
+        this.actores.add(a);
+        a.addPelicula(this);
     }
 
     // Pelicula <-> Premio
