@@ -28,11 +28,13 @@ public class Actor {
 
     private String nacionalidad;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "actores")
+    /*
     @JoinTable(
             name = "actuan",
             joinColumns = @JoinColumn(name = "actor_id"),
             inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
+     */
     private List<Pelicula> peliculas = new ArrayList<>();
 
     @Override

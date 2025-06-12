@@ -1,15 +1,13 @@
 package org.example;
 
-import org.example.entity.Actor;
-import org.example.entity.Pelicula;
-import org.example.entity.Premio;
-import org.example.repository.ActorRepositorio;
-import org.example.repository.PeliculaRepositorio;
-import org.example.repository.PremioRepositorio;
+import org.example.entity.*;
+import org.example.repository.*;
 import org.hibernate.Session;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 
+import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -24,6 +22,9 @@ public class App {
             ActorRepositorio actorRepositorioImpl = new ActorRepositorio(session);
             PeliculaRepositorio peliculaRepositorioImpl = new PeliculaRepositorio(session);
             PremioRepositorio premioRepositorioImpl = new PremioRepositorio(session);
+            SalaRepositorio salaRepositorio = new SalaRepositorio(session);
+            ProyeccionRepositorio proyectaRespositorio = new ProyeccionRepositorio(session);
+
             do {
                 opcionSeleccionada = printearMenuOpciones();
                 switch (opcionSeleccionada) {
@@ -57,12 +58,117 @@ public class App {
                     case 5 -> crearPremio(premioRepositorioImpl);
                     case 6 -> eliminarPremio(premioRepositorioImpl);
                     case 7 -> modificarGeneroPelicula(peliculaRepositorioImpl);
+                    case 8 -> asignarPremioAPelicula(peliculaRepositorioImpl, premioRepositorioImpl);
+                    case 9 -> asignarActorAPelicula(actorRepositorioImpl, peliculaRepositorioImpl);
+                    case 10 -> asignarPeliculaSalaFechaHora(peliculaRepositorioImpl, salaRepositorio, proyectaRespositorio);
+                    case 11 -> realizarConsulta1(actorRepositorioImpl);
                 }
             } while (opcionSeleccionada != 15);
             System.out.println("Conexión a Hibernate exitosa.");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void realizarConsulta1(ActorRepositorio actorRepositorioImpl) {
+        System.out.println("Escribe la nacionalidad para filtrar");
+        String nacionalidad = sc.nextLine();
+        actorRepositorioImpl.encontrarActoresNacionalidad(nacionalidad).forEach(System.out::println);
+    }
+
+    private static void asignarPeliculaSalaFechaHora(PeliculaRepositorio peliculaRepositorioImpl, SalaRepositorio salaRepositorio, ProyeccionRepositorio proyeccionRepositorio) {
+        //Escoger una pelicula por id
+        peliculaRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Escoge una pelicula por id");
+        int idPelicula = Integer.parseInt(sc.nextLine());
+        Optional<Pelicula> peliculaOpt = peliculaRepositorioImpl.encontrarPorId(idPelicula);
+        if (peliculaOpt.isEmpty()){
+            System.out.println("El id pelicula introducido no existe en la base de datos");
+            return;
+            //Como dejo de realizar codigo desde aqui ?
+        }
+
+        //Escoger una sala por id
+        salaRepositorio.encontrarTodos().forEach(System.out::println);
+        System.out.println("Escoge una sala por id");
+        int idSala = Integer.parseInt(sc.nextLine());
+
+        Optional<Sala> salaOpt = salaRepositorio.encontrarPorId(idSala);
+        if(salaOpt.isEmpty()){
+            System.out.println("El id sala introducido no existe en la base de datos");
+            return;
+        }
+
+        Proyeccion nuevaProyeccion = new Proyeccion(
+                peliculaOpt.get(),
+                salaOpt.get(),
+                LocalDate.now(),
+                LocalTime.now()
+        );
+
+
+//        ProyeccionPK proyeccionPK = ProyeccionPK.builder()
+//                .peliculaId(peliculaOpt.get().getId())
+//                .salaId(salaOpt.get().getId())
+//                .fecha(LocalDate.now())
+//                .horario(LocalTime.now())
+//                .build();
+//
+//        Proyeccion nuevaProyeccion = Proyeccion.builder()
+//                .pelicula(peliculaOpt.get())
+//                .sala(salaOpt.get())
+//                .proyeccionId(proyeccionPK)
+//                .build();
+//
+
+        proyeccionRepositorio.guardar(nuevaProyeccion);
+    }
+
+    private static void asignarActorAPelicula(ActorRepositorio actorRepositorioImpl, PeliculaRepositorio peliculaRepositorioImpl) {
+        peliculaRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Introduce el id de la pelicula");
+        int idPelicula = Integer.parseInt(sc.nextLine());
+
+        actorRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Introduce el id del actor");
+        int idActor = Integer.parseInt(sc.nextLine());
+
+        actorRepositorioImpl.encontrarPorId(idActor).ifPresentOrElse(
+                actor -> {
+                    peliculaRepositorioImpl.encontrarPorId(idPelicula).ifPresentOrElse(
+                            pelicula -> {
+                                pelicula.addActor(actor);
+                                peliculaRepositorioImpl.actualizar(pelicula);
+                                System.out.println("Se han vinculado las pelicula " + pelicula.getTitulo() + " y " + " el actor " + actor.getNombre());
+                            },
+                            () -> System.out.println("No existe ninguna pelicula con este id")
+                    );
+                },
+                () -> System.out.println("No existe ningun actor con este id")
+        );
+    }
+
+    private static void asignarPremioAPelicula(PeliculaRepositorio peliculaRepositorioImpl, PremioRepositorio premioRepositorioImpl) {
+        peliculaRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Introduce el id de la pelicula");
+        int idPelicula = Integer.parseInt(sc.nextLine());
+
+        premioRepositorioImpl.encontrarTodos().forEach(System.out::println);
+        System.out.println("Introduce el id del premio");
+        int idPremio = Integer.parseInt(sc.nextLine());
+
+        premioRepositorioImpl.encontrarPorId(idPremio).ifPresentOrElse(
+                premio -> {
+                    peliculaRepositorioImpl.encontrarPorId(idPelicula).ifPresentOrElse(
+                            pelicula -> {
+                                pelicula.setPremio(premio);
+                                System.out.println("Se han vinculado las pelicula " + pelicula.getTitulo() + " y \n" + " el premio " + premio.getNombre());
+                            },
+                            () -> System.out.println("No existe ninguna pelicula con este id")
+                    );
+                },
+                () -> System.out.println("No existe ningun premio con este id")
+        );
     }
 
     private static void modificarGeneroPelicula(PeliculaRepositorio peliculaRepositorioImpl) {
@@ -159,7 +265,7 @@ public class App {
             try {
                 entradaTeclado = sc.nextLine();
                 int id = Integer.parseInt(entradaTeclado);
-                actorRepositorio.encontrarPorId(id).ifPresent(pelicula::setActor);
+                actorRepositorio.encontrarPorId(id).ifPresent(pelicula::addActor);
                 System.out.println("Agregado el actor con id " + id + " al reparto de la pelicula " + pelicula.getTitulo());
             } catch (NumberFormatException e) {
                 System.out.println("Introduce el id del actor");

@@ -9,6 +9,7 @@ import org.hibernate.loader.ast.spi.Loadable;
 
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "proyecciones")
@@ -44,7 +45,7 @@ public class Proyeccion {
     debe tener definidos todos los campos.
      */
 
-    public Proyeccion(Pelicula pelicula, Sala sala, LocalDate fecha, Time horario){
+    public Proyeccion(Pelicula pelicula, Sala sala, LocalDate fecha, LocalTime horario){
         this.pelicula = pelicula;
         this.sala = sala;
         this.proyeccionId = ProyeccionPK.builder()

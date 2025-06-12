@@ -36,8 +36,7 @@ public class PeliculaRepositorio implements Repositorio<Pelicula, Integer> {
     public List<Pelicula> encontrarTodos() {
         List<Pelicula> listadoPelis = new ArrayList<>();
         try {
-            Query<Pelicula> todasPeliculas = session.createQuery("FROM Pelicula p");
-            listadoPelis = todasPeliculas.getResultList();
+            listadoPelis = session.createQuery("FROM Pelicula p",Pelicula.class).getResultList();;
         } catch (Exception e) {
             System.out.println("Error al buscar todos las peliculas\n" + e .getMessage());
         }
@@ -53,7 +52,6 @@ public class PeliculaRepositorio implements Repositorio<Pelicula, Integer> {
                     .setParameter("id", integer)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            trx.rollback();
             System.out.println("Error al buscar por Id");
         }
         return pelicula;

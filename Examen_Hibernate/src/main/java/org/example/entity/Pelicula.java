@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +24,16 @@ public class Pelicula {
 
     private String titulo;
 
-    @Column(name = "año_estreno", columnDefinition = "Year")
+    @Column(name = "año_estreno", columnDefinition = "YEAR")
     private int anoEstreno;
 
     private String genero;
 
-    @ManyToMany(mappedBy = "peliculas")
+    @ManyToMany
+    @JoinTable(
+            name = "actuan",
+            joinColumns = @JoinColumn(name = "pelicula_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private List<Actor> actores = new ArrayList<>();
 
     @OneToOne(mappedBy = "pelicula")
@@ -45,7 +47,7 @@ public class Pelicula {
     //Donde se va a reproducir y si tiene algun premio o no
 
     // Pelicula <-> Actor
-    public void setActor(Actor a){
+    public void addActor(Actor a){
         this.actores.add(a);
         a.addPelicula(this);
     }

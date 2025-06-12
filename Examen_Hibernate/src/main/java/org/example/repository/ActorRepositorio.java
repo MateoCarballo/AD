@@ -99,4 +99,17 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
             System.out.println("Error al eliminar el actor");
         }
     }
+
+    public List<Actor> encontrarActoresNacionalidad(String nacionalidad){
+        List<Actor> actores = new ArrayList<>();
+        try{
+            actores = session.createQuery("SELECT a FROM Actor a WHERE nacionalidad = :nacionalidad ORDER BY fechaNacimiento DESC",Actor.class)
+                    .setParameter("nacionalidad", nacionalidad)
+                    .getResultList();
+        } catch (Exception e) {
+            System.out.println("Error en el metodo 'encontrarActoresNacionalidad' del repositorio Actor");
+            e.printStackTrace();
+        }
+        return actores;
+    }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Embeddable
 @Data
@@ -28,5 +29,5 @@ public class ProyeccionPK implements Serializable {
     private LocalDate fecha;
 
     @Column(name = "horario")
-    private Time horario;
+    private LocalTime horario;
 }
