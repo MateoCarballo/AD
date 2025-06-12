@@ -93,6 +93,7 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
                 session.remove(actor);
                 trx.commit();
             }
+                       
             System.out.println("Eliminado actor con id " + idActor);
         } catch (Exception e) {
             if (trx != null) trx.rollback();
