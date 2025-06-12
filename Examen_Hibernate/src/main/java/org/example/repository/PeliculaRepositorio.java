@@ -1,9 +1,9 @@
 package org.example.repository;
 
+import org.example.dto.Consulta2DTO;
 import org.example.entity.Pelicula;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,5 +81,24 @@ public class PeliculaRepositorio implements Repositorio<Pelicula, Integer> {
         } catch (Exception e) {
             if (trx != null) trx.rollback();
         }
+    }
+
+    public List<Consulta2DTO> consulta2(String titulo) {
+        List<Consulta2DTO> listaResultadosConsutla2 = new ArrayList<>();
+        try{
+            listaResultadosConsutla2 = session.createQuery("""
+                                SELECT new  org.example.dto.Consulta2DTO(a.nombre, a.nacionalidad)
+                                FROM Pelicula p
+                                JOIN p.actores a
+                                WHERE p.titulo = :titulo
+                                """,Consulta2DTO.class)
+                    .setParameter("titulo",titulo)
+                    .getResultList();
+
+        }catch (Exception e){
+            System.out.println("Error en el metood devolver id por titulo del repositorio de pelicula");
+            e.printStackTrace();
+        }
+        return listaResultadosConsutla2;
     }
 }

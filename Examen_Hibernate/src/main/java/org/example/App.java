@@ -1,13 +1,13 @@
 package org.example;
 
+import org.example.dto.Consulta3DTO;
 import org.example.entity.*;
 import org.example.repository.*;
 import org.hibernate.Session;
 
-import java.sql.Time;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -24,7 +24,6 @@ public class App {
             PremioRepositorio premioRepositorioImpl = new PremioRepositorio(session);
             SalaRepositorio salaRepositorio = new SalaRepositorio(session);
             ProyeccionRepositorio proyectaRespositorio = new ProyeccionRepositorio(session);
-
             do {
                 opcionSeleccionada = printearMenuOpciones();
                 switch (opcionSeleccionada) {
@@ -62,12 +61,75 @@ public class App {
                     case 9 -> asignarActorAPelicula(actorRepositorioImpl, peliculaRepositorioImpl);
                     case 10 -> asignarPeliculaSalaFechaHora(peliculaRepositorioImpl, salaRepositorio, proyectaRespositorio);
                     case 11 -> realizarConsulta1(actorRepositorioImpl);
+                    case 12 -> realizarConsulta2(peliculaRepositorioImpl);
+                    case 13 -> realizarConsulta3(proyectaRespositorio);
+                    case 14 -> realizarConsulta4(actorRepositorioImpl);
                 }
             } while (opcionSeleccionada != 15);
             System.out.println("Conexión a Hibernate exitosa.");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Consulta 4: Obtener la lista de nacionalidades de los actores
+     * que han participado en una película que fuera galardonada con el Premio BAFTA
+     */
+    private static void realizarConsulta4(ActorRepositorio actorRepositorioImpl) {
+        List<String> nacionalidadesActores = actorRepositorioImpl.consulta4();
+        if (nacionalidadesActores.isEmpty()){
+            System.out.println("No existen actores que hayan participado en peliculas con el premio 'BAFTAS' ");
+            return;
+        }
+        nacionalidadesActores.forEach(System.out::println);
+    }
+
+    /**
+     *  Consulta 3: Listar el título y género de
+     *  todas las películas proyectadas en una fecha específica.
+     *
+     * @param proyectaRespositorio
+     */
+    private static void realizarConsulta3(ProyeccionRepositorio proyectaRespositorio) {
+        System.out.println("Introduce la fecha para consultar las peliculas proyectadas en esa fecha(AAAA-MM-DD)");
+        String fechaStr = sc.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha = LocalDate.parse(fechaStr, formatter);
+
+        List<Consulta3DTO> listaResultado = proyectaRespositorio.consulta3(fecha);
+        if (listaResultado.isEmpty()){
+            System.out.println("No se han encontrado peliculas proyectadas en esa fecha");
+            return;
+        }
+        listaResultado.forEach(System.out::println);
+
+//        Optional.of(proyectaRespositorio.consulta3(fecha))
+//                .filter(lista -> !lista.isEmpty())
+//                .ifPresentOrElse(
+//                        lista -> lista.forEach(System.out::println),
+//                        () -> System.out.println("La lista esta vacia!")
+//                );
+    }
+
+    /**
+     * Consulta 2: Obtener el nombre y la nacionalidad de
+     * todos los actores que han participado en una película dada
+     * (se recibirá por parámetro el nombre de la película).
+     * @param peliculaRepositorioImpl
+     */
+    private static void realizarConsulta2(PeliculaRepositorio peliculaRepositorioImpl) {
+        peliculaRepositorioImpl
+                .encontrarTodos()
+                .forEach(pelicula -> System.out.println(pelicula.getTitulo()));
+        System.out.println("Escribe el nombre de la pelicula (para saber su reparto)");
+        String tituloPelicula = sc.nextLine();
+        Optional.of(peliculaRepositorioImpl.consulta2(tituloPelicula))
+                .filter(lista -> !lista.isEmpty())
+                .ifPresentOrElse(
+                        lista -> lista.forEach(System.out::println),
+                        () -> System.out.println("No se han encontrado actores para la pelicula indicada")
+                );
     }
 
     private static void realizarConsulta1(ActorRepositorio actorRepositorioImpl) {

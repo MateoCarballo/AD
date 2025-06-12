@@ -113,4 +113,22 @@ public class ActorRepositorio implements Repositorio<Actor, Integer>{
         }
         return actores;
     }
+
+    public List<String> consulta4() {
+        List<String> nacionalidadesActores = new ArrayList<>();
+        try{
+            nacionalidadesActores = session.createQuery("""
+                   SELECT a.nacionalidad
+                   FROM Actor a
+                   JOIN a.peliculas p
+                   JOIN p.premio pr
+                   WHERE pr.nombre = 'Premio BAFTA'
+                   """,String.class).getResultList();
+
+       } catch (Exception e) {
+           System.out.println("Error en la consulta 4 del repositorio de Actor");
+           e.printStackTrace();
+       }
+        return nacionalidadesActores;
+    }
 }
